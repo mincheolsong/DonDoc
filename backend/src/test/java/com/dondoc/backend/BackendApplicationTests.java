@@ -1,4 +1,4 @@
-package com.dondok.backend;
+package com.dondoc.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
