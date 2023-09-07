@@ -1,4 +1,4 @@
-package com.bank.backend.common;
+package com.bank.backend.common.data;
 
 import com.bank.backend.entity.BankCode;
 import com.bank.backend.repository.BankCodeRepository;
