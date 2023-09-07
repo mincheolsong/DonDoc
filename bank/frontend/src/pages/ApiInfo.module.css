@@ -1,0 +1,33 @@
+.container {
+
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: #809FFF;
+    color: white;
+    padding-top: 2em;
+    padding-bottom: 3em;
+}
+
+.title {
+    font-size: 90px;
+}
+.information {
+    font-size: 30px;
+}
+
+@media (max-width: 750px) {
+    .title {
+        font-size: 60px;
+    }
+    .information {
+        font-size: 20px;
+    }
+}

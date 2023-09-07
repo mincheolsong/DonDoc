@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    height: 70px;
+    background-color: #3d5afe;
+    margin: 0px;
+    display: flex;
+}
+
+.links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.linktext {
+    margin-right: 3em;
+    font-size: 30px;
+    text-decoration: none;
+    color: white;
+}
+
+.linktext:hover {
+    border-bottom: 2px solid white;
+}
+
+
+@media (max-width:750px) {
+    .linktext {
+        font-size: 25px;
+        /* margin-left: 20px; */
+        margin-right: 2em;
+    }
+}
+
+
+@media (max-width:610px) {
+    .linktext {
+        font-size: 20px;
+        margin-right: 1em;
+    }
+}
+
