@@ -1,9 +1,13 @@
 // import React from 'react'
-// import styles from './MyApi.module.css'
+import styles from './MyApi.module.css'
 
 function MyApi() {
   return (
-    <div>MyApi</div>
+    <div className={styles.container}>
+      <div className={styles.banner}>
+        <h1>MyAPI</h1>
+      </div>
+    </div>
   )
 }
 

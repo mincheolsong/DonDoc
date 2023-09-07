@@ -3,7 +3,9 @@
 
 function LogIn() {
   return (
-    <div>LogIn</div>
+    <div>
+      
+    </div>
   )
 }
 
