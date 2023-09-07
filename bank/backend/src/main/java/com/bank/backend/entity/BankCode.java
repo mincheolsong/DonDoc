@@ -14,7 +14,7 @@ public class BankCode {
 
     @Id
     @Column(name="bankCodeId")
-    private int bankCodeId;
+    private Long bankCodeId;
 
     @Column(name="bankName", nullable = false, length = 20)
     private String bankName;

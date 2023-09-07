@@ -17,13 +17,11 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="accountId")
-    private int accountId;
+    private Long accountId;
 
-    @Column(name="identificationNumber", nullable = false, length = 255)
-    private String identificationNumber;
-
-    @Column(name="owner", nullable = false, length = 20)
-    private String owner;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ownerId")
+    private Owner owner;
 
     @Column(name="accountName", nullable = false, length = 20)
     private String accountName;

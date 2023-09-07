@@ -19,7 +19,7 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="historyId")
-    private int historyId;
+    private Long historyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="accountId")
