@@ -1,15 +1,18 @@
 package com.bank.backend.dto;
 
 import com.bank.backend.entity.Account;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
-
 import java.util.List;
 
 public class AccountListDto {
 
+    @ApiModel(value = "예금주 식별번호 리스트", description = "계좌 리스트를 출력하는데 사용하는 request DTO")
     @Data
     public static class Request{
+        @ApiModelProperty(value = "식별번호 리스트", example = "[\"01095530160\",\"01026807453\"]")
         private List<String> identificationNumber;
     }
 

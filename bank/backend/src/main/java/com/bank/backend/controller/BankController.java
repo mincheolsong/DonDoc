@@ -2,19 +2,22 @@ package com.bank.backend.controller;
 
 import com.bank.backend.common.utils.ApiUtils;
 import com.bank.backend.common.utils.ApiUtils.ApiResult;
-import com.bank.backend.common.utils.EncryptionUtils;
 import com.bank.backend.dto.*;
 import com.bank.backend.service.BankService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
 import com.bank.backend.entity.History;
 import javax.validation.Valid;
 
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,8 +29,9 @@ public class BankController {
 
 
     /** 계좌 목록조회 **/
+    @ApiOperation(value = "계좌 목록조회", notes = "예금주의 식별번호에 해당하는 계좌 목록을 보여주는 API", response = ApiResult.class)
     @PostMapping("/account/list")
-    public ApiResult getAccountList(@RequestBody AccountListDto.Request req){
+    public ApiResult getAccountList(@RequestBody @ApiParam(value = "예금주 식별번호 리스트",required = true) AccountListDto.Request req){
         List<String> identificationNumber = req.getIdentificationNumber();
         List<AccountListDto.Response> result = new ArrayList<>();
 
@@ -49,6 +53,7 @@ public class BankController {
 
 
     /** 계좌 상세조회 **/
+    @ApiOperation(value = "계좌 상세조회", notes = "accountId에 해당하는 계좌의 상세정보를 불러오는 API", response = ApiResult.class)
     @GetMapping("/account/detail/{accountId}")
     public ApiResult getAccountDetail(@PathVariable("accountId")Long accountId){
         AccountDetailDto.Response result;
@@ -61,8 +66,9 @@ public class BankController {
         return ApiUtils.success(result);
     }
 
+    @ApiOperation(value = "예금주 생성", notes = "예금주 생성하는 API", response = ApiResult.class)
     @PostMapping("/owner/create")
-    public ApiResult createOwner(@RequestBody OwnerDto.Request request) throws Exception{
+    public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 요청값",required = true) @RequestBody OwnerDto.Request request) throws Exception{
         // 예금주 검증
         OwnerCertificationDto.Response certification= bankService.certification(request);
 
@@ -120,8 +126,9 @@ public class BankController {
     }
 
     /** 계좌 거래 내역 조회 */
+    @ApiOperation(value = "계좌 거래 내역 조회", notes = "계좌 거래내역을 조회하는 API", response = ApiResult.class)
     @PostMapping("/history")
-    public ApiResult<?> getHistoryList(@Valid @RequestBody HistoryDto.Request req) {
+    public ApiResult<?> getHistoryList(@ApiParam(value = "거래내역 조회에 필요한 요청값",required = true) @Valid @RequestBody HistoryDto.Request req) {
         try{
             List<History> result = bankService.getHistoryList(req);
             return ApiUtils.success(result);
