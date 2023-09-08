@@ -1,8 +1,4 @@
-.container {
-
-}
-
-.content {
+.contentbanner {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -14,6 +10,10 @@
     color: white;
     padding-top: 2em;
     padding-bottom: 3em;
+}
+
+.links {
+    
 }
 
 .title {

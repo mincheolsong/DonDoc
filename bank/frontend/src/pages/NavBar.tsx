@@ -11,7 +11,7 @@ function NavBar() {
 
         <Link className={styles.linktext} to="/">DDBANK</Link>
         <Link className={styles.linktext} to="/login">로그인</Link>
-        <Link className={styles.linktext} to="/account">API소개</Link>
+        <Link className={styles.linktext} to="/account">계좌개설</Link>
         <Link className={styles.linktext} to="/myapi">은행업무</Link>
 
       </div>
