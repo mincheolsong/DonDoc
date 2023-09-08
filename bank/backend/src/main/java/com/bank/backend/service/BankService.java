@@ -11,15 +11,16 @@ import java.util.Map;
 
 public interface BankService {
 
-    public int findAccountList(List<AccountListResponseDto> result, String number) throws Exception;
+    public int findAccountList(List<AccountListDto.Response> result, String number) throws Exception;
 
-    public AccountDetailResponseDto findByAccountId(Long accountId) throws Exception;
+    public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception;
 
     /** 계좌 거래 내역 조회 */
-    List<History> getHistoryList(HistoryDto.Request req) throws Exception;
+    public boolean countAccount(String identification);
 
-    /** 상세 거래 내역 조회 */
-    History getDetailHistory(HistoryDto.Request req) throws Exception;
+    public List<History> getHistoryList(HistoryDto.Request req) throws Exception;
+
+    public History getDetailHistory(HistoryDto.Request req) throws Exception;
 
     public OwnerCertificationDto.Response certification(OwnerDto.Request request) throws Exception;
 
@@ -33,5 +34,4 @@ public interface BankService {
 
     public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception;
 
-    public boolean countAccount(String identification);
 }

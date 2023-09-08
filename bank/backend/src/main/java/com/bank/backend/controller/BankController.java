@@ -2,6 +2,7 @@ package com.bank.backend.controller;
 
 import com.bank.backend.common.utils.ApiUtils;
 import com.bank.backend.common.utils.ApiUtils.ApiResult;
+import com.bank.backend.common.utils.EncryptionUtils;
 import com.bank.backend.dto.*;
 import com.bank.backend.service.BankService;
 import lombok.RequiredArgsConstructor;
@@ -23,27 +24,12 @@ public class BankController {
 
     private final BankService bankService;
 
-    /**
-     * 기능 : 계좌 목록조회 (송민철)
-     * request body : { "identificationNumber" : ["01095530160","asdf1234"] }
-     * 리턴값 : [
-     *              {
-     *                  Long accountId; // 계좌 ID
-     *                  String accountName; // 계좌이름
-     *                  String accountNumber; // 계좌번호
-     *                  int balance; // 잔액
-     *                  Long bankCode; // 은행코드
-     *                  String bankName; // 은행이름
-     *              },
-     *              {
-     *                  ...
-     *              }
-     *         ]
-     **/
+
+    /** 계좌 목록조회 **/
     @PostMapping("/account/list")
-    public ApiResult getAccountList(@RequestBody AccountListRequestDto accountListRequestDto){
-        List<String> identificationNumber = accountListRequestDto.getIdentificationNumber();
-        List<AccountListResponseDto> result = new ArrayList<>();
+    public ApiResult getAccountList(@RequestBody AccountListDto.Request req){
+        List<String> identificationNumber = req.getIdentificationNumber();
+        List<AccountListDto.Response> result = new ArrayList<>();
 
         if(identificationNumber==null || identificationNumber.size()==0) { // 입력값을 넣지 않은 경우
             return ApiUtils.error("입력값이 없습니다", HttpStatus.BAD_REQUEST);
@@ -61,28 +47,18 @@ public class BankController {
         return ApiUtils.success(result);
     }
 
-    /**
-     * 기능 : 계좌 상세조회 (송민철)
-     * PathVariable : accountId (계좌 ID)
-     * 리턴값 :{
-     *          Long accountId; // ID
-     *          String accountName; // 계좌이름
-     *          String accountNumber; // 계좌번호
-     *          int balance; // 잔액
-     *          Long bankCode; // 은행코드
-     *          String bankName; // 은행이름
-     *      }
-     **/
+
+    /** 계좌 상세조회 **/
     @GetMapping("/account/detail/{accountId}")
     public ApiResult getAccountDetail(@PathVariable("accountId")Long accountId){
-        AccountDetailResponseDto accountDetailResponseDto;
+        AccountDetailDto.Response result;
 
         try {
-             accountDetailResponseDto = bankService.findByAccountId(accountId);
+            result = bankService.findByAccountId(accountId);
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return ApiUtils.success(accountDetailResponseDto);
+        return ApiUtils.success(result);
     }
 
     @PostMapping("/owner/create")
@@ -142,7 +118,7 @@ public class BankController {
         }
         return ApiUtils.success(certification);
     }
-    
+
     /** 계좌 거래 내역 조회 */
     @PostMapping("/history")
     public ApiResult<?> getHistoryList(@Valid @RequestBody HistoryDto.Request req) {
@@ -150,7 +126,7 @@ public class BankController {
             List<History> result = bankService.getHistoryList(req);
             return ApiUtils.success(result);
         } catch(Exception e){
-            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -161,7 +137,7 @@ public class BankController {
             History result = bankService.getDetailHistory(req);
             return ApiUtils.success(result);
         } catch(Exception e){
-            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
