@@ -40,7 +40,8 @@ public class Account {
     @Column(name="salt", nullable = false, length = 32)
     private String salt;
 
-    @ManyToOne
+    @JsonIgnore // JSON Serialization 오류 해결
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bankCodeId")
     private BankCode toCode;
 
