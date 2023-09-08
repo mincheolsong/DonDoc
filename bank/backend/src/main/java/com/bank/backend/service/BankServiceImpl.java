@@ -2,13 +2,7 @@ package com.bank.backend.service;
 
 import com.bank.backend.common.exception.NotFoundException;
 import com.bank.backend.common.utils.EncryptionUtils;
-import com.bank.backend.dto.AccountDetailResponseDto;
-import com.bank.backend.dto.AccountListResponseDto;
-import com.bank.backend.entity.Account;
-import com.bank.backend.entity.BankCode;
-import com.bank.backend.dto.HistoryDto;
-import com.bank.backend.dto.AccountDto;
-import com.bank.backend.dto.TransferDto;
+import com.bank.backend.dto.*;
 import com.bank.backend.entity.Account;
 import com.bank.backend.entity.BankCode;
 import com.bank.backend.entity.History;
@@ -23,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -70,54 +63,106 @@ public class BankServiceImpl implements BankService {
 
     // 식별번호의 존재 여부만 파악하는 메서드
     @Override
-    public boolean certification(String identificationNumber) {
+    public OwnerCertificationDto.Response certification(OwnerDto.Request request) throws Exception{
+        // 식별번호 해싱
+        String identification = EncryptionUtils.encryption(request.getIdentificationNumber(), SALT);
+
         // 식별 번호 조회
-        Optional<Owner> owner = ownerRepository.findByIdentificationNumber(identificationNumber);
+        Optional<Owner> owner = ownerRepository.findByIdentificationNumber(identification);
 
         // 존재하는 경우
-        if(owner.isPresent()){return false;}
+        if(owner.isPresent()){
+            return OwnerCertificationDto.
+                    Response.builder()
+                    .owner(owner.get())
+                    .isPresent(false)
+                .build();
+        }
 
         // 존재하지 않음
-        return true;
+        return OwnerCertificationDto.Response.builder()
+                .owner(Owner.builder()
+                        .ownerName(request.getOwnerName())
+                        .identificationNumber(identification)
+                        .build()
+                )
+                .isPresent(true)
+                .build();
     }
 
+    @Override
+    public OwnerCertificationDto.Response certification(AccountDto.Request request) throws Exception{
+        // 식별번호 해싱
+        String identification = EncryptionUtils.encryption(request.getIdentificationNumber(), SALT);
+
+        // 식별 번호 조회
+        Optional<Owner> owner = ownerRepository.findByIdentificationNumber(identification);
+
+        // 존재하는 경우
+        if(owner.isPresent()){
+            return OwnerCertificationDto.
+                    Response.builder()
+                    .owner(owner.get())
+                    .isPresent(false)
+                    .build();
+        }
+
+        // 존재하지 않음
+        return OwnerCertificationDto.Response.builder()
+                .isPresent(true)
+                .build();
+    }
     // 예금주 생성
     @Override
     @Transactional // read-only => create 가능하도록
-    public void createOwner(Map<String, String> info) {
-        Owner owner = Owner.builder()
-                .ownerName(info.get("ownerName"))
-                .identificationNumber(info.get("identificationNumber"))
-                .build();
-        ownerRepository.save(owner);
+    public void createOwner(OwnerCertificationDto.Response response) {
+        ownerRepository.save(response.getOwner());
     }
 
     // 계좌 생성
     @Override
     @Transactional
-    public void createAccount(Map<String, String> info) {
-        // 은행 코드 탐색
-        Optional<BankCode> bankCode = bankCodeRepository.findById(Long.parseLong(info.get("bankCode")));
+    public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception{
 
-        // 예금주 탐색
-        Optional<Owner> owner = ownerRepository.findByIdentificationNumber(info.get("identificationNumber"));
+        boolean creatable = countAccount(owner.getIdentificationNumber());
+
+        // present
+        if(!creatable){
+            return AccountDto.Response.builder()
+                    .msg("생성가능한 계좌의 수가 초과했습니다.")
+                    .success(false)
+                    .build();
+        }
+
+        // 은행 코드 탐색
+        Optional<BankCode> bankCode = bankCodeRepository.findById(Long.parseLong(request.getBankCode()));
 
         // 계좌번호 생성
         String accountNumber = EncryptionUtils.makeAccountNumber();
 
+        // 계좌에 대한 salt 생성
+        String tempSalt = EncryptionUtils.makeSalt();
+
+        // 비밀번호 암호화
+        request.setPassword(EncryptionUtils.encryption(request.getPassword(), tempSalt));
+
         // 계좌 객체 생성
         Account account = Account.builder()
                 .accountNumber(accountNumber) // 계좌번호
-                .accountName(info.get("accountName")) // 계좌 이름
+                .accountName(request.getAccountName()) // 계좌 이름
                 .bankCode(bankCode.get()) // 은행 코드
-                .password(info.get("password"))// 계좌 비밀번호
-                .owner(owner.get()) // 예금주
+                .password(request.getPassword())// 계좌 비밀번호
+                .owner(owner) // 예금주
                 .balance(1_000_000) // 잔액
-                .salt(info.get("salt")) // 암호화 키
+                .salt(tempSalt) // 암호화 키
                 .build();
 
         // 계좌 저장
         accountRepository.save(account);
+        return AccountDto.Response.builder()
+                .msg("계좌 생성이 완료되었습니다.")
+                .success(true)
+                .build();
     }
 
     @Override
@@ -179,51 +224,84 @@ public class BankServiceImpl implements BankService {
         return detailHistory;
     }
     @Override
-    public AccountDto getAccount(Map<String, String> info) {
-        Account account = accountRepository.findByAccount(info.get("accountNumber"))
-                .orElseThrow(() -> new NoSuchElementException("계좌번호가 존재하지 않습니다."));
+    public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request) {
+        // 계좌 조회
+        Account account = accountRepository.findByBankCode_BankCodeIdAndAccountNumber(request.getBankCode(), request.getAccountNumber())
+                .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
 
         // 은행정보 일치하는지 확인 (사실... 쿼리문 bankCode가 적용이 안되길래 일단 계좌로 불러오고 검증하는 방식으로 구현)
-        if(!info.get("bankCode").equals(account.getBankCode().getBankCodeId().toString())){
-            return AccountDto.builder()
-                    .msg("계좌 정보가 일치하지 않습니다.")
-                    .success(false)
-                    .build();
-        }
-
-        AccountDto accountDto = AccountDto.builder()
-                .account(account.getAccountNumber())
+        if(request.getBankCode() != account.getBankCode().getBankCodeId()){
+            return AccountCertificationDto.Response.builder()
+                .accountNumber(account.getAccountNumber())
                 .ownerName(account.getOwner().getOwnerName())
-                .bankCode(account.getBankCode().getBankCodeId())
-                .success(true)
+                .bankName(account.getBankCode().getBankName())
                 .msg("계좌 조회에 성공했습니다.")
+                .success(true)
                 .build();
-        return accountDto;
+    }
+
+
+        return AccountCertificationDto.Response.builder()
+                .msg("계좌 정보가 일치하지 않습니다.")
+                .success(false)
+                .build();
     }
 
     @Override
     @Transactional
-    public TransferDto transfer(Map<String, String> info) {
+    public TransferDto.Response transfer(TransferDto.Request request) throws Exception{
+
         // 송금인 조회 =>
-        Owner owner = ownerRepository.findByIdentificationNumber(info.get("identificationNumber"))
+        Owner owner = ownerRepository.findByIdentificationNumber(EncryptionUtils.encryption(request.getIdentificationNumber(), SALT))
                 .orElseThrow(() -> new NoSuchElementException("예금주가 존재하지 않습니다."));
 
-
-
         // 송금인 계좌 ID를 받아옴
-        Account sendAccount = accountRepository.findById(Long.parseLong(info.get("accountId")))
+        Account sendAccount = accountRepository.findById(request.getAccountId())
                 .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
+
+        if(!sendAccount.isStatus()){
+            return TransferDto.Response.builder()
+                    .msg("정지된 계좌입니다.")
+                    .success(false)
+                    .build();
+        }
 
         // 상대방 계좌 조회
-        Account toAccount = accountRepository.findByAccount(info.get("toAccount"))
+        Account toAccount = accountRepository.findByBankCode_BankCodeIdAndAccountNumber(request.getToCode(), request.getToAccount())
                 .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
 
-        // 은행 코드 조회
-        BankCode toCode = bankCodeRepository.findById(Long.parseLong(info.get("toCode")))
-                .orElseThrow(() -> new NoSuchElementException("은행이 존재하지 않습니다."));
+        if(request.getPassword().toString().length() != 4){
+            return TransferDto.Response.builder()
+                    .msg("비밀번호의 길이가 맞지 않습니다..")
+                    .success(false)
+                    .build();
+        }
+        // 해시 생성
+        String password = EncryptionUtils.encryption(request.getPassword(), sendAccount.getSalt());
+
+        // 비밀번호 조회
+        if(!password.equals(sendAccount.getPassword())){
+            // 틀린 횟수 추가
+            sendAccount.setWrongCount(sendAccount.getWrongCount() + 1);
+
+            // 계좌 상태 확인
+            if(sendAccount.getWrongCount() >= 5){
+                sendAccount.setStatus(false);
+
+                return TransferDto.Response.builder()
+                        .msg("비밀번호 5회 실패로 계좌가 정저됩니다.")
+                        .success(false)
+                        .build();
+            }
+
+            return TransferDto.Response.builder()
+                    .msg("비밀번호가 일치하지 않습니다.")
+                    .success(false)
+                    .build();
+        }
 
         // 거래금액
-        Integer transferAmount = Integer.parseInt(info.get("transferAmount"));
+        Integer transferAmount = request.getTransferAmount();
 
         // 송금 잔액
         Integer sendBalance = sendAccount.getBalance() - transferAmount;
@@ -231,7 +309,7 @@ public class BankServiceImpl implements BankService {
 
         // 잔액 부족
         if(sendBalance < 0){
-            return TransferDto.builder()
+            return TransferDto.Response.builder()
                     .msg("잔액이 부족합니다.")
                     .success(false)
                     .build();
@@ -240,12 +318,12 @@ public class BankServiceImpl implements BankService {
         History send = History.builder()
                 .account(sendAccount) // 보내는 사람 계좌 ID
                 .toAccount(toAccount.getAccountNumber()) // 받는 사람 계좌 번호
-                .toCode(toCode) // 받는 사람 계좌 은행 코드
+                .toCode(toAccount.getBankCode()) // 받는 사람 계좌 은행 코드
                 .type(1) // 1 : 송금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(sendBalance) // 송금 후 잔액
-                .memo(info.get("memo")) // 보내는 사람이 보는 메모
-                .toMemo(info.get("toMemo")) // 받는 사람이 보는 메모
+                .memo(request.getMemo()) // 보내는 사람이 보는 메모
+                .toMemo(request.getToMemo()) // 받는 사람이 보는 메모
                 .build();
 
         History receive = History.builder()
@@ -255,8 +333,8 @@ public class BankServiceImpl implements BankService {
                 .type(2) // 2 : 입금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(toAccount.getBalance() + transferAmount) // 입금 후 잔액
-                .memo(info.get("toMemo")) // 받는 사람이 보는 메모
-                .toMemo(info.get("memo")) // 보내는 사람이 보는 메모
+                .memo(request.getToMemo()) // 받는 사람이 보는 메모
+                .toMemo(request.getMemo()) // 보내는 사람이 보는 메모
                 .build();
 
         // 계좌 잔액 변경
@@ -267,9 +345,19 @@ public class BankServiceImpl implements BankService {
         historyRepository.save(send);
         historyRepository.save(receive);
 
-        return TransferDto.builder()
+        // 비밀번호 오류 횟수 초기화
+        sendAccount.setWrongCount(0);
+
+        return TransferDto.Response.builder()
                 .msg("이체가 정상적으로 수행되었습니다.")
                 .success(true)
                 .build();
+    }
+
+    public boolean checkPassword(String password, String comparePassword){
+        if(!password.equals(comparePassword)){
+            return false;
+        }
+        return true;
     }
 }

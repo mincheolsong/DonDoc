@@ -12,9 +12,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     List<Account> findAllByOwner(Owner owner);
+
     Optional<Account> findByOwnerAndAccountNumber(Owner owner, String accountNumber);
 
-    @Query("select a from Account a where a.accountNumber like ?1")
-    Optional<Account> findByAccount(String accountNumber);
-
+    Optional<Account> findByBankCode_BankCodeIdAndAccountNumber(Long bankCode, String accountNumber);
 }

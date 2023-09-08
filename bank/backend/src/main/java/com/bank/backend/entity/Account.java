@@ -40,6 +40,11 @@ public class Account {
     @Column(name="salt", nullable = false, length = 32)
     private String salt;
 
+    @Column(name="wrongCount", nullable = false)
+    private int wrongCount;
+
+    @Column(name="status", nullable = false)
+    private boolean status;
 
     @JsonIgnore // JSON Serialization 오류 해결
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +56,11 @@ public class Account {
     @JsonManagedReference
     private List<History> historyList = new ArrayList<>();
 
+    @PrePersist
+    public void prePersist(){
+        this.wrongCount = 0;
+        this.status = true;
+    }
 
 
 }
