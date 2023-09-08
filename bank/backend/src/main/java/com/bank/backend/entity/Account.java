@@ -1,6 +1,7 @@
 package com.bank.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,12 +40,15 @@ public class Account {
     @Column(name="salt", nullable = false, length = 32)
     private String salt;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY) // Account와 BankCode는 같이 쓰이는 경우가 많아서 Eager로 뒀음
+
+    @JsonIgnore // JSON Serialization 오류 해결
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bankCodeId")
     private BankCode bankCode;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
+    @JsonManagedReference
     private List<History> historyList = new ArrayList<>();
 
 

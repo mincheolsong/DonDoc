@@ -6,34 +6,38 @@ import com.bank.backend.dto.AccountDetailResponseDto;
 import com.bank.backend.dto.AccountListResponseDto;
 import com.bank.backend.entity.Account;
 import com.bank.backend.entity.BankCode;
+import com.bank.backend.dto.HistoryDto;
+import com.bank.backend.entity.History;
 import com.bank.backend.entity.Owner;
 import com.bank.backend.repository.AccountRepository;
 import com.bank.backend.repository.BankCodeRepository;
 import com.bank.backend.repository.HistoryRepository;
 import com.bank.backend.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BankServiceImpl implements BankService {
+
+    @Value("${owner.salt}")
+    private String SALT;
 
     private final AccountRepository accountRepository;
     private final BankCodeRepository bankCodeRepository;
     private final HistoryRepository historyRepository;
     private final OwnerRepository ownerRepository;
 
-    @Value("${owner.salt}")
-    private String SALT;
+
     @Override
     public int findAccountList(List<AccountListResponseDto> result, String number) throws Exception{
         // number 해싱 후 조회
@@ -128,5 +132,47 @@ public class BankServiceImpl implements BankService {
         return true;
     }
 
+    /** 계좌 거래 내역 조회 */
+    @Override
+    public List<History> getHistoryList(HistoryDto.Request req) throws Exception {
+
+        log.info("Req - {}", req.toString());
+
+        String identificationNumber = EncryptionUtils.encryption(req.getIdentificationNumber(), SALT);
+
+        // 해당 예금주 탐색
+        Owner owner = ownerRepository.findByIdentificationNumber(identificationNumber)
+                .orElseThrow(()-> new Exception("잘못된 식별번호 입니다."));
+
+        // 해당 예금주의 계좌 탐색
+        Account account = accountRepository.findByOwnerAndAccountNumber(owner, req.getAccountNumber())
+                .orElseThrow(()-> new Exception("회원님의 계좌 정보와 일치하지 않습니다."));
+
+        // 계좌별 거래 내역 조회
+        List<History> history = historyRepository.findByAccount(account);
+
+        return history;
+    }
+
+    /** 상세 거래 내역 조회 */
+    @Override
+    public History getDetailHistory(HistoryDto.Request req) throws Exception {
+
+        String identificationNumber = EncryptionUtils.encryption(req.getIdentificationNumber(), SALT);
+
+        // 해당 예금주 탐색
+        Owner owner = ownerRepository.findByIdentificationNumber(identificationNumber)
+                .orElseThrow(()-> new Exception("잘못된 식별번호 입니다."));
+
+        // 해당 예금주의 계좌 탐색
+        Account account = accountRepository.findByOwnerAndAccountNumber(owner, req.getAccountNumber())
+                .orElseThrow(()-> new Exception("회원님의 계좌 정보와 일치하지 않습니다."));
+
+        // 상세 거래 내역 조회
+        History detailHistory = historyRepository.findByAccountAndHistoryId(account, req.getHistoryId())
+                .orElseThrow(()-> new Exception("거래 내역 정보가 없습니다."));
+
+        return detailHistory;
+    }
 
 }

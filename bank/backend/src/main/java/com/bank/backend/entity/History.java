@@ -1,5 +1,7 @@
 package com.bank.backend.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +24,7 @@ public class History {
     @Column(name="historyId")
     private Long historyId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="accountId")
     private Account account;
@@ -29,8 +32,9 @@ public class History {
     @Column(name="toAccount", nullable = false, length = 50)
     private String toAccount;
 
-    @JsonIgnore
-    @ManyToOne
+
+    @JsonIgnore // JSON Serialization 오류 해결
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bankCodeId")
     private BankCode toCode;
 
