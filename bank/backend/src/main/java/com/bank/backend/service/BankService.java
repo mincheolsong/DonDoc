@@ -6,6 +6,9 @@ import com.bank.backend.dto.HistoryDto;
 import com.bank.backend.entity.History;
 
 import java.util.List;
+import com.bank.backend.dto.AccountDto;
+import com.bank.backend.dto.TransferDto;
+
 import java.util.Map;
 
 
@@ -29,4 +32,7 @@ public interface BankService {
     /** 상세 거래 내역 조회 */
     History getDetailHistory(HistoryDto.Request req) throws Exception;
 
+    public AccountDto getAccount(Map<String, String> info);
+
+    public TransferDto transfer(Map<String, String> info);
 }
