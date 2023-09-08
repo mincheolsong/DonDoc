@@ -12,8 +12,24 @@
     padding-bottom: 3em;
 }
 
+.contentbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .links {
-    
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    margin-top: 20px;
+}
+
+.linktext {
+    text-decoration: none;
+    font-size: 30px;
 }
 
 .title {

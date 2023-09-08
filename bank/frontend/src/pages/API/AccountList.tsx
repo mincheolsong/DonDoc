@@ -3,12 +3,17 @@ import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
 
 function AccountList() {
-    const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+  const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+
+
+  const IdentificationNumberChange = (e) => {
+    setIdentificationNumber(e.target.value)
+  }
   
-  
-    const IdentificationNumberChange = (e) => {
-      setIdentificationNumber(e.target.value)
-    }
+  const SubmitCreate = (e) => {
+    e.preventDefault()
+    console.log(identificationNumber)
+  }
 
   
     return (
@@ -21,9 +26,12 @@ function AccountList() {
           </div>
 
           <div className={styles.contentbox}>
-            <div className={styles.inputform}>
+
+            <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-            </div>
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+            </form>
+
           </div>
 
         </div>

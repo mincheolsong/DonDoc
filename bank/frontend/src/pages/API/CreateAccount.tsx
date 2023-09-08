@@ -28,6 +28,15 @@ function CreateAccount() {
     setPassword(e.target.value)
   }
 
+  const SubmitCreate = (e) => {
+    e.preventDefault()
+    console.log(password)
+    console.log(bankCode)
+    console.log(accountName)
+    console.log(userNumber)
+    console.log(userName)
+  }
+
 
   return (
     <div className={styles.container}>
@@ -38,10 +47,8 @@ function CreateAccount() {
           <div className={styles.information}>은행업무에 필요한 DD Bank의 계좌를 개설하세요</div>
         </div>
 
-
-
         <div className={styles.contentbox}>
-          <div className={styles.inputform}>
+          <form onSubmit={SubmitCreate} className={styles.inputform}>
             <TextField className={styles.inputbox} id="outlined-basic" label="예금주" variant="outlined" onChange={UserNameChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={UserNumberChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
@@ -55,7 +62,10 @@ function CreateAccount() {
               onChange={PasswordChange}
               style={{marginTop : "10px"}}
             />
-          </div>
+            <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+          </form>
+          {/* <div className={styles.inputform}>
+          </div> */}
         </div>
 
       </div>

@@ -13,6 +13,12 @@ function AccountName() {
     const IdentificationNumberChange = (e) => {
       setIdentificationNumber(e.target.value)
     }
+
+    const SubmitCreate = (e) => {
+      e.preventDefault()
+      console.log(bankCode)
+      console.log(identificationNumber)
+    }
   
   
     return (
@@ -25,10 +31,11 @@ function AccountName() {
           </div>
 
           <div className={styles.contentbox}>
-            <div className={styles.inputform}>
+            <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="은행코드" variant="outlined" onChange={BankCodeChange} style={{marginTop : "10px"}}/><br />
               <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/>
-            </div>
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+            </form>
           </div>
 
         </div>
