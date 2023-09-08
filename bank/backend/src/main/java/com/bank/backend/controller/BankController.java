@@ -148,7 +148,7 @@ public class BankController {
         }
         return ApiUtils.success(accountDto);
     }
-    
+
     /** 계좌 거래 내역 조회 */
     @PostMapping("/history")
     public ApiResult<?> getHistoryList(@Valid @RequestBody HistoryDto.Request req) {
@@ -156,7 +156,7 @@ public class BankController {
             List<History> result = bankService.getHistoryList(req);
             return ApiUtils.success(result);
         } catch(Exception e){
-            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -167,7 +167,7 @@ public class BankController {
             History result = bankService.getDetailHistory(req);
             return ApiUtils.success(result);
         } catch(Exception e){
-            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

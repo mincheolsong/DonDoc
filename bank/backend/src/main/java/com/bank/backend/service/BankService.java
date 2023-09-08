@@ -22,11 +22,9 @@ public interface BankService {
 
     public boolean countAccount(String identification);
 
-    /** 계좌 거래 내역 조회 */
-    List<History> getHistoryList(HistoryDto.Request req) throws Exception;
+    public List<History> getHistoryList(HistoryDto.Request req) throws Exception;
 
-    /** 상세 거래 내역 조회 */
-    History getDetailHistory(HistoryDto.Request req) throws Exception;
+    public History getDetailHistory(HistoryDto.Request req) throws Exception;
 
     public AccountDto getAccount(Map<String, String> info);
 
