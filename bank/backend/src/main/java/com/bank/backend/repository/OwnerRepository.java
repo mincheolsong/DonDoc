@@ -8,8 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.Optional;
+
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
-    @Query("select distinct o from Owner o join fetch o.accountList where o.identificationNumber = :inumber")
+    @Query("select distinct o from Owner o join fetch o.accountList al where o.identificationNumber = :inumber")
     public Optional<Owner> findByIdentificationNumberWithAccount(@Param("inumber") String inumber);
+    Optional<Owner> findByIdentificationNumber(String identificationNumber);
 }

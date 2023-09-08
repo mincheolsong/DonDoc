@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 
 public class EncryptionUtils {
 
-    private static final int SALT_SIZE = 32;
+    private static final int SALT_SIZE = 16;
     public static String encryption(String str, String salt) throws Exception{
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
@@ -34,5 +34,13 @@ public class EncryptionUtils {
         random.nextBytes(temp);
 
         return byteToString(temp);
+    }
+
+    public static String makeAccountNumber() {
+        SecureRandom random = new SecureRandom();
+
+        long randomNumber = random.nextLong();
+        String accountNumber = String.valueOf(randomNumber).substring(2,15);
+        return accountNumber;
     }
 }

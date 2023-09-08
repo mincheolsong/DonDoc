@@ -21,8 +21,8 @@ public class AccountDetailResponseDto {
                 .accountName(entity.getAccountName())
                 .accountNumber(entity.getAccountNumber())
                 .balance(entity.getBalance())
-                .bankCode(entity.getToCode().getBankCodeId())
-                .bankName(entity.getToCode().getBankName())
+                .bankCode(entity.getBankCode().getBankCodeId())
+                .bankName(entity.getBankCode().getBankName())
                 .build();
     }
 }
