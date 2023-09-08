@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
     Optional<Owner> findByIdentificationNumber(String identificationNumber);
+
 }

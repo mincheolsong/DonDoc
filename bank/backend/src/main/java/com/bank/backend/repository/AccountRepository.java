@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     List<Account> findAllByOwner(Owner owner);
+    Optional<Account> findByOwnerAndAccountNumber(Owner owner, String accountNumber);
+
 }

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.bank.backend.dto.HistoryDto;
+import com.bank.backend.entity.History;
+
+import javax.validation.Valid;
+import java.util.List;
 
 import java.util.Map;
 
@@ -96,4 +101,27 @@ public class BankController {
 
         return ApiUtils.success("계좌 이체가 완료되었습니다.");
     }
+    
+    /** 계좌 거래 내역 조회 */
+    @PostMapping("/history")
+    public ApiResult<?> getHistoryList(@Valid @RequestBody HistoryDto.Request req) {
+        try{
+            List<History> result = bankService.getHistoryList(req);
+            return ApiUtils.success(result);
+        } catch(Exception e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /** 상세 거래 내역 조회 */
+    @PostMapping("/detail_history")
+    public ApiResult<?> getDetailHistory(@Valid @RequestBody HistoryDto.Request req) {
+        try{
+            History result = bankService.getDetailHistory(req);
+            return ApiUtils.success(result);
+        } catch(Exception e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
