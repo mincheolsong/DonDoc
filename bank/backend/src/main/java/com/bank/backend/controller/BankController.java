@@ -48,7 +48,7 @@ public class BankController {
      *              }
      *         ]
      **/
-    @GetMapping("/account/list")
+    @PostMapping("/account/list")
     public ApiResult getAccountList(@RequestBody AccountListRequestDto accountListRequestDto){
         List<String> identificationNumber = accountListRequestDto.getIdentificationNumber();
         List<AccountListResponseDto> result = new ArrayList<>();
