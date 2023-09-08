@@ -1,5 +1,6 @@
 package com.bank.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Account {
     @Column(name="accountId")
     private Long accountId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ownerId")
     private Owner owner;
@@ -38,11 +40,13 @@ public class Account {
     @Column(name="salt", nullable = false, length = 32)
     private String salt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne // Account와 BankCode는 같이 쓰이는 경우가 많아서 Eager로 뒀음
     @JoinColumn(name = "bankCodeId")
     private BankCode toCode;
 
     @OneToMany(mappedBy = "account")
     private List<History> historyList = new ArrayList<>();
+
+
 
 }

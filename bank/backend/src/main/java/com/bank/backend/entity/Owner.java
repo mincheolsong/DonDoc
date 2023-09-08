@@ -28,6 +28,17 @@ public class Owner {
     @Column(name = "identificationNumber", nullable = false, length = 255)
     private String identificationNumber;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Account> accountList = new ArrayList<>();
+
+
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "ownerId=" + ownerId +
+                ", ownerName='" + ownerName + '\'' +
+                ", identificationNumber='" + identificationNumber + '\'' +
+                ", accountList=" + accountList +
+                '}';
+    }
 }
