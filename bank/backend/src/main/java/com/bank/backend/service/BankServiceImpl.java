@@ -7,6 +7,10 @@ import com.bank.backend.dto.AccountListResponseDto;
 import com.bank.backend.entity.Account;
 import com.bank.backend.entity.BankCode;
 import com.bank.backend.dto.HistoryDto;
+import com.bank.backend.dto.AccountDto;
+import com.bank.backend.dto.TransferDto;
+import com.bank.backend.entity.Account;
+import com.bank.backend.entity.BankCode;
 import com.bank.backend.entity.History;
 import com.bank.backend.entity.Owner;
 import com.bank.backend.repository.AccountRepository;
@@ -174,5 +178,98 @@ public class BankServiceImpl implements BankService {
 
         return detailHistory;
     }
+    @Override
+    public AccountDto getAccount(Map<String, String> info) {
+        Account account = accountRepository.findByAccount(info.get("accountNumber"))
+                .orElseThrow(() -> new NoSuchElementException("계좌번호가 존재하지 않습니다."));
 
+        // 은행정보 일치하는지 확인 (사실... 쿼리문 bankCode가 적용이 안되길래 일단 계좌로 불러오고 검증하는 방식으로 구현)
+        if(!info.get("bankCode").equals(account.getBankCode().getBankCodeId().toString())){
+            return AccountDto.builder()
+                    .msg("계좌 정보가 일치하지 않습니다.")
+                    .success(false)
+                    .build();
+        }
+
+        AccountDto accountDto = AccountDto.builder()
+                .account(account.getAccountNumber())
+                .ownerName(account.getOwner().getOwnerName())
+                .bankCode(account.getBankCode().getBankCodeId())
+                .success(true)
+                .msg("계좌 조회에 성공했습니다.")
+                .build();
+        return accountDto;
+    }
+
+    @Override
+    @Transactional
+    public TransferDto transfer(Map<String, String> info) {
+        // 송금인 조회 =>
+        Owner owner = ownerRepository.findByIdentificationNumber(info.get("identificationNumber"))
+                .orElseThrow(() -> new NoSuchElementException("예금주가 존재하지 않습니다."));
+
+
+
+        // 송금인 계좌 ID를 받아옴
+        Account sendAccount = accountRepository.findById(Long.parseLong(info.get("accountId")))
+                .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
+
+        // 상대방 계좌 조회
+        Account toAccount = accountRepository.findByAccount(info.get("toAccount"))
+                .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
+
+        // 은행 코드 조회
+        BankCode toCode = bankCodeRepository.findById(Long.parseLong(info.get("toCode")))
+                .orElseThrow(() -> new NoSuchElementException("은행이 존재하지 않습니다."));
+
+        // 거래금액
+        Integer transferAmount = Integer.parseInt(info.get("transferAmount"));
+
+        // 송금 잔액
+        Integer sendBalance = sendAccount.getBalance() - transferAmount;
+        Integer receiveBalance = toAccount.getBalance() + transferAmount;
+
+        // 잔액 부족
+        if(sendBalance < 0){
+            return TransferDto.builder()
+                    .msg("잔액이 부족합니다.")
+                    .success(false)
+                    .build();
+        }
+
+        History send = History.builder()
+                .account(sendAccount) // 보내는 사람 계좌 ID
+                .toAccount(toAccount.getAccountNumber()) // 받는 사람 계좌 번호
+                .toCode(toCode) // 받는 사람 계좌 은행 코드
+                .type(1) // 1 : 송금
+                .transferAmount(transferAmount) // 거래금액
+                .afterBalance(sendBalance) // 송금 후 잔액
+                .memo(info.get("memo")) // 보내는 사람이 보는 메모
+                .toMemo(info.get("toMemo")) // 받는 사람이 보는 메모
+                .build();
+
+        History receive = History.builder()
+                .account(toAccount) // 받는 사람 계좌 ID
+                .toAccount(sendAccount.getAccountNumber()) // 보내는 사람 계좌
+                .toCode(sendAccount.getBankCode()) // 보내는 사람 계좌 은행 코드
+                .type(2) // 2 : 입금
+                .transferAmount(transferAmount) // 거래금액
+                .afterBalance(toAccount.getBalance() + transferAmount) // 입금 후 잔액
+                .memo(info.get("toMemo")) // 받는 사람이 보는 메모
+                .toMemo(info.get("memo")) // 보내는 사람이 보는 메모
+                .build();
+
+        // 계좌 잔액 변경
+        sendAccount.setBalance(sendBalance);
+        toAccount.setBalance(receiveBalance);
+
+        // 수행
+        historyRepository.save(send);
+        historyRepository.save(receive);
+
+        return TransferDto.builder()
+                .msg("이체가 정상적으로 수행되었습니다.")
+                .success(true)
+                .build();
+    }
 }

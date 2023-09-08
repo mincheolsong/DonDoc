@@ -6,6 +6,8 @@ import com.bank.backend.common.utils.EncryptionUtils;
 import com.bank.backend.dto.AccountDetailResponseDto;
 import com.bank.backend.dto.AccountListRequestDto;
 import com.bank.backend.dto.AccountListResponseDto;
+import com.bank.backend.dto.AccountDto;
+import com.bank.backend.dto.TransferDto;
 import com.bank.backend.service.BankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +50,7 @@ public class BankController {
      *              }
      *         ]
      **/
-    @GetMapping("/account/list")
+    @PostMapping("/account/list")
     public ApiResult getAccountList(@RequestBody AccountListRequestDto accountListRequestDto){
         List<String> identificationNumber = accountListRequestDto.getIdentificationNumber();
         List<AccountListResponseDto> result = new ArrayList<>();
@@ -157,11 +159,24 @@ public class BankController {
         return ApiUtils.success("계좌 생성이 완료되었습니다.");
     }
 
+    // 계좌 이체
     @PostMapping("/account/transfer")
     public ApiResult transfer(@RequestBody Map<String, String> info){
+        TransferDto transferDto = bankService.transfer(info);
+        if(!transferDto.isSuccess()){
+            return ApiUtils.error(transferDto.getMsg(), HttpStatus.BAD_REQUEST);
+        }
+        return ApiUtils.success(transferDto.getMsg());
+    }
 
-
-        return ApiUtils.success("계좌 이체가 완료되었습니다.");
+    // 계좌 실명 조회
+    @PostMapping("/account/certification")
+    public ApiResult getAccount(@RequestBody Map<String, String> info){
+        AccountDto accountDto = bankService.getAccount(info);
+        if(!accountDto.isSuccess()){
+            return ApiUtils.error(accountDto.getMsg(), HttpStatus.BAD_REQUEST);
+        }
+        return ApiUtils.success(accountDto);
     }
     
     /** 계좌 거래 내역 조회 */
