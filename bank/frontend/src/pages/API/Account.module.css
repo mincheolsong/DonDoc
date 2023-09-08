@@ -1,14 +1,11 @@
-.container {
-
-}
 
 .contentbanner {
     width: 100%;
     display: flex;
     flex-direction: column;
-    -webkit-box-pack: center;
+    /* -webkit-box-pack: center; */
     justify-content: center;
-    -webkit-box-align: center;
+    /* -webkit-box-align: center; */
     align-items: center;
     background-color: #809FFF;
     color: white;
@@ -30,4 +27,20 @@
     .information {
         font-size: 20px;
     }
+}
+
+.contentbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.inputform {
+    width: 80%;
+    margin-top: 10px;
+}
+
+.inputbox {
+    width: 100%;
 }

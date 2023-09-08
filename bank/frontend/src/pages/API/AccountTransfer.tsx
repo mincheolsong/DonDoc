@@ -35,21 +35,25 @@ function AccountTransfer() {
             <div className={styles.title}>계좌 이체</div>
             <div className={styles.information}>DD Bank의 송금 시스템을 사용해보세요</div>
           </div>
-  
-          <div className={styles.inputform}>
-            <TextField id="outlined-basic" label="예금주" variant="outlined" onChange={UserNameChange} /><br />
-            <TextField id="outlined-basic" label="식별번호" variant="outlined" onChange={UserNumberChange} /><br />
-            <TextField id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} /><br />
-            <TextField id="outlined-basic" label="은행 코드" variant="outlined" onChange={BankCodeChange} /><br />
-            <TextField
-            id="outlined-password-input"
-            label="계좌 비밀번호"
-            type="password"
-            autoComplete="current-password"
-            onChange={PasswordChange}
-          />
-            
+
+          <div className={styles.contentbox}>
+            <div className={styles.inputform}>
+              <TextField className={styles.inputbox} id="outlined-basic" label="예금주" variant="outlined" onChange={UserNameChange} style={{marginTop : "10px"}}/><br />
+              <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={UserNumberChange} style={{marginTop : "10px"}}/><br />
+              <TextField className={styles.inputbox} id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
+              <TextField className={styles.inputbox} id="outlined-basic" label="은행 코드" variant="outlined" onChange={BankCodeChange} style={{marginTop : "10px"}}/><br />
+              <TextField
+                className={styles.inputbox} 
+                id="outlined-password-input"
+                label="계좌 비밀번호"
+                type="password"
+                autoComplete="current-password"
+                onChange={PasswordChange}
+                style={{marginTop : "10px"}}
+              />
+            </div>
           </div>
+
         </div>
       </div>
     )
