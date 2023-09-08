@@ -1,22 +1,18 @@
 package com.bank.backend.service;
 
-import com.bank.backend.dto.AccountDetailResponseDto;
-import com.bank.backend.dto.AccountListResponseDto;
-import com.bank.backend.dto.HistoryDto;
+import com.bank.backend.dto.*;
 import com.bank.backend.entity.History;
 
 import java.util.List;
-import com.bank.backend.dto.AccountDto;
-import com.bank.backend.dto.TransferDto;
 
 import java.util.Map;
 
 
 public interface BankService {
 
-    public int findAccountList(List<AccountListResponseDto> result, String number) throws Exception;
+    public int findAccountList(List<AccountListDto.Response> result, String number) throws Exception;
 
-    public AccountDetailResponseDto findByAccountId(Long accountId) throws Exception;
+    public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception;
 
     public boolean certification(String identificationNumber) throws Exception;
 

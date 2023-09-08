@@ -2,13 +2,9 @@ package com.bank.backend.service;
 
 import com.bank.backend.common.exception.NotFoundException;
 import com.bank.backend.common.utils.EncryptionUtils;
-import com.bank.backend.dto.AccountDetailResponseDto;
-import com.bank.backend.dto.AccountListResponseDto;
+import com.bank.backend.dto.*;
 import com.bank.backend.entity.Account;
 import com.bank.backend.entity.BankCode;
-import com.bank.backend.dto.HistoryDto;
-import com.bank.backend.dto.AccountDto;
-import com.bank.backend.dto.TransferDto;
 import com.bank.backend.entity.Account;
 import com.bank.backend.entity.BankCode;
 import com.bank.backend.entity.History;
@@ -43,17 +39,17 @@ public class BankServiceImpl implements BankService {
 
 
     @Override
-    public int findAccountList(List<AccountListResponseDto> result, String number) throws Exception{
+    public int findAccountList(List<AccountListDto.Response> result, String number) throws Exception{
         // number 해싱 후 조회
         String hashed_number = EncryptionUtils.encryption(number,SALT);
 
-        Owner owner = ownerRepository.findByIdentificationNumberWithAccount(hashed_number)
+        Owner owner = ownerRepository.findOwnerWithAccount(hashed_number)
                 .orElseThrow(()->new NotFoundException(number + " 에 해당하는 계좌정보가 존재하지 않습니다"));
 
         int cnt = 0;
 
         for (Account account : owner.getAccountList()) {
-            AccountListResponseDto tmp = AccountListResponseDto.toDTO(account);
+            AccountListDto.Response tmp = AccountListDto.Response.toDTO(account);
             result.add(tmp);
             cnt+=1;
         }
@@ -62,10 +58,10 @@ public class BankServiceImpl implements BankService {
 
     }
     @Override
-    public AccountDetailResponseDto findByAccountId(Long accountId) throws Exception {
+    public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new NotFoundException(accountId + "를 accountId로 가지는 계좌가 존재하지 않습니다"));
 
-        return AccountDetailResponseDto.toDTO(account);
+        return AccountDetailDto.Response.toDTO(account);
     }
 
     // 식별번호의 존재 여부만 파악하는 메서드

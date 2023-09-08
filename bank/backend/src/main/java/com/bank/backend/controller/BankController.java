@@ -3,11 +3,7 @@ package com.bank.backend.controller;
 import com.bank.backend.common.utils.ApiUtils;
 import com.bank.backend.common.utils.ApiUtils.ApiResult;
 import com.bank.backend.common.utils.EncryptionUtils;
-import com.bank.backend.dto.AccountDetailResponseDto;
-import com.bank.backend.dto.AccountListRequestDto;
-import com.bank.backend.dto.AccountListResponseDto;
-import com.bank.backend.dto.AccountDto;
-import com.bank.backend.dto.TransferDto;
+import com.bank.backend.dto.*;
 import com.bank.backend.service.BankService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import com.bank.backend.dto.HistoryDto;
 import com.bank.backend.entity.History;
 import javax.validation.Valid;
 
@@ -33,27 +28,12 @@ public class BankController {
     @Value("${owner.salt}")
     private String salt;
 
-    /**
-     * 기능 : 계좌 목록조회 (송민철)
-     * request body : { "identificationNumber" : ["01095530160","asdf1234"] }
-     * 리턴값 : [
-     *              {
-     *                  Long accountId; // 계좌 ID
-     *                  String accountName; // 계좌이름
-     *                  String accountNumber; // 계좌번호
-     *                  int balance; // 잔액
-     *                  Long bankCode; // 은행코드
-     *                  String bankName; // 은행이름
-     *              },
-     *              {
-     *                  ...
-     *              }
-     *         ]
-     **/
+
+    /** 계좌 목록조회 **/
     @PostMapping("/account/list")
-    public ApiResult getAccountList(@RequestBody AccountListRequestDto accountListRequestDto){
-        List<String> identificationNumber = accountListRequestDto.getIdentificationNumber();
-        List<AccountListResponseDto> result = new ArrayList<>();
+    public ApiResult getAccountList(@RequestBody AccountListDto.Request req){
+        List<String> identificationNumber = req.getIdentificationNumber();
+        List<AccountListDto.Response> result = new ArrayList<>();
 
         if(identificationNumber==null || identificationNumber.size()==0) { // 입력값을 넣지 않은 경우
             return ApiUtils.error("입력값이 없습니다", HttpStatus.BAD_REQUEST);
@@ -71,28 +51,18 @@ public class BankController {
         return ApiUtils.success(result);
     }
 
-    /**
-     * 기능 : 계좌 상세조회 (송민철)
-     * PathVariable : accountId (계좌 ID)
-     * 리턴값 :{
-     *          Long accountId; // ID
-     *          String accountName; // 계좌이름
-     *          String accountNumber; // 계좌번호
-     *          int balance; // 잔액
-     *          Long bankCode; // 은행코드
-     *          String bankName; // 은행이름
-     *      }
-     **/
+
+    /** 계좌 상세조회 **/
     @GetMapping("/account/detail/{accountId}")
     public ApiResult getAccountDetail(@PathVariable("accountId")Long accountId){
-        AccountDetailResponseDto accountDetailResponseDto;
+        AccountDetailDto.Response result;
 
         try {
-             accountDetailResponseDto = bankService.findByAccountId(accountId);
+            result = bankService.findByAccountId(accountId);
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return ApiUtils.success(accountDetailResponseDto);
+        return ApiUtils.success(result);
     }
 
 
