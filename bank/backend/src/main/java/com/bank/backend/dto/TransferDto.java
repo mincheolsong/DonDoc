@@ -40,6 +40,13 @@ public class TransferDto {
     public static class Response{
         private String msg;
         @JsonIgnore
+        private String sendOwner; // 보낸사람
+
+        @JsonIgnore
+        private String toOwner; // 받는사람
+
+        @JsonIgnore
         private boolean success;
+
     }
 }

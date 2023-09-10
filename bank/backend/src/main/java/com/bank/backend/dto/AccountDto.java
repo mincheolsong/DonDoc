@@ -19,7 +19,7 @@ public class AccountDto {
         private String accountName;
 
         @ApiModelProperty(value = "은행 코드")
-        private String bankCode;
+        private Long bankCode;
 
         @ApiModelProperty(value = "계좌 비밀번호(4자리)")
         private String password;
@@ -29,6 +29,16 @@ public class AccountDto {
     @Builder
     public static class Response{
         private String msg;
+
+        @JsonIgnore
+        private String ownerName;
+
+        @JsonIgnore
+        private String accountNumber;
+
+        @JsonIgnore
+        private String bankName;
+
         @JsonIgnore
         private boolean success;
     }

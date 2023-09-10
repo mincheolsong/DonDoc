@@ -30,7 +30,7 @@ public interface BankService {
 
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception;
 
-    public void createOwner(OwnerDto.Response response);
+    public OwnerDto.Response createOwner(OwnerDto.Response response);
 
     public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception;
 

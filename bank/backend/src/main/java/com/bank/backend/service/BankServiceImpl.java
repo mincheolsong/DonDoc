@@ -114,12 +114,13 @@ public class BankServiceImpl implements BankService {
     // 예금주 생성
     @Override
     @Transactional // read-only => create 가능하도록
-    public void createOwner(OwnerDto.Response response) {
+    public OwnerDto.Response createOwner(OwnerDto.Response response) {
         // 예금주 생성
         ownerRepository.save(response.getOwner());
+        return response;
     }
 
-    // 계좌 생성
+    // 계좌 개설
     @Override
     @Transactional
     public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception{
@@ -135,7 +136,8 @@ public class BankServiceImpl implements BankService {
         }
 
         // 은행 코드 탐색
-        Optional<BankCode> bankCode = bankCodeRepository.findById(Long.parseLong(request.getBankCode()));
+        BankCode bankCode = bankCodeRepository.findById(request.getBankCode())
+                .orElseThrow(() -> new NoSuchElementException("유요하지 않은 은행코드입니다."));
 
         // 계좌번호 생성
         String accountNumber = EncryptionUtils.makeAccountNumber();
@@ -150,7 +152,7 @@ public class BankServiceImpl implements BankService {
         Account account = Account.builder()
                 .accountNumber(accountNumber) // 계좌번호
                 .accountName(request.getAccountName()) // 계좌 이름
-                .bankCode(bankCode.get()) // 은행 코드
+                .bankCode(bankCode) // 은행 코드
                 .password(request.getPassword())// 계좌 비밀번호
                 .owner(owner) // 예금주
                 .balance(1_000_000) // 잔액
@@ -163,6 +165,9 @@ public class BankServiceImpl implements BankService {
         // 완료 반환
         return AccountDto.Response.builder()
                 .msg("계좌 생성이 완료되었습니다.")
+                .bankName(bankCode.getBankName())
+                .accountNumber(account.getAccountNumber())
+                .ownerName(account.getOwner().getOwnerName())
                 .success(true)
                 .build();
     }
@@ -238,7 +243,16 @@ public class BankServiceImpl implements BankService {
 
         // 조회 완료
         if(request.getBankCode() != account.getBankCode().getBankCodeId()){
+
+            // 조회 실패
             return AccountCertificationDto.Response.builder()
+                    .msg("계좌 정보가 일치하지 않습니다.")
+                    .success(false)
+                    .build();
+        }
+
+
+        return AccountCertificationDto.Response.builder()
                 .accountNumber(account.getAccountNumber())
                 .ownerName(account.getOwner().getOwnerName())
                 .bankName(account.getBankCode().getBankName())
@@ -247,14 +261,7 @@ public class BankServiceImpl implements BankService {
                 .build();
     }
 
-        // 조회 실패
-        return AccountCertificationDto.Response.builder()
-                .msg("계좌 정보가 일치하지 않습니다.")
-                .success(false)
-                .build();
-    }
     // 계좌 이체
-
     @Override
     @Transactional
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception{
@@ -366,6 +373,8 @@ public class BankServiceImpl implements BankService {
         // 이체 성공
         return TransferDto.Response.builder()
                 .msg("이체가 정상적으로 수행되었습니다.")
+                .sendOwner(sendAccount.getOwner().getOwnerName())
+                .toOwner(toAccount.getOwner().getOwnerName())
                 .success(true)
                 .build();
     }

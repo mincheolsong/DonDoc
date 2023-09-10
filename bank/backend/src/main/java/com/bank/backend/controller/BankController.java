@@ -70,16 +70,21 @@ public class BankController {
     @ApiOperation(value = "예금주 생성", notes = "예금주 생성하는 API", response = ApiResult.class)
     @PostMapping("/owner/create")
     public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 Request Dto",required = true) @RequestBody OwnerDto.Request request) throws Exception{
+        log.info("{} 예금주 생성 요청", request.getOwnerName()); // log
+
         // 예금주 검증
         OwnerDto.Response certification= bankService.certification(request);
 
         if(!certification.isPresent()){
+            log.info("{} 예금주 정보가 존재합니다.", certification.getOwner().getOwnerName());
             return ApiUtils.error("예금주 정보가 존재합니다.", HttpStatus.BAD_REQUEST);
         }
 
         // 예금주 생성
-        bankService.createOwner(certification);
+        OwnerDto.Response response = bankService.createOwner(certification);
 
+        log.info("{} 예금주 생성 완료", response.getOwner().getOwnerName());
+        log.info("식별번호 = {}", response.getOwner().getIdentificationNumber());
         return ApiUtils.success("예금주 등록이 완료되었습니다.");
     }
 
@@ -87,34 +92,43 @@ public class BankController {
     @ApiOperation(value = "계좌 개설", notes = "계좌 개설 API", response = ApiResult.class)
     @PostMapping("/account/create")
     public ApiResult createAccount(@ApiParam(value = "계좌 개설에 필요한 Request Dto",required = true) @RequestBody AccountDto.Request request) throws Exception {
+        log.info("계좌 개설 요청");
+
         // 예금주 검증
         OwnerDto.Response certification = bankService.certification(request);
 
         // 존재하지 않는 경우 불가
         if (certification.isPresent()) {
+            log.error("예금주 정보가 존재하지 않습니다.");
             return ApiUtils.error("예금주 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
-
         }
 
         // 계좌 개설
         AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
 
         if (!response.isSuccess()) {
+            log.error(response.getMsg());
             return ApiUtils.error(response.getMsg(), HttpStatus.BAD_REQUEST);
         }
 
+        log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
         return ApiUtils.success(response.getMsg());
     }
 
-    /** 계좌 개설 **/
+    /** 계좌 이체 **/
     @ApiOperation(value = "계좌 이체", notes = "계좌 이체 API", response = ApiResult.class)
     @PostMapping("/account/transfer")
     public ApiResult transfer(@ApiParam(value = "계좌 이체에 필요한 Request Dto",required = true) @RequestBody TransferDto.Request request) throws Exception{
+        log.info("{} 계좌로 {}원 송금 요청", request.getToAccount(), request.getTransferAmount());
+
         TransferDto.Response transferDto = bankService.transfer(request);
 
         if(!transferDto.isSuccess()){
+            log.error(transferDto.getMsg());
             return ApiUtils.error(transferDto.getMsg(), HttpStatus.BAD_REQUEST);
         }
+
+        log.info("{}에서 {}으로 송금 완료", transferDto.getSendOwner(), transferDto.getToOwner());
         return ApiUtils.success(transferDto.getMsg());
     }
 
@@ -122,10 +136,15 @@ public class BankController {
     @ApiOperation(value = "계좌 실명 조회", notes="계좌 실명 조회 API", response=ApiResult.class)
     @PostMapping("/account/certification")
     public ApiResult getAccount(@ApiParam(value = "계좌 실명 조회에 필요한 Request Dto")@RequestBody AccountCertificationDto.Request request){
+        log.info("계좌 실명 조회 요청");
+
         AccountCertificationDto.Response certification = bankService.getAccount(request);
         if(!certification.isSuccess()){
+            log.error(certification.getMsg());
             return ApiUtils.error(certification.getMsg(), HttpStatus.BAD_REQUEST);
         }
+
+        log.info(certification.getOwnerName());
         return ApiUtils.success(certification);
     }
 
@@ -156,11 +175,15 @@ public class BankController {
     @ApiOperation(value = "비밀번호 재설정", notes = "비밀번호 재설정 및 활성화 API", response = ApiResult.class)
     @PostMapping("/account/password")
     public ApiResult resetPassword(@ApiParam(value = "비밀번호 재설정 Request Dto") @RequestBody PasswordDto.Request request) throws Exception{
+        log.info("{} 계좌 비밀번호 재설정", request.getAccountNumber());
         PasswordDto.Response response = bankService.resetPassword(request);
 
         if(!response.isSuccess()){
+            log.error(response.getMsg());
             return ApiUtils.error(response.getMsg(), HttpStatus.BAD_REQUEST);
         }
+
+        log.info(response.getMsg());
         return ApiUtils.success(response);
     }
 }

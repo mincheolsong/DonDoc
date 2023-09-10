@@ -16,7 +16,7 @@ public class PasswordDto {
         private String identificationNumber;
 
         @ApiModelProperty(value = "은행 코드")
-        private String bankCode;
+        private Long bankCode;
 
         @ApiModelProperty(value = "계좌 번호")
         private String accountNumber;
