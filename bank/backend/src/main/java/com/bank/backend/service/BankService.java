@@ -34,5 +34,4 @@ public interface BankService {
 
     public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception;
 
-    public
 }
