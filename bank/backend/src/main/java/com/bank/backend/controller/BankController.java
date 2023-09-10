@@ -149,7 +149,7 @@ public class BankController {
     }
 
     /** 계좌 거래 내역 조회 */
-    @ApiOperation(value = "계좌 거래 내역 조회", notes = "계좌 거래내역을 조회하는 API", response = ApiResult.class)
+    @ApiOperation(value = "계좌 거래 내역 전체 조회", notes = "계좌 거래내역을 모두 조회하는 API", response = ApiResult.class)
     @PostMapping("/history")
     public ApiResult<?> getHistoryList(@ApiParam(value = "거래내역 조회에 필요한 요청값",required = true) @Valid @RequestBody HistoryDto.Request req) {
         try{
@@ -161,8 +161,9 @@ public class BankController {
     }
 
     /** 상세 거래 내역 조회 */
+    @ApiOperation(value = "계좌 거래 상세 내역 조회", notes = "계좌 거래내역을 상세 조회하는 API", response = ApiResult.class)
     @PostMapping("/detail_history")
-    public ApiResult<?> getDetailHistory(@Valid @RequestBody HistoryDto.Request req) {
+    public ApiResult<?> getDetailHistory(@ApiParam(value = "거래내역 조회에 필요한 요청값",required = true) @Valid @RequestBody HistoryDto.Request req) {
         try{
             History result = bankService.getDetailHistory(req);
             return ApiUtils.success(result);
