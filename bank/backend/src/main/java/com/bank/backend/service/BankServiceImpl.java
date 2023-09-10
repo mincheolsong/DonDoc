@@ -184,7 +184,6 @@ public class BankServiceImpl implements BankService {
         // 생성 가능
         return true;
     }
-
     /** 계좌 거래 내역 조회 */
     @Override
     public List<History> getHistoryList(HistoryDto.Request req) throws Exception {
@@ -229,6 +228,7 @@ public class BankServiceImpl implements BankService {
     }
 
     // 계좌 실명 조회
+
     @Override
     public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request) {
         // 계좌 조회
@@ -253,8 +253,8 @@ public class BankServiceImpl implements BankService {
                 .success(false)
                 .build();
     }
-
     // 계좌 이체
+
     @Override
     @Transactional
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception{
@@ -370,4 +370,40 @@ public class BankServiceImpl implements BankService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public PasswordDto.Response resetPassword(PasswordDto.Request request)  throws Exception{
+        // 식별번호 암호화
+        String identification = EncryptionUtils.encryption(request.getIdentificationNumber(), SALT);
+
+        // 식별번호 조회
+        Owner owner = ownerRepository.findByIdentificationNumber(identification)
+                .orElseThrow(() -> new NoSuchElementException("예금주가 존재하지 않습니다."));
+
+        // 예금주와 계좌번호로 계좌 1개 조회
+        Account account = accountRepository.findByOwnerAndAccountNumber(owner, request.getAccountNumber())
+                .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
+
+        // 새로운 암호화 키
+        String salt = EncryptionUtils.makeSalt();
+
+        // 새로운 키를 이용한 암호화
+        String password = EncryptionUtils.encryption(request.getNewPassword(), salt);
+
+        // 변경
+        account.setPassword(password);
+        account.setSalt(salt);
+
+        // 상태 여부에 상관 없이 활성화
+        account.setStatus(true);
+
+        // 비밀번호 오류 횟수 초기화
+        account.setWrongCount(0);
+
+        // 비밀번호 재설정 완료
+        return PasswordDto.Response.builder()
+                .msg("비밀번호가 재설정 되었습니다.")
+                .success(true)
+                .build();
+    }
 }

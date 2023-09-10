@@ -152,4 +152,15 @@ public class BankController {
         }
     }
 
+    /** 비밀번호 재설정 **/
+    @ApiOperation(value = "비밀번호 재설정", notes = "비밀번호 재설정 및 활성화 API", response = ApiResult.class)
+    @PostMapping("/account/password")
+    public ApiResult resetPassword(@ApiParam(value = "비밀번호 재설정 Request Dto") @RequestBody PasswordDto.Request request) throws Exception{
+        PasswordDto.Response response = bankService.resetPassword(request);
+
+        if(!response.isSuccess()){
+            return ApiUtils.error(response.getMsg(), HttpStatus.BAD_REQUEST);
+        }
+        return ApiUtils.success(response);
+    }
 }
