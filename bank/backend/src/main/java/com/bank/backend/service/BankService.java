@@ -22,16 +22,17 @@ public interface BankService {
 
     public History getDetailHistory(HistoryDto.Request req) throws Exception;
 
-    public OwnerCertificationDto.Response certification(OwnerDto.Request request) throws Exception;
+    public OwnerDto.Response certification(OwnerDto.Request request) throws Exception;
 
-    public OwnerCertificationDto.Response certification(AccountDto.Request request) throws Exception;
+    public OwnerDto.Response certification(AccountDto.Request request) throws Exception;
 
     public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request);
 
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception;
 
-    public void createOwner(OwnerCertificationDto.Response response);
+    public void createOwner(OwnerDto.Response response);
 
     public AccountDto.Response createAccount(Owner owner, AccountDto.Request request) throws Exception;
 
+    public
 }

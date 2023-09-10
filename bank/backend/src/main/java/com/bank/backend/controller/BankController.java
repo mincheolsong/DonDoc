@@ -66,11 +66,12 @@ public class BankController {
         return ApiUtils.success(result);
     }
 
+    /** 예금주 생성 **/
     @ApiOperation(value = "예금주 생성", notes = "예금주 생성하는 API", response = ApiResult.class)
     @PostMapping("/owner/create")
-    public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 요청값",required = true) @RequestBody OwnerDto.Request request) throws Exception{
+    public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 Request Dto",required = true) @RequestBody OwnerDto.Request request) throws Exception{
         // 예금주 검증
-        OwnerCertificationDto.Response certification= bankService.certification(request);
+        OwnerDto.Response certification= bankService.certification(request);
 
         if(!certification.isPresent()){
             return ApiUtils.error("예금주 정보가 존재합니다.", HttpStatus.BAD_REQUEST);
@@ -82,11 +83,12 @@ public class BankController {
         return ApiUtils.success("예금주 등록이 완료되었습니다.");
     }
 
-    // 계좌 개설
+    /** 계좌 개설 **/
+    @ApiOperation(value = "계좌 개설", notes = "계좌 개설 API", response = ApiResult.class)
     @PostMapping("/account/create")
-    public ApiResult createAccount(@RequestBody AccountDto.Request request) throws Exception {
+    public ApiResult createAccount(@ApiParam(value = "계좌 개설에 필요한 Request Dto",required = true) @RequestBody AccountDto.Request request) throws Exception {
         // 예금주 검증
-        OwnerCertificationDto.Response certification = bankService.certification(request);
+        OwnerDto.Response certification = bankService.certification(request);
 
         // 존재하지 않는 경우 불가
         if (certification.isPresent()) {
@@ -104,9 +106,10 @@ public class BankController {
         return ApiUtils.success(response.getMsg());
     }
 
-    // 계좌 이체
+    /** 계좌 개설 **/
+    @ApiOperation(value = "계좌 이체", notes = "계좌 이체 API", response = ApiResult.class)
     @PostMapping("/account/transfer")
-    public ApiResult transfer(@RequestBody TransferDto.Request request) throws Exception{
+    public ApiResult transfer(@ApiParam(value = "계좌 이체에 필요한 Request Dto",required = true) @RequestBody TransferDto.Request request) throws Exception{
         TransferDto.Response transferDto = bankService.transfer(request);
 
         if(!transferDto.isSuccess()){
@@ -115,9 +118,10 @@ public class BankController {
         return ApiUtils.success(transferDto.getMsg());
     }
 
-    // 계좌 실명 조회
+    /** 계좌 실명 조회 **/
+    @ApiOperation(value = "계좌 실명 조회", notes="계좌 실명 조회 API", response=ApiResult.class)
     @PostMapping("/account/certification")
-    public ApiResult getAccount(@RequestBody AccountCertificationDto.Request request){
+    public ApiResult getAccount(@ApiParam(value = "계좌 실명 조회에 필요한 Request Dto")@RequestBody AccountCertificationDto.Request request){
         AccountCertificationDto.Response certification = bankService.getAccount(request);
         if(!certification.isSuccess()){
             return ApiUtils.error(certification.getMsg(), HttpStatus.BAD_REQUEST);

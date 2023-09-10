@@ -1,5 +1,7 @@
 package com.bank.backend.dto;
 
+import com.bank.backend.entity.Owner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -11,10 +13,17 @@ public class OwnerDto {
     @Data
     @Builder
     public static class Request{
-        @ApiModelProperty(value = "회원이름") // example 속성으로 초기값을 설정할 수 있음
+        @ApiModelProperty(value = "회원이름", example = "강승현") // example 속성으로 초기값을 설정할 수 있음
         private String ownerName;
-        @ApiModelProperty(value = "식별번호")
+        @ApiModelProperty(value = "식별번호", example = "01026807453")
         private String identificationNumber;
     }
 
+    @Builder
+    @Data
+    public static class Response{
+        private Owner owner;
+        @JsonIgnore
+        private boolean isPresent;
+    }
 }
