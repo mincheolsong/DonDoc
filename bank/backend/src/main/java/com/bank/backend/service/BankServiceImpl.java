@@ -282,12 +282,12 @@ public class BankServiceImpl implements BankService {
 
         // 상대방 계좌 조회
         Account toAccount = accountRepository.findByBankCode_BankCodeIdAndAccountNumber(request.getToCode(), request.getToAccount())
-                .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("상대방 계좌 정보가 존재하지 않습니다."));
 
         // 비밀번호 길이 오류
         if(request.getPassword().toString().length() != 4){
             return TransferDto.Response.builder()
-                    .msg("비밀번호의 길이가 맞지 않습니다..")
+                    .msg("비밀번호의 길이가 맞지 않습니다.")
                     .success(false)
                     .build();
         }
