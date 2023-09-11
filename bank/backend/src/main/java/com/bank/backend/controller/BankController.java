@@ -51,7 +51,6 @@ public class BankController {
         return ApiUtils.success(result);
     }
 
-
     /** 계좌 상세조회 **/
     @ApiOperation(value = "계좌 상세조회", notes = "accountId에 해당하는 계좌의 상세정보를 불러오는 API", response = ApiResult.class)
     @GetMapping("/account/detail/{accountId}")
@@ -102,17 +101,15 @@ public class BankController {
             log.error("예금주 정보가 존재하지 않습니다.");
             return ApiUtils.error("예금주 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
-
-        // 계좌 개설
-        AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
-
-        if (!response.isSuccess()) {
-            log.error(response.getMsg());
-            return ApiUtils.error(response.getMsg(), HttpStatus.BAD_REQUEST);
+        try{
+            // 계좌 개설
+            AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
+            log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
+            return ApiUtils.success(response.getMsg());
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
-        return ApiUtils.success(response.getMsg());
     }
 
     /** 계좌 이체 **/
@@ -121,15 +118,14 @@ public class BankController {
     public ApiResult transfer(@ApiParam(value = "계좌 이체에 필요한 Request Dto",required = true) @RequestBody TransferDto.Request request) throws Exception{
         log.info("{} 계좌로 {}원 송금 요청", request.getToAccount(), request.getTransferAmount());
 
-        TransferDto.Response transferDto = bankService.transfer(request);
-
-        if(!transferDto.isSuccess()){
-            log.error(transferDto.getMsg());
-            return ApiUtils.error(transferDto.getMsg(), HttpStatus.BAD_REQUEST);
+        try{
+            TransferDto.Response transferDto = bankService.transfer(request);
+            log.info("{}에서 {}으로 송금 완료", transferDto.getSendOwner(), transferDto.getToOwner());
+            return ApiUtils.success(transferDto.getMsg());
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        log.info("{}에서 {}으로 송금 완료", transferDto.getSendOwner(), transferDto.getToOwner());
-        return ApiUtils.success(transferDto.getMsg());
     }
 
     /** 계좌 실명 조회 **/
@@ -137,15 +133,14 @@ public class BankController {
     @PostMapping("/account/certification")
     public ApiResult getAccount(@ApiParam(value = "계좌 실명 조회에 필요한 Request Dto")@RequestBody AccountCertificationDto.Request request){
         log.info("계좌 실명 조회 요청");
-
-        AccountCertificationDto.Response certification = bankService.getAccount(request);
-        if(!certification.isSuccess()){
-            log.error(certification.getMsg());
-            return ApiUtils.error(certification.getMsg(), HttpStatus.BAD_REQUEST);
+        try{
+            AccountCertificationDto.Response certification = bankService.getAccount(request);
+            log.info(certification.getOwnerName());
+            return ApiUtils.success(certification);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        log.info(certification.getOwnerName());
-        return ApiUtils.success(certification);
     }
 
     /** 계좌 거래 내역 조회 */
@@ -177,14 +172,14 @@ public class BankController {
     @PostMapping("/account/password")
     public ApiResult resetPassword(@ApiParam(value = "비밀번호 재설정 Request Dto") @RequestBody PasswordDto.Request request) throws Exception{
         log.info("{} 계좌 비밀번호 재설정", request.getAccountNumber());
-        PasswordDto.Response response = bankService.resetPassword(request);
 
-        if(!response.isSuccess()){
+        try{
+            PasswordDto.Response response = bankService.resetPassword(request);
             log.error(response.getMsg());
-            return ApiUtils.error(response.getMsg(), HttpStatus.BAD_REQUEST);
+            return ApiUtils.success(response);
+        }catch(Exception e){
+            log.info(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        log.info(response.getMsg());
-        return ApiUtils.success(response);
     }
 }
