@@ -335,6 +335,14 @@ public class BankServiceImpl implements BankService {
                     .build();
         }
 
+        if(request.getSign() == ""){
+            request.setSign(sendAccount.getOwner().getOwnerName());
+        }
+
+        if(request.getToSign() == ""){
+            request.setToSign(toAccount.getOwner().getOwnerName());
+        }
+
         // 보내는 사람의 기록
         History send = History.builder()
                 .account(sendAccount) // 보내는 사람 계좌 ID
@@ -343,8 +351,8 @@ public class BankServiceImpl implements BankService {
                 .type(1) // 1 : 송금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(sendBalance) // 송금 후 잔액
-                .memo(request.getMemo()) // 보내는 사람이 보는 메모
-                .toMemo(request.getToMemo()) // 받는 사람이 보는 메모
+                .memo(request.getSign()) // 보내는 사람이 보는 메모
+                .toMemo(request.getToSign()) // 받는 사람이 보는 메모
                 .build();
 
         // 받는 사람의 기록
@@ -355,8 +363,8 @@ public class BankServiceImpl implements BankService {
                 .type(2) // 2 : 입금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(toAccount.getBalance() + transferAmount) // 입금 후 잔액
-                .memo(request.getToMemo()) // 받는 사람이 보는 메모
-                .toMemo(request.getMemo()) // 보내는 사람이 보는 메모
+                .memo(request.getToSign()) // 받는 사람이 보는 메모
+                .toMemo(request.getSign()) // 보내는 사람이 보는 메모
                 .build();
 
         // 계좌 잔액 변경

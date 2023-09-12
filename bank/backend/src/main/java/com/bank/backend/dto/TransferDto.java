@@ -29,10 +29,10 @@ public class TransferDto {
         private String password;
 
         @ApiModelProperty(value = "내가 보는 메모", example = "내 계좌에 남는 메모")
-        private String memo;
+        private String sign;
 
         @ApiModelProperty(value = "상대가 보는 메모", example = "상대 계좌에 남는 메모")
-        private String toMemo;
+        private String toSign;
     }
 
     @Data
