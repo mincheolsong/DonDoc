@@ -1,7 +1,10 @@
 package com.bank.backend.dto;
 
+import com.bank.backend.entity.History;
+import com.bank.backend.entity.Memo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -24,6 +27,27 @@ public class HistoryDto {
         @ApiModelProperty(value = "거래내역ID")
         private Long historyId;
 
+    }
+
+    @Builder
+    @Data
+    public static class Response {
+
+        private History historyId;
+        private String memo;
+
+        public static HistoryDto.Response toDTO(History entity) {
+            return HistoryDto.Response.builder()
+                    .historyId(entity)
+                    .build();
+        }
+
+        public static HistoryDto.Response toDTO(History entity, Memo memo) {
+            return HistoryDto.Response.builder()
+                    .historyId(entity)
+                    .memo(memo.getContent())
+                    .build();
+        }
     }
 
 }

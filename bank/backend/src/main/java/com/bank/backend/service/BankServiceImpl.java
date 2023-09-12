@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -187,7 +189,7 @@ public class BankServiceImpl implements BankService {
 
     /** 계좌 거래 내역 조회 */
     @Override
-    public List<History> getHistoryList(HistoryDto.Request req) throws Exception {
+    public List<HistoryDto.Response> getHistoryList(HistoryDto.Request req) throws Exception {
 
         log.info("Req - {}", req.toString());
 
@@ -204,12 +206,24 @@ public class BankServiceImpl implements BankService {
         // 계좌별 거래 내역 조회
         List<History> history = historyRepository.findByAccount(account);
 
-        return history;
+        List<HistoryDto.Response> ret = new ArrayList<>();
+
+        for(int i=0; i<history.size(); i++){
+            Optional<Memo> memo = memoRepository.findByHistoryId(history.get(i)); // 거래 내역의 메모 조회
+
+            if(memo.isEmpty()){ // 해당 거래 내역에 대한 메모가 없을 때
+                ret.add(HistoryDto.Response.toDTO(history.get(i)));
+            } else { // 작성 된 메모가 있을 때
+                ret.add(HistoryDto.Response.toDTO(history.get(i), memo.get()));
+            }
+        }
+
+        return ret;
     }
 
     /** 상세 거래 내역 조회 */
     @Override
-    public History getDetailHistory(HistoryDto.Request req) throws Exception {
+    public HistoryDto.Response getDetailHistory(HistoryDto.Request req) throws Exception {
 
         String identificationNumber = EncryptionUtils.encryption(req.getIdentificationNumber(), SALT);
 
@@ -225,7 +239,16 @@ public class BankServiceImpl implements BankService {
         History detailHistory = historyRepository.findByAccountAndId(account, req.getHistoryId())
                 .orElseThrow(()-> new Exception("거래 내역 정보가 없습니다."));
 
-        return detailHistory;
+        // 거래 내역의 메모 조회
+        Optional<Memo> memo = memoRepository.findByHistoryId(detailHistory);
+
+        // 해당 거래 내역에 대한 메모가 없을 때
+        if(memo.isEmpty()){
+            return HistoryDto.Response.toDTO(detailHistory);
+        }
+
+        // 작성 된 메모가 있을 때
+        return HistoryDto.Response.toDTO(detailHistory, memo.get());
     }
 
     /** 거래 상세 내역 - 메모 작성 */
@@ -233,6 +256,17 @@ public class BankServiceImpl implements BankService {
     @Transactional
     public MemoDto.Response writeMemo(MemoDto.Request req) throws Exception {
 
+        String identificationNumber = EncryptionUtils.encryption(req.getIdentificationNumber(), SALT);
+
+        // 해당 예금주 탐색
+        Owner owner = ownerRepository.findByIdentificationNumber(identificationNumber)
+                .orElseThrow(()-> new Exception("잘못된 식별번호 입니다."));
+
+        // 해당 예금주의 계좌 탐색
+        Account account = accountRepository.findByOwnerAndAccountNumber(owner, req.getAccountNumber())
+                .orElseThrow(()-> new Exception("회원님의 계좌 정보와 일치하지 않습니다."));
+
+        // 상세 거래 내역 조회
         History history = historyRepository.findById(req.getHistoryId())
                 .orElseThrow(()-> new Exception("거래 내역 정보가 없습니다."));
 

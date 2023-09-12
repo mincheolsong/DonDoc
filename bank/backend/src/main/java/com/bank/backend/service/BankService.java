@@ -18,9 +18,9 @@ public interface BankService {
 
     public boolean countAccount(String identification);
 
-    public List<History> getHistoryList(HistoryDto.Request req) throws Exception;
+    public List<HistoryDto.Response> getHistoryList(HistoryDto.Request req) throws Exception;
 
-    public History getDetailHistory(HistoryDto.Request req) throws Exception;
+    public HistoryDto.Response getDetailHistory(HistoryDto.Request req) throws Exception;
 
     public MemoDto.Response writeMemo(MemoDto.Request req) throws Exception;
 

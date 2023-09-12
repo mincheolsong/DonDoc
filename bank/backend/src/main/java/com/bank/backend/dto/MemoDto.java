@@ -18,12 +18,19 @@ public class MemoDto {
     @Data
     public static class Request {
 
+        @ApiModelProperty(value = "식별번호")
+        @NotBlank(message = "식별번호를 입력해주세요.")
+        private String identificationNumber;
+
+        @ApiModelProperty(value = "계좌번호")
+        @NotBlank(message = "계좌번호를 입력해주세요.")
+        private String accountNumber;
+
         @ApiModelProperty(value = "거래내역ID")
         @NotNull(message = "거래내역ID를 입력해주세요.")
         private Long historyId;
 
         @ApiModelProperty(value = "작성할 내용")
-        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
 
         @Builder

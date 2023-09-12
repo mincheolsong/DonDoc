@@ -149,7 +149,7 @@ public class BankController {
     @PostMapping("/history")
     public ApiResult<?> getHistoryList(@ApiParam(value = "거래내역 조회에 필요한 요청값",required = true) @Valid @RequestBody HistoryDto.Request req) {
         try{
-            List<History> result = bankService.getHistoryList(req);
+            List<HistoryDto.Response> result = bankService.getHistoryList(req);
             return ApiUtils.success(result);
         } catch(Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -161,7 +161,7 @@ public class BankController {
     @PostMapping("/detail_history")
     public ApiResult<?> getDetailHistory(@ApiParam(value = "거래내역 조회에 필요한 요청값",required = true) @Valid @RequestBody HistoryDto.Request req) {
         try{
-            History result = bankService.getDetailHistory(req);
+            HistoryDto.Response result = bankService.getDetailHistory(req);
             return ApiUtils.success(result);
         } catch(Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
