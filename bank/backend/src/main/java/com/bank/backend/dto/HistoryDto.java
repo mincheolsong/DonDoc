@@ -1,5 +1,6 @@
 package com.bank.backend.dto;
 
+import com.bank.backend.entity.BankCode;
 import com.bank.backend.entity.History;
 import com.bank.backend.entity.Memo;
 import io.swagger.annotations.ApiModel;
@@ -34,17 +35,20 @@ public class HistoryDto {
     public static class Response {
 
         private History historyId;
+        private BankCodeDto toCode;
         private String memo;
 
         public static HistoryDto.Response toDTO(History entity) {
             return HistoryDto.Response.builder()
                     .historyId(entity)
+                    .toCode(BankCodeDto.fromEntity(entity.getToCode()))
                     .build();
         }
 
         public static HistoryDto.Response toDTO(History entity, Memo memo) {
             return HistoryDto.Response.builder()
                     .historyId(entity)
+                    .toCode(BankCodeDto.fromEntity(entity.getToCode()))
                     .memo(memo.getContent())
                     .build();
         }
