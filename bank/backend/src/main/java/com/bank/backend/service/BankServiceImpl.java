@@ -3,14 +3,8 @@ package com.bank.backend.service;
 import com.bank.backend.common.exception.NotFoundException;
 import com.bank.backend.common.utils.EncryptionUtils;
 import com.bank.backend.dto.*;
-import com.bank.backend.entity.Account;
-import com.bank.backend.entity.BankCode;
-import com.bank.backend.entity.History;
-import com.bank.backend.entity.Owner;
-import com.bank.backend.repository.AccountRepository;
-import com.bank.backend.repository.BankCodeRepository;
-import com.bank.backend.repository.HistoryRepository;
-import com.bank.backend.repository.OwnerRepository;
+import com.bank.backend.entity.*;
+import com.bank.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +27,7 @@ public class BankServiceImpl implements BankService {
     private final BankCodeRepository bankCodeRepository;
     private final HistoryRepository historyRepository;
     private final OwnerRepository ownerRepository;
+    private final MemoRepository memoRepository;
 
 
     @Override
@@ -189,6 +184,7 @@ public class BankServiceImpl implements BankService {
         // 생성 가능
         return true;
     }
+
     /** 계좌 거래 내역 조회 */
     @Override
     public List<History> getHistoryList(HistoryDto.Request req) throws Exception {
@@ -232,8 +228,31 @@ public class BankServiceImpl implements BankService {
         return detailHistory;
     }
 
-    // 계좌 실명 조회
+    /** 거래 상세 내역 - 메모 작성 */
+    @Override
+    @Transactional
+    public MemoDto.Response writeMemo(MemoDto.Request req) throws Exception {
 
+        History history = historyRepository.findById(req.getHistoryId())
+                .orElseThrow(()-> new Exception("거래 내역 정보가 없습니다."));
+
+        Optional<Memo> memo = memoRepository.findByHistoryId(history);
+
+        if(memo.isEmpty()){ // 해당 거래 내역에 대한 메모가 없을 때
+            // DB에 메모 저장
+            Memo ret = memoRepository.save(
+                    MemoDto.Request.saveMemoDto(history, req.getContent())
+            );
+            
+            return MemoDto.Response.toDTO(ret);
+        } else { // 작성 된 메모가 있을 때
+            memo.get().setContent(req.getContent());
+        }
+
+        return MemoDto.Response.toDTO(memo.get());
+    }
+
+    // 계좌 실명 조회
     @Override
     public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request) {
         // 계좌 조회

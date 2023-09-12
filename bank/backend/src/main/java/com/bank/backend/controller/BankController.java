@@ -3,6 +3,7 @@ package com.bank.backend.controller;
 import com.bank.backend.common.utils.ApiUtils;
 import com.bank.backend.common.utils.ApiUtils.ApiResult;
 import com.bank.backend.dto.*;
+import com.bank.backend.entity.Memo;
 import com.bank.backend.service.BankService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -167,6 +168,18 @@ public class BankController {
         }
     }
 
+    /** 거래 상세 내역 - 메모 작성 */
+    @ApiOperation(value = "메모 작성", notes = "메모 작성 API", response = ApiResult.class)
+    @PostMapping("/detail_history/memo")
+    public ApiResult<?> writeMemo(@ApiParam(value = "메모 작성에 필요한 요청값 ",required = true) @Valid @RequestBody MemoDto.Request req) {
+        try{
+            MemoDto.Response result = bankService.writeMemo(req);
+            return ApiUtils.success(result);
+        } catch(Exception e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /** 비밀번호 재설정 **/
     @ApiOperation(value = "비밀번호 재설정", notes = "비밀번호 재설정 및 활성화 API", response = ApiResult.class)
     @PostMapping("/account/password")
@@ -182,4 +195,6 @@ public class BankController {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

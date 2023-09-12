@@ -2,6 +2,7 @@ package com.bank.backend.service;
 
 import com.bank.backend.dto.*;
 import com.bank.backend.entity.History;
+import com.bank.backend.entity.Memo;
 import com.bank.backend.entity.Owner;
 
 import java.util.List;
@@ -15,12 +16,13 @@ public interface BankService {
 
     public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception;
 
-    /** 계좌 거래 내역 조회 */
     public boolean countAccount(String identification);
 
     public List<History> getHistoryList(HistoryDto.Request req) throws Exception;
 
     public History getDetailHistory(HistoryDto.Request req) throws Exception;
+
+    public MemoDto.Response writeMemo(MemoDto.Request req) throws Exception;
 
     public OwnerDto.Response certification(OwnerDto.Request request) throws Exception;
 
