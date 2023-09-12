@@ -14,14 +14,16 @@ function Home() {
 
         <div className={styles.contentbox}>
           <div className={styles.links}>
+            <Link className={styles.linktext} to="/account-master">예금주 생성</Link><br />
+            <Link className={styles.linktext} to="/password-reset">비밀번호 재설정</Link><br />
             <Link className={styles.linktext} to="/account">계좌 개설</Link><br />
+            <Link className={styles.linktext} to="/account-name-search">계좌 실명 조회</Link><br />
             <Link className={styles.linktext} to="/account-list">계좌 목록 조회</Link><br />
             <Link className={styles.linktext} to="/account-detail">계좌 상세 조회</Link><br />
             <Link className={styles.linktext} to="/account-trans">계좌 거래 내역 조회</Link><br />
             <Link className={styles.linktext} to="/account-trans-detail">상세 거래 내역 조회</Link><br />
             <Link className={styles.linktext} to="/account-name">계좌 실명 조회</Link><br />
             <Link className={styles.linktext} to="/account-transfer">계좌 이체</Link><br />
-            <Link className={styles.linktext} to="/account-master">예금주 생성</Link><br />
           </div>
         </div>
 

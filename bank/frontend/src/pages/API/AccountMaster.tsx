@@ -1,6 +1,8 @@
-import React from 'react'
-import styles from './Account.module.css'
+import React from 'react';
+import styles from './Account.module.css';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { BASE_URL } from '../../constants';
 
 function AccountMaster() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
@@ -16,10 +18,27 @@ function AccountMaster() {
   }
 
 
-  const SubmitCreate = (e) => {
+  // const SubmitCreate = (e) => {
+  //   e.preventDefault()
+    
+  //   console.log(identificationNumber)
+  //   console.log(accountMaster)
+  // }
+  const data = {
+      "identificationNumber": identificationNumber,
+      "ownerName": accountMaster
+  }
+
+  const SubmitCreate = async(e) => {
     e.preventDefault()
-    console.log(identificationNumber)
-    console.log(accountMaster)
+    try {
+      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
+      console.log('complete! :', response)
+    } catch {
+      console.log(identificationNumber)
+      console.log(accountMaster)
+    }
+    
   }
   
     return (
@@ -27,8 +46,8 @@ function AccountMaster() {
         <div className={styles.content}>
           
           <div className={styles.contentbanner}>
-            <div className={styles.title}>계좌 거래 내역 조회</div>
-            <div className={styles.information}>계좌 거래 내역을 확인해보세요</div>
+            <div className={styles.title}>예금주 생성</div>
+            <div className={styles.information}>예금주를 만들어 보세요</div>
           </div>
           
           <div className={styles.contentbox}>
