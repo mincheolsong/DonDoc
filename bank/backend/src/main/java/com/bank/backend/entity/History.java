@@ -47,11 +47,11 @@ public class History {
     @Column(name="afterBalance", nullable = false)
     private int afterBalance;
 
-    @Column(name="memo", length = 255)
-    private String memo;
+    @Column(name="sign", length = 255)
+    private String sign;
 
-    @Column(name="toMemo", length = 255)
-    private String toMemo;
+    @Column(name="toSign", length = 255)
+    private String toSign;
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate

@@ -351,8 +351,8 @@ public class BankServiceImpl implements BankService {
                 .type(1) // 1 : 송금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(sendBalance) // 송금 후 잔액
-                .memo(request.getSign()) // 보내는 사람이 보는 메모
-                .toMemo(request.getToSign()) // 받는 사람이 보는 메모
+                .sign(request.getSign()) // 보내는 사람이 보는 메모
+                .toSign(request.getToSign()) // 받는 사람이 보는 메모
                 .build();
 
         // 받는 사람의 기록
@@ -363,8 +363,8 @@ public class BankServiceImpl implements BankService {
                 .type(2) // 2 : 입금
                 .transferAmount(transferAmount) // 거래금액
                 .afterBalance(toAccount.getBalance() + transferAmount) // 입금 후 잔액
-                .memo(request.getToSign()) // 받는 사람이 보는 메모
-                .toMemo(request.getSign()) // 보내는 사람이 보는 메모
+                .sign(request.getToSign()) // 받는 사람이 보는 메모
+                .toSign(request.getSign()) // 보내는 사람이 보는 메모
                 .build();
 
         // 계좌 잔액 변경
