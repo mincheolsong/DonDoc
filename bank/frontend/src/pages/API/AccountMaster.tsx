@@ -17,13 +17,6 @@ function AccountMaster() {
     setAccountMaster(e.target.value)
   }
 
-
-  // const SubmitCreate = (e) => {
-  //   e.preventDefault()
-    
-  //   console.log(identificationNumber)
-  //   console.log(accountMaster)
-  // }
   const data = {
       "identificationNumber": identificationNumber,
       "ownerName": accountMaster
@@ -35,10 +28,8 @@ function AccountMaster() {
       const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
       console.log('complete! :', response)
     } catch {
-      console.log(identificationNumber)
-      console.log(accountMaster)
+      console.log('fail')
     }
-    
   }
   
     return (
@@ -54,7 +45,7 @@ function AccountMaster() {
             <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="예금주이름" variant="outlined" onChange={AccountMasterChange} style={{marginTop : "10px"}}/>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <button className={styles.submitbutton} onClick={SubmitCreate}>예금주 생성</button>
             </form>
           </div>
 

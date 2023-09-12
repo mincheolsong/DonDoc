@@ -1,8 +1,10 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { BASE_URL } from '../../constants';
 
-function AccountTrans() {
+function AccountTransAll() {
   const [accountNumber, setAccountNumber] = React.useState<string>('');
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
   
@@ -14,10 +16,20 @@ function AccountTrans() {
     setIdentificationNumber(e.target.value)
   }
 
-  const SubmitCreate = (e) => {
+  const data = {
+    "accountNumber": accountNumber,
+    "historyId": 0, // historyId 어떻게 넣는지 알아야 함
+    "identificationNumber": identificationNumber
+  }
+
+  const SubmitCreate = async(e) => {
     e.preventDefault()
-    console.log(accountNumber)
-    console.log(identificationNumber)
+    try {
+      const response = await axios.post(`${BASE_URL}/bank/history`, data)
+      console.log('complete! :', response)
+    } catch {
+      console.log('fail')
+    }
   }
   
   
@@ -26,7 +38,7 @@ function AccountTrans() {
         <div className={styles.content}>
           
           <div className={styles.contentbanner}>
-            <div className={styles.title}>계좌 거래 내역 조회</div>
+            <div className={styles.title}>계좌 거래 내역 전체 조회</div>
             <div className={styles.information}>계좌 거래 내역을 확인해보세요</div>
           </div>
           
@@ -43,4 +55,4 @@ function AccountTrans() {
     )
 }
 
-export default AccountTrans
+export default AccountTransAll

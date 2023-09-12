@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { BASE_URL } from '../../constants';
 
 function AccountTransDetail() {
   const [accountNumber, setAccountNumber] = React.useState<string>('');
@@ -18,11 +20,20 @@ function AccountTransDetail() {
     setHistoryId(e.target.value)
   }
   
-  const SubmitCreate = (e) => {
+  const data = {
+    "accountNumber": accountNumber,
+    "historyId": historyId,
+    "identificationNumber": identificationNumber
+  }
+
+  const SubmitCreate = async(e) => {
     e.preventDefault()
-    console.log(accountNumber)
-    console.log(identificationNumber)
-    console.log(historyId)
+    try {
+      const response = await axios.post(`${BASE_URL}/bank/detail_history`, data)
+      console.log('complete! :', response)
+    } catch {
+      console.log('fail')
+    }
   }
   
     return (

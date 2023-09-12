@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { BASE_URL } from '../../constants';
 
 function AccountDetail() {
   const [accountNumber, setAccountNumber] = React.useState<string>('');
@@ -14,10 +16,18 @@ function AccountDetail() {
     setIdentificationNumber(e.target.value)
   }
 
-  const SubmitCreate = (e) => {
+  const data = {
+    "identificationNumber": identificationNumber
+  }
+
+  const SubmitCreate = async(e) => {
     e.preventDefault()
-    console.log(accountNumber)
-    console.log(identificationNumber)
+    try {
+      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
+      console.log('complete! :', response)
+    } catch {
+      console.log('fail')
+    }
   }
   
     return (

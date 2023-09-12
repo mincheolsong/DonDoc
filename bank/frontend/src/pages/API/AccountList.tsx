@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { BASE_URL } from '../../constants';
 
 function AccountList() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
@@ -10,9 +12,22 @@ function AccountList() {
     setIdentificationNumber(e.target.value)
   }
   
-  const SubmitCreate = (e) => {
+  
+  // 리스트로 감싸서 보내야 하는데 입력폼을 하나로 만들어서 나눠 담는 방법 생각해야 함
+  const data = {
+    "identificationNumber": [
+      identificationNumber
+    ]
+  }
+
+  const SubmitCreate = async(e) => {
     e.preventDefault()
-    console.log(identificationNumber)
+    try {
+      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
+      console.log('complete! :', response)
+    } catch {
+      console.log('fail')
+    }
   }
 
   

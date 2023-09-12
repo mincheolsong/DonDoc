@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
 import axios from 'axios'
+import { BASE_URL } from '../../constants';
 
 function PasswordReset() {
 
@@ -9,7 +10,6 @@ function PasswordReset() {
     const [bankCode, setBankCode] = React.useState<number>(0);
     const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
-  
   
     const AccountNumberChange = (e) => {
       setAccountNumber(e.target.value)
@@ -23,13 +23,22 @@ function PasswordReset() {
     const PasswordChange = (e) => {
       setPassword(e.target.value)
     }
-  
-    const SubmitCreate = (e) => {
+
+    const data = {
+      "accountNumber": accountNumber,
+      "bankCode": bankCode,
+      "identificationNumber": identificationNumber,
+      "newPassword": password
+    }
+
+    const SubmitCreate = async(e) => {
       e.preventDefault()
-      console.log(bankCode)
-      console.log(identificationNumber)
-      console.log(accountNumber)
-      console.log(password)
+      try {
+        const response = await axios.post(`${BASE_URL}/bank/account/password`, data)
+        console.log('complete! :', response)
+      } catch {
+        console.log('fail')
+      }
     }
   
   
@@ -38,8 +47,8 @@ function PasswordReset() {
         <div className={styles.content}>
           
           <div className={styles.contentbanner}>
-            <div className={styles.title}>계좌 개설</div>
-            <div className={styles.information}>은행업무에 필요한 DD Bank의 계좌를 개설하세요</div>
+            <div className={styles.title}>비밀번호 재설정</div>
+            <div className={styles.information}>계좌의 비밀번호를 재설정합니다</div>
           </div>
   
           <div className={styles.contentbox}>
