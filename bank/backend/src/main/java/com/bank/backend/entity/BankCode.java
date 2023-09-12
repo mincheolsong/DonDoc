@@ -13,8 +13,8 @@ import javax.persistence.*;
 public class BankCode {
 
     @Id
-    @Column(name="bankCodeId")
-    private Long bankCodeId;
+    @Column(name="id")
+    private Long id;
 
     @Column(name="bankName", nullable = false, length = 20)
     private String bankName;

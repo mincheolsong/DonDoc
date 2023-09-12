@@ -226,7 +226,7 @@ public class BankServiceImpl implements BankService {
                 .orElseThrow(()-> new Exception("회원님의 계좌 정보와 일치하지 않습니다."));
 
         // 상세 거래 내역 조회
-        History detailHistory = historyRepository.findByAccountAndHistoryId(account, req.getHistoryId())
+        History detailHistory = historyRepository.findByAccountAndId(account, req.getHistoryId())
                 .orElseThrow(()-> new Exception("거래 내역 정보가 없습니다."));
 
         return detailHistory;
@@ -238,11 +238,11 @@ public class BankServiceImpl implements BankService {
     public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request) {
         // 계좌 조회
         // 영서 is good... 영서의 JPA로 해결 했습다.
-        Account account = accountRepository.findByBankCode_BankCodeIdAndAccountNumber(request.getBankCode(), request.getAccountNumber())
+        Account account = accountRepository.findByBankCode_IdAndAccountNumber(request.getBankCode(), request.getAccountNumber())
                 .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
 
         // 조회 완료
-        if(request.getBankCode() != account.getBankCode().getBankCodeId()){
+        if(request.getBankCode() != account.getBankCode().getId()){
 
             // 조회 실패
             return AccountCertificationDto.Response.builder()
@@ -281,7 +281,7 @@ public class BankServiceImpl implements BankService {
         }
 
         // 상대방 계좌 조회
-        Account toAccount = accountRepository.findByBankCode_BankCodeIdAndAccountNumber(request.getToCode(), request.getToAccount())
+        Account toAccount = accountRepository.findByBankCode_IdAndAccountNumber(request.getToCode(), request.getToAccount())
                 .orElseThrow(() -> new NoSuchElementException("상대방 계좌 정보가 존재하지 않습니다."));
 
         // 비밀번호 길이 오류

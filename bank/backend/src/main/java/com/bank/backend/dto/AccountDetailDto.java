@@ -17,11 +17,11 @@ public class AccountDetailDto {
 
         public static AccountDetailDto.Response toDTO(Account entity){
             return AccountDetailDto.Response.builder()
-                    .accountId(entity.getAccountId())
+                    .accountId(entity.getId())
                     .accountName(entity.getAccountName())
                     .accountNumber(entity.getAccountNumber())
                     .balance(entity.getBalance())
-                    .bankCode(entity.getBankCode().getBankCodeId())
+                    .bankCode(entity.getBankCode().getId())
                     .bankName(entity.getBankCode().getBankName())
                     .build();
         }

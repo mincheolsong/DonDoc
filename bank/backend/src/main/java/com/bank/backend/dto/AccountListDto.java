@@ -28,11 +28,11 @@ public class AccountListDto {
 
         public static AccountListDto.Response toDTO(Account entity) {
             return AccountListDto.Response.builder()
-                    .accountId(entity.getAccountId())
+                    .accountId(entity.getId())
                     .accountName(entity.getAccountName())
                     .accountNumber(entity.getAccountNumber())
                     .balance(entity.getBalance())
-                    .bankCode(entity.getBankCode().getBankCodeId())
+                    .bankCode(entity.getBankCode().getId())
                     .bankName(entity.getBankCode().getBankName())
                     .build();
         }

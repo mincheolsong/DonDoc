@@ -21,8 +21,8 @@ public class History {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="historyId")
-    private Long historyId;
+    @Column(name="id")
+    private Long id;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

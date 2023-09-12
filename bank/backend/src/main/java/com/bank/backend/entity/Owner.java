@@ -17,8 +17,8 @@ public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ownerId")
-    private Long ownerId;
+    @Column(name = "id")
+    private Long id;
 
 
     @Column(name = "ownerName", nullable = false, length = 20)
@@ -35,7 +35,7 @@ public class Owner {
     @Override
     public String toString() {
         return "Owner{" +
-                "ownerId=" + ownerId +
+                "id=" + id +
                 ", ownerName='" + ownerName + '\'' +
                 ", identificationNumber='" + identificationNumber + '\'' +
                 ", accountList=" + accountList +
