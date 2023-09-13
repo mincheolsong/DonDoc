@@ -1,5 +1,6 @@
 package com.dondoc.backend.group.entity;
 
+import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -44,5 +45,9 @@ public class GroupMember {
     @Column(name="signedAt")
     @LastModifiedDate
     private LocalDateTime signedAt;
+
+    @OneToOne
+    @JoinColumn(name = "accountId")
+    private Account account;
 
 }

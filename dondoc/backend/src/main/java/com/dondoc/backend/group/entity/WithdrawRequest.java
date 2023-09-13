@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="WithdrawRequest")
@@ -38,4 +39,6 @@ public class WithdrawRequest {
     @Column(name="status" , nullable = false)
     private int status;
 
+    @OneToMany(mappedBy = "withdrawRequest")
+    private List<AllowRequest> allowRequest;
 }

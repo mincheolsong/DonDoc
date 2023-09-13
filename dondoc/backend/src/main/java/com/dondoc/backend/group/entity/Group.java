@@ -36,6 +36,9 @@ public class Group {
     @Column(name="limit", nullable = false)
     private int limit;
 
+    @Column(name="groupType", nullable = false)
+    private int groupType;
+
     @Column(name="createdAt", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
