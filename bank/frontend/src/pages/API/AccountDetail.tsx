@@ -7,7 +7,7 @@ import { BASE_URL } from '../../constants';
 function AccountDetail() {
   // const [accountNumber, setAccountNumber] = React.useState<string>('');
   const [accountId, setAccountId] = React.useState<string>('');
-  
+  const [accountInfo, setAccountInfo] = React.useState({})
   
   // const AccountNumberChange = (e) => {
   //   setAccountNumber(e.target.value)
@@ -25,7 +25,8 @@ function AccountDetail() {
       if(response.data.error) {
         alert(response.data.error.message)
       } else {
-        console.log(response.data.response)
+        setAccountInfo(response.data.response)
+        // console.log(response.data.response)
       }
     } catch {
       console.log('fail')
@@ -48,6 +49,21 @@ function AccountDetail() {
               <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 상세 조회</button>
             </form>
           </div>
+
+          {accountInfo && (
+            <div className={styles.accountInfoContainer}>
+              <h2>계좌 정보</h2>
+              <ul>
+                  <div>
+                    <li>계좌 아이디 : {accountInfo.accountId}</li>
+                    <li>계좌 이름 : {accountInfo.accountName}</li>
+                    <li>계좌 번호: {accountInfo.accountNumber}</li>
+                    <li>계좌 잔액: {accountInfo.balance}</li>
+                    <li>은행: {accountInfo.bankName}</li>
+                  </div>
+              </ul>
+            </div>
+          )}
 
         </div>
       </div>
