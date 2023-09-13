@@ -61,7 +61,9 @@ function CreateAccount() {
             <TextField className={styles.inputbox} id="outlined-basic" label="예금주" variant="outlined" onChange={AccountMasterChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
-            <TextField className={styles.inputbox} id="outlined-basic" label="은행 코드" variant="outlined" onChange={BankCodeChange} style={{marginTop : "10px"}}/><br />
+            <select className={styles.inputbox} id="outlined-basic">
+              <option value="053">대구은행</option>
+            </select>
             <TextField
               className={styles.inputbox} 
               id="outlined-password-input"

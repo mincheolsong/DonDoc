@@ -23,7 +23,7 @@ function AccountList() {
   const SubmitCreate = async(e) => {
     e.preventDefault()
     try {
-      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
+      const response = await axios.post(`${BASE_URL}/bank/account/list`, data)
       console.log('complete! :', response)
     } catch {
       console.log('fail')
@@ -44,7 +44,7 @@ function AccountList() {
 
             <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 목록 조회</button>
             </form>
 
           </div>

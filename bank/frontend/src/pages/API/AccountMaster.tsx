@@ -27,7 +27,8 @@ function AccountMaster() {
     try {
       const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
       console.log('complete! :', response)
-    } catch {
+    }
+    catch {
       console.log('fail')
     }
   }
