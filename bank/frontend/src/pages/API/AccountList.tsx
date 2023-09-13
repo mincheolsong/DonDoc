@@ -6,6 +6,7 @@ import { BASE_URL } from '../../constants';
 
 function AccountList() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+  const [accountInfo, setAccountInfo] = React.useState([])
 
 
   const IdentificationNumberChange = (e) => {
@@ -20,15 +21,18 @@ function AccountList() {
     ]
   }
 
+  
+
   const SubmitCreate = async(e) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/account/list`, data)
-      console.log('complete! :', response.data.response[0])
+      console.log('complete! :', response.data.response)
       if(response.data.error) {
         alert(response.data.error.message)
       } else {
-        console.log(response.data.response)
+        setAccountInfo(response.data.response)
+        // console.log('Save', accountInfo)
       }
       // alert('accountName :', response.data.response)
     } catch {
@@ -52,8 +56,24 @@ function AccountList() {
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
               <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
             </form>
-
           </div>
+          
+          {accountInfo.length >= 1 && (
+            <div className={styles.accountInfoContainer}>
+              <h2>계좌 정보</h2>
+              <ul>
+                {accountInfo.map((account, index) => (
+                  <div key={index}>
+                    <li>계좌 아이디 : {account.accountId}</li>
+                    <li>계좌 이름 : {account.accountName}</li>
+                    <li>계좌 번호: {account.accountNumber}</li>
+                    <li>계좌 잔액: {account.balance}</li>
+                    <li>은행: {account.bankName}</li>
+                  </div>
+                ))}
+              </ul>
+            </div>
+          )}
 
         </div>
       </div>
