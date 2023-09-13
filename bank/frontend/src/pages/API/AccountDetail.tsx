@@ -5,26 +5,28 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants';
 
 function AccountDetail() {
-  const [accountNumber, setAccountNumber] = React.useState<string>('');
-  const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+  // const [accountNumber, setAccountNumber] = React.useState<string>('');
+  const [accountId, setAccountId] = React.useState<string>('');
   
   
-  const AccountNumberChange = (e) => {
-    setAccountNumber(e.target.value)
-  }
-  const IdentificationNumberChange = (e) => {
-    setIdentificationNumber(e.target.value)
+  // const AccountNumberChange = (e) => {
+  //   setAccountNumber(e.target.value)
+  // }
+  const AccountIdChange = (e) => {
+    setAccountId(e.target.value)
   }
 
-  const data = {
-    "identificationNumber": identificationNumber
-  }
 
   const SubmitCreate = async(e) => {
     e.preventDefault()
     try {
-      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
-      console.log('complete! :', response)
+      const response = await axios.get(`${BASE_URL}/bank/account/detail/${accountId}`)
+      console.log('complete! :', response.data.response)
+      if(response.data.error) {
+        alert(response.data.error.message)
+      } else {
+        console.log(response.data.response)
+      }
     } catch {
       console.log('fail')
     }
@@ -41,9 +43,9 @@ function AccountDetail() {
 
           <div className={styles.contentbox}>
             <form onSubmit={SubmitCreate} className={styles.inputform}>
-              <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={AccountNumberChange} style={{marginTop : "10px"}}/>
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <TextField className={styles.inputbox} id="outlined-basic" label="계좌 아이디" variant="outlined" onChange={AccountIdChange} style={{marginTop : "10px"}}/><br />
+              {/* <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={AccountNumberChange} style={{marginTop : "10px"}}/> */}
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 상세 조회</button>
             </form>
           </div>
 

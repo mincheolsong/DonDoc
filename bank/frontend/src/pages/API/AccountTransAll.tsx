@@ -17,16 +17,22 @@ function AccountTransAll() {
   }
 
   const data = {
-    "accountNumber": accountNumber,
-    "historyId": 0, // historyId 어떻게 넣는지 알아야 함
-    "identificationNumber": identificationNumber
+    "identificationNumber": identificationNumber,
+    "accountNumber": accountNumber
   }
 
   const SubmitCreate = async(e) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/history`, data)
-      console.log('complete! :', response)
+      console.log('complete! :', response.data.response)
+      if(response.data.error) {
+        alert(response.data.error.message)
+      } else if (response.data.response.length === 0) {
+        alert('거래 내역이 없습니다!')
+      } else {
+        alert(response.data.response)
+      }
     } catch {
       console.log('fail')
     }

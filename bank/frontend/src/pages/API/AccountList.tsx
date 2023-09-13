@@ -23,8 +23,14 @@ function AccountList() {
   const SubmitCreate = async(e) => {
     e.preventDefault()
     try {
-      const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
-      console.log('complete! :', response)
+      const response = await axios.post(`${BASE_URL}/bank/account/list`, data)
+      console.log('complete! :', response.data.response[0])
+      if(response.data.error) {
+        alert(response.data.error.message)
+      } else {
+        console.log(response.data.response)
+      }
+      // alert('accountName :', response.data.response)
     } catch {
       console.log('fail')
     }
@@ -44,7 +50,7 @@ function AccountList() {
 
             <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 조회</button>
             </form>
 
           </div>
