@@ -50,4 +50,19 @@
     margin-top: 10px;
     height: 40px;
     border-radius: 10px;
+    cursor: pointer;
+}
+
+.movebutton {
+    width: 25%;
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.accountInfoContainer {
+    border: solid black;
+    margin-top: 10px;
 }

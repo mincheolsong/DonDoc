@@ -1,37 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { BASE_URL } from '../../constants';
+import { useLocation } from 'react-router-dom';
+import { light } from '@mui/material/styles/createPalette';
+import { spacing } from '@mui/system';
 
 function AccountTransAll() {
-  const [accountNumber, setAccountNumber] = React.useState<string>('');
-  const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+  // const [accountNumber, setAccountNumber] = React.useState<string>('');
+  // const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
+  const [TransLog, setTransLog] = React.useState([])
   
-  
-  const AccountNumberChange = (e) => {
-    setAccountNumber(e.target.value)
+  useEffect(() => {
+    SubmitCreate()
+  },[])
+
+  const location = useLocation()
+  const state = {...location.state}
+
+  const DataLoad = () => {
+
+    console.log(state)
+    console.log(state.identificationNumber)
   }
-  const IdentificationNumberChange = (e) => {
-    setIdentificationNumber(e.target.value)
-  }
+
 
   const data = {
-    "identificationNumber": identificationNumber,
-    "accountNumber": accountNumber
+    "identificationNumber": state.identificationNumber,
+    "accountNumber": state.accountNumber
   }
 
-  const SubmitCreate = async(e) => {
-    e.preventDefault()
+  const SubmitCreate = async() => {
     try {
       const response = await axios.post(`${BASE_URL}/bank/history`, data)
       console.log('complete! :', response.data.response)
       if(response.data.error) {
         alert(response.data.error.message)
-      } else if (response.data.response.length === 0) {
-        alert('거래 내역이 없습니다!')
       } else {
-        alert(response.data.response)
+        setTransLog(response.data.response)
       }
     } catch {
       console.log('fail')
@@ -47,15 +54,15 @@ function AccountTransAll() {
             <div className={styles.title}>계좌 거래 내역 전체 조회</div>
             <div className={styles.information}>계좌 거래 내역을 확인해보세요</div>
           </div>
-          
-          <div className={styles.contentbox}>
-            <form onSubmit={SubmitCreate} className={styles.inputform}>
-              <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={AccountNumberChange} style={{marginTop : "10px"}}/>
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
-            </form>
-          </div>
 
+          <div className={styles.contentbox}>
+            <ul className={styles.accountInfoContainer}>
+                {TransLog.length ? TransLog.map((log) => (
+                  <li>{log.afterBalance}</li>
+                )) : <span>거래 내역이 없습니다.</span>}
+              </ul>
+          </div>
+      {/* <button onClick={DataLoad}>데이터</button> */}
         </div>
       </div>
     )

@@ -1,6 +1,9 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { Bank_List } from '../../constants';
+import { useLocation } from 'react-router';
 
 function AccountTransfer() {
   const [userName, setUserName] = React.useState<string>('');
@@ -9,6 +12,12 @@ function AccountTransfer() {
   const [bankCode, setBankCode] = React.useState<number>(0);
   const [password, setPassword] = React.useState<string>('');
 
+  const location = useLocation()
+  const state = location.state
+  
+  const dataload = () => {
+    console.log(state)
+  }
 
   const UserNameChange = (e) => {
     setUserName(e.target.value)
@@ -49,21 +58,31 @@ function AccountTransfer() {
           <form onSubmit={SubmitCreate} className={styles.inputform}>
             <TextField className={styles.inputbox} id="outlined-basic" label="예금주" variant="outlined" onChange={UserNameChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={UserNumberChange} style={{marginTop : "10px"}}/><br />
-            <TextField className={styles.inputbox} id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
-            <TextField className={styles.inputbox} id="outlined-basic" label="은행 코드" variant="outlined" onChange={BankCodeChange} style={{marginTop : "10px"}}/><br />
+            <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={UserNumberChange} style={{marginTop : "10px"}}/><br />
+            <hr />
             <TextField
-              className={styles.inputbox} 
-              id="outlined-password-input"
-              label="계좌 비밀번호"
-              type="password"
-              autoComplete="current-password"
-              onChange={PasswordChange}
-              style={{marginTop : "10px"}}
-            />
-            <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+            className={styles.inputbox}
+          id="outlined-select"
+          select
+          defaultValue=''
+          label='은행목록'
+          helperText="이체받을 계좌의 은행을 선택해주세요."
+          onChange={BankCodeChange}
+          style={{marginTop : "10px"}}
+        >
+            {Bank_List.map((bank) => (
+              <MenuItem key={bank.code} value={bank.code}>
+                {bank.bank}
+              </MenuItem>
+            ))}
+            </TextField>
+            <TextField className={styles.inputbox} id="outlined-basic" label="계좌 번호" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
+            
+            <TextField className={styles.inputbox} id="outlined-basic" label="이체할 금액" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
+            <button className={styles.submitbutton} onClick={SubmitCreate}>이 체</button>
           </form>
         </div>
-
+              <button onClick={dataload}>데이터</button>
       </div>
     </div>
   )

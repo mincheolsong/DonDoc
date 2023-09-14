@@ -8,7 +8,7 @@ function AccountDetail() {
   // const [accountNumber, setAccountNumber] = React.useState<string>('');
   const [accountId, setAccountId] = React.useState<string>('');
   const [accountInfo, setAccountInfo] = React.useState({})
-  
+   
   // const AccountNumberChange = (e) => {
   //   setAccountNumber(e.target.value)
   // }

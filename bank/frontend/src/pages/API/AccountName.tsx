@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { Bank_List } from '../../constants';
 
 function AccountName() {
   const [bankCode, setBankCode] = React.useState<string>('');
@@ -32,7 +34,22 @@ function AccountName() {
 
           <div className={styles.contentbox}>
             <form onSubmit={SubmitCreate} className={styles.inputform}>
-              <TextField className={styles.inputbox} id="outlined-basic" label="은행코드" variant="outlined" onChange={BankCodeChange} style={{marginTop : "10px"}}/><br />
+            <TextField
+            className={styles.inputbox}
+          id="outlined-select"
+          select
+          defaultValue=''
+          label='은행목록'
+          helperText="해당 계좌의 은행을 선택해주세요."
+          onChange={BankCodeChange}
+          style={{marginTop : "10px"}}
+        >
+            {Bank_List.map((bank) => (
+              <MenuItem key={bank.code} value={bank.code}>
+                {bank.bank}
+              </MenuItem>
+            ))}
+            </TextField>
               <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/>
               <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
             </form>

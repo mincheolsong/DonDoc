@@ -3,11 +3,38 @@ import styles from './Account.module.css'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { BASE_URL } from '../../constants';
+import { useNavigate } from 'react-router-dom';
+
 
 function AccountList() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
   const [accountInfo, setAccountInfo] = React.useState([])
+  const [complete, setComplete] = React.useState<boolean>(false)
 
+  const navigate = useNavigate()
+
+  const goToTransAll = ({account}) => {
+    navigate('/account-trans', {state: {
+      identificationNumber: identificationNumber,
+      accountNumber: account.accountNumber
+    }})
+  }
+
+  const goToTrans = ({account}) => {
+    navigate('/account-transfer', {state: {
+      identificationNumber: identificationNumber,
+      accountNumber: account.accountNumber
+    }})
+  }
+
+  const goToPasswordChange = () => {
+    navigate('/password-reset')
+  }
+
+  const PageReload = (e) => {
+    e.preventDefault()
+    location.reload()
+  }
 
   const IdentificationNumberChange = (e) => {
     setIdentificationNumber(e.target.value)
@@ -32,6 +59,7 @@ function AccountList() {
         alert(response.data.error.message)
       } else {
         setAccountInfo(response.data.response)
+        setComplete(true)
         // console.log('Save', accountInfo)
       }
       // alert('accountName :', response.data.response)
@@ -53,22 +81,26 @@ function AccountList() {
           <div className={styles.contentbox}>
 
             <form onSubmit={SubmitCreate} className={styles.inputform}>
-              <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}
+              disabled={complete}/><br />
+              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 목록 조회</button>
+              {complete ? <button className={styles.submitbutton} onClick={PageReload}>다른 번호 조회</button> : null}
             </form>
           </div>
           
           {accountInfo.length >= 1 && (
-            <div className={styles.accountInfoContainer}>
+            <div>
               <h2>계좌 정보</h2>
-              <ul>
+              <ul className={styles.accountInfoContainer}>
                 {accountInfo.map((account, index) => (
-                  <div key={index}>
-                    <li>계좌 아이디 : {account.accountId}</li>
+                  <div key={index} >
                     <li>계좌 이름 : {account.accountName}</li>
                     <li>계좌 번호: {account.accountNumber}</li>
                     <li>계좌 잔액: {account.balance}</li>
                     <li>은행: {account.bankName}</li>
+                    <button className={styles.movebutton} onClick={() => goToTransAll({account})}>계좌 상세 조회</button>
+                    <button className={styles.movebutton} onClick={() => goToTrans({account})}>이체하기</button>
+                    <button className={styles.movebutton} onClick={goToPasswordChange}>비밀번호 변경</button>
                   </div>
                 ))}
               </ul>

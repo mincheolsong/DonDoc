@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from './pages/Home'
 import AccountPage from './pages/API/CreateAccount'
 // import LoginPage from './pages/LogIn'
-import AccountNameSearchPage from './pages/API/AccountNameSearch'
 import AccountListPage from './pages/API/AccountList' 
 import AccountDetailPage from './pages/API/AccountDetail' 
 import AccountTransPage from './pages/API/AccountTransAll' 
@@ -22,7 +21,6 @@ function Router() {
             <Route path="/account-master" element={<AccountMasterPage/>}/>
             <Route path="/password-reset" element={<PasswordResetPage/>}/>
             <Route path="/account" element={<AccountPage/>}/>
-            <Route path="/account-name-search" element={<AccountNameSearchPage/>}/>
             <Route path="/account-list" element={<AccountListPage/>}/>
             <Route path="/account-detail" element={<AccountDetailPage/>}/>
             <Route path="/account-trans" element={<AccountTransPage/>}/>
