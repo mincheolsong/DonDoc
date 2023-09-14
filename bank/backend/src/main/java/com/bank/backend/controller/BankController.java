@@ -107,7 +107,7 @@ public class BankController {
             // 계좌 개설
             AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
             log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
-            return ApiUtils.success(response.getMsg());
+            return ApiUtils.success(response);
         }catch(Exception e){
             log.error(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);

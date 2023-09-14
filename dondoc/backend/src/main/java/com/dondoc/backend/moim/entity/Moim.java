@@ -1,4 +1,4 @@
-package com.dondoc.backend.group.entity;
+package com.dondoc.backend.moim.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,13 +8,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="Group")
+@Table(name="Moim")
 @Getter @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Group {
+public class Moim {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +24,20 @@ public class Group {
     @Column(name="identificationNumber", nullable = false, length = 255)
     private String identificationNumber;
 
-    @Column(name="groupName", nullable = false, length = 20)
-    private String groupName;
+    @Column(name="moimName", nullable = false, length = 20)
+    private String moimName;
 
     @Column(name="introduce", nullable = false, columnDefinition = "LONGTEXT")
     private String introduce;
 
-    @Column(name="groupAccount", nullable = false, length = 50)
-    private String groupAccount;
+    @Column(name="moimAccount", nullable = false, length = 50)
+    private String moimAccount;
 
-    @Column(name="limit", nullable = false)
-    private int limit;
+    @Column(name="limited", nullable = false)
+    private int limited;
 
-    @Column(name="groupType", nullable = false)
-    private int groupType;
+    @Column(name="moimType", nullable = false)
+    private int moimType;
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate

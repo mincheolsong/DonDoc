@@ -163,7 +163,7 @@ public class BankServiceImpl implements BankService {
         return AccountDto.Response.builder()
                 .msg("계좌 생성이 완료되었습니다.")
                 .bankName(bankCode.getBankName())
-                .accountNumber(account.getAccountNumber())
+                .accountNumber(accountNumber)
                 .ownerName(account.getOwner().getOwnerName())
                 .success(true)
                 .build();

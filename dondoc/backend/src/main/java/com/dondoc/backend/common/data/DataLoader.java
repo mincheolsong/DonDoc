@@ -1,7 +1,7 @@
 package com.dondoc.backend.common.data;
 
-import com.dondoc.backend.group.entity.Category;
-import com.dondoc.backend.group.repository.CategoryRepository;
+import com.dondoc.backend.moim.entity.Category;
+import com.dondoc.backend.moim.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
