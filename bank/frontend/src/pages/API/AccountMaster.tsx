@@ -9,11 +9,11 @@ function AccountMaster() {
   const [accountMaster, setAccountMaster] = React.useState<string>('');
 
 
-  const IdentificationNumberChange = (e) => {
+  const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdentificationNumber(e.target.value)
   }
 
-  const AccountMasterChange = (e) => {
+  const AccountMasterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAccountMaster(e.target.value)
   }
 
@@ -22,7 +22,7 @@ function AccountMaster() {
       "ownerName": accountMaster
   }
 
-  const SubmitCreate = async(e) => {
+  const SubmitCreate = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/owner/create`, data)
@@ -50,7 +50,7 @@ function AccountMaster() {
             <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="예금주이름" variant="outlined" onChange={AccountMasterChange} style={{marginTop : "10px"}}/>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>예금주 생성</button>
+              <button className={styles.submitbutton} >예금주 생성</button>
             </form>
           </div>
 

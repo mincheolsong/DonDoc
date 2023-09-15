@@ -10,13 +10,13 @@ function AccountTransDetail() {
   const [historyId, setHistoryId] = React.useState<string>('');
   
   
-  const AccountNumberChange = (e) => {
+  const AccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAccountNumber(e.target.value)
   }
-  const IdentificationNumberChange = (e) => {
+  const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdentificationNumber(e.target.value)
   }
-  const HistoryIdChange = (e) => {
+  const HistoryIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHistoryId(e.target.value)
   }
   
@@ -26,7 +26,7 @@ function AccountTransDetail() {
     "identificationNumber": identificationNumber
   }
 
-  const SubmitCreate = async(e) => {
+  const SubmitCreate = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/detail_history`, data)
@@ -55,7 +55,7 @@ function AccountTransDetail() {
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
               <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={AccountNumberChange} style={{marginTop : "10px"}}/>
               <TextField className={styles.inputbox} id="outlined-basic" label="historyId" variant="outlined" onChange={HistoryIdChange} style={{marginTop : "10px"}}/>
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <button className={styles.submitbutton}>계좌 생성</button>
             </form>
           </div>
 

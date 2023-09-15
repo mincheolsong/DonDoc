@@ -7,7 +7,7 @@ import AccountDetailPage from './pages/API/AccountDetail'
 import AccountTransPage from './pages/API/AccountTransAll' 
 import AccountTransDetailPage from './pages/API/AccountTransDetail' 
 import AccountNamePage from './pages/API/AccountName' 
-import AccountTransferPage from './pages/API/AccountTransfer' 
+// import AccountTransferPage from './pages/API/AccountTransfer' 
 import AccountMasterPage from './pages/API/AccountMaster' 
 import PasswordResetPage from './pages/API/PasswordReset'
 // import MyApiPage from './pages/MyApi'
@@ -26,7 +26,7 @@ function Router() {
             <Route path="/account-trans" element={<AccountTransPage/>}/>
             <Route path="/account-trans-detail" element={<AccountTransDetailPage/>}/>
             <Route path="/account-name" element={<AccountNamePage/>}/>
-            <Route path="/account-transfer" element={<AccountTransferPage/>}/>
+            {/* <Route path="/account-transfer" element={<AccountTransferPage/>}/> */}
 
             {/* <Route path="/myapi" element={<MyApiPage/>}></Route> */}
         </Routes>

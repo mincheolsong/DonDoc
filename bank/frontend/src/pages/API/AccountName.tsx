@@ -9,14 +9,14 @@ function AccountName() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
   
   
-    const BankCodeChange = (e) => {
+    const BankCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setBankCode(e.target.value)
     }
-    const IdentificationNumberChange = (e) => {
+    const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setIdentificationNumber(e.target.value)
     }
 
-    const SubmitCreate = (e) => {
+    const SubmitCreate = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       console.log(bankCode)
       console.log(identificationNumber)
@@ -51,7 +51,7 @@ function AccountName() {
             ))}
             </TextField>
               <TextField className={styles.inputbox} id="outlined-basic" label="계좌번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/>
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+              <button className={styles.submitbutton} >계좌 생성</button>
             </form>
           </div>
 

@@ -7,36 +7,35 @@ import { BASE_URL,Bank_List } from '../../constants';
 
 function CreateAccount() {
 
-  const [accountMaster, setAccountMaster] = React.useState<string>('');
-  const [identificationNumber, setIdentificationNumber] = React.useState<number>(0);
+  const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
   const [accountName, setAccountName] = React.useState<string>('');
-  const [bankCode, setBankCode] = React.useState<number>(0);
+  const [bankCode, setBankCode] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
-  const AccountMasterChange = (e) => {
-    setAccountMaster(e.target.value)
-  }
-  const IdentificationNumberChange = (e) => {
+  const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdentificationNumber(e.target.value)
   }
-  const AccountNameChange = (e) => {
+  const AccountNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(e.target.value)
   }
-  const BankCodeChange = (e) => {
+  const BankCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBankCode(e.target.value)
   }
-  const PasswordChange = (e) => {
+  const PasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
 
+  const Code = parseInt(bankCode, 10)
+  const phone = parseInt(identificationNumber, 10)
+
   const data = {
     "accountName": accountName,
-    "bankCode": bankCode,
-    "identificationNumber": identificationNumber,
+    "bankCode": Code,
+    "identificationNumber": phone,
     "password": password
   }
 
-  const SubmitCreate = async(e) => {
+  const SubmitCreate = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/account/create`, data)
@@ -63,7 +62,6 @@ function CreateAccount() {
 
         <div className={styles.contentbox}>
           <form onSubmit={SubmitCreate} className={styles.inputform}>
-            <TextField className={styles.inputbox} id="outlined-basic" label="예금주" variant="outlined" onChange={AccountMasterChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}/><br />
             <TextField className={styles.inputbox} id="outlined-basic" label="계좌 이름" variant="outlined" onChange={AccountNameChange} style={{marginTop : "10px"}}/><br />
             <TextField
@@ -91,7 +89,7 @@ function CreateAccount() {
               onChange={PasswordChange}
               style={{marginTop : "10px"}}
             />
-            <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 생성</button>
+            <button className={styles.submitbutton} >계좌 생성</button>
           </form>
           {/* <div className={styles.inputform}>
           </div> */}

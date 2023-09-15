@@ -8,31 +8,35 @@ import { BASE_URL, Bank_List } from '../../constants';
 function PasswordReset() {
 
     const [accountNumber, setAccountNumber] = React.useState<string>('');
-    const [bankCode, setBankCode] = React.useState<number>(0);
+    const [bankCode, setBankCode] = React.useState<string>('');
     const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
   
-    const AccountNumberChange = (e) => {
+    const AccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setAccountNumber(e.target.value)
     }
-    const BankCodeChange = (e) => {
-      setBankCode(e.target.value)
-    }
-    const IdentificationNumberChange = (e) => {
+
+const BankCodeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  setBankCode(e.target.value);
+}
+
+    const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIdentificationNumber(e.target.value)
       }
-    const PasswordChange = (e) => {
+    const PasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value)
     }
 
+    const code = parseInt(bankCode,10)
+    
     const data = {
       "accountNumber": accountNumber,
-      "bankCode": bankCode,
+      "bankCode": code,
       "identificationNumber": identificationNumber,
       "newPassword": password
     }
 
-    const SubmitCreate = async(e) => {
+    const SubmitCreate = async(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       try {
         const response = await axios.post(`${BASE_URL}/bank/account/password`, data)
@@ -82,7 +86,7 @@ function PasswordReset() {
                 onChange={PasswordChange}
                 style={{marginTop : "10px"}}
               />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>비밀번호 재설정</button>
+              <button className={styles.submitbutton}>비밀번호 재설정</button>
             </form>
             {/* <div className={styles.inputform}>
             </div> */}

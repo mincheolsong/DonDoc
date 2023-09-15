@@ -5,25 +5,33 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 
+interface account {
+accountName: string,
+accountNumber: number,
+accountId: number,
+bankName: string,
+balance: number
+}
 
 function AccountList() {
   const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
-  const [accountInfo, setAccountInfo] = React.useState([])
+  const [accountInfo, setAccountInfo] = React.useState<account[]>([])
   const [complete, setComplete] = React.useState<boolean>(false)
 
   const navigate = useNavigate()
 
-  const goToTransAll = ({account}) => {
-    navigate('/account-trans', {state: {
+  const goToDetail = ({account}: {account: account}) => {
+    navigate('/account-detail', {state: {
       identificationNumber: identificationNumber,
       accountNumber: account.accountNumber
     }})
   }
 
-  const goToTrans = ({account}) => {
+  const goToTrans = ({account}: {account: account}) => {
     navigate('/account-transfer', {state: {
       identificationNumber: identificationNumber,
-      accountNumber: account.accountNumber
+      accountNumber: account.accountNumber,
+      accountId: account.accountId
     }})
   }
 
@@ -31,12 +39,12 @@ function AccountList() {
     navigate('/password-reset')
   }
 
-  const PageReload = (e) => {
-    e.preventDefault()
+  const PageReload = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault
     location.reload()
   }
 
-  const IdentificationNumberChange = (e) => {
+  const IdentificationNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdentificationNumber(e.target.value)
   }
   
@@ -50,7 +58,7 @@ function AccountList() {
 
   
 
-  const SubmitCreate = async(e) => {
+  const SubmitCreate = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       const response = await axios.post(`${BASE_URL}/bank/account/list`, data)
@@ -83,7 +91,7 @@ function AccountList() {
             <form onSubmit={SubmitCreate} className={styles.inputform}>
               <TextField className={styles.inputbox} id="outlined-basic" label="식별번호" variant="outlined" onChange={IdentificationNumberChange} style={{marginTop : "10px"}}
               disabled={complete}/><br />
-              <button className={styles.submitbutton} onClick={SubmitCreate}>계좌 목록 조회</button>
+              <button className={styles.submitbutton}>계좌 목록 조회</button>
               {complete ? <button className={styles.submitbutton} onClick={PageReload}>다른 번호 조회</button> : null}
             </form>
           </div>
@@ -98,7 +106,7 @@ function AccountList() {
                     <li>계좌 번호: {account.accountNumber}</li>
                     <li>계좌 잔액: {account.balance}</li>
                     <li>은행: {account.bankName}</li>
-                    <button className={styles.movebutton} onClick={() => goToTransAll({account})}>계좌 상세 조회</button>
+                    <button className={styles.movebutton} onClick={() => goToDetail({account})}>계좌 상세 조회</button>
                     <button className={styles.movebutton} onClick={() => goToTrans({account})}>이체하기</button>
                     <button className={styles.movebutton} onClick={goToPasswordChange}>비밀번호 변경</button>
                   </div>

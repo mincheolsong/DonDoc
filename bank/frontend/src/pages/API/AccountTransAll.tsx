@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react'
 import styles from './Account.module.css'
-import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { BASE_URL } from '../../constants';
 import { useLocation } from 'react-router-dom';
-import { light } from '@mui/material/styles/createPalette';
-import { spacing } from '@mui/system';
+
+
+interface Transaction {
+  afterBalance: number;
+  // 다른 필드들을 여기에 추가
+}
 
 function AccountTransAll() {
   // const [accountNumber, setAccountNumber] = React.useState<string>('');
   // const [identificationNumber, setIdentificationNumber] = React.useState<string>('');
-  const [TransLog, setTransLog] = React.useState([])
+  const [TransLog, setTransLog] = React.useState<Transaction[]>([])
   
   useEffect(() => {
     SubmitCreate()
@@ -18,12 +21,6 @@ function AccountTransAll() {
 
   const location = useLocation()
   const state = {...location.state}
-
-  const DataLoad = () => {
-
-    console.log(state)
-    console.log(state.identificationNumber)
-  }
 
 
   const data = {
