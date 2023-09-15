@@ -21,9 +21,8 @@ public class DataLoader implements CommandLineRunner {
         categoryRepository.save(new Category(1L, "교육"));
         categoryRepository.save(new Category(2L, "식사"));
         categoryRepository.save(new Category(3L, "여가"));
-        categoryRepository.save(new Category(4L, "생활요금"));
-        categoryRepository.save(new Category(5L, "의료"));
-        categoryRepository.save(new Category(6L, "기타"));
+        categoryRepository.save(new Category(4L, "의료"));
+        categoryRepository.save(new Category(5L, "기타"));
 
     }
 }
