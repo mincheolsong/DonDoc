@@ -1,7 +1,6 @@
-package com.dondoc.backend.group.entity;
+package com.dondoc.backend.moim.entity;
 
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,8 +19,8 @@ public class WithdrawRequest {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="groupMemberId")
-    private GroupMember groupMember;
+    @JoinColumn(name="moimMemberId")
+    private MoimMember moimMember;
 
     @Column(name="title", nullable = false, columnDefinition = "LONGTEXT")
     private String title;

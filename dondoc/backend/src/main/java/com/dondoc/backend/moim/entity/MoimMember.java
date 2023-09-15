@@ -1,4 +1,4 @@
-package com.dondoc.backend.group.entity;
+package com.dondoc.backend.moim.entity;
 
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
@@ -11,13 +11,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="GroupMember")
+@Table(name="MoimMember")
 @Getter @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class GroupMember {
+public class MoimMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class GroupMember {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="groupId")
-    private Group group;
+    @JoinColumn(name="moimId")
+    private Moim moim;
 
     @Column(name="userType", nullable = false)
     private int userType;
