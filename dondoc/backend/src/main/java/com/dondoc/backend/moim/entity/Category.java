@@ -1,4 +1,4 @@
-package com.dondoc.backend.group.entity;
+package com.dondoc.backend.moim.entity;
 
 import lombok.*;
 

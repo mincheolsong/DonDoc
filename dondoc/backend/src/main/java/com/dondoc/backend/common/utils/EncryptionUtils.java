@@ -43,4 +43,12 @@ public class EncryptionUtils {
         String accountNumber = String.valueOf(randomNumber).substring(2,15);
         return accountNumber;
     }
+
+    public static String makeIdentificationNumber(){
+        SecureRandom random = new SecureRandom();
+
+        long randomNumber = random.nextLong();
+        String accountNumber = String.valueOf(randomNumber).substring(2,13);
+        return accountNumber;
+    }
 }
