@@ -289,6 +289,8 @@ public class BankServiceImpl implements BankService {
     // 계좌 실명 조회
     @Override
     public AccountCertificationDto.Response getAccount(AccountCertificationDto.Request request) {
+        log.info("요청 : {}", request);
+
         // 계좌 조회
         // 영서 is good... 영서의 JPA로 해결 했습다.
         Account account = accountRepository.findByBankCode_IdAndAccountNumber(request.getBankCode(), request.getAccountNumber())
