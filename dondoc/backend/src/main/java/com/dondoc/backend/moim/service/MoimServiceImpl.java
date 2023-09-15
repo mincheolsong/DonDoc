@@ -1,5 +1,6 @@
 package com.dondoc.backend.moim.service;
 
+import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.repository.MoimRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +37,41 @@ public class MoimServiceImpl implements MoimService{
             return true;
         }
 
-        log.debug("trace log = {} ", response.toString());
+        log.debug("creaetOnwerAPI log = {} ", response.toString());
         return false;
+    }
+    @Override
+    public String createAccountAPI(String moimName, int bankCode, String identificationNumber, String password) {
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("accountName", moimName);
+        bodyMap.put("bankCode", bankCode);
+        bodyMap.put("identificationNumber", identificationNumber);
+        bodyMap.put("password", password);
 
+        Map response = webClient.post()
+                .uri("/bank/account/create")
+                .bodyValue(bodyMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true"){ // 계좌생성 성공했으면
+            Map<String,String> tmp = (Map<String, String>) response.get("response");
+            System.out.println(tmp);
+            System.out.println(tmp.get("accountNumber"));
+            return tmp.get("accountNumber");
+        }
+
+        log.debug("creaetMoimAPI log = {} ", response.toString());
+        return null;
+    }
+    @Transactional
+    @Override
+    public Moim createMoim(String identificationNumber, String moimName, String introduce, String moimAccount, int limited, int moimType) {
+
+        Moim moim = new Moim(identificationNumber,moimName,introduce,moimAccount,limited,moimType);
+        moimRepository.save(moim);
+
+        return moim;
     }
 }
