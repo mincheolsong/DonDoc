@@ -4,14 +4,15 @@ import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.moim.dto.MoimCreateDto;
+import com.dondoc.backend.moim.dto.WithdrawRequestDto;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.service.MoimService;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
 @Slf4j
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MoimController {
 
     private final MoimService moimService;
+
     @PostMapping("/create")
     public ApiResult createMoim(@RequestBody MoimCreateDto.Request req){
         // 식별번호 생성
@@ -62,4 +64,18 @@ public class MoimController {
         }
 
     }
+
+
+    /** 관리자에게 돈 요청 */
+    @PostMapping("/withdraw_req")
+    public ApiResult<?> withdrawReq(@Valid @RequestBody WithdrawRequestDto.Request req) {
+        try{
+            WithdrawRequestDto.Response result = moimService.withdrawReq(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
