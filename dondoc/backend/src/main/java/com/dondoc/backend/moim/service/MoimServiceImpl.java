@@ -148,10 +148,10 @@ public class MoimServiceImpl implements MoimService{
 
         log.info("missionMember : {}", missionMember.getUser().getName());
 
-        // 현재보다 이전의 날짜를 입력했을 때
+        // 종료날짜가 오늘이거나 이전의 날짜를 입력했을 때
         LocalDate now = LocalDate.now();
-        if(req.getEndDate().isBefore(now)){
-            throw new IllegalArgumentException("종료 일자를 다시 확인해주세요");
+        if(req.getEndDate().isBefore(now) || req.getEndDate().isEqual(now)){
+            throw new IllegalArgumentException("종료 일자를 다시 확인해주세요.");
         }
 
         // 요청 금액 -> 가능한지 판단
@@ -170,16 +170,19 @@ public class MoimServiceImpl implements MoimService{
             if(possibleAmount < req.getAmount()){ // 요청 가능한 금액보다 많이 요청했을 때
                 throw new IllegalArgumentException("요청 가능한 금액을 초과하였습니다.");
             } else { // 요청 가능한 금액일 때
-                int missionStatus = 0;
+
+                Mission missionRequest;
 
                 // 신청인이 관리자일 때 -> 바로 미션 승인 상태로
-                if(member.getUserType() == 1){
-                    missionStatus=1;
+                if(member.getUserType() == 1) {
+                    missionRequest = missionRepository.save(
+                            req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), 1, LocalDateTime.now(), req.getEndDate())
+                    );
+                } else {
+                    missionRequest = missionRepository.save(
+                            req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), 0, req.getEndDate())
+                    );
                 }
-
-                Mission missionRequest = missionRepository.save(
-                        req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), missionStatus, req.getEndDate())
-                );
 
                 return MissionRequestDto.Response.toDTO(missionRequest);
             }

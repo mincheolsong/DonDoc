@@ -48,6 +48,19 @@ public class MissionRequestDto {
                     .build();
         }
 
+        @Builder
+        public static Mission saveMissionRequestDto(MoimMember moimMember, String title, String content, int amount, int status,
+                                                    LocalDateTime startDate, LocalDate endDate){
+            return Mission.builder()
+                    .moimMember(moimMember)
+                    .title(title)
+                    .amount(amount)
+                    .status(status)
+                    .content(content)
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .build();
+        }
     }
 
     @Builder
