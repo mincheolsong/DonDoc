@@ -3,6 +3,7 @@ package com.dondoc.backend.moim.controller;
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.common.utils.EncryptionUtils;
+import com.dondoc.backend.moim.dto.AllRequestDto;
 import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.MoimCreateDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
@@ -84,6 +85,18 @@ public class MoimController {
     public ApiResult<?> missionReq(@Valid @RequestBody MissionRequestDto.Request req) {
         try{
             MissionRequestDto.Response result = moimService.missionReq(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /** 요청 관리/목록 - 전체 리스트 조회 */
+    @PostMapping("/list_req")
+    public ApiResult<?> getRequestList(@Valid @RequestBody AllRequestDto.Request req) {
+        try{
+            AllRequestDto.Response result = moimService.getRequestList(req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());

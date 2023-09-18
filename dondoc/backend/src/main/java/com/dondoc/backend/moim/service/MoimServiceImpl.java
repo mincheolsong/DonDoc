@@ -1,6 +1,7 @@
 package com.dondoc.backend.moim.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
+import com.dondoc.backend.moim.dto.AllRequestDto;
 import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
 import com.dondoc.backend.moim.entity.*;
@@ -14,7 +15,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -191,4 +194,47 @@ public class MoimServiceImpl implements MoimService{
         }
 
     }
+
+    /** 요청 관리/목록 - 전체 리스트 조회 */
+    @Override
+    public AllRequestDto.Response getRequestList(AllRequestDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        if(member.getUserType()==1) { // 요청자가 모임의 관리자이면
+
+            // 해당 모임에서 출금 요청 -> status 0인거만 조회 (출금 승인이 이루어지지 않은 것)
+            List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
+
+            List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
+                                                        .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
+                                                        .collect(Collectors.toList());
+
+            System.out.println(withdrawRequestList.size());
+
+            // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
+            // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
+            List<Mission> missionList = missionRepository.findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member.getMoim(), -1);
+
+            List<MissionRequestDto.Response> resultMission = missionList.stream()
+                    .map(entity -> MissionRequestDto.Response.toDTO(entity))
+                    .collect(Collectors.toList());
+
+            System.out.println(missionList.size());
+
+            return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
+
+        } else { // 요청자가 일반 회원이면
+
+        }
+
+        // 관리자 -> 회원별로 필터링 가능
+
+        return null;
+    }
+
+
 }

@@ -3,8 +3,6 @@ package com.dondoc.backend.moim.dto;
 import com.dondoc.backend.moim.entity.Category;
 import com.dondoc.backend.moim.entity.MoimMember;
 import com.dondoc.backend.moim.entity.WithdrawRequest;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -46,7 +44,6 @@ public class WithdrawRequestDto {
                     .content(content)
                     .build();
         }
-
     }
 
     @Builder

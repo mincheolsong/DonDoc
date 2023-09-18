@@ -1,5 +1,6 @@
 package com.dondoc.backend.moim.service;
 
+import com.dondoc.backend.moim.dto.AllRequestDto;
 import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
 import com.dondoc.backend.moim.entity.Moim;
@@ -15,4 +16,7 @@ public interface MoimService {
     WithdrawRequestDto.Response withdrawReq(WithdrawRequestDto.Request req) throws Exception;
 
     MissionRequestDto.Response missionReq(MissionRequestDto.Request req) throws Exception;
+
+    AllRequestDto.Response getRequestList(AllRequestDto.Request req) throws Exception;
+
 }
