@@ -25,6 +25,17 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// @Valid - 유효성 검사
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// swagger
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+
+	// WebClient (BANK API 요청에 사용)
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {
