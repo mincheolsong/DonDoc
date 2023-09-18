@@ -1,21 +1,18 @@
 package com.dondoc.backend.moim.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
+import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
-import com.dondoc.backend.moim.entity.Category;
-import com.dondoc.backend.moim.entity.Moim;
-import com.dondoc.backend.moim.entity.MoimMember;
-import com.dondoc.backend.moim.entity.WithdrawRequest;
-import com.dondoc.backend.moim.repository.CategoryRepository;
-import com.dondoc.backend.moim.repository.MoimMemberRepository;
-import com.dondoc.backend.moim.repository.MoimRepository;
-import com.dondoc.backend.moim.repository.WithdrawRequestRepository;
+import com.dondoc.backend.moim.entity.*;
+import com.dondoc.backend.moim.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +26,7 @@ public class MoimServiceImpl implements MoimService{
     private final MoimMemberRepository moimMemberRepository;
     private final WithdrawRequestRepository withdrawRequestRepository;
     private final CategoryRepository categoryRepository;
+    private final MissionRepository missionRepository;
 
     private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버
 
@@ -89,7 +87,7 @@ public class MoimServiceImpl implements MoimService{
         return moim;
     }
 
-    /** 관리자에게 돈 요청 */
+    /** 관리자에게 출금 요청 */
     @Override
     @Transactional
     public WithdrawRequestDto.Response withdrawReq(WithdrawRequestDto.Request req) throws Exception {
@@ -126,5 +124,68 @@ public class MoimServiceImpl implements MoimService{
         } else { // 계좌 조회 실패
             throw new NotFoundException("계좌 조회에 실패하였습니다.");
         }
+    }
+
+    /** 관리자에게 미션 요청 */
+    @Override
+    @Transactional
+    public MissionRequestDto.Response missionReq(MissionRequestDto.Request req) throws Exception {
+
+        // 신청인
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 미션 할 사람
+        MoimMember missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        // 일반 이용자가 다른 사람에게 미션을 부여했을 때
+        if(member.getUserType()==2 && (missionMember.getUser().getPhoneNumber() != member.getUser().getPhoneNumber())){
+            throw new IllegalArgumentException("관리자만 다른 사용자에게 미션을 부여할 수 있습니다.");
+        }
+
+        log.info("missionMember : {}", missionMember.getUser().getName());
+
+        // 현재보다 이전의 날짜를 입력했을 때
+        LocalDate now = LocalDate.now();
+        if(req.getEndDate().isBefore(now)){
+            throw new IllegalArgumentException("종료 일자를 다시 확인해주세요");
+        }
+
+        // 요청 금액 -> 가능한지 판단
+        Map response = webClient.get()
+                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true"){ // 계좌 조회 성공
+            Map<String,String> res = (Map<String, String>) response.get("response");
+
+            // 현재 모임 잔액 - 제한된 금액
+            int possibleAmount = Integer.parseInt(String.valueOf(res.get("balance"))) - member.getMoim().getLimited();
+
+            if(possibleAmount < req.getAmount()){ // 요청 가능한 금액보다 많이 요청했을 때
+                throw new IllegalArgumentException("요청 가능한 금액을 초과하였습니다.");
+            } else { // 요청 가능한 금액일 때
+                int missionStatus = 0;
+
+                // 신청인이 관리자일 때 -> 바로 미션 승인 상태로
+                if(member.getUserType() == 1){
+                    missionStatus=1;
+                }
+
+                Mission missionRequest = missionRepository.save(
+                        req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), missionStatus, req.getEndDate())
+                );
+
+                return MissionRequestDto.Response.toDTO(missionRequest);
+            }
+        } else { // 계좌 조회 실패
+            throw new NotFoundException("계좌 조회에 실패하였습니다.");
+        }
+
     }
 }

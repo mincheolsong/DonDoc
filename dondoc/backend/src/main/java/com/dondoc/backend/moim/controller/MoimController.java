@@ -3,6 +3,7 @@ package com.dondoc.backend.moim.controller;
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.common.utils.EncryptionUtils;
+import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.MoimCreateDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
 import com.dondoc.backend.moim.entity.Moim;
@@ -66,11 +67,23 @@ public class MoimController {
     }
 
 
-    /** 관리자에게 돈 요청 */
+    /** 관리자에게 출금 요청 */
     @PostMapping("/withdraw_req")
     public ApiResult<?> withdrawReq(@Valid @RequestBody WithdrawRequestDto.Request req) {
         try{
             WithdrawRequestDto.Response result = moimService.withdrawReq(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /** 관리자에게 미션 요청 */
+    @PostMapping("/mission_req")
+    public ApiResult<?> missionReq(@Valid @RequestBody MissionRequestDto.Request req) {
+        try{
+            MissionRequestDto.Response result = moimService.missionReq(req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());

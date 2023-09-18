@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -45,6 +46,6 @@ public class Mission {
     private LocalDateTime startDate;
 
     @Column(name="endDate", updatable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
 }
