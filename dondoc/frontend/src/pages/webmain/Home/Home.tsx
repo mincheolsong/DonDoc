@@ -6,9 +6,9 @@ interface Props {
 
 function Home(props: Props) {
   return (
-    <>
-      <div />
-    </>
+    <div>
+      안녕하세요
+    </div>
   );
 };
 
