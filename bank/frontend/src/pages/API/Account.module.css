@@ -1,0 +1,68 @@
+
+.contentbanner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* -webkit-box-pack: center; */
+    justify-content: center;
+    /* -webkit-box-align: center; */
+    align-items: center;
+    background-color: #809FFF;
+    color: white;
+    padding-top: 2em;
+    padding-bottom: 3em;
+}
+
+.title {
+    font-size: 90px;
+}
+.information {
+    font-size: 30px;
+}
+
+@media (max-width: 750px) {
+    .title {
+        font-size: 60px;
+    }
+    .information {
+        font-size: 20px;
+    }
+}
+
+.contentbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.inputform {
+    width: 80%;
+    margin-top: 10px;
+}
+
+.inputbox {
+    width: 100%;
+}
+
+.submitbutton {
+    width: 100%;
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.movebutton {
+    width: 25%;
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.accountInfoContainer {
+    border: solid black;
+    margin-top: 10px;
+}
