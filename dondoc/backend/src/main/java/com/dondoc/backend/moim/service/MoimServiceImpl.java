@@ -207,6 +207,7 @@ public class MoimServiceImpl implements MoimService{
         if(member.getUserType()==1) { // 요청자가 모임의 관리자이면
 
             // 해당 모임에서 출금 요청 -> status 0인거만 조회 (출금 승인이 이루어지지 않은 것)
+            // 정렬 -> 1. CreatedAt 내림차순
             List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
 
             List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
@@ -229,11 +230,27 @@ public class MoimServiceImpl implements MoimService{
 
         } else { // 요청자가 일반 회원이면
 
+            // 해당 모임에서 출금 요청 모두 조회
+            // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
+            List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(member, member.getMoim());
+
+            List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
+                    .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
+                    .collect(Collectors.toList());
+
+            // 해당 모임에서의 미션 요청 모두 조회
+            // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
+            List<Mission> missionList = missionRepository.findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(member, member.getMoim());
+
+            List<MissionRequestDto.Response> resultMission = missionList.stream()
+                    .map(entity -> MissionRequestDto.Response.toDTO(entity))
+                    .collect(Collectors.toList());
+
+            return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
         }
 
         // 관리자 -> 회원별로 필터링 가능
 
-        return null;
     }
 
 
