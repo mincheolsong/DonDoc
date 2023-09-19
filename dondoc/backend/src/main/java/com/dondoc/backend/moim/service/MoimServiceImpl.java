@@ -206,27 +206,55 @@ public class MoimServiceImpl implements MoimService{
 
         if(member.getUserType()==1) { // 요청자가 모임의 관리자이면
 
-            // 해당 모임에서 출금 요청 -> status 0인거만 조회 (출금 승인이 이루어지지 않은 것)
-            // 정렬 -> 1. CreatedAt 내림차순
-            List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
+            // 특정 조회하고자 하는 회원을 입력 했을 때 - 회원별 필터링
+            if(req.getFindUserId()!=null){
+                member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getFindUserId(), req.getMoimId())
+                        .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-            List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
-                                                        .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
-                                                        .collect(Collectors.toList());
+                List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrderByCreatedAtDesc(member, member.getMoim(),0);
 
-            System.out.println(withdrawRequestList.size());
+                List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
+                        .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
+                        .collect(Collectors.toList());
 
-            // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
-            // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
-            List<Mission> missionList = missionRepository.findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member.getMoim(), -1);
+                log.info("withdrawRequestList Size : {}", withdrawRequestList.size());
 
-            List<MissionRequestDto.Response> resultMission = missionList.stream()
-                    .map(entity -> MissionRequestDto.Response.toDTO(entity))
-                    .collect(Collectors.toList());
+                // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
+                // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
+                List<Mission> missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member, member.getMoim(), -1);
 
-            System.out.println(missionList.size());
+                List<MissionRequestDto.Response> resultMission = missionList.stream()
+                        .map(entity -> MissionRequestDto.Response.toDTO(entity))
+                        .collect(Collectors.toList());
 
-            return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
+                log.info("missionList Size : {}", missionList.size());
+
+                return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
+            } else { // 전체 조회
+                
+                // 해당 모임에서 출금 요청 -> status 0인거만 조회 (출금 승인이 이루어지지 않은 것)
+                // 정렬 -> 1. CreatedAt 내림차순
+                List<WithdrawRequest> withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
+
+                List<WithdrawRequestDto.Response> resultWithdrawRequest = withdrawRequestList.stream()
+                        .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
+                        .collect(Collectors.toList());
+
+                log.info("withdrawRequestList Size : {}", withdrawRequestList.size());
+
+                // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
+                // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
+                List<Mission> missionList = missionRepository.findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member.getMoim(), -1);
+
+                List<MissionRequestDto.Response> resultMission = missionList.stream()
+                        .map(entity -> MissionRequestDto.Response.toDTO(entity))
+                        .collect(Collectors.toList());
+
+                log.info("missionList Size : {}", missionList.size());
+
+                return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
+            }
+
 
         } else { // 요청자가 일반 회원이면
 
@@ -248,9 +276,6 @@ public class MoimServiceImpl implements MoimService{
 
             return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
         }
-
-        // 관리자 -> 회원별로 필터링 가능
-
     }
 
 

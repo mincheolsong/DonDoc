@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
+    List<Mission> findByMoimMemberAndMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim, int status);
+
     List<Mission> findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(Moim moim, int status);
 
     List<Mission> findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim);

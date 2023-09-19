@@ -17,6 +17,7 @@ public class AllRequestDto {
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
+        private Long findUserId;
     }
 
     @Builder
