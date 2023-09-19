@@ -17,7 +17,7 @@ import MoimSelectAccountPage from './pages/moim/MoimSelectAccount/MoimSelectAcco
 import CreateResultPage from './pages/moim/CreateResult/CreateResult'
 import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
 import MissionPage from './pages/mission/Mission/Mission'
-
+import SignupTempPage from "./pages/webmain/SignupTemp";
 function Router() {
 
     return (
@@ -25,6 +25,7 @@ function Router() {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/signin" element={<SigninPage/>}/>
             <Route path="/signup" element={<SignupPage/>}/>
+            <Route path="/signupTemp" element={<SignupTempPage/>}/>
             <Route path="/search" element={<SearchPage/>}/>
             <Route path="/mypage" element={<MypagePage/>}/>
             <Route path="/setting" element={<SettingPage/>}/>
