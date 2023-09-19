@@ -1,14 +1,47 @@
 import styles from "./MoimHome.module.css";
 
-interface Props {
 
-}
-
-function MoimHome(props: Props) {
+function MoimHome() {
   return (
-    <>
-      <div />
-    </>
+    <div className={styles.container}>
+      <div className={styles.content}>
+
+        <div className={styles.topbar}>
+          <div className={styles.Logo}>
+            <p>Dondoc</p>
+          </div>
+          <div className={styles.notice}>
+            <p>Bell Icon</p>
+          </div>
+          {/* <div>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+            <h1>신제형</h1>
+          </div> */}
+
+        </div>
+      </div>
+    </div>
   );
 };
 
