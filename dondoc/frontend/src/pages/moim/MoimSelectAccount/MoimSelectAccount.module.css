@@ -1,1 +1,57 @@
-/* your css code */
+.topbar {
+    margin-left: 3%;
+    margin-right: 3%;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.backbutton {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.createcontent {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.createment {
+    display: flex;
+    justify-content: center;
+}
+
+.accountinfo {
+    background-color: white;
+    border-radius: 10px;
+}
+
+
+.selectcategories {
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.selectcategories label {
+    display: block;
+    font-weight: 900;
+}
+
+.selectcategories input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttondiv {
+    width: 100%;
+}
+
+.submitbutton {
+    width: 100%;
+}

@@ -8,12 +8,8 @@ function App() {
 
   return (
     <Router>
-      <div className={styles.container}>
-        <div className={styles.content}>
           {/* <NavBar /> */}
           <RouteFile />
-        </div>
-      </div>
     </Router>
   )
 }

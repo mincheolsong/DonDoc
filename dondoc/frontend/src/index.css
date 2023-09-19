@@ -3,6 +3,10 @@ html {
   background-color: #F4F6FA;
 }
 
+body {
+  margin: 0px;
+}
+
 @media screen and (max-width:600px) {
   html {
     font-size: 20px;

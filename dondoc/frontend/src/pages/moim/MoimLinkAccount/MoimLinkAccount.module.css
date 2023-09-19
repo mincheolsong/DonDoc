@@ -1,1 +1,61 @@
-/* your css code */
+.topbar {
+    margin-left: 3%;
+    margin-right: 3%;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.backbutton {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.createcontent {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.createment {
+    display: flex;
+    justify-content: center;
+}
+
+.accountunit {
+    background-color: white;
+}
+
+.accountunit {
+    display: flex;
+    justify-content: space-around;
+    vertical-align: center;
+}
+
+.banklogo {
+    width: 20%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.ssafylogo {
+    width: 80%;
+    height: 60%;
+}
+
+.accountnumber {
+    font-weight: 900;
+}
+.selectcount {
+    display: flex;
+    vertical-align: middle;
+}
+
+
+
+
+.buttondiv {
+    width: 100%;
+}
+
+.submitbutton {
+    width: 100%;
+}
