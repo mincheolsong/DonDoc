@@ -2,6 +2,7 @@ package com.dondoc.backend.moim.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.moim.dto.AllRequestDto;
+import com.dondoc.backend.moim.dto.DetailRequestDto;
 import com.dondoc.backend.moim.dto.MissionRequestDto;
 import com.dondoc.backend.moim.dto.WithdrawRequestDto;
 import com.dondoc.backend.moim.entity.*;
@@ -275,6 +276,37 @@ public class MoimServiceImpl implements MoimService{
                     .collect(Collectors.toList());
 
             return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
+        }
+    }
+
+    /** 요청 상세조회 */
+    @Override
+    public DetailRequestDto.Response getRequestDetail(DetailRequestDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        if(req.getRequestType() == 0) { // 출금 요청 조회
+
+            WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
+                    .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+            return DetailRequestDto.Response.toDTO_WithdrawReq(
+                    WithdrawRequestDto.Response.toDTO(withdrawRequest)
+            );
+
+        } else if(req.getRequestType() == 1) { // 미션 요청 조회
+
+            Mission mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
+                    .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+            return DetailRequestDto.Response.toDTO_Mission(
+                    MissionRequestDto.Response.toDTO(mission)
+            );
+        } else {
+            throw new IllegalArgumentException("조회 할 요청타입을 다시 확인해 주세요.");
         }
     }
 

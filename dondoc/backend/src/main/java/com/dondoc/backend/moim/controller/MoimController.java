@@ -3,10 +3,7 @@ package com.dondoc.backend.moim.controller;
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.common.utils.EncryptionUtils;
-import com.dondoc.backend.moim.dto.AllRequestDto;
-import com.dondoc.backend.moim.dto.MissionRequestDto;
-import com.dondoc.backend.moim.dto.MoimCreateDto;
-import com.dondoc.backend.moim.dto.WithdrawRequestDto;
+import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.service.MoimService;
 import lombok.RequiredArgsConstructor;
@@ -103,5 +100,19 @@ public class MoimController {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    /** 요청 상세조회 */
+    @PostMapping("/detail_req")
+    public ApiResult<?> getRequestDetail(@Valid @RequestBody DetailRequestDto.Request req) {
+        try{
+            DetailRequestDto.Response result = moimService.getRequestDetail(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 }
