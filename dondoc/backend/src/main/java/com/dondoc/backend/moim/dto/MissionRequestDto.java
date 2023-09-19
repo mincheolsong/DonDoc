@@ -68,7 +68,7 @@ public class MissionRequestDto {
     public static class Response {
 
         private String missionMemberName; // 미션 할 사람
-        private String title; // 사용처
+        private String title; // 미션명
         private int amount; // 요청 금액
         private String content; // 요청 상세 내용
         private LocalDate endDate; // 미션 종료일자
