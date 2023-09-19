@@ -1,40 +1,35 @@
-import { configureStore } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
-import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
-import thunk from 'redux-thunk';
+import { configureStore,combineReducers} from "@reduxjs/toolkit";
+import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
+import userSlice from "./userSlice";
 
-import userSlice from './userSlice';
-
-const reducers = combineReducers({
-  user: userSlice.reducer,
-});
 
 const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user', 'category'],
-};
-
-const persistedReducer = persistReducer(persistConfig, reducers);
-
-let middleware = [thunk];
-
-// 개발 환경일 때만 logger 미들웨어를 추가
-if (process.env.NODE_ENV === 'development') {
-  import('redux-logger').then((module) => {
-    const loggerMiddleware = module.default;
-    middleware = [...middleware, loggerMiddleware];
-  });
+  key: "root", // localStorage key 
+  storage, // session
+  whitelist: ["user"] // target (reducer name)
 }
+
+const rootReducer = combineReducers({
+ user : userSlice.reducer
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export default store;
-
 
 // import {configureStore} from '@reduxjs/toolkit';
 // import storage from 'redux-persist/lib/storage';
