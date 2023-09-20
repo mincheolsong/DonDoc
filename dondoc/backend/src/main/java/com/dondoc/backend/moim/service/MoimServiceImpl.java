@@ -393,6 +393,10 @@ public class MoimServiceImpl implements MoimService{
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
+        
+        // 관리자 비밀번호 확인 (User 로직 끝나면 수정하기)
+        if(!member.getUser().getPassword().equals(req.getPassword()))
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
 
         // 일반 이용자가 승인하려는 경우
         if(member.getUserType()!=1)
@@ -417,11 +421,6 @@ public class MoimServiceImpl implements MoimService{
                 throw new IllegalArgumentException("본인의 미션 요청에 승인할 수 없습니다.");
             }
         }
-
-        // 관리자 비밀번호 확인 (User 로직 끝나면 수정하기)
-        if(!member.getUser().getPassword().equals(req.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-
 
         // 현재 상황에서 승인할 수 있는 요청인지 -> limited 확인
         Map response = webClient.get()
