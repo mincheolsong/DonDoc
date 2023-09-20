@@ -17,6 +17,10 @@ import MoimSelectAccountPage from './pages/moim/MoimSelectAccount/MoimSelectAcco
 import CreateResultPage from './pages/moim/CreateResult/CreateResult'
 import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
 import MissionPage from './pages/mission/Mission/Mission'
+import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
+import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
+import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
+import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
 
 function Router() {
 
@@ -40,6 +44,10 @@ function Router() {
             <Route path="/createresult" element={<CreateResultPage/>}/>
             <Route path="/moimjoin" element={<MoimJoinPage/>}/>
             <Route path="/mission" element={<MissionPage/>}/>
+            <Route path="/detailmain" element={<DetailMain/>}/>
+            <Route path="/detailfirst" element={<DetailFirst/>}/>
+            <Route path="/detailsecond" element={<DetailSecond/>}/>
+            <Route path="/detailthird" element={<DetailThird/>}/>
             
         </Routes>
     )
