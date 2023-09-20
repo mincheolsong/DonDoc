@@ -159,12 +159,17 @@ public class BankServiceImpl implements BankService {
         // 계좌 저장
         accountRepository.save(account);
 
+        // 저장한 계좌의 ID
+        Account searchAccount = accountRepository.findByAccountNumber(account.getAccountNumber())
+                .orElseThrow(() -> new NoSuchElementException("계좌 등록이 정상적으로 이루어지지 않았습니다."));
+
         // 완료 반환
         return AccountDto.Response.builder()
                 .msg("계좌 생성이 완료되었습니다.")
                 .bankName(bankCode.getBankName())
-                .accountNumber(accountNumber)
+                .accountNumber(account.getAccountNumber())
                 .ownerName(account.getOwner().getOwnerName())
+                .accountId(searchAccount.getId())
                 .success(true)
                 .build();
     }

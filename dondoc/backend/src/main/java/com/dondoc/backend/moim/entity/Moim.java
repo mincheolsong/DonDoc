@@ -1,5 +1,6 @@
 package com.dondoc.backend.moim.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,8 +32,12 @@ public class Moim {
     @Column(name="introduce", nullable = false, columnDefinition = "LONGTEXT")
     private String introduce;
 
-    @Column(name="moimAccount", nullable = false, length = 50)
-    private String moimAccount;
+    @JsonIgnore
+    @Column(name="moimAccountId", nullable = false)
+    private int moimAccountId;
+
+    @Column(name="moimAccountNumber", nullable = false, length = 50)
+    private String moimAccountNumber;
 
     @Column(name="limited", nullable = false)
     private int limited;
@@ -46,11 +51,11 @@ public class Moim {
 
     @OneToMany(mappedBy = "moim")
     private List<MoimMember> moimMemberList;
-    public Moim(String identificationNumber, String moimName, String introduce, String moimAccount, int limited, int moimType) {
+    public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
         this.introduce = introduce;
-        this.moimAccount = moimAccount;
+        this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
     }
