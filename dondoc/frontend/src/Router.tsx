@@ -21,6 +21,7 @@ import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
 import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
 import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
 import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
+import RequestModal from './pages/moimdetail/DetailFirst/RequestModal/RequestModal'
 
 function Router() {
 
@@ -48,6 +49,7 @@ function Router() {
             <Route path="/detailfirst" element={<DetailFirst/>}/>
             <Route path="/detailsecond" element={<DetailSecond/>}/>
             <Route path="/detailthird" element={<DetailThird/>}/>
+            <Route path="/requestmodal" element={<RequestModal/>}/>
             
         </Routes>
     )
