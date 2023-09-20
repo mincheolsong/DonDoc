@@ -1,0 +1,181 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+}
+
+
+.topbar {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    display: flex;
+    border-bottom: 1px solid black;
+    height: 4rem;
+}
+
+.backbutton {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.userscontent {
+    margin-top: 1rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+}
+
+.usersbox {
+    background-color: white;
+    border-radius: 10px;
+    width: 7.4rem;
+    height: 37rem;
+}
+
+.boxunit {
+    margin-top: 1rem;
+    border: 0.3rem solid #D0CFFB;
+    border-radius: 1.5rem;
+    width: 5.5rem;
+    height: 4.7rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.boxunit img {
+    width: 3.3rem;
+    height: 2.6rem;
+}
+
+.selectuser {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 24.2rem;
+    height: 37rem;
+}
+
+.invitebtn {
+    display: flex;
+    justify-content: end;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.selectcharacter {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.selectcharacter img {
+    width: 22.7rem;
+    height: 23.3rem;
+}
+
+.selectaccount {
+    background-color: #D2E2F5;
+    margin-left: auto;
+    margin-right: auto;
+    width: 22.7rem;
+    height: 4.6rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 0.5rem;
+}
+
+.accounttext {
+    margin-top: 1rem;
+}
+
+.accounttext p {
+    font-weight: 900;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+
+.accountowner p {
+    margin-top: 1.5rem;
+}
+
+.banklogo {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.banklogo img {
+    width: 3.4rem;
+    height: 3.4rem;
+}
+
+.accountinfo {
+    width: 13rem;
+    height: 3.4rem;
+}
+
+.accountowner {
+    width: 3.6rem;
+    height: 1.6rem;
+}
+
+.optionbuttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.moimaccountcontent {
+    height: 20vh;
+    border: 1px solid black;
+    display: flex;
+}
+
+.moimaccountbox {
+    width: 33rem;
+    height: 10rem;
+    background-color: white;
+    border-radius: 1rem;
+    margin: auto;
+}
+
+.moimaccountinfo {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.moimbanklogo {
+    display: flex;
+    width: 4.3rem;
+    height: 3.5rem;
+    margin-left: 1rem;
+}
+
+.moimbanklogo img {
+    width: 100%;
+    height: 100%;
+}
+
+.accountbalance {
+    display: flex;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    justify-content: space-around;
+}
+
+.chargebalance {
+    display: flex;
+}
+
+.chargebtn {
+    font-size: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
