@@ -20,6 +20,7 @@
 .Logo{
     margin-top: 0.5rem;
     max-height: 11.6rem;
+    z-index: 0.1rem;
 }
 
 input:focus{
@@ -63,4 +64,12 @@ input:focus{
     display: flex;
     justify-content: center;
     border-top: rgba(194, 194, 194, 0.438) solid;
+}
+
+.backLogo{
+    z-index: 1;
+    width: 4rem;
+    height: 4rem;
+    position: fixed;
+    color: #D3CFCF;
 }

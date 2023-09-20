@@ -1,7 +1,8 @@
 import styles from "./Signup.module.css";
 import dondoc from '../../../assets/image/dondocLogo.png'
-
-
+import {IoChevronBack} from 'react-icons/io5'
+import { IconContext } from "react-icons";
+import { useNavigate } from "react-router-dom";
 
 interface SignProps {
   name: string;
@@ -11,9 +12,22 @@ interface SignProps {
 
 
 
+
 function Signup() {
+  const naviate = useNavigate();
+  
   return (
     <div>
+
+    <IconContext.Provider  value={{className: styles.backLogo}}>
+      <div onClick={()=>{
+        naviate(-1)
+      }} >
+      <IoChevronBack/>
+      </div>
+    </IconContext.Provider>
+
+
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />
       </div>
