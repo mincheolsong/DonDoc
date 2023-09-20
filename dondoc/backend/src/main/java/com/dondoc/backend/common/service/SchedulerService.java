@@ -31,7 +31,7 @@ public class SchedulerService {
         LocalDate now = LocalDate.now();
 
         for(Mission m : missionList) {
-            if(now.isEqual(m.getEndDate())){ // 미션 종료일이 오늘이면
+            if(now.isAfter(m.getEndDate())){ 
                 if(m.getStatus()==0){
                     m.setStatus(2); // 미션 거절
                 } else if(m.getStatus()==1){
