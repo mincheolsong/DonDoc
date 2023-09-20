@@ -40,6 +40,9 @@ public class AccountDto {
         private String bankName;
 
         @JsonIgnore
+        private Long accountId;
+
+        @JsonIgnore
         private boolean success;
     }
 }
