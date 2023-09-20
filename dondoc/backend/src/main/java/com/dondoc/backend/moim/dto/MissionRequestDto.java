@@ -2,6 +2,8 @@ package com.dondoc.backend.moim.dto;
 
 import com.dondoc.backend.moim.entity.Mission;
 import com.dondoc.backend.moim.entity.MoimMember;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,27 +14,35 @@ import java.time.LocalDateTime;
 
 public class MissionRequestDto {
 
+    @ApiModel(value = "미션 요청", description = "미션 요청에 사용하는 request DTO")
     @Data
     public static class Request {
 
+        @ApiModelProperty(value = "회원 ID")
         @NotNull(message = "회원의 ID를 입력해주세요.")
         private Long userId;
 
+        @ApiModelProperty(value = "모임 ID")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
+        @ApiModelProperty(value = "사용처")
         @NotBlank(message = "사용처를 입력하세요.")
         private String title;
 
+        @ApiModelProperty(value = "요청 금액")
         @NotNull(message = "요청 금액을 입력하세요.")
         private int amount;
 
+        @ApiModelProperty(value = "요청 상세내용")
         @NotBlank(message = "요청 상세내용을 입력하세요.")
         private String content;
 
+        @ApiModelProperty(value = "미션 등록 할 회원 ID")
         @NotNull(message = "미션 등록 할 회원의 ID를 입력하세요.")
         private Long missionMemberId;
 
+        @ApiModelProperty(value = "미션 종료 일자")
         @NotNull(message = "미션 종료 일자를 입력하세요.")
         private LocalDate endDate;
 

@@ -6,6 +6,8 @@ import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.service.MoimService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -66,8 +68,9 @@ public class MoimController {
 
 
     /** 관리자에게 출금 요청 */
+    @ApiOperation(value = "출금 요청", notes = "관리자에게 출금 요청하는 API", response = ApiResult.class)
     @PostMapping("/withdraw_req")
-    public ApiResult<?> withdrawReq(@Valid @RequestBody WithdrawRequestDto.Request req) {
+    public ApiResult<?> withdrawReq(@ApiParam(value = "출금 요청에 필요한 Request Dto",required = true) @Valid @RequestBody WithdrawRequestDto.Request req) {
         try{
             WithdrawRequestDto.Response result = moimService.withdrawReq(req);
             return ApiUtils.success(result);
@@ -78,8 +81,9 @@ public class MoimController {
     }
 
     /** 관리자에게 미션 요청 */
+    @ApiOperation(value = "미션 요청", notes = "관리자에게 미션 요청하는 API", response = ApiResult.class)
     @PostMapping("/mission_req")
-    public ApiResult<?> missionReq(@Valid @RequestBody MissionRequestDto.Request req) {
+    public ApiResult<?> missionReq(@ApiParam(value = "미션 요청에 필요한 Request Dto",required = true) @Valid @RequestBody MissionRequestDto.Request req) {
         try{
             MissionRequestDto.Response result = moimService.missionReq(req);
             return ApiUtils.success(result);
@@ -90,8 +94,9 @@ public class MoimController {
     }
 
     /** 요청 관리/목록 - 전체 리스트 조회 */
+    @ApiOperation(value = "요청 리스트 조회", notes = "출금/미션의 요청 리스트를 조회하는 API", response = ApiResult.class)
     @PostMapping("/list_req")
-    public ApiResult<?> getRequestList(@Valid @RequestBody AllRequestDto.Request req) {
+    public ApiResult<?> getRequestList(@ApiParam(value = "요청 리스트 조회에 필요한 Request Dto",required = true) @Valid @RequestBody AllRequestDto.Request req) {
         try{
             AllRequestDto.Response result = moimService.getRequestList(req);
             return ApiUtils.success(result);
@@ -102,8 +107,9 @@ public class MoimController {
     }
 
     /** 요청 상세조회 */
+    @ApiOperation(value = "요청 상세조회", notes = "출금/미션의 요청을 상세 조회하는 API", response = ApiResult.class)
     @PostMapping("/detail_req")
-    public ApiResult<?> getRequestDetail(@Valid @RequestBody DetailRequestDto.Request req) {
+    public ApiResult<?> getRequestDetail(@ApiParam(value = "요청 상세조회에 필요한 Request Dto",required = true) @Valid @RequestBody DetailRequestDto.Request req) {
         try{
             DetailRequestDto.Response result = moimService.getRequestDetail(req);
             return ApiUtils.success(result);
@@ -114,8 +120,9 @@ public class MoimController {
     }
 
     /** 출금 요청 승인 */
+    @ApiOperation(value = "출금요청 승인", notes = "관리자가 출금 요청을 승인하는 API", response = ApiResult.class)
     @PostMapping("/allow_req")
-    public ApiResult<?> allowRequest(@Valid @RequestBody AllowRequestDto.Request req) {
+    public ApiResult<?> allowRequest(@ApiParam(value = "출금요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req) {
         try{
             AllowRequestDto.Response result = moimService.allowRequest(req);
             return ApiUtils.success(result);
@@ -127,8 +134,9 @@ public class MoimController {
 
 
     /** 출금 요청 거절 */
+    @ApiOperation(value = "출금요청 거절", notes = "관리자가 출금 요청을 거절하는 API", response = ApiResult.class)
     @PostMapping("/reject_req")
-    public ApiResult<?> rejectRequest(@Valid @RequestBody RejectRequestDto.Request req) {
+    public ApiResult<?> rejectRequest(@ApiParam(value = "출금요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req) {
         try{
             String result = moimService.rejectRequest(req);
             return ApiUtils.success(result);
@@ -138,9 +146,10 @@ public class MoimController {
         }
     }
 
-    /** 출금 요청 승인 */
+    /** 미션 요청 승인 */
+    @ApiOperation(value = "미션요청 승인", notes = "관리자가 미션 요청을 승인하는 API", response = ApiResult.class)
     @PostMapping("/allow_mission")
-    public ApiResult<?> allowMissionRequest(@Valid @RequestBody AllowRequestDto.Request req) {
+    public ApiResult<?> allowMissionRequest(@ApiParam(value = "미션요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req) {
         try{
             AllowRequestDto.Response result = moimService.allowMissionRequest(req);
             return ApiUtils.success(result);
@@ -151,9 +160,10 @@ public class MoimController {
     }
 
 
-    /** 출금 요청 거절 */
+    /** 미션 요청 거절 */
+    @ApiOperation(value = "미션요청 거절", notes = "관리자가 미션 요청을 거절하는 API", response = ApiResult.class)
     @PostMapping("/reject_mission")
-    public ApiResult<?> rejectMissionRequest(@Valid @RequestBody RejectRequestDto.Request req) {
+    public ApiResult<?> rejectMissionRequest(@ApiParam(value = "미션요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req) {
         try{
             String result = moimService.rejectMissionRequest(req);
             return ApiUtils.success(result);

@@ -1,5 +1,7 @@
 package com.dondoc.backend.moim.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,18 +9,23 @@ import javax.validation.constraints.NotNull;
 
 public class AllowRequestDto {
 
+    @ApiModel(value = "요청 승인", description = "요청 승인에 사용하는 request DTO")
     @Data
     public static class Request {
 
+        @ApiModelProperty(value = "회원 ID")
         @NotNull(message = "회원의 ID를 입력해주세요.")
         private Long userId;
 
+        @ApiModelProperty(value = "모임 ID")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
+        @ApiModelProperty(value = "승인 할 요청 ID")
         @NotNull(message = "승인 할 요청 ID를 입력해주세요.")
         private Long requestId;
 
+        @ApiModelProperty(value = "비밀번호")
         @NotNull(message = "비밀번호를 입력해주세요.")
         private String password;
     }
