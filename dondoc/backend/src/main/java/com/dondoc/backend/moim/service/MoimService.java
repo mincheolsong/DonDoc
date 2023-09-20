@@ -21,5 +21,5 @@ public interface MoimService {
 
     AllowRequestDto.Response allowRequest(AllowRequestDto.Request req) throws Exception;
 
-    AllowRequestDto.Response rejectRequest(AllowRequestDto.Request req) throws Exception;
+    String rejectRequest(RejectRequestDto.Request req) throws Exception;
 }

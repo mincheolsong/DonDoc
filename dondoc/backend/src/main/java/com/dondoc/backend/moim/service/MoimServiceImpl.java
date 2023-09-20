@@ -359,8 +359,30 @@ public class MoimServiceImpl implements MoimService{
 
     /** 출금 요청 거절 */
     @Override
-    public AllowRequestDto.Response rejectRequest(AllowRequestDto.Request req) throws Exception {
-        return null;
+    @Transactional
+    public String rejectRequest(RejectRequestDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 출금요청을 한 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
+
+        WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(withdrawRequest.getStatus()!=0){
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 출금요청에서 status 변경
+        withdrawRequest.setStatus(2);
+
+        return "출금요청이 취소 되었습니다.";
+
     }
 
 

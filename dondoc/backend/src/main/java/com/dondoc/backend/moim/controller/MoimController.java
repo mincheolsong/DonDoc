@@ -128,17 +128,14 @@ public class MoimController {
 
     /** 출금 요청 거절 */
     @PostMapping("/reject_req")
-    public ApiResult<?> rejectRequest(@Valid @RequestBody AllowRequestDto.Request req) {
+    public ApiResult<?> rejectRequest(@Valid @RequestBody RejectRequestDto.Request req) {
         try{
-            AllowRequestDto.Response result = moimService.rejectRequest(req);
+            String result = moimService.rejectRequest(req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 
 }
