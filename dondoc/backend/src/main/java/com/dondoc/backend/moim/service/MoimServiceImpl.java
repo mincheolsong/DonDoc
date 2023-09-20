@@ -380,7 +380,7 @@ public class MoimServiceImpl implements MoimService{
         // 출금요청에서 status 변경
         withdrawRequest.setStatus(2);
 
-        return "출금요청이 취소 되었습니다.";
+        return "출금요청이 거절 되었습니다.";
 
     }
 
@@ -393,7 +393,7 @@ public class MoimServiceImpl implements MoimService{
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
-        
+
         // 관리자 비밀번호 확인 (User 로직 끝나면 수정하기)
         if(!member.getUser().getPassword().equals(req.getPassword()))
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -458,8 +458,28 @@ public class MoimServiceImpl implements MoimService{
 
     /** 미션 요청 거절 */
     @Override
+    @Transactional
     public String rejectMissionRequest(RejectRequestDto.Request req) throws Exception {
-        return null;
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 거절하려는 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
+
+        Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(mission.getStatus()!=0){
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 미션요청에서 status 변경
+        mission.setStatus(2);
+
+        return "미션요청이 거절 되었습니다.";
     }
 
 
