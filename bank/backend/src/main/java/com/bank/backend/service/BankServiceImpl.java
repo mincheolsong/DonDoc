@@ -69,10 +69,7 @@ public class BankServiceImpl implements BankService {
 
         // 존재하는 경우
         if(owner.isPresent()){
-            return OwnerDto.Response.builder()
-                    .owner(owner.get())
-                    .isPresent(false)
-                .build();
+            throw new RuntimeException("존재하는 예금주입니다.");
         }
 
         // 존재하지 않음
@@ -103,10 +100,7 @@ public class BankServiceImpl implements BankService {
                     .build();
         }
 
-        // 존재하지 않음
-        return OwnerDto.Response.builder()
-                .isPresent(true)
-                .build();
+        throw new NoSuchElementException("예금주 정보가 존재하지 않습니다.");
     }
     // 예금주 생성
     @Override
@@ -126,10 +120,7 @@ public class BankServiceImpl implements BankService {
 
         // 개수의 초과
         if(!creatable){
-            return AccountDto.Response.builder()
-                    .msg("생성가능한 계좌의 수가 초과했습니다.")
-                    .success(false)
-                    .build();
+            throw new Exception("생성가능한 계좌의 수가 초과했습니다.");
         }
 
         // 은행 코드 탐색
@@ -180,6 +171,7 @@ public class BankServiceImpl implements BankService {
         // 예금주 조회
         Owner owner = ownerRepository.findByIdentificationNumber(identification)
                 .orElseThrow(() -> new NoSuchElementException("예금주가 존재하지 않습니다."));
+
         // 계좌 목록 조회
         List<Account> accountList = accountRepository.findAllByOwner(owner);
 
@@ -301,14 +293,8 @@ public class BankServiceImpl implements BankService {
 
         // 조회 완료
         if(request.getBankCode() != account.getBankCode().getId()){
-
-            // 조회 실패
-            return AccountCertificationDto.Response.builder()
-                    .msg("계좌 정보가 일치하지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("계좌정보가 일치하지 않습니다.");
         }
-
 
         return AccountCertificationDto.Response.builder()
                 .accountNumber(account.getAccountNumber())
@@ -332,10 +318,7 @@ public class BankServiceImpl implements BankService {
                 .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
 
         if(!sendAccount.isStatus()){
-            return TransferDto.Response.builder()
-                    .msg("정지된 계좌입니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("정지된 계좌입니다.");
         }
 
         // 상대방 계좌 조회
@@ -344,10 +327,7 @@ public class BankServiceImpl implements BankService {
 
         // 비밀번호 길이 오류
         if(request.getPassword().toString().length() != 4){
-            return TransferDto.Response.builder()
-                    .msg("비밀번호의 길이가 맞지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("비밀번호의 길이가 맞지 않습니다.");
         }
 
         // 해시 생성
@@ -363,17 +343,10 @@ public class BankServiceImpl implements BankService {
                 sendAccount.setStatus(false);
 
                 // 계좌 정지
-                return TransferDto.Response.builder()
-                        .msg("비밀번호 5회 실패로 계좌가 정저됩니다.")
-                        .success(false)
-                        .build();
+                throw new NoSuchElementException("비밀번호 5회 실패로 계좌가 정지됩니다.");
             }
-
             // 비밀번호 오류
-            return TransferDto.Response.builder()
-                    .msg("비밀번호가 일치하지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
         }
 
         // 거래금액
@@ -387,10 +360,7 @@ public class BankServiceImpl implements BankService {
 
         // 잔액 부족
         if(sendBalance < 0){
-            return TransferDto.Response.builder()
-                    .msg("잔액이 부족합니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("잔액이 부족합니다.");
         }
 
         if(request.getSign() == ""){
