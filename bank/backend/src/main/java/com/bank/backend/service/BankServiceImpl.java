@@ -333,9 +333,6 @@ public class BankServiceImpl implements BankService {
         // 해시 생성
         String password = EncryptionUtils.encryption(request.getPassword(), sendAccount.getSalt());
 
-        log.info("password: {}", password);
-        log.info("sendAccount.getPassword(): {}", sendAccount.getPassword());
-
         // 비밀번호 조회
         if(!password.equals(sendAccount.getPassword())){
             // 틀린 횟수 추가
