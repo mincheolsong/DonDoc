@@ -1,10 +1,7 @@
 package com.dondoc.backend.moim.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
-import com.dondoc.backend.moim.dto.AllRequestDto;
-import com.dondoc.backend.moim.dto.DetailRequestDto;
-import com.dondoc.backend.moim.dto.MissionRequestDto;
-import com.dondoc.backend.moim.dto.WithdrawRequestDto;
+import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.*;
 import com.dondoc.backend.moim.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -287,6 +284,83 @@ public class MoimServiceImpl implements MoimService{
         } else {
             throw new IllegalArgumentException("조회 할 요청타입을 다시 확인해 주세요.");
         }
+    }
+
+    /** 출금 요청 승인 */
+    @Override
+    @Transactional
+    public AllowRequestDto.Response allowRequest(AllowRequestDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 출금요청을 한 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
+
+        WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(withdrawRequest.getStatus()!=0){
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 출금 요청한 회원
+        MoimMember moimMember = withdrawRequest.getMoimMember();
+
+        // 모임 유형에 따라 다른 로직
+        if(member.getMoim().getMoimType() == 2) { // 두명 관리자
+
+            // 출금 요청한 사람이 관리자이면 ?
+            // 다른 관리자의 승인 필요
+            if(member.getUser().getId() == moimMember.getUser().getId()) {
+                throw new IllegalArgumentException("본인의 출금 요청에 승인할 수 없습니다.");
+            }
+        }
+
+        log.info("moimMemberAccountNumber : {}", moimMember.getAccount().getAccountNumber());
+        log.info("moimAccountNumber : {}", moimMember.getMoim().getMoimAccountNumber());
+
+        // 내가 등록해놓은 계좌로 이체 => Bank 계좌이체 API 사용
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("identificationNumber", moimMember.getMoim().getIdentificationNumber());
+        bodyMap.put("accountId", moimMember.getMoim().getMoimAccountId());
+        bodyMap.put("toCode", moimMember.getAccount().getBankCode());
+        bodyMap.put("toAccount", moimMember.getAccount().getAccountNumber());
+        bodyMap.put("transferAmount", withdrawRequest.getAmount());
+        bodyMap.put("password", req.getPassword());
+        bodyMap.put("sign", "");
+        bodyMap.put("toSign", "");
+
+        Map response = webClient.post()
+                .uri("/bank/account/transfer")
+                .bodyValue(bodyMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true") { // 계좌이체 성공
+            // 출금요청에서 status 변경
+            withdrawRequest.setStatus(1);
+            //withdrawRequestRepository.deleteById(withdrawRequest.getId());
+
+            return AllowRequestDto.Response.toDTO(
+                "계좌 이체가 성공적으로 이루어졌습니다.",
+                    moimMember.getAccount().getAccountNumber(),
+                    withdrawRequest.getAmount()
+            );
+
+        } else { // 계좌이체 실패
+            throw new Exception("계좌 이체가 정상적으로 이루어지지 않았습니다.");
+        }
+    }
+
+    /** 출금 요청 거절 */
+    @Override
+    public AllowRequestDto.Response rejectRequest(AllowRequestDto.Request req) throws Exception {
+        return null;
     }
 
 

@@ -17,5 +17,6 @@ public interface WithdrawRequestRepository extends JpaRepository<WithdrawRequest
     List<WithdrawRequest> findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(Moim moim, int status);
 
     Optional<WithdrawRequest> findByMoimMemberAndMoimMember_MoimAndId(MoimMember moimMember, Moim moim, Long id);
+    Optional<WithdrawRequest> findByMoimMember_MoimAndId(Moim moim, Long id);
 
 }
