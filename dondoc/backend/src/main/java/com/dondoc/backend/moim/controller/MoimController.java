@@ -138,4 +138,29 @@ public class MoimController {
         }
     }
 
+    /** 출금 요청 승인 */
+    @PostMapping("/allow_mission")
+    public ApiResult<?> allowMissionRequest(@Valid @RequestBody AllowRequestDto.Request req) {
+        try{
+            AllowRequestDto.Response result = moimService.allowMissionRequest(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    /** 출금 요청 거절 */
+    @PostMapping("/reject_mission")
+    public ApiResult<?> rejectMissionRequest(@Valid @RequestBody RejectRequestDto.Request req) {
+        try{
+            String result = moimService.rejectMissionRequest(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

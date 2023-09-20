@@ -296,7 +296,7 @@ public class MoimServiceImpl implements MoimService{
 
         log.info("member : {}", member.getUser().getName());
 
-        // 일반 이용자가 출금요청을 한 경우
+        // 일반 이용자가 승인하려는 경우
         if(member.getUserType()!=1)
             throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
 
@@ -346,10 +346,9 @@ public class MoimServiceImpl implements MoimService{
             withdrawRequest.setStatus(1);
             //withdrawRequestRepository.deleteById(withdrawRequest.getId());
 
-            return AllowRequestDto.Response.toDTO(
+            return AllowRequestDto.Response.toDTO_WithdrawReq(
                 "계좌 이체가 성공적으로 이루어졌습니다.",
-                    moimMember.getAccount().getAccountNumber(),
-                    withdrawRequest.getAmount()
+                    WithdrawRequestDto.Response.toDTO(withdrawRequest)
             );
 
         } else { // 계좌이체 실패
@@ -367,7 +366,7 @@ public class MoimServiceImpl implements MoimService{
 
         log.info("member : {}", member.getUser().getName());
 
-        // 일반 이용자가 출금요청을 한 경우
+        // 일반 이용자가 거절하려는 경우
         if(member.getUserType()!=1)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
 
@@ -383,6 +382,85 @@ public class MoimServiceImpl implements MoimService{
 
         return "출금요청이 취소 되었습니다.";
 
+    }
+
+    /** 미션 요청 승인 */
+    @Override
+    @Transactional
+    public AllowRequestDto.Response allowMissionRequest(AllowRequestDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 승인하려는 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
+
+        Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(mission.getStatus()!=0){
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 미션 요청한 회원
+        MoimMember moimMember = mission.getMoimMember();
+
+        // 모임 유형에 따라 다른 로직
+        if(member.getMoim().getMoimType() == 2) { // 두명 관리자
+
+            // 출금 요청한 사람이 관리자이면 ?
+            // 다른 관리자의 승인 필요
+            if(member.getUser().getId() == moimMember.getUser().getId()) {
+                throw new IllegalArgumentException("본인의 미션 요청에 승인할 수 없습니다.");
+            }
+        }
+
+        // 관리자 비밀번호 확인 (User 로직 끝나면 수정하기)
+        if(!member.getUser().getPassword().equals(req.getPassword()))
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+
+
+        // 현재 상황에서 승인할 수 있는 요청인지 -> limited 확인
+        Map response = webClient.get()
+                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true"){ // 계좌 조회 성공
+            Map<String,String> res = (Map<String, String>) response.get("response");
+
+            // 현재 모임 잔액 - 제한된 금액
+            int possibleAmount = Integer.parseInt(String.valueOf(res.get("balance"))) - member.getMoim().getLimited();
+
+            if(possibleAmount < mission.getAmount()){
+                throw new IllegalArgumentException("승인 가능한 금액을 초과하였습니다.");
+            } else { // 승인 가능한 금액일 때
+
+                // 제한금액 갱신
+                moimMember.getMoim().setLimited(member.getMoim().getLimited()+mission.getAmount());
+
+                // status 바꾸기
+                mission.setStatus(1);
+
+                return AllowRequestDto.Response.toDTO_Mission(
+                        "미션 승인이 성공적으로 이루어졌습니다.",
+                        MissionRequestDto.Response.toDTO(mission)
+                );
+            }
+        } else { // 계좌 조회 실패
+            throw new NotFoundException("계좌 조회에 실패하였습니다.");
+        }
+
+    }
+
+    /** 미션 요청 거절 */
+    @Override
+    public String rejectMissionRequest(RejectRequestDto.Request req) throws Exception {
+        return null;
     }
 
 

@@ -28,14 +28,20 @@ public class AllowRequestDto {
     public static class Response {
 
         private String msg;
-        private String accountNumber;
-        private int amount;
+        private WithdrawRequestDto.Response withdrawRequest;
+        private MissionRequestDto.Response mission;
 
-        public static AllowRequestDto.Response toDTO(String msg, String accountNumber, int amount) {
-            return Response.builder()
+        public static AllowRequestDto.Response toDTO_WithdrawReq(String msg, WithdrawRequestDto.Response entity) {
+            return AllowRequestDto.Response.builder()
                     .msg(msg)
-                    .accountNumber(accountNumber)
-                    .amount(amount)
+                    .withdrawRequest(entity)
+                    .build();
+        }
+
+        public static AllowRequestDto.Response toDTO_Mission(String msg, MissionRequestDto.Response entity) {
+            return AllowRequestDto.Response.builder()
+                    .msg(msg)
+                    .mission(entity)
                     .build();
         }
     }
