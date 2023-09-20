@@ -78,16 +78,16 @@ function DetailFirst() {
           <div className={styles.moimaccountbox}>
             <div className={styles.moimaccountinfo}>
               <div className={styles.moimbanklogo}>
-                Logo
+                <img src={haaland} alt="" className={styles.moimaccountlogo} />
               </div>
               <div className={styles.moiminfo}>
-                <p>돈독 모임 계좌</p>
-                <p>123-12847-12478</p>
+                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>돈독 모임 계좌</p>
+                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>123-12847-12478</p>
               </div>
             </div>
             <div className={styles.accountbalance}>
               <div className={styles.accountwon}>
-                <p style={{fontSize: "2rem",}}>100000원</p>
+                <p style={{fontSize: "2.6rem", fontWeight:'900', border: "1px solid black", margin: "0rem"}}>100000원</p>
               </div>
               <div className={styles.chargebalance}>
                 <button className={styles.chargebtn}>충전하기</button>

@@ -139,18 +139,43 @@
 }
 
 .moimaccountbox {
-    width: 90%;
-    height: 90%;
-    background-color: blue;
+    width: 33rem;
+    height: 10rem;
+    background-color: white;
     border-radius: 1rem;
     margin: auto;
 }
 
 .moimaccountinfo {
     display: flex;
+    margin-top: 1rem;
+}
+
+.moimbanklogo {
+    display: flex;
+    width: 4.3rem;
+    height: 3.5rem;
+    margin-left: 1rem;
+}
+
+.moimbanklogo img {
+    width: 100%;
+    height: 100%;
 }
 
 .accountbalance {
     display: flex;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    justify-content: space-around;
+}
 
+.chargebalance {
+    display: flex;
+}
+
+.chargebtn {
+    font-size: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
