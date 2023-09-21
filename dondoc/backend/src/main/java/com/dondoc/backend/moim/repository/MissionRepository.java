@@ -14,7 +14,7 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     List<Mission> findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(Moim moim, int status);
     List<Mission> findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim);
     List<Mission> findByMoimMemberAndStatus(MoimMember moimMember, int status);
-    List<Mission> findByStatusNot(int status);
+    List<Mission> findByStatusOrStatus(int status1, int status2);
 
     Optional<Mission> findByMoimMemberAndMoimMember_MoimAndId(MoimMember moimMember, Moim moim, Long id);
     Optional<Mission> findByMoimMember_MoimAndId(Moim moim, Long id);

@@ -1,6 +1,7 @@
 package com.dondoc.backend.common.service;
 
 import com.dondoc.backend.moim.entity.Mission;
+import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +27,20 @@ public class SchedulerService {
 
         log.info("---- Start SchedulerService ----");
 
-        List<Mission> missionList = missionRepository.findByStatusNot(2);
+        List<Mission> missionList = missionRepository.findByStatusOrStatus(0, 1);
 
         LocalDate now = LocalDate.now();
 
         for(Mission m : missionList) {
             if(now.isAfter(m.getEndDate())){ 
-                if(m.getStatus()==0){
-                    m.setStatus(2); // 미션 거절
-                } else if(m.getStatus()==1){
-                    m.setStatus(3); // 미션 실패
+                if(m.getStatus()==0){ // 승인 대기 -> 승인 거절
+                    m.setStatus(2);
+                } else if(m.getStatus()==1) { // 미션 진행 중 -> 미션 실패
+                    m.setStatus(3);
+                    
+                    // limited 계산
+                    Moim moim = m.getMoimMember().getMoim();
+                    moim.setLimited(moim.getLimited() - m.getAmount());
                 }
             }
         }
