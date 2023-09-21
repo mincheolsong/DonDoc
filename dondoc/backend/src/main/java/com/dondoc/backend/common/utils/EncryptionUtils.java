@@ -1,12 +1,15 @@
 package com.dondoc.backend.common.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
+@Component
 public class EncryptionUtils {
 
     private static final int SALT_SIZE = 16;
-    public static String encryption(String str, String salt) throws Exception{
+    public String encryption(String str, String salt) throws Exception{
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
         for(int i = 0; i < 100; i++){
@@ -19,7 +22,7 @@ public class EncryptionUtils {
         return str;
     }
 
-    public static String byteToString(byte[] temp){
+    public String byteToString(byte[] temp){
         StringBuilder sb = new StringBuilder();
         for(byte a : temp){
             sb.append(String.format("%02x", a));
@@ -27,7 +30,7 @@ public class EncryptionUtils {
         return sb.toString();
     }
 
-    public static String makeSalt() {
+    public String makeSalt() {
         SecureRandom random = new SecureRandom();
 
         byte[] temp = new byte[SALT_SIZE];
@@ -36,7 +39,7 @@ public class EncryptionUtils {
         return byteToString(temp);
     }
 
-    public static String makeAccountNumber() {
+    public String makeAccountNumber() {
         SecureRandom random = new SecureRandom();
 
         long randomNumber = random.nextLong();
