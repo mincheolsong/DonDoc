@@ -1,8 +1,12 @@
 package com.dondoc.backend.moim.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -11,6 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class WithdrawRequest {
 
     @Id
@@ -18,6 +23,7 @@ public class WithdrawRequest {
     @Column(name="id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="moimMemberId")
     private MoimMember moimMember;
@@ -40,4 +46,9 @@ public class WithdrawRequest {
 
     @OneToMany(mappedBy = "withdrawRequest")
     private List<AllowRequest> allowRequest;
+
+    @Column(name="createdAt", updatable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
 }

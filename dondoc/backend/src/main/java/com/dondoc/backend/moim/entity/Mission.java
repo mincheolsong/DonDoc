@@ -1,10 +1,12 @@
 package com.dondoc.backend.moim.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,6 +23,7 @@ public class Mission {
     @Column(name="id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="moimMemberId")
     private MoimMember moimMember;
@@ -45,6 +48,6 @@ public class Mission {
     private LocalDateTime startDate;
 
     @Column(name="endDate", updatable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
 }
