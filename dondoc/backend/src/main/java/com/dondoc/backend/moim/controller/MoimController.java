@@ -201,6 +201,19 @@ public class MoimController {
         }
     }
 
+    /** 미션 포기 */
+    @ApiOperation(value = "미션 포기", notes = "회원이 미션 포기하는 API", response = ApiResult.class)
+    @PostMapping("/quit_mission")
+    public ApiResult<?> quitMission(@ApiParam(value = "미션 미션에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req) {
+        try{
+            SuccessOrNotMissionDto.Response result = moimService.quitMission(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     /** 나의 미션 조회 */
     @ApiOperation(value = "나의 미션 조회", notes = "내 미션 리스트를 조회하는 API", response = ApiResult.class)

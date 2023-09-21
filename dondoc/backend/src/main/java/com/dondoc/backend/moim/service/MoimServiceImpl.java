@@ -596,6 +596,38 @@ public class MoimServiceImpl implements MoimService{
         );
     }
 
+    /** 미션 포기 */
+    @Override
+    @Transactional
+    public SuccessOrNotMissionDto.Response quitMission(SuccessOrNotMissionDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        Mission mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(mission.getStatus()==0){
+            throw new IllegalArgumentException("승인 대기 중인 미션입니다.");
+        } else if(mission.getStatus()!=1) {
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 미션요청에서 status 변경
+        mission.setStatus(3);
+
+        return SuccessOrNotMissionDto.Response.toDTO(
+                "미션 포기하셨습니다.",
+                mission.getMoimMember().getMoim().getMoimName(),
+                mission.getTitle(),
+                mission.getContent(),
+                mission.getAmount(),
+                mission.getEndDate()
+        );
+    }
+
 
     /** 나의 미션 조회 */
     @Override
