@@ -557,8 +557,8 @@ public class MoimServiceImpl implements MoimService{
 
         if(response.get("success").toString()=="true") { // 계좌이체 성공
 
-            // db에서 해당 미션 삭제
-            missionRepository.deleteById(mission.getId());
+            // 미션 status 변경
+            mission.setStatus(4);
 
             // 모임 limited 변경
             member.getMoim().setLimited(member.getMoim().getLimited()-mission.getAmount());
@@ -575,6 +575,12 @@ public class MoimServiceImpl implements MoimService{
         } else { // 계좌이체 실패
             throw new Exception("계좌 이체가 정상적으로 이루어지지 않았습니다.");
         }
+    }
+
+    /** 미션 실패 */
+    @Override
+    public SuccessOrNotMissionDto.Response failMission(SuccessOrNotMissionDto.Request req) throws Exception {
+        return null;
     }
 
 }
