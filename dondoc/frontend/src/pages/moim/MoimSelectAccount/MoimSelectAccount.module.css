@@ -49,9 +49,10 @@
 }
 
 .buttondiv {
+    margin-top: 3rem;
     width: 100%;
 }
 
-.submitbutton {
+.submitbtn {
     width: 100%;
 }

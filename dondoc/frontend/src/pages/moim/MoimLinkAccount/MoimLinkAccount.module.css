@@ -1,3 +1,7 @@
+.container {
+    height: 100vh;
+}
+
 .topbar {
     margin-left: 3%;
     margin-right: 3%;
@@ -53,9 +57,10 @@
 
 
 .buttondiv {
+    margin-top: 3rem;
     width: 100%;
 }
 
-.submitbutton {
+.submitbtn {
     width: 100%;
 }

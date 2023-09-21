@@ -8,12 +8,12 @@ function RequestModal() {
 
   const ClickMissionTab = () => {
     setNowSelected(false)
-    console.log(nowSelected)
+    // console.log(nowSelected)
   }
 
   const ClickMoneyTab = () => {
     setNowSelected(true)
-    console.log(nowSelected)
+    // console.log(nowSelected)
   }
 
 

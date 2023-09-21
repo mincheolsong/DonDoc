@@ -1,14 +1,41 @@
+import { useState } from 'react';
 import styles from "./MoimSelectAccount.module.css";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 function MoimSelectAccount() {
+
+  const [selectCategory, setSelectCategory] = useState<string>('')
+
+  const ChangeCategory = () => {
+    setSelectCategory('한명관리')
+  }
+
+  const navigate = useNavigate()
+
+  const { state } = useLocation()
+  const moimName = state.moimName
+  const moimInfo = state.moimInfo
+  const account = state.account
+
+  const ToBack = () => {
+    navigate(-1)
+  }
+
+  const ToNext = () => {
+    navigate('/createresult', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory}})
+  }
+
+  const ShowProp = () => {
+    console.log(moimName, moimInfo, account)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
         <div className={styles.topbar}>
           <div className={styles.backbutton}>
-            <button className={styles.toback}>
+            <button className={styles.toback} onClick={ToBack}>
               back
             </button>
           </div>
@@ -29,26 +56,34 @@ function MoimSelectAccount() {
               </div>
 
               <div className={styles.selectcategories}>
-                <div className={styles.selectunit}>
-                  <label htmlFor="">한명 관리</label>
-                  <input type="radio" name="contact" value="select" />
-                </div>
-                <div className={styles.selectunit}>
-                  <label htmlFor="">두명 관리</label>
-                  <input type="radio" name="contact" value="select" />
-                </div>
-                <div className={styles.selectunit}>
-                  <label htmlFor="">공동 관리</label>
-                  <input type="radio" name="contact" value="select" />
-                </div>
+                <label htmlFor="oneman" onClick={ChangeCategory}>
+                  <div className={styles.selectunit}>
+                    <div>한명 관리</div>
+                    <input type="radio" id="oneman" />
+                  </div>
+                </label>
+                <label htmlFor="twoman">
+                  <div className={styles.selectunit}>
+                    <div>두명 관리</div>
+                    <input type="radio" id="twoman" />
+                  </div>
+                </label>
+                <label htmlFor="everybody">
+                  <div className={styles.selectunit}>
+                    <div>공동 관리</div>
+                    <input type="radio" id="everybody" />
+                  </div>
+                </label>
               </div>
             </div>
           </div>
 
         <div className={styles.buttondiv}>
-            <button className={styles.submitbutton}>다음</button>
+            <button className={styles.submitbtn} onClick={ToNext}>다음</button>
         </div>
         
+        <button onClick={ShowProp}></button>
+
         </div>
 
       </div>
