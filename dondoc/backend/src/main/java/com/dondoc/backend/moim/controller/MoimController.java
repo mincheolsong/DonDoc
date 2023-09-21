@@ -4,6 +4,7 @@ import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.moim.dto.*;
+import com.dondoc.backend.moim.entity.Mission;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.service.MoimService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
 @Slf4j
@@ -172,5 +174,21 @@ public class MoimController {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    /** 나의 미션 조회 */
+    @ApiOperation(value = "나의 미션 조회", notes = "내 미션 리스트를 조회하는 API", response = ApiResult.class)
+    @GetMapping("/my_mission/{userId}")
+    public ApiResult<?> getMyMission(@ApiParam(value = "미션 리스트를 조회에 필요한 회원 ID",required = true) @Valid @PathVariable Long userId) {
+        try{
+            List<MissionInfoDto.Response> result = moimService.getMyMission(userId);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 
 }

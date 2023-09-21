@@ -3,6 +3,8 @@ package com.dondoc.backend.moim.service;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.Moim;
 
+import java.util.List;
+
 public interface MoimService {
 
     boolean createOnwerAPI(String identificationNumber, String moimName);
@@ -26,4 +28,7 @@ public interface MoimService {
     AllowRequestDto.Response allowMissionRequest(AllowRequestDto.Request req) throws Exception;
 
     String rejectMissionRequest(RejectRequestDto.Request req) throws Exception;
+
+    List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception;
+
 }

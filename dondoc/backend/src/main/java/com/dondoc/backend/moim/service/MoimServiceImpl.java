@@ -4,6 +4,7 @@ import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.*;
 import com.dondoc.backend.moim.repository.*;
+import com.dondoc.backend.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -480,6 +481,23 @@ public class MoimServiceImpl implements MoimService{
         mission.setStatus(2);
 
         return "미션요청이 거절 되었습니다.";
+    }
+
+
+    /** 나의 미션 조회 */
+    @Override
+    public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_Id(userId)
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
+
+        List<MissionInfoDto.Response> resultMissionList = missionList.stream()
+                .map(entity -> MissionInfoDto.Response.toDTO(entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
+                .collect(Collectors.toList());
+
+        return resultMissionList;
     }
 
 

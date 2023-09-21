@@ -31,7 +31,7 @@ public class AllRequestDto {
     public static class Response {
 
         private List<WithdrawRequestDto.Response> withdrawRequestList; // 출금 요청
-        private List<MissionRequestDto.Response> missionList; // 출금 요청
+        private List<MissionRequestDto.Response> missionList; // 미션 요청
 
         public static AllRequestDto.Response toDTO(List<WithdrawRequestDto.Response> withdrawRequestList, List<MissionRequestDto.Response> missionList) {
             return Response.builder()
