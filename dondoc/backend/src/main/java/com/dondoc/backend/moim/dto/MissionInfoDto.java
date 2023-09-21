@@ -11,14 +11,16 @@ public class MissionInfoDto {
     @Data
     public static class Response {
 
+        private Long id;
         private String moimName;
         private String title;
         private String content;
         private int amount;
         private LocalDate endDate;
 
-        public static MissionInfoDto.Response toDTO(String moimName, String title, String content, int amount, LocalDate endDate) {
+        public static MissionInfoDto.Response toDTO(Long id, String moimName, String title, String content, int amount, LocalDate endDate) {
             return Response.builder()
+                    .id(id)
                     .moimName(moimName)
                     .title(title)
                     .content(content)
