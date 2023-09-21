@@ -32,7 +32,7 @@ public class MoimCreateDto {
                     .identificationNumber(entity.getIdentificationNumber())
                     .moimName(entity.getMoimName())
                     .introduce(entity.getIntroduce())
-                    .moimAccount(entity.getMoimAccount())
+                    //.moimAccount(entity.getMoimAccount())
                     .moimType(entity.getMoimType())
                     .build();
         }

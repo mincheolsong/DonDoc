@@ -73,20 +73,22 @@ public class BankController {
     public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 Request Dto",required = true) @RequestBody OwnerDto.Request request) throws Exception{
         log.info("{} 예금주 생성 요청", request.getOwnerName()); // log
 
-        // 예금주 검증
-        OwnerDto.Response certification= bankService.certification(request);
+        try{
+            // 예금주 검증
+            OwnerDto.Response certification= bankService.certification(request);
+            // 예금주 생성
+            OwnerDto.Response response = bankService.createOwner(certification);
 
-        if(!certification.isPresent()){
-            log.info("{} 예금주 정보가 존재합니다.", certification.getOwner().getOwnerName());
-            return ApiUtils.error("예금주 정보가 존재합니다.", HttpStatus.BAD_REQUEST);
+            log.info("{} 예금주 생성 완료", response.getOwner().getOwnerName());
+            log.info("식별번호 = {}", response.getOwner().getIdentificationNumber());
+            return ApiUtils.success("예금주 등록이 완료되었습니다.");
+
+        }catch(Exception e){
+            log.info(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        // 예금주 생성
-        OwnerDto.Response response = bankService.createOwner(certification);
 
-        log.info("{} 예금주 생성 완료", response.getOwner().getOwnerName());
-        log.info("식별번호 = {}", response.getOwner().getIdentificationNumber());
-        return ApiUtils.success("예금주 등록이 완료되었습니다.");
     }
 
     /** 계좌 개설 **/
@@ -95,16 +97,10 @@ public class BankController {
     public ApiResult createAccount(@ApiParam(value = "계좌 개설에 필요한 Request Dto",required = true) @RequestBody AccountDto.Request request) throws Exception {
         log.info("계좌 개설 요청");
 
-        // 예금주 검증
-        OwnerDto.Response certification = bankService.certification(request);
-
-        // 존재하지 않는 경우 불가
-        if (certification.isPresent()) {
-            log.error("예금주 정보가 존재하지 않습니다.");
-            return ApiUtils.error("예금주 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
-        }
         try{
-            // 계좌 개설
+            // 예금주 검증
+            OwnerDto.Response certification = bankService.certification(request);
+
             AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
             log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
             return ApiUtils.success(response);
@@ -154,6 +150,7 @@ public class BankController {
             return ApiUtils.success(result);
         } catch(Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
     }
 
