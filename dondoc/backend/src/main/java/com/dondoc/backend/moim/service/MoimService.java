@@ -31,4 +31,6 @@ public interface MoimService {
 
     List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception;
 
+    SuccessOrNotMissionDto.Response successMission(SuccessOrNotMissionDto.Request req) throws Exception;
+
 }

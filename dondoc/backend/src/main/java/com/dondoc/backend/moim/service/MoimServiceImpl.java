@@ -489,7 +489,7 @@ public class MoimServiceImpl implements MoimService{
     public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
 
         MoimMember member = moimMemberRepository.findByUser_Id(userId)
-                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+                .orElseThrow(()-> new NotFoundException("회원의 정보가 존재하지 않습니다."));
 
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
 
@@ -500,5 +500,81 @@ public class MoimServiceImpl implements MoimService{
         return resultMissionList;
     }
 
+    /** 미션 성공 */
+    @Override
+    @Transactional
+    public SuccessOrNotMissionDto.Response successMission(SuccessOrNotMissionDto.Request req) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 승인하려는 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
+
+        Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(mission.getStatus()==0){
+            throw new IllegalArgumentException("승인 대기 중인 미션입니다.");
+        } else if(mission.getStatus()!=1) {
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 미션 요청한 회원
+        MoimMember moimMember = mission.getMoimMember();
+
+        // 모임 유형에 따라 다른 로직
+        if(member.getMoim().getMoimType() == 2) { // 두명 관리자
+
+            // 해당 미션을 한 사람이 관리자이면 ?
+            // 다른 관리자의 승인 필요
+            if(member.getUser().getId() == moimMember.getUser().getId()) {
+                throw new IllegalArgumentException("본인의 미션에 승인할 수 없습니다.");
+            }
+        }
+
+        // 계좌이체
+        // 내가 등록해놓은 계좌로 이체 => Bank 계좌이체 API 사용
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("identificationNumber", moimMember.getMoim().getIdentificationNumber());
+        bodyMap.put("accountId", moimMember.getMoim().getMoimAccountId());
+        bodyMap.put("toCode", moimMember.getAccount().getBankCode());
+        bodyMap.put("toAccount", moimMember.getAccount().getAccountNumber());
+        bodyMap.put("transferAmount", mission.getAmount());
+        bodyMap.put("password", req.getPassword());
+        bodyMap.put("sign", "");
+        bodyMap.put("toSign", "");
+
+        Map response = webClient.post()
+                .uri("/bank/account/transfer")
+                .bodyValue(bodyMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true") { // 계좌이체 성공
+
+            // db에서 해당 미션 삭제
+            missionRepository.deleteById(mission.getId());
+
+            // 모임 limited 변경
+            member.getMoim().setLimited(member.getMoim().getLimited()-mission.getAmount());
+
+            return SuccessOrNotMissionDto.Response.toDTO(
+                    "미션 성공하셨습니다.",
+                    mission.getMoimMember().getMoim().getMoimName(),
+                    mission.getTitle(),
+                    mission.getContent(),
+                    mission.getAmount(),
+                    mission.getEndDate()
+            );
+
+        } else { // 계좌이체 실패
+            throw new Exception("계좌 이체가 정상적으로 이루어지지 않았습니다.");
+        }
+    }
 
 }

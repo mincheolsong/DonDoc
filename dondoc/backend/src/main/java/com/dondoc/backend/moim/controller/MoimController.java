@@ -175,6 +175,20 @@ public class MoimController {
         }
     }
 
+    /** 미션 성공 */
+    @ApiOperation(value = "미션 성공", notes = "관리자가 미션성공 인증하는 API", response = ApiResult.class)
+    @PostMapping("/success_mission")
+    public ApiResult<?> successMission(@ApiParam(value = "미션 성공에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req) {
+        try{
+            SuccessOrNotMissionDto.Response result = moimService.successMission(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     /** 나의 미션 조회 */
     @ApiOperation(value = "나의 미션 조회", notes = "내 미션 리스트를 조회하는 API", response = ApiResult.class)
     @GetMapping("/my_mission/{userId}")
@@ -187,8 +201,4 @@ public class MoimController {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
-
 }
