@@ -483,23 +483,6 @@ public class MoimServiceImpl implements MoimService{
         return "미션요청이 거절 되었습니다.";
     }
 
-
-    /** 나의 미션 조회 */
-    @Override
-    public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
-
-        MoimMember member = moimMemberRepository.findByUser_Id(userId)
-                .orElseThrow(()-> new NotFoundException("회원의 정보가 존재하지 않습니다."));
-
-        List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
-
-        List<MissionInfoDto.Response> resultMissionList = missionList.stream()
-                .map(entity -> MissionInfoDto.Response.toDTO(entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
-                .collect(Collectors.toList());
-
-        return resultMissionList;
-    }
-
     /** 미션 성공 */
     @Override
     @Transactional
@@ -579,8 +562,55 @@ public class MoimServiceImpl implements MoimService{
 
     /** 미션 실패 */
     @Override
+    @Transactional
     public SuccessOrNotMissionDto.Response failMission(SuccessOrNotMissionDto.Request req) throws Exception {
-        return null;
+
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+
+        log.info("member : {}", member.getUser().getName());
+
+        // 일반 이용자가 거절하려는 경우
+        if(member.getUserType()!=1)
+            throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
+
+        Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+        if(mission.getStatus()==0){
+            throw new IllegalArgumentException("승인 대기 중인 미션입니다.");
+        } else if(mission.getStatus()!=1) {
+            throw new IllegalArgumentException("승인 혹은 거절 된 요청입니다.");
+        }
+
+        // 미션요청에서 status 변경
+        mission.setStatus(3);
+
+        return SuccessOrNotMissionDto.Response.toDTO(
+                "미션 실패하셨습니다.",
+                mission.getMoimMember().getMoim().getMoimName(),
+                mission.getTitle(),
+                mission.getContent(),
+                mission.getAmount(),
+                mission.getEndDate()
+        );
+    }
+
+
+    /** 나의 미션 조회 */
+    @Override
+    public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
+
+        MoimMember member = moimMemberRepository.findByUser_Id(userId)
+                .orElseThrow(()-> new NotFoundException("회원의 정보가 존재하지 않습니다."));
+
+        List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
+
+        List<MissionInfoDto.Response> resultMissionList = missionList.stream()
+                .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
+                .collect(Collectors.toList());
+
+        return resultMissionList;
     }
 
 }

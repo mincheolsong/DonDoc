@@ -26,8 +26,7 @@ public class SuccessOrNotMissionDto {
         @NotNull(message = "승인 할 요청 ID를 입력해주세요.")
         private Long requestId;
 
-        @ApiModelProperty(value = "비밀번호")
-        @NotNull(message = "비밀번호를 입력해주세요.")
+        @ApiModelProperty(value = "계좌 비밀번호")
         private String password;
     }
 

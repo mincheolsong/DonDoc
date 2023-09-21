@@ -33,4 +33,6 @@ public interface MoimService {
 
     SuccessOrNotMissionDto.Response successMission(SuccessOrNotMissionDto.Request req) throws Exception;
 
+    SuccessOrNotMissionDto.Response failMission(SuccessOrNotMissionDto.Request req) throws Exception;
+
 }
