@@ -425,7 +425,7 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public Moim findById(Long id) throws Exception{
-        Moim moim = moimRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 모임이 존재하지 않습니다"));
+        Moim moim = moimRepository.findById(id).orElseThrow(() -> new NotFoundException("해당하는 모임이 존재하지 않습니다"));
         return moim;
     }
 
