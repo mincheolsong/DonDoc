@@ -111,7 +111,7 @@ public class MoimController {
         }
 
     }
-
+    @ApiOperation(value = "모임 리스트", notes = "헤더의 accessToken토큰을 이용해 현재 사용자의 모임 리스트를 가져오는 API", response = ApiResult.class)
     @GetMapping("/list") // 헤더의 토큰을 이용해서 가져온 userId를 이용해서 moimList를 조회
     public ApiResult getMoimList(Authentication authentication){
         // 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
@@ -130,7 +130,7 @@ public class MoimController {
         }
 
     }
-
+    @ApiOperation(value = "모임 상세조회", notes = "Moim테이블의 id값을 입력받아 모임 상세정보를 가져오는 API", response = ApiResult.class)
     @GetMapping("/detail/{moimId}")
     public ApiResult getMoimDetail(@PathVariable("moimId")Long moimId,Authentication authentication){
 
@@ -148,8 +148,9 @@ public class MoimController {
         }
     }
 
+    @ApiOperation(value = "모임 초대", notes = "모임에 회원을 초대하는 API", response = ApiResult.class)
     @PostMapping("/invite")
-    public ApiResult invite(@RequestBody MoimInviteDto.Request req){
+    public ApiResult invite(@ApiParam(value = "모임 초대에 필요한 값",required = true)@RequestBody MoimInviteDto.Request req){
         Long moimId = req.getMoimId();
         List<MoimInviteDto.InviteDto> inviteList = req.getInvite();
         int cnt;
@@ -163,9 +164,9 @@ public class MoimController {
 
         return ApiUtils.success( "moimId = " + moimId + "에 " + cnt + "명 초대 성공");
     }
-
+    @ApiOperation(value = "모임초대 수락 또는 거절", notes = "모임초대를 수락 또는 거절하는 API", response = ApiResult.class)
     @PostMapping("/invite/check")
-    public ApiResult inviteCheck(@RequestBody MoimInviteCheck.Request req) {
+    public ApiResult inviteCheck(@ApiParam(value = "모임초대 수락 또는 거절에 필요한 값",required = true)@RequestBody MoimInviteCheck.Request req) {
         Long userId = req.getUserId();
         Long moimId = req.getMoimId();
         Boolean accept = req.getAccept();
