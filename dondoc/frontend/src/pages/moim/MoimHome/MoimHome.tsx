@@ -1,8 +1,16 @@
 import styles from "./MoimHome.module.css";
 import haaland from '../../../assets/bbakbbakyee.jpg'
 import chelsea from '../../../assets/Chelsea_FC_Logo.jpg'
+import { useNavigate } from "react-router-dom";
 
 function MoimHome() {
+
+  const navigate = useNavigate()
+  const ToCreateMoim = () => {
+    navigate('/createmoim')
+  }
+
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -25,7 +33,7 @@ function MoimHome() {
             <button className={styles.goprofile}>내 프로필</button>
           </div>
           <div className={styles.makemoim}>
-            <button className={styles.moimbutton}>모임 만들기</button>
+            <button className={styles.createmoimbtn} onClick={ToCreateMoim}>모임 생성</button>
           </div>
         </div>
 
