@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -333,9 +334,10 @@ public class MoimController {
 
     /** 나의 미션 조회 */
     @ApiOperation(value = "나의 미션 조회", notes = "내 미션 리스트를 조회하는 API", response = ApiResult.class)
-    @GetMapping("/my_mission/{userId}")
-    public ApiResult<?> getMyMission(@ApiParam(value = "미션 리스트를 조회에 필요한 회원 ID",required = true) @Valid @PathVariable Long userId) {
+    @GetMapping("/my_mission")
+    public ApiResult<?> getMyMission(@AuthenticationPrincipal UserDetails userDetails) {
         try{
+            Long userId = Long.parseLong(userDetails.getUsername());
             List<MissionInfoDto.Response> result = moimService.getMyMission(userId);
             return ApiUtils.success(result);
         }catch(Exception e){
