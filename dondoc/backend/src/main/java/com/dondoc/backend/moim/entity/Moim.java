@@ -51,11 +51,18 @@ public class Moim {
 
     @OneToMany(mappedBy = "moim")
     private List<MoimMember> moimMemberList;
+    
     public Moim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
         this.introduce = introduce;
         this.moimAccountId = moimAccountId;
+    }
+
+    public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
+        this.identificationNumber = identificationNumber;
+        this.moimName = moimName;
+        this.introduce = introduce;
         this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
