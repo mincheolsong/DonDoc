@@ -777,7 +777,7 @@ public class MoimServiceImpl implements MoimService{
     public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
 
         MoimMember member = moimMemberRepository.findByUser_Id(userId)
-                .orElseThrow(()-> new NotFoundException("회원의 정보가 존재하지 않습니다."));
+                .orElseThrow(()-> new NotFoundException("미션 정보가 없습니다."));
 
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
 
