@@ -17,7 +17,7 @@
 }
 
 .createment {
-    display: table;
+    display: flex;
     justify-content: center;
 }
 
@@ -38,6 +38,9 @@
 .inputbox {
     width: 29.9rem;
     margin-top: 3rem;
+    border:none;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -48,10 +51,18 @@
 }
 
 .buttondiv {
-    margin-top: 3rem;
-    width: 100%;
+    display: flex;
 }
 
 .submitbtn {
-    width: 32.9rem;
+    margin-top: 3rem; /*윗마진 */
+    background-color: #0D6EFD; /*색 조절 */
+    color: white;
+    width: 29.9rem;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
 }

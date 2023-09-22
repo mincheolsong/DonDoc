@@ -76,7 +76,11 @@ function MoimLinkAccount() {
                     <p className={styles.accountnumber}>{`${account.bank} ${account.accountnumber}`}</p>
                   </div>
                   <div className={styles.selectcount}>
-                    <input type="radio" id={`account-${index}`} checked={account.name === selectAccount} />
+                    <input 
+                      type="radio" 
+                      id={`account-${index}`} 
+                      checked={account.name === selectAccount}
+                      onChange={() => ChangeSelectAccount(account.name)} />
                   </div>
                 </div>
               </label>

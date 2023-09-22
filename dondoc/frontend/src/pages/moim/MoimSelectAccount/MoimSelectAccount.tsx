@@ -79,7 +79,12 @@ function MoimSelectAccount() {
                   <label htmlFor={`type-${index}`} key={index} onClick={() => ChangeCategory(type.name)}>
                     <div className={styles.selectunit}>
                       <div>{type.name}</div>
-                      <input type="radio" id={`type-${index}`} checked={type.name === selectCategory}/>
+                      <input 
+                        type="radio" 
+                        id={`type-${index}`} 
+                        checked={type.name === selectCategory}
+                        onChange={() => {}}
+                        />
                     </div>
                   </label>
                 ))}

@@ -1,6 +1,7 @@
 .container {
     width: 100vw;
     height: 100vh;
+    z-index: 9999;
 }
 
 .content {
@@ -179,3 +180,4 @@
     padding-left: 1rem;
     padding-right: 1rem;
 }
+

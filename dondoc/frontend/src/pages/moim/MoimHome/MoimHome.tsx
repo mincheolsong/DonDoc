@@ -1,30 +1,20 @@
 import styles from "./MoimHome.module.css";
-import haaland from '../../../assets/bbakbbakyee.jpg'
+// import haaland from '../../../assets/bbakbbakyee.jpg'
+import peter from "../../../assets/image/peter.svg"
+import Header from "../../webmain/Header/Header";
 import chelsea from '../../../assets/Chelsea_FC_Logo.jpg'
 import { useNavigate } from "react-router-dom";
 
 function MoimHome() {
-
-  const navigate = useNavigate()
-  const ToCreateMoim = () => {
-    navigate('/createmoim')
-  }
 
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
-          <div className={styles.Logo}>
-            <p>Dondoc Logo</p>
-          </div>
-          <div className={styles.notice}>
-            <p>Bell Icon</p>
-          </div>
-        </div>
+        <Header />
 
-        <div className={styles.mytap}>
+        {/* <div className={styles.mytap}>
           <div className={styles.character}>
             <img src={haaland} alt="" className={styles.haaland}/>
           </div>
@@ -35,7 +25,9 @@ function MoimHome() {
           <div className={styles.makemoim}>
             <button className={styles.createmoimbtn} onClick={ToCreateMoim}>모임 생성</button>
           </div>
-        </div>
+        </div> */}
+        
+        <UserBox userCharacter={peter} username="Jaden" rightBtn="모임 생성"/>
 
         <div className={styles.moimlist}>
           <div className={styles.moimlisttitle}>
@@ -74,3 +66,31 @@ function MoimHome() {
 }
 
 export default MoimHome;
+
+
+export function UserBox(props){
+  const navigate = useNavigate()
+  const ToCreateMoim = () => {
+    navigate('/createmoim')
+  }
+
+  return(
+    <div className={styles.topContainer}>
+      <div style={{display:"flex",width:"60%"}}>
+        <img src={props.userCharacter} style={{width:"35%"}} />
+        <div style={{marginLeft:"1rem",textAlign:"center"}}>
+          <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{props.username} 의 DonDoc</p>
+          <button className={styles.myProfileBtn} onClick={()=>{
+            navigate("/mypage")
+            }}> 나의프로필가기</button>
+        </div>
+      </div>
+      
+      <div>
+        <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} onClick={ToCreateMoim} > {props.rightBtn}</button>
+      </div>
+    </div>
+
+  )
+
+}
