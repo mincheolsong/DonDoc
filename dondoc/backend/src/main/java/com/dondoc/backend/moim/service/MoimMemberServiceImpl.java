@@ -9,6 +9,7 @@ import com.dondoc.backend.moim.entity.MoimMember;
 import com.dondoc.backend.moim.repository.MoimMemberRepository;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
+import com.dondoc.backend.user.repository.UserRepository;
 import com.dondoc.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.List;
 public class MoimMemberServiceImpl implements MoimMemberService {
 
     private final MoimMemberRepository moimMemberRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     /**
      * 모임 생성할 때 사용한는 MoimMember 생성함수
@@ -45,7 +46,8 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         if(manager.size() > 0){
             for(MoimCreateDto.InviteDto InviteDto : manager){
                     moimMember = new MoimMember(0,0,signedAt); // 관리자, 아직 미승인 상태
-                    User mUser = userService.findById(InviteDto.getUserId());
+                    User mUser = userRepository.findById(InviteDto.getUserId())
+                            .orElseThrow(() -> new NotFoundException("유저의 정보를 찾을 수 없습니다."));
                     moimMember.setUser(mUser);
                     moimMember.setMoim(moim);
                     moimMemberRepository.save(moimMember);
@@ -67,7 +69,8 @@ public class MoimMemberServiceImpl implements MoimMemberService {
 
         for(MoimInviteDto.InviteDto inviteDto : inviteList){
             Long userId = inviteDto.getUserId();
-            User user = userService.findById(userId);
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new NotFoundException("유저의 정보를 찾을 수 없습니다."));
 
             MoimMember moimMember = new MoimMember(1,0);
             moimMember.setUser(user);

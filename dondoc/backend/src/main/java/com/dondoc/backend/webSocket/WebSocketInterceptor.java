@@ -1,4 +1,5 @@
 package com.dondoc.backend.webSocket;
+import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -18,8 +19,8 @@ public class WebSocketInterceptor {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             // Validate and decode JWT token, and extract user information
-            if(jwtTokenProvider.isTokenValid(token)){
-                String userId = jwtTokenProvider.getUserIdFromToken(token);
+            if(jwtTokenProvider.isTokenExpired(token)){ // 민철아 외쿡인인가봐.... 문제생기면 말해줘 이부분 만료 검사만 하는 메서드야
+                String userId = jwtTokenProvider.getRefreshClaims(token).getSubject();
                 accessor.getSessionAttributes().put("userId", userId);
             }
             // Store user information in WebSocketSession, e.g., using accessor.getSessionAttributes()

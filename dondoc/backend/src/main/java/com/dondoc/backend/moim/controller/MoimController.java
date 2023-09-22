@@ -12,6 +12,7 @@ import com.dondoc.backend.moim.service.MoimMemberService;
 import com.dondoc.backend.moim.service.MoimService;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
+import com.dondoc.backend.user.service.AccountService;
 import com.dondoc.backend.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -97,7 +98,7 @@ public class MoimController {
         try {
             // 1. 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
             UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-            User user = userService.findById(userDetails.getUsername());
+            User user = userService.findById(Long.parseLong(userDetails.getUsername()));
             // 2. Moim 엔티티 생성
             Moim moim = moimService.createMoim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType, manager.size());
             // 3. Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
@@ -164,18 +165,20 @@ public class MoimController {
     }
 
     @PostMapping("/invite/check")
-    public ApiResult inviteCheck(@RequestBody MoimInviteCheck.Request req){
+    public ApiResult inviteCheck(@RequestBody MoimInviteCheck.Request req) {
         Long userId = req.getUserId();
         Long moimId = req.getMoimId();
         Boolean accept = req.getAccept();
         try {
             MoimMember moimMember = moimMemberService.findMoimMember(userId.toString(), moimId);
-            if(accept){ // 요청 수락
+            if (accept) { // 요청 수락
                 moimMemberService.acceptMoimMember(moimMember.getId());
-            }else{ // 요청 거절
+                return ApiUtils.success("요청이 수락되었습니다.");
+            } else { // 요청 거절
                 moimMemberService.deleteMoimMember(moimMember);
+                return ApiUtils.success("요청이 수락되었습니다.");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
