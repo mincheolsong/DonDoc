@@ -120,7 +120,8 @@ public class MoimController {
 
         try {
             String userId = userDetails.getUsername();
-            List<Moim> moimList = moimService.getMoimList(userId);
+            log.info("현재 로그인 한 사용자의 userId : " + userId);
+            List<Moim> moimList = moimService.getMoimList(Long.parseLong(userId));
             for(Moim m : moimList){ // 엔티티를 dto로 변환
                 result.add(MoimListDto.Response.toDTO(m));
             }

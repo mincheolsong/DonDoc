@@ -125,7 +125,7 @@ public class MoimServiceImpl implements MoimService{
     }
     
     @Override
-    public List<Moim> getMoimList(String userId) {
+    public List<Moim> getMoimList(Long userId) {
         List<Moim> result = moimRepository.getMoimList(userId);
 
         return result;

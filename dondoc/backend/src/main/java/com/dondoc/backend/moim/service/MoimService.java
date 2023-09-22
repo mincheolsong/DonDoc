@@ -18,7 +18,7 @@ public interface MoimService {
 
     String makeIdentificationNumber() throws Exception;
 
-    List<Moim> getMoimList(String userId);
+    List<Moim> getMoimList(Long userId);
 
     MoimDetailDto.Response getMoimDetail(String userId, Long moimId) throws Exception;
 
