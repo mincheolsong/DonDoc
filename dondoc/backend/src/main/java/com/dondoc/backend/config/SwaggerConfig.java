@@ -31,7 +31,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apiInfo(apiInfo()) // Swagger UI로 노출할 정보
                 .useDefaultResponseMessages(true) // 기본 응답 코드(200, 401, 403, 404) 표시 여부
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.dondoc.backend.**.controller")) //swagger탐색 대상 패키지
+                .apis(RequestHandlerSelectors.basePackage("com.dondoc.backend")) //swagger탐색 대상 패키지
                 .paths(PathSelectors.any()) // apis에 있는 API중 특정 path를 선택
                 .build();
 

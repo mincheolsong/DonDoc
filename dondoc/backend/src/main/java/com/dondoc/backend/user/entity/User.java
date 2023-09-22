@@ -1,5 +1,6 @@
 package com.dondoc.backend.user.entity;
 
+import com.dondoc.backend.moim.entity.MoimMember;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="User")
@@ -47,10 +49,12 @@ public class User {
     private String refreshToken;
 
     @Column(name="mainAccount")
-    private int mainAccount;
+    private Long mainAccount;
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "user")
+    private List<MoimMember> moimMemberList;
 }

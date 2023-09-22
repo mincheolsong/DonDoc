@@ -30,14 +30,17 @@ public class AccountDto {
     public static class Response{
         private String msg;
 
-        @JsonIgnore
+
         private String ownerName;
 
-        @JsonIgnore
+
         private String accountNumber;
 
-        @JsonIgnore
+
         private String bankName;
+
+        @JsonIgnore
+        private Long accountId;
 
         @JsonIgnore
         private boolean success;

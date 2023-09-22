@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="Notify")
-@Getter @Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,4 +36,19 @@ public class Notify {
     @JoinColumn(name="userId")
     private User user;
 
+    @Column(name = "notifyType",nullable = false, updatable = false)
+    private int notifyType;
+
+    public Notify(String title, String content, int notifyType) {
+        this.title = title;
+        this.content = content;
+        this.notifyType = notifyType;
+    }
+
+    /**
+     * Notify와 User가 양방향으로 바뀌면 함수 수정필요
+     */
+    public void setUser(User user){
+        this.user = user;
+    }
 }
