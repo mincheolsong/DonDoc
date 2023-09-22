@@ -14,7 +14,7 @@ function CreateResult(props: Props) {
   }
 
   const ToNext = () => {
-    navigate('/moimlhome')
+    navigate('/moimhome')
   }
 
   return (

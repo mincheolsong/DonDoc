@@ -2,7 +2,12 @@ import {useState} from "react";
 import styles from "./RequestModal.module.css";
 import haaland from "../../../../assets/bbakbbakyee.jpg"
 
-function RequestModal() {
+type Props = {
+  setModalOpen(id: boolean) : void
+}
+
+
+function RequestModal({setModalOpen}: Props) {
 
   const [nowSelected, setNowSelected] = useState<boolean>(true)
 
@@ -14,6 +19,10 @@ function RequestModal() {
   const ClickMoneyTab = () => {
     setNowSelected(true)
     // console.log(nowSelected)
+  }
+
+  const ModalClose = () => {
+    setModalOpen(false)
   }
 
 
@@ -65,7 +74,7 @@ function RequestModal() {
             </div>
 
             <div className={styles.btns}>
-              <button>닫기</button>
+              <button onClick={ModalClose}>닫기</button>
               <button>요청하기</button>
             </div>
           </div>
@@ -86,7 +95,7 @@ function RequestModal() {
             </div>
 
             <div className={styles.btns}>
-              <button>닫기</button>
+              <button onClick={ModalClose}>닫기</button>
               <button>등록하기</button>
             </div>
           </div>

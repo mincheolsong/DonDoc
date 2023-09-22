@@ -1,7 +1,17 @@
 import styles from "./DetailFirst.module.css";
+import { useState } from 'react'
 import haaland from "../../../assets/bbakbbakyee.jpg"
+import modal from "./RequestModal/RequestModal"
+import RequestModal from "./RequestModal/RequestModal";
 
 function DetailFirst() {
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+
+  const OpenModal = () => {
+    setModalOpen(true)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -68,9 +78,11 @@ function DetailFirst() {
               </div>
             </div>
             <div className={styles.optionbuttons}>
-              <button>요청하기</button> <button>요청확인</button>
+              <button onClick={OpenModal}>요청하기</button> <button>요청확인</button>
             </div>
           </div>
+
+          {modalOpen && <RequestModal setModalOpen={setModalOpen} />}
 
         </div>
 
