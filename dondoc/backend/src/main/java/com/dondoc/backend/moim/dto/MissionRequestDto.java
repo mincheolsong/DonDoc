@@ -18,31 +18,31 @@ public class MissionRequestDto {
     @Data
     public static class Request {
 
-        @ApiModelProperty(value = "회원 ID")
+        @ApiModelProperty(value = "회원 ID", example = "1")
         @NotNull(message = "회원의 ID를 입력해주세요.")
         private Long userId;
 
-        @ApiModelProperty(value = "모임 ID")
+        @ApiModelProperty(value = "모임 ID", example = "1")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
-        @ApiModelProperty(value = "사용처")
-        @NotBlank(message = "사용처를 입력하세요.")
+        @ApiModelProperty(value = "미션명", example = "취업하자")
+        @NotBlank(message = "미션명을 입력하세요.")
         private String title;
 
-        @ApiModelProperty(value = "요청 금액")
+        @ApiModelProperty(value = "요청 금액", example = "10000")
         @NotNull(message = "요청 금액을 입력하세요.")
         private int amount;
 
-        @ApiModelProperty(value = "요청 상세내용")
+        @ApiModelProperty(value = "요청 상세내용", example = "매일 5시간 공부")
         @NotBlank(message = "요청 상세내용을 입력하세요.")
         private String content;
 
-        @ApiModelProperty(value = "미션 등록 할 회원 ID")
+        @ApiModelProperty(value = "미션 등록 할 회원 ID", example = "1")
         @NotNull(message = "미션 등록 할 회원의 ID를 입력하세요.")
         private Long missionMemberId;
 
-        @ApiModelProperty(value = "미션 종료 일자")
+        @ApiModelProperty(value = "미션 종료 일자", example = "2023-10-02")
         @NotNull(message = "미션 종료 일자를 입력하세요.")
         private LocalDate endDate;
 
