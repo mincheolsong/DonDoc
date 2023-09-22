@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -51,13 +50,26 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/user/logout"
             ,"/api/user/signup"
             ,"/api/user/signin"
-            ,"/api/user/findpassword"
-//            ,"/swagger-ui.html"
+            ,"/api/user/findpassword",
+
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/swagger-ui.html#/**",
+            "/swagger-ui/index.html",
+            "/v2/api-docs",
+            "/webjars/**"
     );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = ((HttpServletRequest) request).getServletPath();
+
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v3/api-docs") ||
+                requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if(EXCLUDE_URL.contains(path)){
             log.info("필터링 하지 않습니다.");

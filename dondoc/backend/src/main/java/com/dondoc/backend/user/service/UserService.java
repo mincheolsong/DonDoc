@@ -1,6 +1,6 @@
 package com.dondoc.backend.user.service;
 
-import com.dondoc.backend.user.dto.*;
+import com.dondoc.backend.user.dto.user.*;
 
 public interface UserService {
 

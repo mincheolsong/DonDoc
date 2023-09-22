@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="Friend")
@@ -26,7 +27,7 @@ public class Friend {
     private User user;
 
     @Column(name="friendId" , nullable = false)
-    private int friendId;
+    private Long friendId;
 
     @Column(name="status" , nullable = false)
     private int status;

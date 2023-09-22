@@ -1,4 +1,4 @@
-package com.dondoc.backend.user.dto;
+package com.dondoc.backend.user.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;

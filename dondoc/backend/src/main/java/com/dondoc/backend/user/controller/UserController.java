@@ -3,13 +3,12 @@ package com.dondoc.backend.user.controller;
 import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
-import com.dondoc.backend.user.dto.*;
+import com.dondoc.backend.user.dto.user.*;
 import com.dondoc.backend.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ public class UserController {
     // 회원가입
     @ApiOperation(value = "회원가입(완료)", notes = "회원가입을 진행하는 API", response = ApiResult.class)
     @PostMapping("/signup")
-    public ApiResult signUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true)SignUpDto.Request req) throws Exception{
+    public ApiResult signUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) SignUpDto.Request req) throws Exception{
         SignUpDto.Response res = userService.signUp(req);
         if(!res.isSuccess()){
             return ApiUtils.error(res.getMsg(),HttpStatus.BAD_REQUEST);

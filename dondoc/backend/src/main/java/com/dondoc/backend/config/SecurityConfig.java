@@ -54,17 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable(); // csrf off
 
-//        http
-////                .authorizeRequests().antMatchers("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**").permitAll()
-////                .and()
-//                .authorizeRequests().antMatchers("/api/user/signin","/api/user/find_user").permitAll() // 해당 API 접근은 모두에게 허용
-////                .anyRequest().authenticated() // 나머지 응답은 유효해야함.
-//                .anyRequest().permitAll() // 개발단계 접근 제한 해제
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 오류 발생시 EntryPoint 실행
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // SPA 기반므로 세션을 사용하지 않음. => 주로 REST-API에서 활용
-
         // 로그인 페이지 및 설정
         http.authorizeHttpRequests()
                 .antMatchers("/api/user/signin", "/api/user/signup").permitAll()
