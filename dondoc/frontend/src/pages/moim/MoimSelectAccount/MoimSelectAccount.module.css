@@ -24,6 +24,12 @@
 .accountinfo {
     background-color: white;
     border-radius: 10px;
+    height: 10rem;
+    margin-bottom: 2rem;
+}
+
+.accountinfo p {
+    padding: 2rem;
 }
 
 

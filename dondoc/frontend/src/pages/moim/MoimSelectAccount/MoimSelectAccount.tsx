@@ -2,12 +2,31 @@ import { useState } from 'react';
 import styles from "./MoimSelectAccount.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 
+
+const datas = [
+  {
+    'name': '한명 관리',
+    'info': '한명 관리 계좌는 관리자 한명이 계좌의 이체권한을 가지는 모임통장 형식입니다.',
+    'code': 0
+  },
+  {
+    'name': '두명 관리',
+    'info': '두명 관리 계좌는 두명의 관리자가 모임 계좌의 입출금 권한을 가지고, 관리자의 승인을 통해 입출금 가능한 계좌입니다. 관리자 또한 다른 관리자의 승인을 받은 수 입출금이 가능합니다.',
+    'code': 1
+  },
+  {
+    'name': '공동 관리',
+    'info': '공동 관리 계좌는 모든 구성원이 계좌 사용 승인 권한을 가지고 사용할 수 있는 계좌입니다.',
+    'code': 2
+  },
+];
+
 function MoimSelectAccount() {
 
   const [selectCategory, setSelectCategory] = useState<string>('')
 
-  const ChangeCategory = () => {
-    setSelectCategory('한명관리')
+  const ChangeCategory = (categorytype) => {
+    setSelectCategory(categorytype)
   }
 
   const navigate = useNavigate()
@@ -52,29 +71,21 @@ function MoimSelectAccount() {
           <div className={styles.accountscategory}>
             <div className={styles.categoryinfo}>
               <div className={styles.accountinfo}>
-                <p>한명 관리 계좌는 관리자 한명이 계좌의 이체권한을 가지는 모임통장 형식입니다</p>
+                <p>두명 관리 계좌는 두명의 관리자가 모임 계좌의 입출금 권한을 가지고, 관리자의 승인을 통해 입출금 가능한 계좌입니다. 관리자 또한 다른 관리자의 승인을 받은 수 입출금이 가능합니다.</p>
               </div>
 
               <div className={styles.selectcategories}>
-                <label htmlFor="oneman" onClick={ChangeCategory}>
-                  <div className={styles.selectunit}>
-                    <div>한명 관리</div>
-                    <input type="radio" id="oneman" />
-                  </div>
-                </label>
-                <label htmlFor="twoman">
-                  <div className={styles.selectunit}>
-                    <div>두명 관리</div>
-                    <input type="radio" id="twoman" />
-                  </div>
-                </label>
-                <label htmlFor="everybody">
-                  <div className={styles.selectunit}>
-                    <div>공동 관리</div>
-                    <input type="radio" id="everybody" />
-                  </div>
-                </label>
+                {datas.map((type, index) => (
+                  <label htmlFor={`type-${index}`} key={index} onClick={() => ChangeCategory(type.name)}>
+                    <div className={styles.selectunit}>
+                      <div>{type.name}</div>
+                      <input type="radio" id={`type-${index}`} checked={type.name === selectCategory}/>
+                    </div>
+                  </label>
+                ))}
+
               </div>
+
             </div>
           </div>
 
