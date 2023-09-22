@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 
 @Configuration // 설정
 @EnableWebSecurity // Sprint Security 활성화 => URL과 토큰 유무를 통해서 인증
@@ -58,16 +60,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests()
                 .antMatchers("/api/user/signin", "/api/user/signup").permitAll()
 //                        .anyRequest().authenticated() // 운영 및 테스트용
-                        .anyRequest().permitAll() // 개발용
-                        .and()
+                .anyRequest().permitAll() // 개발용
+                .and()
                 .formLogin()
-                        .loginPage("/login") // 로그인 페이지 경로
-                        .defaultSuccessUrl("/main")
-                        .permitAll()
-                        .and()
+                .loginPage("/login") // 로그인 페이지 경로
+                .defaultSuccessUrl("/main")
+                .permitAll()
+                .and()
                 .logout()
-                        .logoutUrl("/logout")
-                        .permitAll()
+                .logoutUrl("/logout")
+                .permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // SPA 기반므로 세션을 사용하지 않음. => 주로 REST-API에서 활용
 
@@ -82,7 +84,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration(); // cors 설정 생성
 
+        configuration.setAllowCredentials(true); // 내 서버가 응답할 때 json을 JS에서 처리할 수 있게 설정
+        configuration.setExposedHeaders(List.of("*")); // 헤더 값 접근
+
+        // 도메인 추가
         configuration.addAllowedOrigin("http://localhost:5174"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://localhost:5173"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://localhost:9191"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://localhost:9090"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
         configuration.addAllowedMethod("*"); // 사용 가능한 메서드 지정
         configuration.addAllowedHeader("*"); // 헤더를 지정하는데 사용 => 토큰 헤더 저장
@@ -96,4 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 }
+
+
+
 
