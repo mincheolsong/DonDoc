@@ -8,16 +8,14 @@ import com.dondoc.backend.moim.entity.*;
 import com.dondoc.backend.moim.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,6 +30,7 @@ public class MoimServiceImpl implements MoimService{
     private final WithdrawRequestRepository withdrawRequestRepository;
     private final CategoryRepository categoryRepository;
     private final MissionRepository missionRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버
 
@@ -538,9 +537,10 @@ public class MoimServiceImpl implements MoimService{
 
         log.info("member : {}", member.getUser().getName());
 
-        // 관리자 비밀번호 확인 (User 로직 끝나면 수정하기)
-        if(!member.getUser().getPassword().equals(req.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        // 관리자 비밀번호 확인
+        if(!passwordEncoder.matches(req.getPassword() + member.getUser().getSalt() , member.getUser().getPassword())){
+            throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
+        }
 
         // 일반 이용자가 승인하려는 경우
         if(member.getUserType()!=1)
