@@ -19,14 +19,7 @@ function Signup() {
   return (
     <div>
 
-    <IconContext.Provider  value={{className: styles.backLogo}}>
-      <div onClick={()=>{
-        naviate(-1)
-      }} >
-      <IoChevronBack/>
-      </div>
-    </IconContext.Provider>
-
+    <BackLogo name=" "/>
 
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />
@@ -54,3 +47,20 @@ function SignUpInput(props:SignProps){
   )
 }
 export default Signup;
+
+
+export function BackLogo(props){
+  const naviate = useNavigate();
+  return(
+    <div style={{display:"flex",justifyContent:"start"}}>
+    <IconContext.Provider  value={{className: styles.backLogo}}>
+      <div onClick={()=>{
+        naviate(-1)
+      }} >
+      <IoChevronBack/>
+      </div>
+    </IconContext.Provider>
+      <p style={{fontSize:props.fontSize,marginLeft:props.left,marginTop:props.top, margin:"0",  fontWeight:"bold"}}>{props.name}</p>
+    </div>
+  )
+}
