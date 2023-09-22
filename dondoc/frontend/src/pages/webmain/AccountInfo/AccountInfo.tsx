@@ -42,15 +42,17 @@ function AccountInfo() {
       <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between",width:"95%"}}>
         <p>사용월</p>
         <button>열기접기</button>
-
+       
+      </div>
+      
+      
+      
+      <div>
+          여기는 map 함수로 
       </div>
 
 
-
-
     </div>
-
-
 
 
     {/* Mid */}
