@@ -57,7 +57,7 @@ public class MoimCreateDto {
     }
 
     @Getter
-    public class InviteDto{
+    public static class InviteDto{
         private Long userId;
     }
 

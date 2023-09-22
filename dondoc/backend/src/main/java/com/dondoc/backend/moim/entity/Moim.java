@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,13 +51,16 @@ public class Moim {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "moim")
-    private List<MoimMember> moimMemberList;
-    
+    private List<MoimMember> moimMemberList = new ArrayList<>();
+
     public Moim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
         this.introduce = introduce;
         this.moimAccountId = moimAccountId;
+        this.moimAccountNumber = moimAccountNumber;
+        this.limited = limited;
+        this.moimType = moimType;
     }
 
     public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
