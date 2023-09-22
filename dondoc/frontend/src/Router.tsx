@@ -17,6 +17,8 @@ import MoimSelectAccountPage from './pages/moim/MoimSelectAccount/MoimSelectAcco
 import CreateResultPage from './pages/moim/CreateResult/CreateResult'
 import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
 import MissionPage from './pages/mission/Mission/Mission'
+import SignupTempPage from "./pages/webmain/SignupTemp";
+import AccountInfoPage from "./pages/webmain/AccountInfo";
 import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
 import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
 import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
@@ -27,9 +29,15 @@ function Router() {
 
     return (
         <Routes>
-            <Route path="/" element={<HomePage/>}/>
+            
             <Route path="/signin" element={<SigninPage/>}/>
             <Route path="/signup" element={<SignupPage/>}/>
+            <Route path="/signupTemp" element={<SignupTempPage/>}/>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/accountInfo" element={<AccountInfoPage/>}/>
+
+
+
             <Route path="/search" element={<SearchPage/>}/>
             <Route path="/mypage" element={<MypagePage/>}/>
             <Route path="/setting" element={<SettingPage/>}/>
@@ -50,6 +58,7 @@ function Router() {
             <Route path="/detailsecond" element={<DetailSecond/>}/>
             <Route path="/detailthird" element={<DetailThird/>}/>
             <Route path="/requestmodal" element={<RequestModal/>}/>
+            
             
         </Routes>
     )

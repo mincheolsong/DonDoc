@@ -1,6 +1,7 @@
 html {
-  font-size: 25px;
+  font-size: 20px;
   background-color: #F4F6FA;
+  
 }
 
 body {
@@ -9,21 +10,26 @@ body {
 
 @media screen and (max-width:600px) {
   html {
-    font-size: 20px;
+    font-size: 13px;
   }
 }
 @media screen and (max-width:500px) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 @media screen and (max-width:400px) {
   html {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 @media screen and (max-width:360px) {
   html {
     font-size: 10px;
+  }
+}
+@media screen and (max-width:280px) {
+  html {
+    font-size: 8px;
   }
 }
