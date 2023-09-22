@@ -228,9 +228,9 @@ public class MoimServiceImpl implements MoimService{
     /** 관리자에게 출금 요청 */
     @Override
     @Transactional
-    public WithdrawRequestDto.Response withdrawReq(WithdrawRequestDto.Request req) throws Exception {
+    public WithdrawRequestDto.Response withdrawReq(Long userId, WithdrawRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         Category category = categoryRepository.findById(req.getCategoryId())
@@ -267,10 +267,10 @@ public class MoimServiceImpl implements MoimService{
     /** 관리자에게 미션 요청 */
     @Override
     @Transactional
-    public MissionRequestDto.Response missionReq(MissionRequestDto.Request req) throws Exception {
+    public MissionRequestDto.Response missionReq(Long userId, MissionRequestDto.Request req) throws Exception {
 
         // 신청인
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -332,9 +332,9 @@ public class MoimServiceImpl implements MoimService{
 
     /** 요청 관리/목록 - 전체 리스트 조회 */
     @Override
-    public AllRequestDto.Response getRequestList(AllRequestDto.Request req) throws Exception {
+    public AllRequestDto.Response getRequestList(Long userId, AllRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -393,9 +393,9 @@ public class MoimServiceImpl implements MoimService{
 
     /** 요청 상세조회 */
     @Override
-    public DetailRequestDto.Response getRequestDetail(DetailRequestDto.Request req) throws Exception {
+    public DetailRequestDto.Response getRequestDetail(Long userId, DetailRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -425,9 +425,9 @@ public class MoimServiceImpl implements MoimService{
     /** 요청 취소하기 */
     @Override
     @Transactional
-    public CancelRequestDto.Response cancelReq(CancelRequestDto.Request req) throws Exception {
+    public CancelRequestDto.Response cancelReq(Long userId, CancelRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -475,9 +475,9 @@ public class MoimServiceImpl implements MoimService{
     /** 출금 요청 승인 */
     @Override
     @Transactional
-    public AllowRequestDto.Response allowRequest(AllowRequestDto.Request req) throws Exception {
+    public AllowRequestDto.Response allowRequest(Long userId, AllowRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -546,9 +546,9 @@ public class MoimServiceImpl implements MoimService{
     /** 출금 요청 거절 */
     @Override
     @Transactional
-    public String rejectRequest(RejectRequestDto.Request req) throws Exception {
+    public String rejectRequest(Long userId, RejectRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -574,9 +574,9 @@ public class MoimServiceImpl implements MoimService{
     /** 미션 요청 승인 */
     @Override
     @Transactional
-    public AllowRequestDto.Response allowMissionRequest(AllowRequestDto.Request req) throws Exception {
+    public AllowRequestDto.Response allowMissionRequest(Long userId, AllowRequestDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -647,8 +647,8 @@ public class MoimServiceImpl implements MoimService{
     /** 미션 요청 거절 */
     @Override
     @Transactional
-    public String rejectMissionRequest(RejectRequestDto.Request req) throws Exception {
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+    public String rejectMissionRequest(Long userId, RejectRequestDto.Request req) throws Exception {
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -673,9 +673,9 @@ public class MoimServiceImpl implements MoimService{
     /** 미션 성공 */
     @Override
     @Transactional
-    public SuccessOrNotMissionDto.Response successMission(SuccessOrNotMissionDto.Request req) throws Exception {
+    public SuccessOrNotMissionDto.Response successMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -750,9 +750,9 @@ public class MoimServiceImpl implements MoimService{
     /** 미션 실패 */
     @Override
     @Transactional
-    public SuccessOrNotMissionDto.Response failMission(SuccessOrNotMissionDto.Request req) throws Exception {
+    public SuccessOrNotMissionDto.Response failMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());
@@ -786,9 +786,9 @@ public class MoimServiceImpl implements MoimService{
     /** 미션 포기 */
     @Override
     @Transactional
-    public SuccessOrNotMissionDto.Response quitMission(SuccessOrNotMissionDto.Request req) throws Exception {
+    public SuccessOrNotMissionDto.Response quitMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(req.getUserId(), req.getMoimId())
+        MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {}", member.getUser().getName());

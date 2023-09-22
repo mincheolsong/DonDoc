@@ -14,10 +14,6 @@ public class SuccessOrNotMissionDto {
     @Data
     public static class Request {
 
-        @ApiModelProperty(value = "회원 ID", example = "1")
-        @NotNull(message = "회원의 ID를 입력해주세요.")
-        private Long userId;
-
         @ApiModelProperty(value = "모임 ID", example = "1")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
