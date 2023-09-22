@@ -52,4 +52,6 @@ public interface MoimService {
 
     SuccessOrNotMissionDto.Response quitMission(SuccessOrNotMissionDto.Request req) throws Exception;
 
+    CancelRequestDto.Response cancelReq(CancelRequestDto.Request req) throws Exception;
+
 }

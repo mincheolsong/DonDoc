@@ -239,6 +239,19 @@ public class MoimController {
         }
     }
 
+    /** 요청 취소하기*/
+    @ApiOperation(value = "요청 취소하기", notes = "출금/미션의 요청을 취소하는 API", response = ApiResult.class)
+    @PostMapping("/cancel_req")
+    public ApiResult<?> cancelReq(@ApiParam(value = "요청 취소에 필요한 Request Dto",required = true) @Valid @RequestBody CancelRequestDto.Request req) {
+        try{
+            CancelRequestDto.Response result = moimService.cancelReq(req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /** 출금 요청 승인 */
     @ApiOperation(value = "출금요청 승인", notes = "관리자가 출금 요청을 승인하는 API", response = ApiResult.class)
     @PostMapping("/allow_req")
