@@ -1,0 +1,26 @@
+package com.dondoc.backend.user.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
+import lombok.Data;
+
+public class  {
+    @Data
+    @Builder
+    @ApiModel(value = "", description = "")
+    public static class Request{
+        @ApiModelProperty(value = "", example = "")
+        private String phoneNumber; // 변수 설명
+
+    }
+
+    @Data
+    @Builder
+    public static class Response{
+        private String msg;
+        @JsonIgnore
+        private boolean success;
+    }
+}
