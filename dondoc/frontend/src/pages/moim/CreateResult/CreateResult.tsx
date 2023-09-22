@@ -1,17 +1,29 @@
 import styles from "./CreateResult.module.css";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
 
 }
 
 function CreateResult(props: Props) {
+
+  const navigate = useNavigate()
+
+  const ToBack = () => {
+    navigate(-1)
+  }
+
+  const ToNext = () => {
+    navigate('/moimlhome')
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
         <div className={styles.topbar}>
           <div className={styles.backbutton}>
-            <button className={styles.toback}>
+            <button className={styles.toback} onClick={ToBack}>
               back
             </button>
           </div>
@@ -55,7 +67,7 @@ function CreateResult(props: Props) {
           </div>
 
         <div className={styles.buttondiv}>
-            <button className={styles.submitbutton}>계좌 개설하기</button>
+            <button className={styles.submitbtn} onClick={ToNext}>계좌 개설하기</button>
         </div>
         
         </div>

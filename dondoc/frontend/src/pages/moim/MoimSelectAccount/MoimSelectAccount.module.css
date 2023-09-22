@@ -24,6 +24,12 @@
 .accountinfo {
     background-color: white;
     border-radius: 10px;
+    height: 10rem;
+    margin-bottom: 2rem;
+}
+
+.accountinfo p {
+    padding: 2rem;
 }
 
 
@@ -49,9 +55,10 @@
 }
 
 .buttondiv {
+    margin-top: 3rem;
     width: 100%;
 }
 
-.submitbutton {
+.submitbtn {
     width: 100%;
 }
