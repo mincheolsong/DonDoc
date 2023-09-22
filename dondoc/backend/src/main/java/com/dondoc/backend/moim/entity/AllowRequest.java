@@ -1,7 +1,6 @@
-package com.dondoc.backend.group.entity;
+package com.dondoc.backend.moim.entity;
 
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -24,7 +23,7 @@ public class AllowRequest {
     private WithdrawRequest withdrawRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GroupMemberId")
-    private GroupMember groupMember;
+    @JoinColumn(name = "moimMemberId")
+    private MoimMember moimMember;
 
 }
