@@ -437,6 +437,8 @@ public class MoimServiceImpl implements MoimService{
             WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
                     .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
 
+            if(withdrawRequest.getStatus()!=0) throw new IllegalArgumentException("승인 대기 중인 요청이 아닙니다.");
+
             withdrawRequestRepository.deleteById(withdrawRequest.getId());
 
             return CancelRequestDto.Response.toDTO(
@@ -451,6 +453,8 @@ public class MoimServiceImpl implements MoimService{
 
             Mission mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
                     .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+
+            if(mission.getStatus()!=0) throw new IllegalArgumentException("승인 대기 중인 요청이 아닙니다.");
 
             missionRepository.deleteById(mission.getId());
 
