@@ -4,6 +4,9 @@ import com.dondoc.backend.moim.entity.Moim;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+
+import java.util.List;
 
 public class MoimCreateDto {
 
@@ -11,8 +14,10 @@ public class MoimCreateDto {
     public static class Request{
         private String moimName; // 모임 이름
         private String introduce; // 소개글
-        private int moimType;
+        private int moimType; // 모임 종류 (1,2,3)
         private String password; // 비밀번호
+        private Long accountId; // 연결할 계좌의 id (계좌 테이블의 id값)
+        private List<InviteDto> manager; // 관리자로 초대하는 회원id 정보
     }
 
     @Data
@@ -23,7 +28,7 @@ public class MoimCreateDto {
         private String identificationNumber; // 식별번호
         private String moimName; // 모임이름
         private String introduce; // 소개
-        private String moimAccount; // 모임계좌
+        private String moimAccountNumber; // 모임계좌
         private int moimType; // 모임타입
         public static MoimCreateDto.Response toDTO(Moim entity) {
             return Response.builder()
@@ -32,10 +37,15 @@ public class MoimCreateDto {
                     .identificationNumber(entity.getIdentificationNumber())
                     .moimName(entity.getMoimName())
                     .introduce(entity.getIntroduce())
-                    .moimAccount(entity.getMoimAccount())
+                    .moimAccountNumber(entity.getMoimAccountNumber())
                     .moimType(entity.getMoimType())
                     .build();
         }
+    }
+
+    @Getter
+    public class InviteDto{
+        private Long userId;
     }
 
 }

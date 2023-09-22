@@ -36,6 +36,9 @@ dependencies {
 	// WebClient (BANK API 요청에 사용)
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	// WebSocket
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
+
 }
 
 tasks.named('test') {
