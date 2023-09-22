@@ -88,12 +88,12 @@ public class MoimController {
         // 모임 계좌번호
         String moimAccountNumber = createResult.get("accountNumber").toString();
         // 모임 계좌 ID
-        Long moimAccountId = (Long)createResult.get("accountId");
+        Long moimAccountId = Long.parseLong(createResult.get("accountId").toString());
+        System.out.println("moimAccountId = " + moimAccountId);
 
         if(moimAccountNumber==null){
             return ApiUtils.error("모임 생성에 실패했습니다.",HttpStatus.BAD_REQUEST);
         }
-
 
         try {
             // 1. 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)

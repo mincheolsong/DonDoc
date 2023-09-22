@@ -41,6 +41,8 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         moimMember.setMoim(moim);
         moimMemberRepository.save(moimMember);
 
+        System.out.println("여기까지 실행 됨" + moimMember.getId());
+
         // 모임 생성 시 필요한 관리자의 MoimMember 생성
         // 모임에 대한 승인이 되지 않은(status == 0) 상태로 생성
         if(manager.size() > 0){

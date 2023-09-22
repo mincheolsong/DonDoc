@@ -21,6 +21,7 @@ public class WebSocketInterceptor {
             // Validate and decode JWT token, and extract user information
             if(jwtTokenProvider.isTokenExpired(token)){ // 민철아 외쿡인인가봐.... 문제생기면 말해줘 이부분 만료 검사만 하는 메서드야
                 String userId = jwtTokenProvider.getRefreshClaims(token).getSubject();
+
                 accessor.getSessionAttributes().put("userId", userId);
             }
             // Store user information in WebSocketSession, e.g., using accessor.getSessionAttributes()

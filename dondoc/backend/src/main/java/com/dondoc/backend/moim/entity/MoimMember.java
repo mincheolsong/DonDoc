@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,7 +38,7 @@ public class MoimMember {
 
     // 양방향
     @OneToMany(mappedBy = "moimMember",cascade = CascadeType.REMOVE)
-    private List<WithdrawRequest> withdrawRequests;
+    private List<WithdrawRequest> withdrawRequests = new ArrayList<>();
     /**
      * 0 : 관리자
      * 1 : 회원
