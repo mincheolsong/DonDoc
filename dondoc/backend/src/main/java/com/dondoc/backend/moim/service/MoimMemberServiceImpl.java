@@ -87,10 +87,10 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     }
 
     @Override
-    public MoimMember findMoimMember(String userId, Long moimId) throws Exception{
+    public MoimMember findMoimMember(Long userId, Long moimId) throws Exception{
         List<MoimMember> moimMembers = moimMemberRepository.findMoimMember(userId, moimId);
         if(moimMembers.size()==0 || moimMembers.size()>1)
-            throw new RuntimeException("userType 조회 중 에러발생");
+            throw new RuntimeException("userId가 " + userId+"인 사용자는 "+ "moimId가 " + moimId+ "인 모임에 존재하지 않습니다");
 
         return moimMembers.get(0);
 

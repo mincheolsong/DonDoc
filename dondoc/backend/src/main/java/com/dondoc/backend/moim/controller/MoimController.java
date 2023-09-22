@@ -138,10 +138,9 @@ public class MoimController {
         try{
             // 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
             UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-            String userId = userDetails.getUsername();
+            Long userId = Long.parseLong(userDetails.getUsername());
 
             MoimDetailDto.Response result = moimService.getMoimDetail(userId,moimId);
-
             return ApiUtils.success(result);
 
         }catch (Exception e){
@@ -172,7 +171,7 @@ public class MoimController {
         Long moimId = req.getMoimId();
         Boolean accept = req.getAccept();
         try {
-            MoimMember moimMember = moimMemberService.findMoimMember(userId.toString(), moimId);
+            MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
             if (accept) { // 요청 수락
                 moimMemberService.acceptMoimMember(moimMember.getId());
                 return ApiUtils.success("요청이 수락되었습니다.");

@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 public class MoimDetailDto {
 
+    @Data
     public static class Response{
         /**
          * - 모임 id
@@ -27,7 +28,7 @@ public class MoimDetailDto {
         private Long moimId;
         private String moimName;
         private String introduce;
-        private List<MoimMemberDto> moimMembers;
+        private List<MoimMemberDto> moimMembers = new ArrayList<>();
         private String moimAccountNumber;
         private String identificationNumber;
         public Response(){}
@@ -72,16 +73,19 @@ public class MoimDetailDto {
          * - 처리되지 않은 요청 정보 (요청한 사람 id)
          */
         private int balance;
-        private List<WithDrawRequestDto> request;
+        private List<WithDrawRequestDto> request = new ArrayList<>();
         public ManagerResponse(Moim moim,int balance){
             super(moim);
             this.balance = balance;
         }
+
+
     }
 
     /**
      * Response에서 사용하는 클래스
      */
+    @Data
     private static class MoimMemberDto{
         private Long userId;
         private Long moimMemberId;
@@ -99,6 +103,7 @@ public class MoimDetailDto {
     /**
      * Manager Response에서 사용하는 클래스
      */
+    @Data
     public static class WithDrawRequestDto{
         Long userId;
         Long moimMemberId;

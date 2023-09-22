@@ -20,7 +20,7 @@ public interface MoimService {
 
     List<Moim> getMoimList(Long userId);
 
-    MoimDetailDto.Response getMoimDetail(String userId, Long moimId) throws Exception;
+    MoimDetailDto.Response getMoimDetail(Long userId, Long moimId) throws Exception;
 
     List<Moim> findMoimWithMember(Long moimId);
 

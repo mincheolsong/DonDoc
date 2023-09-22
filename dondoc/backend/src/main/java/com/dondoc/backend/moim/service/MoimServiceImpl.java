@@ -133,7 +133,7 @@ public class MoimServiceImpl implements MoimService{
 
 
     @Override
-    public MoimDetailDto.Response getMoimDetail(String userId, Long moimId) throws Exception {
+    public MoimDetailDto.Response getMoimDetail(Long userId, Long moimId) throws Exception {
 
         try {
             MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId); // userType 검사 (Exception 던질 수 있음)
