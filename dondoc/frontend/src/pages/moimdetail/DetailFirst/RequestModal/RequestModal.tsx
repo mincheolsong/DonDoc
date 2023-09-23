@@ -25,7 +25,6 @@ function RequestModal({setModalOpen}: Props) {
     setModalOpen(false)
   }
 
-
   return (
     <div className={styles.container}>
       <div className={styles.content}>
