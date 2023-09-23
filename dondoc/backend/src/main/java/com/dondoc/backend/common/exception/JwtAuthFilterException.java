@@ -18,11 +18,11 @@ public class JwtAuthFilterException {
     }
 
     public String noRefreshToken() throws JsonProcessingException {
-        return createJson("refreshToken이 존재하지 않습니다. 재 로그인 해주세요.");
+        return createJson("인증정보가 존재하지 않습니다. 재 로그인 해주세요.");
     }
 
     public String createJson(String message) throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(ApiUtils.error("refreshToken이 존재하지 않습니다. 재 로그인 해주세요.", HttpStatus.UNAUTHORIZED));
+        return objectMapper.writeValueAsString(ApiUtils.error("인증정보가 존재하지 않습니다. 재 로그인 해주세요.", HttpStatus.UNAUTHORIZED));
     }
 }

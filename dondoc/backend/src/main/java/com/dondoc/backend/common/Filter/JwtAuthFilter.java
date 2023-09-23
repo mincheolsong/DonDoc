@@ -50,14 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/user/logout"
             ,"/api/user/signup"
             ,"/api/user/signin"
-            ,"/api/user/findpassword",
-
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/swagger-ui.html#/**",
-            "/swagger-ui/index.html",
-            "/v2/api-docs",
-            "/webjars/**"
+            ,"/api/user/find_password"
     );
 
     @Override
@@ -65,7 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = ((HttpServletRequest) request).getServletPath();
 
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v3/api-docs") ||
+        if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v2/api-docs") ||
                 requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
             filterChain.doFilter(request, response);
             return;
@@ -73,7 +66,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if(EXCLUDE_URL.contains(path)){
             log.info("필터링 하지 않습니다.");
-            log.info(path);
+            log.info("URI 경로 = {}", path);
         }else{
             log.info("필터링 시작");
             log.info("URI 경로 = {}", path);
@@ -88,18 +81,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if(requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)){
                 // Bearer을 제외한 토큰 값
                 accessToken = requestTokenHeader.substring(BEARER_PREFIX.length());
-                log.info("Authorization = {}", requestTokenHeader);
 
                 // 토큰에서 정보 추출. => 실패 시 재발급
                 if(!jwtTokenProvider.isTokenExpired(accessToken)) {
                     userId = jwtTokenProvider.getClaims(accessToken).getSubject();
-                    log.info("userId = {}", userId);
                 }else{
                     log.info("토큰을 재발급 받습니다.");
 
                     // 토큰 만료(재발급) => Cookie에서 RefreshToken 가져옴
                     refreshToken = getRefreshTokenFromCookie(request);
-                    log.info("refreshToken = {}", refreshToken);
 
                     // Cookie내에 토큰이 존재여부 파악
                     if(refreshToken != null){
@@ -109,7 +99,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         // refreshToken 만료 여부 파악
                         if(jwtTokenProvider.isRefreshTokenExpired(refreshToken)){
                             userId = jwtTokenProvider.getRefreshClaims(refreshToken).getSubject();
-                            log.info("userId = {}", userId);
 
                             // 재발급 과정
                             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userId);
@@ -132,6 +121,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.setContentType("application/json");
                             response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
+                            log.info("모든 토큰이 만료되었습니다.");
                             return;
                         }
                     }else{
@@ -152,7 +142,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 log.info(usernamePasswordAuthenticationToken.getName());
 
-                // Session에 user 정보 등록
+                // Session에 user 정보 등록a
             }else{
                 // 인증정보가 존재하지 않음
                 response.setStatus(HttpServletResponse.SC_OK);

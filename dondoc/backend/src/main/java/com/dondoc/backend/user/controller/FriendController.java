@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/friend")
@@ -35,9 +37,10 @@ public class FriendController {
             Long userId = Long.parseLong(userDetails.getUsername());
             FriendRequestDto.Response res = friendService.friendRequest(friendId, userId);
             return ApiUtils.success(res.getMsg());
-
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(NoSuchElementException ee){
+            return ApiUtils.error(ee.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,6 +53,8 @@ public class FriendController {
             FriendRequestDto.Response res = friendService.requestAccess(userId, requestId);
             return ApiUtils.success(res.getMsg());
         }catch(NotFoundException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(NoSuchElementException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -64,6 +69,8 @@ public class FriendController {
             return ApiUtils.success(res.getMsg());
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
     // 친구 요청 목록조회
@@ -73,7 +80,7 @@ public class FriendController {
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
             FriendListDto.Response res = friendService.requestList(userId);
-            return ApiUtils.success(res.getMsg());
+            return ApiUtils.success(res);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -86,9 +93,13 @@ public class FriendController {
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
             FriendListDto.Response res = friendService.friendList(userId);
-            return ApiUtils.success(res.getMsg());
+            return ApiUtils.success(res);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    // 요청 삭제
+
+    // 친구 삭제
 }

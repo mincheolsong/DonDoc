@@ -8,11 +8,13 @@ import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.repository.FriendRepository;
 import com.dondoc.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional(readOnly = true)
 public class FriendServiceImpl implements FriendService{
 
     private final FriendRepository friendRepository;
@@ -23,20 +25,30 @@ public class FriendServiceImpl implements FriendService{
         this.userRepository = userRepository;
     }
 
+    // 친구 요청 보내기
     @Override
+    @Transactional
     public FriendRequestDto.Response friendRequest(Long friendId, Long userId) {
         if(friendId == userId){
             throw new NoSuchElementException("자신에게 요청을 보낼 수 없습니다.");
         }
-        User user = userRepository.findById(userId)
+        if(friendRepository.findByUserIdAndFriendId(userId, friendId).isPresent()){
+            throw new NoSuchElementException("이미 존재한 요청 또는 친구입니다.");
+        }
+        if(friendRepository.findByFriendIdAndUserId(userId, friendId).isPresent()){
+            throw new NoSuchElementException("이미 존재한 요청 또는 친구입니다.");
+        }
+        // 내 정보
+        User me = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        Friend friend = Friend.builder()
+        // 보내는 요청
+        Friend sendRequest = Friend.builder()
                 .friendId(friendId)
-                .user(user)
+                .user(me)
                 .build();
 
-        friendRepository.save(friend);
+        friendRepository.save(sendRequest);
 
         return FriendRequestDto.Response.builder()
                 .msg("요청이 완료되었습니다.")
@@ -44,12 +56,14 @@ public class FriendServiceImpl implements FriendService{
                 .build();
     }
 
+    // 요청 승인
     @Override
+    @Transactional
     public FriendRequestDto.Response requestAccess(Long userId, String requestId) {
-        Friend friend = friendRepository.findById(Long.parseLong(requestId))
+        Friend friend = friendRepository.findByIdAndStatus(Long.parseLong(requestId), 0)
                 .orElseThrow(() -> new NotFoundException("요청을 찾을 수 없습니다."));
 
-        if(friend.getUser().getId() != userId){
+        if(friend.getFriendId() != userId){
             throw new NoSuchElementException("요청에 접근 권한이 없습니다.");
         }
 
@@ -64,12 +78,14 @@ public class FriendServiceImpl implements FriendService{
                 .build();
     }
 
+    // 요청 거절
     @Override
+    @Transactional
     public FriendRequestDto.Response requestDeny(Long userId, String requestId) {
         Friend friend = friendRepository.findById(Long.parseLong(requestId))
                 .orElseThrow(() -> new NotFoundException("요청을 찾을 수 없습니다."));
 
-        if(friend.getUser().getId() != userId){
+        if(friend.getFriendId() != userId){
             throw new NoSuchElementException("요청에 접근 권한이 없습니다.");
         }
 
@@ -81,6 +97,22 @@ public class FriendServiceImpl implements FriendService{
                 .build();
     }
 
+    // 받은 요청 목록
+    @Override
+    public FriendListDto.Response receiveList(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        List<Friend> list = friendRepository.findByFriendIdAndStatus(userId, 0);
+
+        return FriendListDto.Response.builder()
+                .list(list)
+                .msg("친구 요청 목록을 불러왔습니다.")
+                .success(true)
+                .build();
+    }
+
+    // 보낸 요청 목록
     @Override
     public FriendListDto.Response requestList(Long userId) {
         User user = userRepository.findById(userId)
@@ -95,6 +127,7 @@ public class FriendServiceImpl implements FriendService{
                 .build();
     }
 
+    // 친구 목록
     @Override
     public FriendListDto.Response friendList(Long userId) {
         User user = userRepository.findById(userId)
@@ -108,5 +141,7 @@ public class FriendServiceImpl implements FriendService{
                 .success(true)
                 .build();
     }
+
+    //
 
 }

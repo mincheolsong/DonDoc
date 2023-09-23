@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public interface FriendService {
     FriendListDto.Response friendList(Long userId);
 
+    FriendListDto.Response receiveList(Long userId);
     FriendListDto.Response requestList(Long userId);
 
     FriendRequestDto.Response requestDeny(Long userId, String requestId);

@@ -197,7 +197,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public FindUserDto.Response findUser(String phoneNumber) {
+    public FindUserDto.Response findUser(String phoneNumber, String userId) {
+        User certificationMe = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+        if(certificationMe.getPhoneNumber().equals(phoneNumber)){
+            throw new NoSuchElementException("나를 검색할 수 없습니다.");
+        }
+
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
