@@ -24,82 +24,60 @@
     border-bottom: 1px solid black;
 }
 
-.requestmoney {
-    width: 40%;
-}
-
-.requestmission {
-    width: 40%;
-}
-
-.icon {
-    width: 4.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
-}
-
-.icon img {
-    width: 100%;
-}
-
-.requesttext {
-    text-align: center;
-}
-
-.requesttext p {
-    margin: 0rem;
-    font-size: 2rem;
-    font-weight: 900;
-}
-
-.selectcontent {
-    margin-top: 2rem;
-    border: 1px solid black;
+.maincontent {
     display: flex;
     justify-content: center;
 }
 
-.inputs {
-    width: 20rem;
+.contentbox {
+    width: 26.6rem;
+    height: 37rem;
+    background-color: #F5F5F5;
+    border-radius: 1rem;
 }
 
-.inputs input {
-    margin-bottom: 1rem;
+.introtitle {
+    text-align: center;
+    font-weight: 900;
+}
+
+.introcontent {
+    background-color: white;
+    width: 23.5rem;
+    height: 9.4rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.5rem;
+}
+
+.introinput {
     width: 100%;
-    height: 3.4rem;
+    height: 100%;
     border: 1px solid black;
     border-radius: 0.5rem;
 }
 
-.inputs textarea {
-    margin-bottom: 1rem;
-    width: 100%;
-    height: 7.3rem;
+.memberscontent {
+    width: 21.5rem;
+    height: 15.5rem;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
     border: 1px solid black;
     border-radius: 0.5rem;
 }
 
 
-.inputs select {
-    border: 1px solid black;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    width: 20.533rem;
-    height: 3.4rem;
-}
 
-.btns {
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 2rem;
-    left: 0;
-    width: 100%;
+
+
+.infobtns {
+    margin-top: 2rem;
     display: flex;
     justify-content: space-around;
 }
 
-.btns button {
+.infobtns button {
     width: 12rem;
     height: 3.6rem;
 }
