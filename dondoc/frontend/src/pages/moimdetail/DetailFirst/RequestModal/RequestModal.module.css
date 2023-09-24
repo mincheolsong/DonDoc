@@ -54,6 +54,7 @@
 }
 
 .selectcontent {
+    margin-top: 2rem;
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -66,14 +67,39 @@
 .inputs input {
     margin-bottom: 1rem;
     width: 100%;
+    height: 3.4rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
 }
 
-.inputs select {
+.inputs textarea {
     margin-bottom: 1rem;
     width: 100%;
+    height: 7.3rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+
+.inputs select {
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    width: 20.533rem;
+    height: 3.4rem;
 }
 
 .btns {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 2rem;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: space-around;
+}
+
+.btns button {
+    width: 12rem;
+    height: 3.6rem;
 }

@@ -113,7 +113,7 @@ function DetailFirst() {
           {inviteModalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseInviteModal}/>
-              <InviteModal setModalOpen={setModalOpen} />
+              <InviteModal setModalOpen={setInviteModalOpen} />
             </>
           )}
           {infoModalOpen && (

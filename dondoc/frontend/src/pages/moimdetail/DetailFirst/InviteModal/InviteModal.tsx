@@ -32,7 +32,50 @@ function InviteModal({setModalOpen}: Props) {
           </div>
         </div>
 
+        <div className={styles.maincontent}>
+          <div className={styles.searchbox}>
+            <div className={styles.inputgroup}>
+              <div className={styles.inputlabel}>
+                <h2>전화번호, 이름</h2>
+              </div>
+              <div className={styles.inputbox}>
+                <input type="text" />
+              </div>
+            </div>
+          </div>
+          
+          <div className={styles.searchresult}>
+          
+          </div>
 
+          <div className={styles.friendlist}>
+            <div className={styles.friendcontent}>  
+              <div className={styles.listlabel}>
+                <h2>친구 리스트</h2>
+              </div>
+              <div className={styles.friendbox}>
+                
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.invitelist}>
+            <div className={styles.invitecontent}>  
+              <div className={styles.listlabel}>
+                <h2>초대 리스트</h2>
+              </div>
+              <div className={styles.invitebox}>
+                
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div className={styles.infobtns}>
+            <button onClick={ModalClose}>닫기</button>
+            <button>수정하기</button>
+        </div>
 
       </div>
     </div>
