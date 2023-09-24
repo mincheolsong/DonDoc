@@ -73,6 +73,8 @@ public class FriendController {
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+
     // 친구 요청 목록조회
     @ApiOperation(value = "친구 요청 목록조회", notes = "친구요청 거절 API", response = ApiUtils.ApiResult.class)
     @GetMapping("/request/list")
