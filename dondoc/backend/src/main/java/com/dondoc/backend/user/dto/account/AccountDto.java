@@ -6,14 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
-public class HistoryDto {
+public class AccountDto {
+
     @Data
     @Builder
     public static class Response{
         private String msg;
-        private List<Map<String, Object>> historyList;
         @JsonIgnore
         private boolean success;
     }

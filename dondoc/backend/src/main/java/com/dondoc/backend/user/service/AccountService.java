@@ -1,5 +1,6 @@
 package com.dondoc.backend.user.service;
 
+import com.dondoc.backend.user.dto.account.AccountDto;
 import com.dondoc.backend.user.dto.account.AccountListDto;
 import com.dondoc.backend.user.dto.account.HistoryDto;
 import com.dondoc.backend.user.entity.Account;
@@ -16,5 +17,7 @@ public interface AccountService{
 
     AccountListDto.Response saveList(Long userId, List<AccountListDto.Request> accountList);
 
-    AccountListDto.Response searchHistory(Long userId, HistoryDto historyDto);
+    HistoryDto.Response searchHistory(Long userId, String accountNumber);
+
+    AccountDto.Response setAccount(Long userId, Long accountId);
 }

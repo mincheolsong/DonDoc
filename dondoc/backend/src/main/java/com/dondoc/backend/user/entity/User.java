@@ -66,6 +66,7 @@ public class User {
     private String refreshToken;
 
     @Column(name="mainAccount")
+    // 은행의 계좌 ID로 저장
     private Long mainAccount;
 
     @Column(name="imageNumber")

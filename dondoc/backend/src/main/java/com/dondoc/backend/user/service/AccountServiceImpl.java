@@ -1,6 +1,7 @@
 package com.dondoc.backend.user.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
+import com.dondoc.backend.user.dto.account.AccountDto;
 import com.dondoc.backend.user.dto.account.AccountListDto;
 import com.dondoc.backend.user.dto.account.HistoryDto;
 import com.dondoc.backend.user.entity.Account;
@@ -138,20 +139,43 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public AccountListDto.Response searchHistory(Long userId, HistoryDto historyDto) {
+    public HistoryDto.Response searchHistory(Long userId, String accountNumber) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
         Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("identificationNumber", List.of(user.getPhoneNumber()));
+        requestMap.put("identificationNumber", user.getPhoneNumber());
+        requestMap.put("accountNumber", accountNumber);
 
         Map response = webClient.post()
-                .uri("/bank/account/list")
+                .uri("/bank/history")
                 .bodyValue(requestMap)
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
 
+        System.out.println(response);
+//        return HistoryDto.Response.builder()
+//                .historyList(response)
+//                .build();
         return null;
+    }
+
+    @Override
+    public AccountDto.Response setAccount(Long userId, Long accountId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        Account account = accountRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new NotFoundException("계좌 정보를 찾을 수 없습니다."));
+
+        if(account.getUser().equals(user)){
+            user.setMainAccount(accountId);
+        };
+
+        return AccountDto.Response.builder()
+                .success(true)
+                .msg("대표계좌를 설정하였습니다.")
+                .build();
     }
 }
