@@ -1,23 +1,106 @@
-/* .container {
-    background-color: #F4F6FA;
-    height: 100vh;
-}
 
-.content {
-    height: 100%;
-    overflow: auto;
-}
 
 .topbar {
-    width: 100%;
+    margin-left: 3%;
+    margin-right: 3%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+.mytap {
+    margin: 3%;
+    border-radius: 10px;
+    /* border: 1px solid black; */
+    background-color: white;
+    padding: 3%;
     display: flex;
     justify-content: space-between;
 }
 
-.topbar .logo {
-    font-size: 1.4rem;
+.character {
+    width: 20%;
 }
-.topbar .notice {
-    font-size: 1.4rem;
+
+.toprofile {
+    width: 60%;
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
- */
+
+.toprofile p {
+    font-weight: 900;
+}
+
+.makemoim {
+    width: 30%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.haaland {
+    width: 100%;
+    height: 100%;
+}
+
+.moimlist {
+    margin-top: 20px;
+}
+
+.moimlisttitle {
+    display: flex;
+    justify-content: center;
+}
+
+.moimcontent {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.moimunit {
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.invitelist {
+    margin: 3%;
+}
+
+.invitecontent {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.invitebox {
+    width: 80%;
+}
+
+.inviteunit {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+}
+
+.linkbank{
+    width: 20%;
+}
+
+.chelsea {
+    width: 100%;
+    height: 100%;
+}
+
+.invitemessage {
+    width: 70%;
+}

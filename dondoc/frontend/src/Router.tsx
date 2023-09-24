@@ -18,14 +18,28 @@ import CreateResultPage from './pages/moim/CreateResult/CreateResult'
 import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
 import MissionPage from './pages/mission/Mission/Mission'
 import SignupTempPage from "./pages/webmain/SignupTemp";
+import AccountInfoPage from "./pages/webmain/AccountInfo";
+import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
+import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
+import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
+import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
+import RequestModal from './pages/moimdetail/DetailFirst/RequestModal/RequestModal'
+import SendMoneyFirstPage from "./pages/webmain/SendMoneyFirst";
+
+
 function Router() {
 
     return (
         <Routes>
-            <Route path="/" element={<HomePage/>}/>
+            
             <Route path="/signin" element={<SigninPage/>}/>
             <Route path="/signup" element={<SignupPage/>}/>
             <Route path="/signupTemp" element={<SignupTempPage/>}/>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/accountInfo" element={<AccountInfoPage/>}/>
+            <Route path="/sendmoneyfirst" element={<SendMoneyFirstPage/>}/>
+
+
             <Route path="/search" element={<SearchPage/>}/>
             <Route path="/mypage" element={<MypagePage/>}/>
             <Route path="/setting" element={<SettingPage/>}/>
@@ -41,6 +55,12 @@ function Router() {
             <Route path="/createresult" element={<CreateResultPage/>}/>
             <Route path="/moimjoin" element={<MoimJoinPage/>}/>
             <Route path="/mission" element={<MissionPage/>}/>
+            <Route path="/detailmain" element={<DetailMain/>}/>
+            <Route path="/detailfirst" element={<DetailFirst/>}/>
+            <Route path="/detailsecond" element={<DetailSecond/>}/>
+            <Route path="/detailthird" element={<DetailThird/>}/>
+            <Route path="/requestmodal" element={<RequestModal/>}/>
+            
             
         </Routes>
     )

@@ -1,8 +1,7 @@
 import styles from "./Signup.module.css";
 import dondoc from '../../../assets/image/dondocLogo.png'
-import {IoChevronBack} from 'react-icons/io5'
-import { IconContext } from "react-icons";
 import { useNavigate } from "react-router-dom";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
 interface SignProps {
   name: string;
@@ -18,16 +17,8 @@ function Signup() {
   
   return (
     <div>
-
-    <IconContext.Provider  value={{className: styles.backLogo}}>
-      <div onClick={()=>{
-        naviate(-1)
-      }} >
-      <IoChevronBack/>
-      </div>
-    </IconContext.Provider>
-
-
+    <BackLogoHeader/>
+    
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />
       </div>
@@ -54,3 +45,20 @@ function SignUpInput(props:SignProps){
   )
 }
 export default Signup;
+
+
+// export function BackLogo(props){
+//   const naviate = useNavigate();
+//   return(
+//     <div style={{display:"flex",justifyContent:"start"}}>
+//     <IconContext.Provider  value={{className: styles.backLogo}}>
+//       <div onClick={()=>{
+//         naviate(-1)
+//       }} >
+//       <IoChevronBack/>
+//       </div>
+//     </IconContext.Provider>
+//       <p style={{fontSize:props.fontSize,marginLeft:props.left,marginTop:props.top, margin:"0",  fontWeight:"bold"}}>{props.name}</p>
+//     </div>
+//   )
+// }
