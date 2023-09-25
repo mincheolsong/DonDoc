@@ -58,14 +58,22 @@
     padding-bottom: 10px;
     background-color: white;
     display: flex;
-    justify-content: center;
-}
-
-.moimunit {
-    margin: 5px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .moimunit {
+    margin: 7px;
+    min-width: 13.5rem;
+    height: 15.3rem;
     border: 1px solid black;
     border-radius: 10px;
-}
+    word-wrap: break-word;
+  }
+  
+  
+  
 
 .invitelist {
     margin: 3%;

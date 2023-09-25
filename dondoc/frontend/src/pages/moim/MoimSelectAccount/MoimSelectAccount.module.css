@@ -23,19 +23,23 @@
 
 .accountinfo {
     background-color: white;
+    border: 2px solid #DADADA;
     border-radius: 10px;
     height: 10rem;
     margin-bottom: 2rem;
 }
 
 .accountinfo p {
-    padding: 2rem;
+    font-size: 1.3rem;
+    padding: 1rem;
+    margin: 0;
 }
 
 
 .selectcategories {
     width: 100%;
     background-color: white;
+    border: 2px solid #DADADA;
     border-radius: 10px;
     display: flex;
     justify-content: space-around;

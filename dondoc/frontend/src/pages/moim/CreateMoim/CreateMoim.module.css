@@ -38,7 +38,7 @@
 .inputbox {
     width: 29.9rem;
     margin-top: 3rem;
-    border:none;
+    border:2px solid #DADADA;
     border-radius: 0.5rem;
     margin-top: 2rem;
     margin-left: auto;
