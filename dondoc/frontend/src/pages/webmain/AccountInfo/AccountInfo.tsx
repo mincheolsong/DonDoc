@@ -1,6 +1,12 @@
 import styles from "./AccountInfo.module.css";
-import { BackLogo } from "../Signup/Signup";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
+interface BackLogoHeader{
+  left : string;
+  name : string;
+  fontSize: string;
+  top :string; 
+}
 
 
 
@@ -8,7 +14,7 @@ function AccountInfo() {
   return (
   <div>
     
-    <BackLogo name="계좌이름" fontSize="2rem" left="5rem" top="0.8rem"/>
+    <BackLogoHeader name="계좌이름" fontSize="2rem" left="5rem" top="0.8rem"/>
     
     {/* Top */}
     <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}} >
