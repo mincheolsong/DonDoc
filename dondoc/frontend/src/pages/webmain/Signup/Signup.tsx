@@ -18,7 +18,6 @@ function Signup() {
   return (
     <div>
     <BackLogoHeader/>
-    
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />
       </div>
@@ -39,7 +38,7 @@ function Signup() {
 }
 
 
-function SignUpInput(props:SignProps){
+export function SignUpInput(props:SignProps){
   return(
     <input className={styles.IdBox} type={props.type} placeholder={props.name} onChange={props.setting}/>
   )
