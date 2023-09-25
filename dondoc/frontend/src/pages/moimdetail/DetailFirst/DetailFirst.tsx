@@ -1,7 +1,36 @@
 import styles from "./DetailFirst.module.css";
+import { useState } from 'react'
 import haaland from "../../../assets/bbakbbakyee.jpg"
+import RequestModal from "./RequestModal/RequestModal";
+import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
+import InviteModal from "./InviteModal/InviteModal";
 
 function DetailFirst() {
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+
+  const OpenModal = () => {
+    setModalOpen(true)
+  }
+  const CloseModal = () => {
+    setModalOpen(false)
+  }
+  const OpenInviteModal = () => {
+    setInviteModalOpen(true)
+  }
+  const CloseInviteModal = () => {
+    setInviteModalOpen(false)
+  }
+  const OpenINfoModal = () => {
+    setInfoModalOpen(true)
+  }
+  const CloseInfoModal = () => {
+    setInfoModalOpen(false)
+  }
+
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -14,6 +43,9 @@ function DetailFirst() {
           </div>
           <div className={styles.pagename}>
             <h3>올해는 다이어트 성공</h3>
+          </div>
+          <div className={styles.bookicon} onClick={OpenINfoModal}>
+            <h3>ICON</h3>
           </div>
         </div>
 
@@ -48,7 +80,7 @@ function DetailFirst() {
 
           <div className={styles.selectuser}>
             <div className={styles.invitebtn}>
-              <button className={styles.invbtn}>+ 초대하기</button>
+              <button className={styles.invbtn} onClick={OpenInviteModal}>+ 초대하기</button>
             </div>
             <div className={styles.selectcharacter}>
               <img src={haaland} alt="" />
@@ -68,9 +100,28 @@ function DetailFirst() {
               </div>
             </div>
             <div className={styles.optionbuttons}>
-              <button>요청하기</button> <button>요청확인</button>
+              <button onClick={OpenModal}>요청하기</button> <button>요청확인</button>
             </div>
           </div>
+
+          {modalOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseModal}/>
+              <RequestModal setModalOpen={setModalOpen} />
+            </>
+          )}
+          {inviteModalOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseInviteModal}/>
+              <InviteModal setModalOpen={setInviteModalOpen} />
+            </>
+          )}
+          {infoModalOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
+              <InfoUpdateModal setModalOpen={setInfoModalOpen} />
+            </>
+          )}
 
         </div>
 

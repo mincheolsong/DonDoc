@@ -1,11 +1,9 @@
-.container {
-    width: 100vw;
-    height: 100vh;
-}
+
 
 .content {
     width: 100%;
     height: 100%;
+    z-index: 9999;
 }
 
 
@@ -179,3 +177,13 @@
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
+    z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }

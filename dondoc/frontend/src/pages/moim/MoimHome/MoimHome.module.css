@@ -104,3 +104,31 @@
 .invitemessage {
     width: 70%;
 }
+
+
+
+
+/* Profile Tap */
+.myProfileBtn{ 
+    background-color: white;
+    border-radius: 0.8rem;
+    border: solid #E4E4E4 0.1rem;
+    height: 2rem;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.topContainer{
+    width: 96%;
+    height: 10rem;
+    background-color: white;
+    border-radius: 0.6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
