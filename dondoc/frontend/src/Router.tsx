@@ -25,6 +25,11 @@ import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
 import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
 import RequestModal from './pages/moimdetail/DetailFirst/RequestModal/RequestModal'
 import SendMoneyFirstPage from "./pages/webmain/SendMoneyFirst";
+import SendMoneySecondPage from "./pages/webmain/SendMoneySecond";
+import SuccessPage from "./pages/webmain/SuccessPage";
+import ErrorPage from "./pages/webmain/ErrorPage";
+import SignUpFirstPage from "./pages/webmain/SignUpFirst";
+import SignUpSecondPage from "./pages/webmain/SignUpSecond";
 
 
 function Router() {
@@ -33,12 +38,18 @@ function Router() {
         <Routes>
             
             <Route path="/signin" element={<SigninPage/>}/>
+            <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
+            <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
+            
             <Route path="/signup" element={<SignupPage/>}/>
             <Route path="/signupTemp" element={<SignupTempPage/>}/>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/accountInfo" element={<AccountInfoPage/>}/>
             <Route path="/sendmoneyfirst" element={<SendMoneyFirstPage/>}/>
-
+            <Route path="/sendmoneysecond" element={<SendMoneySecondPage/>}/>
+            <Route path="/error" element={<ErrorPage/>}/>
+            <Route path="/success" element={<SuccessPage/>}/>
+            
 
             <Route path="/search" element={<SearchPage/>}/>
             <Route path="/mypage" element={<MypagePage/>}/>
