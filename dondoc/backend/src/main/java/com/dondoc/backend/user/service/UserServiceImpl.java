@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService{
                         .phoneNumber(signUpDto.getPhoneNumber())
                         .name(signUpDto.getName())
                         .password(passwordEncoder.encode(signUpDto.getPassword() + salt))
-                        .email(signUpDto.getEmail())
                         .nickName(signUpDto.getNickName())
                         .salt(salt)
                         .build();
