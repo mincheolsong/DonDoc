@@ -19,31 +19,31 @@ function Home() {
       {/* 헤더, 유저박스 */}
 
 
-      {/* 나의계좌 */}
-      <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
-      <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem"}}>나의 계좌</p>
-      <button className={styles.accountBtn}>계좌불러오기</button>
-      </div>
-      {/* 나의계좌 */}
+    {/* 나의계좌 */}
+    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
+    <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem"}}>나의 계좌</p>
+    <button className={styles.accountBtn}>계좌불러오기</button>
+    </div>
+     {/* 나의계좌 */}
 
 
-      <div className={styles.midContainer}>
-        <div style={{display:"flex",flexDirection:"row"}}>
-          은행 사진
+    <div className={styles.midContainer}>
+      <div style={{display:"flex",flexDirection:"row"}}>
+        은행 사진
 
-          <div>
-          계좌이름
-          <br /> 
-          잔액
-        </div>
-
-        </div>
-      
-        
         <div>
-          송금버튼
-        </div>
+        계좌이름
+        <br /> 
+        잔액
       </div>
+
+      </div>
+    
+      
+      <div>
+        송금버튼
+      </div>
+    </div>
     
 
 

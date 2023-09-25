@@ -24,6 +24,8 @@ import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
 import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
 import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
 import RequestModal from './pages/moimdetail/DetailFirst/RequestModal/RequestModal'
+import SendMoneyFirstPage from "./pages/webmain/SendMoneyFirst";
+
 
 function Router() {
 
@@ -35,7 +37,7 @@ function Router() {
             <Route path="/signupTemp" element={<SignupTempPage/>}/>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/accountInfo" element={<AccountInfoPage/>}/>
-
+            <Route path="/sendmoneyfirst" element={<SendMoneyFirstPage/>}/>
 
 
             <Route path="/search" element={<SearchPage/>}/>
