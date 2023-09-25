@@ -28,7 +28,7 @@ import java.util.List;
 * */
 
 @Entity
-@Table(name="User")
+@Table(name="Users")
 @Getter @Setter
 @Builder
 @AllArgsConstructor
@@ -49,9 +49,6 @@ public class User {
 
     @Column(name="name", nullable = false, length = 20)
     private String name;
-
-    @Column(name="email", nullable = false, length = 50)
-    private String email;
 
     @Column(name="introduce", columnDefinition = "LONGTEXT")
     private String introduce;
