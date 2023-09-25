@@ -5,6 +5,7 @@ import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.user.dto.user.*;
 import com.dondoc.backend.user.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
+@Api(value = "User", description = "User Controller", tags = "유저 API")
 @RequestMapping("/api/user")
 public class UserController {
 

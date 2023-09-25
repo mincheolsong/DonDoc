@@ -7,6 +7,7 @@ import com.dondoc.backend.user.dto.friend.FriendListDto;
 import com.dondoc.backend.user.dto.friend.FriendRequestDto;
 import com.dondoc.backend.user.dto.friend.FriendSearchDto;
 import com.dondoc.backend.user.service.FriendService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
+@Api(value = "Friend", description = "Friend Controller", tags = "친구 API")
 @RequestMapping("/api/friend")
 public class FriendController {
 

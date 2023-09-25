@@ -1,9 +1,7 @@
 package com.dondoc.backend.user.service;
 
 import com.dondoc.backend.common.exception.NotFoundException;
-import com.dondoc.backend.user.dto.account.AccountDto;
-import com.dondoc.backend.user.dto.account.AccountListDto;
-import com.dondoc.backend.user.dto.account.HistoryDto;
+import com.dondoc.backend.user.dto.account.*;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.repository.AccountRepository;
@@ -17,12 +15,13 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
     private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버
+
     public AccountServiceImpl(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
@@ -53,7 +52,7 @@ public class AccountServiceImpl implements AccountService{
 
         log.info(response.get("response").toString());
 
-        if(!response.get("success").toString().equals("true")){
+        if (!response.get("success").toString().equals("true")) {
             return AccountListDto.Response.builder()
                     .success(false)
                     .msg("계좌 목록 불러올 수 없습니다.")
@@ -72,11 +71,11 @@ public class AccountServiceImpl implements AccountService{
     public AccountListDto.Response loadList(Long userId) {
         List<Account> list = accountRepository.findByUserId(userId);
 
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             throw new NotFoundException("등록된 계좌가 없습니다.");
         }
 
-        for(Account account : list){
+        for (Account account : list) {
             log.info(account.getAccountId().toString());
         }
 
@@ -94,7 +93,7 @@ public class AccountServiceImpl implements AccountService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        for(AccountListDto.Request compare : accountList) {
+        for (AccountListDto.Request compare : accountList) {
             // 해당 계좌 ID가 맞는지 확인
             Map response = webClient.get()
                     .uri("/bank/account/detail/" + compare.getAccountId())
@@ -103,48 +102,46 @@ public class AccountServiceImpl implements AccountService{
                     .block();
             log.info(response.toString());
 
-            try{
-                Map<String, String> res = (Map<String, String>)response.get("response");
+            try {
+                Map<String, String> res = (Map<String, String>) response.get("response");
                 String account = res.get("accountNumber");
 
-                if(!account.equals(compare.getAccountNumber())){
+                if (!account.equals(compare.getAccountNumber())) {
                     log.info("계좌 불일치");
                     throw new NoSuchElementException("계좌 정보가 잘못 되었습니다.");
                 }
 
-            }catch(NotFoundException e){
+            } catch (NotFoundException e) {
                 throw new NoSuchElementException("계좌 정보가 잘못 되었습니다.");
             }
         }
-
-
 
 
         // 삭제할 목록 판별
         List<Account> existAccount = accountRepository.findByUserId(userId);
 
         // 존재하는 계좌 목록
-        for(Account account : existAccount){
+        for (Account account : existAccount) {
             boolean status = false;
             Long accountId = account.getAccountId();
 
-            for(int i = 0; i < accountList.size(); i++){
-                if(accountId == accountList.get(i).getAccountId()){
+            for (int i = 0; i < accountList.size(); i++) {
+                if (accountId == accountList.get(i).getAccountId()) {
                     status = true;
                     break;
                 }
             }
 
-            if(!status){
+            if (!status) {
                 log.info(accountId.toString());
                 accountRepository.deleteByAccountId(accountId);
             }
         }
 
         // 요청 계좌 만큼 처리
-        for(AccountListDto.Request request : accountList){
+        for (AccountListDto.Request request : accountList) {
             // 있는 경우 패스
-            if(accountRepository.findByAccountId(request.getAccountId()).isPresent()){
+            if (accountRepository.findByAccountId(request.getAccountId()).isPresent()) {
                 continue;
             }
 
@@ -182,7 +179,6 @@ public class AccountServiceImpl implements AccountService{
                 .bodyToMono(Map.class)
                 .block();
 
-        ;
         return HistoryDto.Response.builder()
                 .historyList(response)
                 .build();
@@ -196,9 +192,10 @@ public class AccountServiceImpl implements AccountService{
         Account account = accountRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new NotFoundException("계좌 정보를 찾을 수 없습니다."));
 
-        if(account.getUser().equals(user)){
+        if (account.getUser().equals(user)) {
             user.setMainAccount(accountId);
-        };
+        }
+
 
         userRepository.save(user);
 
@@ -206,5 +203,67 @@ public class AccountServiceImpl implements AccountService{
                 .success(true)
                 .msg("대표계좌를 설정하였습니다.")
                 .build();
+    }
+
+    @Override
+    public AccountDetailDto.Response accountDetail(Long accountId) {
+
+        Map response = webClient.get()
+                .uri("/bank/account/detail/" + accountId)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        log.info(response.toString());
+
+        if(!(boolean)response.get("success")){
+            throw new NotFoundException("계좌 정보를 찾을 수 없습니다.");
+        }
+
+        Map<String, Object> map = (Map<String, Object>)response.get("response");
+
+
+        Map account = (Map<String, String>) response.get("response");
+
+        AccountDetailDto.AccountDetail accountDetail = AccountDetailDto.AccountDetail.builder()
+                .accountId(Long.parseLong(((Integer) map.get("accountId")).toString()))
+                .accountName((String)account.get("accountName"))
+                .accountNumber((String)account.get("accountNumber"))
+                .balance((Integer)account.get("balance"))
+                .bankCode(Long.parseLong(((Integer) map.get("bankCode")).toString()))
+                .bankName((String)account.get("bankName"))
+                .build();
+
+        return AccountDetailDto.Response.builder()
+                .success(true)
+                .msg("계좌 상세 조회에 성공했습니다.")
+                .accountDetail(accountDetail)
+                .build();
+    }
+
+    @Override
+    public HistoryDetailDto.Response historyDetail(Long userId, HistoryDetailDto.Request historyDto) {
+        // 유저 탐색
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("identificationNumber", user.getPhoneNumber());
+        requestMap.put("accountNumber", historyDto.getAccountNumber());
+        requestMap.put("historyId", historyDto.getHistoryId());
+
+        // 요청 전송
+        Map response = webClient.post()
+                .uri("/bank/detail_history")
+                .bodyValue(requestMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+
+        log.info(response.toString());
+        return null;
     }
 }

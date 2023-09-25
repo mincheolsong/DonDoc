@@ -5,6 +5,7 @@ import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import com.dondoc.backend.common.jwt.TokenDto;
 import com.dondoc.backend.common.jwt.model.UserDetailsImpl;
 import com.dondoc.backend.common.jwt.model.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,20 +83,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 // Bearer을 제외한 토큰 값
                 accessToken = requestTokenHeader.substring(BEARER_PREFIX.length());
 
-                // 토큰에서 정보 추출. => 실패 시 재발급
-                if(!jwtTokenProvider.isTokenExpired(accessToken)) {
-                    userId = jwtTokenProvider.getClaims(accessToken).getSubject();
-                }else{
+                try{
+                    // 만료 여부 파악
+                    if(!jwtTokenProvider.isTokenExpired(accessToken)){
+                        userId = jwtTokenProvider.getClaims((accessToken)).getSubject();
+                    }
+                }catch(ExpiredJwtException e) {
+                    // 토큰에서 정보 추출. => 실패 시 재발급
                     log.info("토큰을 재발급 받습니다.");
 
                     // 토큰 만료(재발급) => Cookie에서 RefreshToken 가져옴
                     refreshToken = getRefreshTokenFromCookie(request);
 
                     // Cookie내에 토큰이 존재여부 파악
-                    if(refreshToken != null){
+                    if(refreshToken == null){
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.setContentType("application/json");
+                        response.getWriter().write(jwtAuthFilterException.noRefreshToken());
+                        return;
+                    }
+
+                    log.info("refreshToken : {}", refreshToken);
+
                         // refreshToken의 유효성 여부 파악
 
-
+                    try{
                         // refreshToken 만료 여부 파악
                         if(jwtTokenProvider.isRefreshTokenExpired(refreshToken)){
                             userId = jwtTokenProvider.getRefreshClaims(refreshToken).getSubject();
@@ -116,21 +128,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             // 헤더에 저장
                             response.setHeader(AUTH_HEADER, BEARER_PREFIX + newAccessToken);
                             log.info("재발급 완료 = {}", newAccessToken);
-                        }else{
-                            // refershToken 만료
-                            response.setStatus(HttpServletResponse.SC_OK);
-                            response.setContentType("application/json");
-                            response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
-                            log.info("모든 토큰이 만료되었습니다.");
-                            return;
+
+
                         }
-                    }else{
+                    }catch (ExpiredJwtException ee){
+                        // refershToken 만료
                         response.setStatus(HttpServletResponse.SC_OK);
                         response.setContentType("application/json");
-                        response.getWriter().write(jwtAuthFilterException.noRefreshToken());
+                        response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
+                        log.info("모든 토큰이 만료되었습니다.");
                         return;
                     }
                 }
+
 
                 // User 인증 정보 불러오기(유효한 accessToken)
                 UserDetailsImpl userDetails = (UserDetailsImpl)userDetailsService.loadUserByUsername(userId);
@@ -142,7 +152,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 log.info(usernamePasswordAuthenticationToken.getName());
 
-                // Session에 user 정보 등록a
+                // Session에 user 정보 등록
             }else{
                 // 인증정보가 존재하지 않음
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -151,6 +161,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
         }
+        log.info("필터링 끝");
         filterChain.doFilter(request, response);
 
     }

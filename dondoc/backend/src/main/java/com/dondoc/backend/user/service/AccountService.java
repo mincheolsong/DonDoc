@@ -1,8 +1,6 @@
 package com.dondoc.backend.user.service;
 
-import com.dondoc.backend.user.dto.account.AccountDto;
-import com.dondoc.backend.user.dto.account.AccountListDto;
-import com.dondoc.backend.user.dto.account.HistoryDto;
+import com.dondoc.backend.user.dto.account.*;
 import com.dondoc.backend.user.entity.Account;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +18,8 @@ public interface AccountService{
     HistoryDto.Response searchHistory(Long userId, String accountNumber);
 
     AccountDto.Response setAccount(Long userId, Long accountId);
+
+    AccountDetailDto.Response accountDetail(Long accountId);
+
+    HistoryDetailDto.Response historyDetail(Long userId, HistoryDetailDto.Request historyDto);
 }
