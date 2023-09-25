@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styles from "./CreateResult.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import TermsOfUseModal from './TermsOfUse/TermsOfUse';
 
 interface Props {
 
@@ -9,12 +11,31 @@ function CreateResult(props: Props) {
 
   const navigate = useNavigate()
 
+  const { state } = useLocation()
+  const moimName = state.moimName
+  const moimInfo = state.moimInfo
+  const account = state.account
+  const category = state.category
+
+  const [termsOpen, setTermsOpen] = useState<boolean>(false)
+
+  const OpenTerms = () => {
+    setTermsOpen(true)
+  }
+  const CloseTerms = () => {
+    setTermsOpen(false)
+  }
+
   const ToBack = () => {
     navigate(-1)
   }
 
   const ToNext = () => {
     navigate('/moimhome')
+  }
+
+  const WatchInfo = () => {
+    console.log(state)
   }
 
   return (
@@ -41,22 +62,22 @@ function CreateResult(props: Props) {
             <div className={styles.accountinfo}>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>모임이름</p>
-                <p>우리는 화목해요</p>
+                <p>{moimName}</p>
               </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>연결계좌</p>
-                <p>농협 어쩌고저쩌고계좌번호</p>
+                <p>{account}</p>
               </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>계좌유형</p>
-                <p>한명 계좌</p>
+                <p>{category.name}</p>
               </div>
               <div className={styles.moiminfo}>
                 <p className={styles.title}>모임소개</p>
-                <p className={styles.moimtext}>아따마 잘 부탁드립니다.</p>
+                <p className={styles.moimtext}>{moimInfo}</p>
               </div>
               <div className={styles.watchtermsbtn}>
-                <button className={styles.openterms}>
+                <button className={styles.openterms} onClick={OpenTerms}>
                   약관보기
                 </button>
               </div>
@@ -71,6 +92,15 @@ function CreateResult(props: Props) {
         </div>
         
         </div>
+
+        <button onClick={WatchInfo}></button>
+
+        {termsOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseTerms}/>
+              <TermsOfUseModal setTermsOpen={setTermsOpen} />
+            </>
+          )}
 
       </div>
     </div>
