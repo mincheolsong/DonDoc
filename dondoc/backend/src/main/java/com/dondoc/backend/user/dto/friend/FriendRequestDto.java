@@ -1,10 +1,13 @@
 package com.dondoc.backend.user.dto.friend;
 
+import com.dondoc.backend.user.entity.Friend;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 public class FriendRequestDto {
     @Data
@@ -23,4 +26,15 @@ public class FriendRequestDto {
         @JsonIgnore
         private boolean success;
     }
+
+    @Data
+    @Builder
+    public static class RequestListResponse{
+        private String msg;
+        private List<Friend> list;
+        @JsonIgnore
+        private boolean success;
+    }
+
+
 }

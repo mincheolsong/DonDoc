@@ -69,8 +69,8 @@ public class User {
     // 은행의 계좌 ID로 저장
     private Long mainAccount;
 
-    @Column(name="imageNumber")
-    private Long imageNumber;
+    @Column(name="imageNumber", nullable = false)
+    private int imageNumber;
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate

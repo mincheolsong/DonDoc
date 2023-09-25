@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService{
         }
 
         // 이미지 번호
-        if(user.getImageNumber() == null || !user.getImageNumber().equals(req.getImageNumber())){
+        if(user.getImageNumber() == 0 || !(user.getImageNumber() == req.getImageNumber())){
             log.info("이미지 변경");
             user.setImageNumber(req.getImageNumber());
         }

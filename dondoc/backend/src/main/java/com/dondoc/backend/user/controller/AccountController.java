@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
@@ -30,7 +30,7 @@ public class AccountController {
 
     // 계좌 목록 불러오기(은행 API)
     @GetMapping("/list/bank")
-    @ApiOperation(value = "계좌 목록 불러오기", notes = "계좌 불러오기 API", response = ApiUtils.class)
+    @ApiOperation(value = "계좌 목록 불러오기(은행 API)", notes = "계좌 불러오기 API", response = ApiUtils.class)
     public ApiResult loadAccount(@AuthenticationPrincipal UserDetails userDetails) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
@@ -64,12 +64,16 @@ public class AccountController {
             return ApiUtils.success(res);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
+
+
     // 거래 내역 조회
     @GetMapping("/history/{accountNumber}")
-    @ApiOperation(value = "겨래내역 조회", notes = "계좌 저장 API", response = ApiUtils.class)
+    @ApiOperation(value = "거래 내역 조회(은행 API)", notes = "계좌 저장 API", response = ApiUtils.class)
     public ApiResult searchHistory(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String accountNumber) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
@@ -82,7 +86,7 @@ public class AccountController {
 
     // 대표계좌 설정
     @GetMapping("/set")
-    @ApiOperation(value = "대표계좌 설정", notes = "대표 계좌 설정 API", response = ApiUtils.class)
+    @ApiOperation(value = "대표 계좌 설정", notes = "대표 계좌 설정 API", response = ApiUtils.class)
     public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, Long accountId) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
@@ -103,6 +107,4 @@ public class AccountController {
     // 거래 상세 내역 메모 작성
 
     // 비밀번호 재설정? 이거는 추후에 추가
-
-
 }

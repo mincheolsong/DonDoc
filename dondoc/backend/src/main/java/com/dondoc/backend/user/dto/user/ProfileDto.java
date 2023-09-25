@@ -12,7 +12,7 @@ public class ProfileDto {
     @Data
     @Builder
     public static class Response{
-        private Long imageNumber;
+        private int imageNumber;
         private String name;
         private String introduce;
         private Long bankCode;

@@ -67,6 +67,7 @@ public class AccountServiceImpl implements AccountService{
                 .build();
     }
 
+    // 계좌 목록 불러오기
     @Override
     public AccountListDto.Response loadList(Long userId) {
         List<Account> list = accountRepository.findByUserId(userId);
@@ -86,11 +87,38 @@ public class AccountServiceImpl implements AccountService{
                 .build();
     }
 
+    // 사용할 계좌 저장
     @Override
     @Transactional
     public AccountListDto.Response saveList(Long userId, List<AccountListDto.Request> accountList) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        for(AccountListDto.Request compare : accountList) {
+            // 해당 계좌 ID가 맞는지 확인
+            Map response = webClient.get()
+                    .uri("/bank/account/detail/" + compare.getAccountId())
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            log.info(response.toString());
+
+            try{
+                Map<String, String> res = (Map<String, String>)response.get("response");
+                String account = res.get("accountNumber");
+
+                if(!account.equals(compare.getAccountNumber())){
+                    log.info("계좌 불일치");
+                    throw new NoSuchElementException("계좌 정보가 잘못 되었습니다.");
+                }
+
+            }catch(NotFoundException e){
+                throw new NoSuchElementException("계좌 정보가 잘못 되었습니다.");
+            }
+        }
+
+
+
 
         // 삭제할 목록 판별
         List<Account> existAccount = accountRepository.findByUserId(userId);
@@ -154,11 +182,10 @@ public class AccountServiceImpl implements AccountService{
                 .bodyToMono(Map.class)
                 .block();
 
-        System.out.println(response);
-//        return HistoryDto.Response.builder()
-//                .historyList(response)
-//                .build();
-        return null;
+        ;
+        return HistoryDto.Response.builder()
+                .historyList(response)
+                .build();
     }
 
     @Override
@@ -172,6 +199,8 @@ public class AccountServiceImpl implements AccountService{
         if(account.getUser().equals(user)){
             user.setMainAccount(accountId);
         };
+
+        userRepository.save(user);
 
         return AccountDto.Response.builder()
                 .success(true)

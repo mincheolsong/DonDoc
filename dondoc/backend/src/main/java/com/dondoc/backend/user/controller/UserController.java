@@ -29,7 +29,7 @@ public class UserController {
     }
 
     // 회원가입
-    @ApiOperation(value = "회원가입(완료)", notes = "회원가입을 진행하는 API", response = ApiResult.class)
+    @ApiOperation(value = "회원가입", notes = "회원가입을 진행하는 API", response = ApiResult.class)
     @PostMapping("/signup")
     public ApiResult signUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) SignUpDto.Request req) throws Exception{
         SignUpDto.Response res = userService.signUp(req);
@@ -64,7 +64,7 @@ public class UserController {
 
     // 로그인(Token 자동 Header 및 Cookie 등록)
     @PostMapping("/signin")
-    @ApiOperation(value = "로그인(완료)", notes = "로그인 API", response = ApiResult.class)
+    @ApiOperation(value = "로그인", notes = "로그인 API", response = ApiResult.class)
     public ApiResult signIn(@RequestBody @ApiParam(value = "아이디 & 비밀번호")
                             SignInDto.Request req, HttpServletResponse response) throws Exception {
         try{
@@ -95,7 +95,7 @@ public class UserController {
 
     // 비밀번호 찾기 || 휴대전화 인증은 별도로
     @PutMapping("/find_password")
-    @ApiOperation(value = "비밀번호 찾기 - 비밀번호 변경(완료)", notes = "비밀번호 찾기 API", response = ApiResult.class)
+    @ApiOperation(value = "비밀번호 찾기 -> 비밀번호 변경", notes = "비밀번호 찾기 API", response = ApiResult.class)
     public ApiResult findPassword(@RequestBody FindPasswordDto.Request req){
         //비밀번호 변경
         try{
@@ -108,7 +108,7 @@ public class UserController {
 
     // 회원 정보 변경
     @PutMapping("/update")
-    @ApiOperation(value = "회원정보 변경(완료)", notes = "회원정보 변경 API", response = ApiResult.class)
+    @ApiOperation(value = "회원정보 변경", notes = "회원정보 변경 API", response = ApiResult.class)
     public ApiResult updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserDto.Request req){
         try{
             UpdateUserDto.Response res = userService.updateUser(req, Long.parseLong(userDetails.getUsername()));
@@ -121,7 +121,7 @@ public class UserController {
 
     // 프로필 검색
     @GetMapping("/profile/{userId}")
-    @ApiOperation(value = "프로필 검색(완료)", notes = "프로필 검색 API", response = ApiResult.class)
+    @ApiOperation(value = "프로필 검색", notes = "프로필 검색 API", response = ApiResult.class)
     public ApiResult findProfile(@PathVariable @ApiParam(value = "유저 아이디") Long userId ,@AuthenticationPrincipal UserDetails userDetails){
         try{
             log.info(userDetails.getUsername());
@@ -141,7 +141,7 @@ public class UserController {
 
     // 사용자 검색(친구 추가 또는 모임에서 멤버 초대할때) => 핸드폰 번호로 검색 => don't search me
     @GetMapping("/find_user/{phoneNumber}")
-    @ApiOperation(value = "사용자 검색(완료)", notes = "사용자 검색 API", response = ApiResult.class)
+    @ApiOperation(value = "사용자 검색", notes = "사용자 검색 API", response = ApiResult.class)
     public ApiResult findUser(@PathVariable @ApiParam(value = "핸드폰번호") String phoneNumber, @AuthenticationPrincipal UserDetails userDetails){
         try{
             FindUserDto.Response findUserDto = userService.findUser(phoneNumber, userDetails.getUsername());
@@ -153,7 +153,7 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    @ApiOperation(value = "test",notes="test",response=ApiResult.class)
+    @ApiOperation(value = "UserDetails Test",notes="test",response=ApiResult.class)
     public ApiResult test(@AuthenticationPrincipal UserDetails userDetails){
         if(userDetails != null){
             log.info(userDetails.getUsername());

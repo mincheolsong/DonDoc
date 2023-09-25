@@ -22,7 +22,7 @@ public class FindUserDto {
         private Long userId;
         private String phoneNumber;
         private String NickName;
-        private Long imageNumber;
+        private int imageNumber;
         private String msg;
         @JsonIgnore
         private boolean success;

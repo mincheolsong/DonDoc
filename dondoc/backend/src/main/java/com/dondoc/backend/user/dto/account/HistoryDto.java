@@ -13,7 +13,7 @@ public class HistoryDto {
     @Builder
     public static class Response{
         private String msg;
-        private List<Map<String, Object>> historyList;
+        private Map historyList;
         @JsonIgnore
         private boolean success;
     }
