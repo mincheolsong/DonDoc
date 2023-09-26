@@ -55,6 +55,10 @@ public class UserServiceImpl implements UserService{
         // salt 생성
         String salt  = encryptionUtils.makeSalt();
 
+        if(userRepository.findByPhoneNumber(signUpDto.getPhoneNumber()).isPresent()){
+            throw new NoSuchElementException("이미 존재하는 유저입니다.");
+        }
+
         // User 객체 생성
         User user = User.builder()
                         .phoneNumber(signUpDto.getPhoneNumber())

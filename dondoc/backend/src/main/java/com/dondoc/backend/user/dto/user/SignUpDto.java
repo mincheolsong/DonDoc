@@ -22,9 +22,6 @@ public class SignUpDto {
         @ApiModelProperty(value = "이름", example = "강승현")
         private String name; // 이름
 
-        @ApiModelProperty(value = "이메일", example = "dondoc0108@gmail.com")
-        private String email; // 이메일
-
         @ApiModelProperty(value = "별명", example = "강승현")
         private String nickName; // 별명
 

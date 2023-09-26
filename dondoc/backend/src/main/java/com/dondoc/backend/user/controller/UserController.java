@@ -34,21 +34,25 @@ public class UserController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 진행하는 API", response = ApiResult.class)
     @PostMapping("/signup")
     public ApiResult signUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) SignUpDto.Request req) throws Exception{
-        SignUpDto.Response res = userService.signUp(req);
-        if(!res.isSuccess()){
-            return ApiUtils.error(res.getMsg(),HttpStatus.BAD_REQUEST);
+        try{
+            SignUpDto.Response res = userService.signUp(req);
+            return ApiUtils.success(res.getMsg());
+        }catch(NoSuchElementException e) {
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return ApiUtils.success(res.getMsg());
     }
 
     // 문자인증
     @PostMapping("/sms/signup")
     @ApiOperation(value = "문자인증(시작안함)", notes = "인증번호 발송 API", response = ApiResult.class)
     public ApiResult sendSignUpSMS(@RequestBody @ApiParam(value = "인증번호 전송", required = true)String phoneNumber){
+        try{
+            CertificationDto.Response res = userService.sendSMS(phoneNumber);
+            return ApiUtils.success(res);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
-        CertificationDto.Response res = userService.sendSMS(phoneNumber);
-
-        return ApiUtils.success(res);
     }
 
     @PostMapping("/sms/find_password")
