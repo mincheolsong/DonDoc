@@ -9,6 +9,7 @@ import com.dondoc.backend.moim.entity.MoimMember;
 import com.dondoc.backend.moim.repository.MoimMemberRepository;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
+import com.dondoc.backend.user.repository.AccountRepository;
 import com.dondoc.backend.user.repository.UserRepository;
 import com.dondoc.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MoimMemberServiceImpl implements MoimMemberService {
 
     private final MoimMemberRepository moimMemberRepository;
+    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
     /**
@@ -87,10 +89,10 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     }
 
     @Override
-    public MoimMember findMoimMember(String userId, Long moimId) throws Exception{
+    public MoimMember findMoimMember(Long userId, Long moimId) throws Exception{
         List<MoimMember> moimMembers = moimMemberRepository.findMoimMember(userId, moimId);
         if(moimMembers.size()==0 || moimMembers.size()>1)
-            throw new RuntimeException("userType 조회 중 에러발생");
+            throw new RuntimeException("userId가 " + userId+"인 사용자는 "+ "moimId가 " + moimId+ "인 모임에 존재하지 않습니다");
 
         return moimMembers.get(0);
 
@@ -98,10 +100,17 @@ public class MoimMemberServiceImpl implements MoimMemberService {
 
     @Transactional
     @Override
-    public void acceptMoimMember(Long id) throws Exception{
-        MoimMember moimMember = moimMemberRepository.findById(id).orElseThrow(()-> new NotFoundException("moimMemberId : " + id + "에 해당하는 moimMember가 존재하지 않습니다"));
-
+    public void acceptMoimMember(Long moimMemberId,Long accountId,Long userId) throws Exception{
+        MoimMember moimMember = moimMemberRepository.findById(moimMemberId).orElseThrow(()-> new NotFoundException("moimMemberId : " + moimMemberId + "에 해당하는 moimMember가 존재하지 않습니다"));
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("accountId " + accountId + "에 해당하는 account가 존재하지 않습니다"));
+        if(account.getUser().getId()!=userId){
+            throw new NotFoundException("userId가 " + userId + "인 사용자는 accountId가 " + accountId + "인 account를 가지고 있지 않습니다");
+        }
+        if(moimMember.getStatus()==1){
+            throw new NotFoundException("이미 모임초대에 승인한 사용자 입니다");
+        }
         moimMember.changeStatus(1);
+        moimMember.changeAccount(account);
     }
 
     @Transactional

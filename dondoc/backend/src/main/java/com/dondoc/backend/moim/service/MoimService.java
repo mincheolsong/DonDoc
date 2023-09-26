@@ -18,9 +18,9 @@ public interface MoimService {
 
     String makeIdentificationNumber() throws Exception;
 
-    List<Moim> getMoimList(String userId);
+    List<Moim> getMoimList(Long userId);
 
-    MoimDetailDto.Response getMoimDetail(String userId, Long moimId) throws Exception;
+    MoimDetailDto.Response getMoimDetail(Long userId, Long moimId) throws Exception;
 
     List<Moim> findMoimWithMember(Long moimId);
 
@@ -29,6 +29,8 @@ public interface MoimService {
     Moim findById(Long id) throws Exception;
 
     WithdrawRequestDto.Response withdrawReq(Long userId, WithdrawRequestDto.Request req) throws Exception;
+
+    List<Object> getHistoryList(String identificationNumber, String accountNumber);
 
     MissionRequestDto.Response missionReq(Long userId, MissionRequestDto.Request req) throws Exception;
 
@@ -54,4 +56,5 @@ public interface MoimService {
 
     CancelRequestDto.Response cancelReq(Long userId, CancelRequestDto.Request req) throws Exception;
 
+    Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId);
 }

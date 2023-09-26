@@ -17,9 +17,9 @@ public interface MoimMemberService {
 
     int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList);
 
-    MoimMember findMoimMember(String userId, Long moimId) throws Exception;
+    MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
-    void acceptMoimMember(Long id) throws Exception;
+    void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
 
     void deleteMoimMember(MoimMember moimMember) throws Exception;
 

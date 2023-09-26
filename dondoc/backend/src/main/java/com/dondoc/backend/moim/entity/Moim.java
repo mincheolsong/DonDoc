@@ -33,6 +33,9 @@ public class Moim {
     @Column(name="introduce", nullable = false, columnDefinition = "LONGTEXT")
     private String introduce;
 
+    /**
+     * 모임계좌의 accountId (은행 Account테이블)
+     */
     @JsonIgnore
     @Column(name="moimAccountId", nullable = false)
     private Long moimAccountId;

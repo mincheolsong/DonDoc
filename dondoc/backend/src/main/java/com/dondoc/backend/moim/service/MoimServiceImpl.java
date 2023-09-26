@@ -124,7 +124,7 @@ public class MoimServiceImpl implements MoimService{
     }
     
     @Override
-    public List<Moim> getMoimList(String userId) {
+    public List<Moim> getMoimList(Long userId) {
         List<Moim> result = moimRepository.getMoimList(userId);
 
         return result;
@@ -132,7 +132,7 @@ public class MoimServiceImpl implements MoimService{
 
 
     @Override
-    public MoimDetailDto.Response getMoimDetail(String userId, Long moimId) throws Exception {
+    public MoimDetailDto.Response getMoimDetail(Long userId, Long moimId) throws Exception {
 
         try {
             MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId); // userType 검사 (Exception 던질 수 있음)
@@ -140,18 +140,17 @@ public class MoimServiceImpl implements MoimService{
             int status = moimMember.getStatus(); // 초대 승인 여부
 
             /**
-             * Fetch Join 수행
              * MoimMember (컬렉션 fetch join)
-             * MoimMember의 Account
-             * MoimMember의 User
+             * MoimMember의 Account (fetch join)
+             * MoimMember의 User (fetch join)
              */
             List<Moim> moims = this.findMoimWithMember(moimId);
 
-            if(moims.size()!=1) throw new RuntimeException("/detail/{moimId} 실패"); // Moim이 하나가 아니면 에러
+            if(moims.size()!=1) throw new RuntimeException("moimId : " + moimId + "모임 상세조회 실패"); // Moim이 하나가 아니면 에러
 
             Moim moim = moims.get(0);
 
-            /** 관리자인 경우 && 초대 승인 **/
+            /** 관리자인 경우 && 초대 승인된 상태 **/
             if(type==0 && status==1) {
 
                 int balance = this.searchBalance(moim.getIdentificationNumber()); // (은행 API) 현재 모임계좌의 잔액조회
@@ -178,7 +177,7 @@ public class MoimServiceImpl implements MoimService{
 
                 return result;
 
-            }else if(type==1 && status==1){ /**일반 사용자의 경우 && 초대 승인**/
+            }else if(type==1 && status==1){ /**일반 사용자의 경우 && 초대 승인된 상태**/
                 MoimDetailDto.MemberResponse result = new MoimDetailDto.MemberResponse(moim);
                 return result;
             }
@@ -475,6 +474,53 @@ public class MoimServiceImpl implements MoimService{
         Moim moim = moimRepository.findById(id).orElseThrow(() -> new NotFoundException("해당하는 모임이 존재하지 않습니다"));
         return moim;
     }
+
+    @Override
+    public List<Object> getHistoryList(String identificationNumber, String accountNumber) {
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("identificationNumber", identificationNumber);
+        bodyMap.put("accountNumber", accountNumber);
+
+        Map response = webClient.post()
+                .uri("/bank/history")
+                .bodyValue(bodyMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true"){
+            List<Object> list = (List<Object>)response.get("response");
+            return list;
+        }else{
+            return null;
+        }
+
+    }
+
+    @Override
+    public Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId) {
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("identificationNumber", identificationNumber);
+        bodyMap.put("accountNumber", accountNumber);
+        bodyMap.put("historyId",historyId);
+
+        Map response = webClient.post()
+                .uri("/bank/detail_history")
+                .bodyValue(bodyMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(response.get("success").toString()=="true"){
+            Object result = response.get("response");
+            return result;
+        }else{
+            return null;
+        }
+
+    }
+
+
 
     /** 출금 요청 승인 */
     @Override
@@ -818,6 +864,7 @@ public class MoimServiceImpl implements MoimService{
                 mission.getEndDate()
         );
     }
+
 
 
     /** 나의 미션 조회 */
