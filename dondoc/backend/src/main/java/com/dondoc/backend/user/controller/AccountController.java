@@ -124,6 +124,17 @@ public class AccountController {
     }
 
     // 거래 상세 내역 메모 작성
+//    @PostMapping("/history/detail/memo")
+//    @ApiOperation(value = "계좌 상세 조회", notes = "계좌 상세 조회 API", response = ApiUtils.class)
+//    public ApiResult historyDetailMemo(@AuthenticationPrincipal UserDetails userDetails, @RequestBody) throws Exception{
+//        try{
+//            Long userId = Long.parseLong(userDetails.getUsername());
+//            HistoryDetailDto.Response res = accountService.historyDetail(userId, historyDto);
+//            return ApiUtils.success(res);
+//        }catch(NotFoundException e){
+//            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 
     // 비밀번호 재설정? 이거는 추후에 추가
