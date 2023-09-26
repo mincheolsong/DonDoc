@@ -8,14 +8,17 @@ import  {useNavigate}  from "react-router-dom";
 
 
 function Home() {
- 
-  
+  const navigate = useNavigate();
+  const goMakeAccount = () =>{
+    navigate("makeAccount")
+  }
+
   return (
     <div className={styles.container}>
       {/* 헤더, 유저박스 */}
       <Header/>
       <div style={{display:"flex" , flexDirection:"column",  alignItems:"center", marginTop:"1.5rem"}}>
-      <UserBox userCharacter={peter} username="peter" rightBtn="계좌개설하기"/>
+      <UserBox userCharacter={peter} username="peter" rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
       {/* 헤더, 유저박스 */}
 
 
@@ -72,7 +75,9 @@ export function UserBox(props){
       </div>
     
     <div>
-      <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} > {props.rightBtn}</button>
+      <button onClick={()=>{
+        {props.rightBtnClick()}
+      }} className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} > {props.rightBtn}</button>
     </div>
   </div>
 
@@ -85,7 +90,7 @@ export function UserBox(props){
 export function accountItem(){
   return(
     <div>
-  
+      
     </div>
   )
 }
