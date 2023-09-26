@@ -2,12 +2,9 @@ import { useState } from 'react';
 import styles from "./CreateResult.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import TermsOfUseModal from './TermsOfUse/TermsOfUse';
+import axios from 'axios';
 
-interface Props {
-
-}
-
-function CreateResult(props: Props) {
+function CreateResult() {
 
   const navigate = useNavigate()
 
@@ -16,6 +13,8 @@ function CreateResult(props: Props) {
   const moimInfo = state.moimInfo
   const account = state.account
   const category = state.category
+  const manager = state.manager
+  const password = state.password
 
   const [termsOpen, setTermsOpen] = useState<boolean>(false)
 
@@ -30,12 +29,37 @@ function CreateResult(props: Props) {
     navigate(-1)
   }
 
-  const ToNext = () => {
-    navigate('/moimhome')
+  const data = {
+    "accountId": category.code,
+    "introduce": moimInfo,
+    "manager": manager,
+    "moimName": moimName,
+    "moimType": category.code,
+    "password": password
+  }
+
+  const CreateMoim = async () => {
+
+    const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MDk3OTksImV4cCI6MTY5NTcxMTU5OX0.y1G32at3zmAKPtE8-TM5ky4SiABVcAd3zOgt2QkcTqg"
+
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      console.log(response.data)
+    } catch(error) {
+      console.log('error:', error)
+    }
   }
 
   const WatchInfo = () => {
-    console.log(state)
+    console.log('state:',state)
+    console.log('data:', data)
   }
 
   return (
@@ -66,7 +90,7 @@ function CreateResult(props: Props) {
               </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>연결계좌</p>
-                <p>{account}</p>
+                <p>{account.bankName} {account.accountNumber}</p>
               </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>계좌유형</p>
@@ -88,7 +112,7 @@ function CreateResult(props: Props) {
           </div>
 
         <div className={styles.buttondiv}>
-            <button className={styles.submitbtn} onClick={ToNext}>계좌 개설하기</button>
+            <button className={styles.submitbtn} onClick={CreateMoim}>계좌 개설하기</button>
         </div>
         
         </div>
