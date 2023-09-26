@@ -13,8 +13,8 @@ import java.util.List;
 
 public interface MoimMemberService {
 
-    Long createMoimMember(User user, LocalDateTime signedAt, Long accountId, List<MoimCreateDto.InviteDto> manager);
-    MoimMember createMoimMember(User user, Moim moim, LocalDateTime signedAt, Account account);
+    MoimMember createMoimMember(User user,Moim moim, LocalDateTime signedAt);
+    MoimMember createMoimCreatorMember(User user, Moim moim, LocalDateTime signedAt, Account account);
 
     MoimMember findById(Long id);
     int inviteMoimMember(int moimType, Moim moim, List<MoimInviteDto.InviteDto> inviteList);

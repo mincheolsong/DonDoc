@@ -79,4 +79,8 @@ public class Moim {
         this.moimType = moimType;
         this.isActive = 1;
     }
+
+    public void changeIsActive(int isActive){
+        this.isActive = isActive;
+    }
 }

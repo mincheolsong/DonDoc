@@ -76,22 +76,11 @@ public class MoimController {
         }
 
 
-        /**
-         * moimType이 2인경우 : 관리자 한명이 초대를 수락해야 모임이 만들어짐
-         */
-        if(moimType==2){
-            // moimMember만 생성
-            Long moimMemberId = moimMemberService.createMoimMember(user, LocalDateTime.now(), accountId, manager);
 
-
-            return ApiUtils.success("관리자로 초대된 사용자의 moimMemberId 는 " + moimMemberId + "입니다.");
-        }
-
-        /**
-         * moimType이 2가 아닌 경우 : 바로 모임이 만들어짐
-         */
         try {
-            Moim moim = moimService.createMoim(user, moimName, introduce, password, accountId, moimType);
+            Moim moim;
+            moim = moimService.createMoim(user, moimName, introduce, password, accountId, moimType,manager);
+
             return ApiUtils.success(MoimCreateDto.Response.toDTO(moim));
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
