@@ -28,31 +28,33 @@ public interface MoimService {
 
     Moim findById(Long id) throws Exception;
 
+    WithdrawRequestDto.Response withdrawReq(Long userId, WithdrawRequestDto.Request req) throws Exception;
+
     List<Object> getHistoryList(String identificationNumber, String accountNumber);
 
-    WithdrawRequestDto.Response withdrawReq(WithdrawRequestDto.Request req) throws Exception;
+    MissionRequestDto.Response missionReq(Long userId, MissionRequestDto.Request req) throws Exception;
 
-    MissionRequestDto.Response missionReq(MissionRequestDto.Request req) throws Exception;
+    AllRequestDto.Response getRequestList(Long userId, AllRequestDto.Request req) throws Exception;
 
-    AllRequestDto.Response getRequestList(AllRequestDto.Request req) throws Exception;
+    DetailRequestDto.Response getRequestDetail(Long userId, DetailRequestDto.Request req) throws Exception;
 
-    DetailRequestDto.Response getRequestDetail(DetailRequestDto.Request req) throws Exception;
+    AllowRequestDto.Response allowRequest(Long userId, AllowRequestDto.Request req) throws Exception;
 
-    AllowRequestDto.Response allowRequest(AllowRequestDto.Request req) throws Exception;
+    String rejectRequest(Long userId, RejectRequestDto.Request req) throws Exception;
 
-    String rejectRequest(RejectRequestDto.Request req) throws Exception;
+    AllowRequestDto.Response allowMissionRequest(Long userId, AllowRequestDto.Request req) throws Exception;
 
-    AllowRequestDto.Response allowMissionRequest(AllowRequestDto.Request req) throws Exception;
-
-    String rejectMissionRequest(RejectRequestDto.Request req) throws Exception;
+    String rejectMissionRequest(Long userId, RejectRequestDto.Request req) throws Exception;
 
     List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception;
 
-    SuccessOrNotMissionDto.Response successMission(SuccessOrNotMissionDto.Request req) throws Exception;
+    SuccessOrNotMissionDto.Response successMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception;
 
-    SuccessOrNotMissionDto.Response failMission(SuccessOrNotMissionDto.Request req) throws Exception;
+    SuccessOrNotMissionDto.Response failMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception;
 
-    SuccessOrNotMissionDto.Response quitMission(SuccessOrNotMissionDto.Request req) throws Exception;
+    SuccessOrNotMissionDto.Response quitMission(Long userId, SuccessOrNotMissionDto.Request req) throws Exception;
+
+    CancelRequestDto.Response cancelReq(Long userId, CancelRequestDto.Request req) throws Exception;
 
     Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId);
 }
