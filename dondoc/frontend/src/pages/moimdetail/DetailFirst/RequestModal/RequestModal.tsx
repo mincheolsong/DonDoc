@@ -52,44 +52,49 @@ function RequestModal({setModalOpen}: Props) {
 
         <div className={styles.selectcontent}>
           {nowSelected ? (
-            <div className={styles.inputs}>
-              <div className={styles.requestname}>
-                <input type="text" placeholder="요청명" />
-              </div>
-              <div className={styles.requestcost}>
-                <input type="text" placeholder="금액(원)" />
-              </div>
-              <div className={styles.requestinfo}>
-              <textarea placeholder="요청상세"></textarea>
-              </div>
-              <div className={styles.requestcategory}>
-                <select name="category" id="category">
-                  <option value="category">카테고리</option>
-                  <option value="americano">아메리카노</option>
-                  <option value="caffe latte">카페라테</option>
-                  <option value="cafe au lait">카페오레</option>
-                  <option value="espresso">에스프레소</option>
-                </select>
-              </div>
+            <>
+              <div className={styles.inputs}>
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="요청명" />
+                </div>
+                <div className={styles.requestcost}>
+                  <input type="text" placeholder="금액(원)" />
+                </div>
+                <div className={styles.requestinfo}>
+                <textarea placeholder="요청상세"></textarea>
+                </div>
+                <div className={styles.requestcategory}>
+                  <select name="category" id="category">
+                    <option value="category">카테고리</option>
+                    <option value="americano">아메리카노</option>
+                    <option value="caffe latte">카페라테</option>
+                    <option value="cafe au lait">카페오레</option>
+                    <option value="espresso">에스프레소</option>
+                  </select>
+                </div>
 
-            </div>
+              </div>
+            </>
           ) : (
-            <div className={styles.inputs}>
-            <div className={styles.requestname}>
-              <input type="text" placeholder="미션명" />
-            </div>
-            <div className={styles.requestname}>
-              <input type="text" placeholder="금액(원)" />
-            </div>
-            <div className={styles.requestname}>
-              <textarea placeholder="요청상세"></textarea>
-            </div>
-            <div className={styles.requestname}>
-              <label htmlFor="">종료일자</label>
-              <input type="date" />
-            </div>
+            <>
+              <div className={styles.inputs}>
+                
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="미션명" />
+                </div>
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="금액(원)" />
+                </div>
+                <div className={styles.requestname}>
+                  <textarea placeholder="요청상세"></textarea>
+                </div>
+                <div className={styles.requestname}>
+                  <label htmlFor="">종료일자</label>
+                  <input type="date" />
+                </div>
 
-          </div>
+              </div>
+            </>
           )}
         </div>
 
@@ -102,6 +107,6 @@ function RequestModal({setModalOpen}: Props) {
       </div>
     </div>
   );
-};
+}
 
 export default RequestModal;

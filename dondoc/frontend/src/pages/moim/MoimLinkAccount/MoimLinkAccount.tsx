@@ -3,6 +3,8 @@ import ssafylogo from '../../../assets/ssafy_logo.png'
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
 
 type linkList = { account: object, index:number, 
   accountId:number,
@@ -23,6 +25,10 @@ function MoimLinkAccount() {
   })
   const [linkList, setLinkList] = useState<linkList[]>([])
 
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+
   const navigate = useNavigate()
   const { state } = useLocation()
   const moimName = state.moimName
@@ -38,6 +44,7 @@ function MoimLinkAccount() {
   const watchList = () => {
     console.log(linkList)
     console.log(selectAccount)
+    console.log(userInfo)
   }
 
   const ToNext = () => {
@@ -49,18 +56,18 @@ function MoimLinkAccount() {
   }
 
   const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MDcwMDEsImV4cCI6MTY5NTcwODgwMX0.P6Db_I2tczrM4oTaW2tfaJabwhxEwVSOkaWMRq6KaWg"
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MTE1NzYsImV4cCI6MTY5NTcxMzM3Nn0.P5lmFreqJXM_IjslTmFFjzsv5P1uZeIuUJ6nP3gzAQc"
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const AccountList = await axios.get(`${BASE_URL}/api/account/account/list/bank`, {
+        const AccountList = await axios.get(`${BASE_URL}/api/account/account/list`, {
           headers: {
             'Content-Type': 'application/json', 
             'Authorization': 'Bearer ' + token
           }
         });
-        // console.log('검색결과:', AccountList.data.response)
+        console.log('검색결과:', AccountList.data.response)
         setLinkList(AccountList.data.response.accountList)
       }
       catch(err) {
