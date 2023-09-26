@@ -400,18 +400,30 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         if(req.getRequestType() == 0) { // 출금 요청 조회
+            WithdrawRequest withdrawRequest;
 
-            WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
-                    .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            if(member.getUserType()==0){ // 관리자일 때 해당 요청 조회 가능
+                withdrawRequest = withdrawRequestRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                        .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            } else { // 일반 사용자일 때 자신의 요청에만 조회 가능
+                withdrawRequest = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
+                        .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            }
 
             return DetailRequestDto.Response.toDTO_WithdrawReq(
                     WithdrawRequestDto.Response.toDTO(withdrawRequest)
             );
 
         } else if(req.getRequestType() == 1) { // 미션 요청 조회
+            Mission mission;
 
-            Mission mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
-                    .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            if(member.getUserType()==0) { // 관리자일 때 해당 요청 조회 가능
+                mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
+                        .orElseThrow(() -> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            } else { // 일반 사용자일 때 자신의 요청에만 조회 가능
+                mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
+                        .orElseThrow(() -> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
+            }
 
             return DetailRequestDto.Response.toDTO_Mission(
                     MissionRequestDto.Response.toDTO(mission)
