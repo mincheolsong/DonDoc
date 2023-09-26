@@ -3,6 +3,19 @@ import styles from "./MoimSelectAccount.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 
 
+type datas = {type:object,
+  name:string,
+  info:string,
+  code:number
+}
+
+type data = {
+  name:string,
+  info:string,
+  code:number
+}
+
+
 const datas = [
   {
     'name': '한명 관리',
@@ -23,11 +36,14 @@ const datas = [
 
 function MoimSelectAccount() {
 
-  type selected = { name: string; info: string; code: number };
-  const [selectCategory, setSelectCategory] = useState<selected[]>([])
+  const [selectCategory, setSelectCategory] = useState<data>({
+    name:'',
+    info:'',
+    code:0
+  })
 
-  const ChangeCategory = (categorytype) => {
-    setSelectCategory(categorytype)
+  const ChangeCategory = (type:data) => {
+    setSelectCategory(type)
   }
 
   const navigate = useNavigate()
@@ -42,11 +58,11 @@ function MoimSelectAccount() {
   }
 
   const ToNext = () => {
-    navigate('/createresult', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory}})
+    navigate('/createresult', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory, manager:[], password:"1234"}})
   }
 
   const ShowProp = () => {
-    console.log(moimName, moimInfo, account)
+    console.log(selectCategory)
   }
 
   return (

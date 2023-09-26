@@ -1,40 +1,43 @@
 import styles from "./MoimLinkAccount.module.css";
 import ssafylogo from '../../../assets/ssafy_logo.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
-const datas = [
-  {
-    'bank': '하나은행',
-    'name': '영플러스통장',
-    'accountnumber': '237-128127-12478'
-  },
-  {
-    'bank': '대구은행',
-    'name': '영마이너스통장',
-    'accountnumber': '237-131131-34678'
-  },
-  {
-    'bank': '우리은행',
-    'name': '영앰지통장',
-    'accountnumber': '010-124527-12458'
-  }
-];
+type linkList = { account: object, index:number, 
+  accountId:number,
+  accountName:string,
+  accountNumber:string,
+  accountbalance:number,
+  bankCode:number,
+  bankName:string}
 
 function MoimLinkAccount() {
-  const [selectAccount, setSelectAccount] = useState<string>('')
+  const [selectAccount, setSelectAccount] = useState<object>({
+    accountId:0,
+  accountName:'',
+  accountNumber:'',
+  accountbalance:0,
+  bankCode:0,
+  bankName:''
+  })
+  const [linkList, setLinkList] = useState<linkList[]>([])
 
   const navigate = useNavigate()
   const { state } = useLocation()
   const moimName = state.moimName
   const moimInfo = state.moimInfo
 
-  const ChangeSelectAccount = (accountName) => {
-    setSelectAccount(accountName)
+  const ChangeSelectAccount = (account:object) => {
+    setSelectAccount(account)
   }
 
   const ToBack = () => {
     navigate(-1)
+  }
+  const watchList = () => {
+    console.log(linkList)
+    console.log(selectAccount)
   }
 
   const ToNext = () => {
@@ -44,6 +47,31 @@ function MoimLinkAccount() {
       console.log('선택해주세요')
     }
   }
+
+  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MDcwMDEsImV4cCI6MTY5NTcwODgwMX0.P6Db_I2tczrM4oTaW2tfaJabwhxEwVSOkaWMRq6KaWg"
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const AccountList = await axios.get(`${BASE_URL}/api/account/account/list/bank`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        // console.log('검색결과:', AccountList.data.response)
+        setLinkList(AccountList.data.response.accountList)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
+    fetchData();
+  }, []);
+  
+
 
   return (
     <div className={styles.container}>
@@ -65,22 +93,22 @@ function MoimLinkAccount() {
           </div>
 
           <div className={styles.accounts}>
-            {datas.map((account, index) => (
-              <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account.name)}>
+            {linkList.length > 0 && linkList.map((account, index) => (
+              <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account)}>
                 <div className={styles.accountunit}>
                   <div className={styles.banklogo}>
                     <img src={ssafylogo} alt="" className={styles.ssafylogo} />
                   </div>
                   <div className={styles.accountinfo}>
-                    <p>{`${account.bank} ${account.name}`}</p>
-                    <p className={styles.accountnumber}>{`${account.bank} ${account.accountnumber}`}</p>
+                    <p>{`${account.accountName}`}</p>
+                    <p className={styles.accountnumber}>{`${account.bankName} ${account.accountNumber}`}</p>
                   </div>
                   <div className={styles.selectcount}>
                     <input 
                       type="radio" 
                       id={`account-${index}`} 
-                      checked={account.name === selectAccount}
-                      onChange={() => ChangeSelectAccount(account.name)} />
+                      checked={account === selectAccount}
+                      onChange={() => ChangeSelectAccount(account)} />
                   </div>
                 </div>
               </label>
@@ -90,6 +118,7 @@ function MoimLinkAccount() {
           <div className={styles.buttondiv}>
             <button className={styles.submitbtn} onClick={ToNext}>다음</button>
           </div>
+          <button onClick={watchList}></button>
         </div>
       </div>
     </div>
