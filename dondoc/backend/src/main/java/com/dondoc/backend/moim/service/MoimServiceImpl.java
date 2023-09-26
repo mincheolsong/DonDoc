@@ -9,6 +9,7 @@ import com.dondoc.backend.moim.repository.*;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.service.AccountService;
+import com.dondoc.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ public class MoimServiceImpl implements MoimService{
     private final MoimMemberService moimMemberService;
     private final AccountService accountService;
     private final MoimRepository moimRepository;
+    private final UserService userService;
     private final MoimMemberRepository moimMemberRepository;
     private final WithdrawRequestRepository withdrawRequestRepository;
     private final CategoryRepository categoryRepository;
@@ -106,7 +108,7 @@ public class MoimServiceImpl implements MoimService{
 
     @Transactional
     @Override
-    public Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType) throws Exception {
+    public Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType, List<MoimCreateDto.InviteDto> manager) throws Exception {
 
 
         // 식별번호 생성
@@ -143,14 +145,29 @@ public class MoimServiceImpl implements MoimService{
 
 
         try {
+
             //  Moim 엔티티 생성
             Moim moim = new Moim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType);
+
+            // 타입이 2인 모임의 경우 비활성화 해줘야 함 (관리자 한 명이 승인을 하지 않았기 때문)
+            if(moimType==2){
+                moim.changeIsActive(0);
+            }
             moimRepository.save(moim);
 
-            // Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
+            // 모임 생성자의 Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
             Account account = accountService.findById(accountId);
-            // 4. MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
-            MoimMember moimMember = moimMemberService.createMoimMember(user,moim,LocalDateTime.now(),account);
+
+            // 모임 생성자의 MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
+            moimMemberService.createMoimCreatorMember(user,moim,LocalDateTime.now(),account);
+
+            // 타입이 2인 모임의 경우 초대된 관리자의 MoimMember를 생성해줘야 함
+            if(moimType==2){
+                MoimCreateDto.InviteDto inviteDto = manager.get(0);
+                Long userId = inviteDto.getUserId();
+                User byId = userService.findById(userId);
+                moimMemberService.createMoimMember(byId,moim,LocalDateTime.now());
+            }
 
             return moim;
         }catch (Exception e){

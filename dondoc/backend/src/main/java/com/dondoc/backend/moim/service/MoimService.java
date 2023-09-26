@@ -15,7 +15,7 @@ public interface MoimService {
 
     Map<String,Object> createAccountAPI(String moimName, int bankCode, String identificationNumber, String password);
 
-    Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType) throws Exception;
+    Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType, List<MoimCreateDto.InviteDto> manager) throws Exception;
 
     boolean checkIdenNumDuplicate(String identificationNumber);
 

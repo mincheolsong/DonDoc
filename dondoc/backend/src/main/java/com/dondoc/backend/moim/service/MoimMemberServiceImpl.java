@@ -29,58 +29,29 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     private final AccountService accountService;
     private final UserService userService;
 
-    /**
-     * 모임 type이 2인 경우 사용하는 함수
-     */
+    // 모임 생성시 초대된 사람의 MoimMember 생성 함수
     @Transactional
     @Override
-    public Long createMoimMember(User user, LocalDateTime signedAt, Long accountId, List<MoimCreateDto.InviteDto> manager) {
-        Account account = accountService.findById(accountId);
-
-        MoimMember moimMember = new MoimMember(0,1,signedAt,account); // 모임을 생성한 사람의 MoimMember
+    public MoimMember createMoimMember(User user,Moim moim, LocalDateTime signedAt){
+        MoimMember moimMember = new MoimMember(0,0,signedAt);
         moimMember.setUser(user);
+        moimMember.setMoim(moim);
         moimMemberRepository.save(moimMember);
-
-        // 초대하는 관리자의 MoimMember 생성
-        MoimCreateDto.InviteDto inviteDto = manager.get(0);
-        Long userId = inviteDto.getUserId();
-        User managerUser = userService.findById(userId);
-
-        MoimMember managerMoimMember = new MoimMember(0,0,signedAt);
-        managerMoimMember.setUser(managerUser);
-        moimMemberRepository.save(managerMoimMember);
-
-        return managerMoimMember.getId();
+        return moimMember;
     }
 
-    /**
-     * 모임 type이 1, 3인 경우 사용하는 함수
-     */
+    // 모임 생성한 사람의 MoimMember 생성 함수
     @Transactional
     @Override
-    public MoimMember createMoimMember(User user, Moim moim, LocalDateTime signedAt, Account account) {
+    public MoimMember createMoimCreatorMember(User user, Moim moim, LocalDateTime signedAt, Account account) {
 
 
-        // 모임을 생성한 사람의 MoimMember 생성
         // 모임에 대한 승인(status == 1)이 된 상태로 생성
         MoimMember moimMember = new MoimMember(0,1,signedAt,account);
         moimMember.setUser(user);
         moimMember.setMoim(moim);
         moimMemberRepository.save(moimMember);
 
-      /*  // 모임 생성 시 필요한 관리자의 MoimMember 생성
-        // 모임에 대한 승인이 되지 않은(status == 0) 상태로 생성
-        if(manager.size() > 0){
-            for(MoimCreateDto.InviteDto InviteDto : manager){
-                    moimMember = new MoimMember(0,0,signedAt); // 관리자, 아직 미승인 상태
-                    User mUser = userRepository.findById(InviteDto.getUserId())
-                            .orElseThrow(() -> new NotFoundException("유저의 정보를 찾을 수 없습니다."));
-                    moimMember.setUser(mUser);
-                    moimMember.setMoim(moim);
-                    moimMemberRepository.save(moimMember);
-                    cnt+=1;
-            }
-        }*/
 
         return moimMember;
     }
