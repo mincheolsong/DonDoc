@@ -56,7 +56,7 @@ function MoimLinkAccount() {
   }
 
   const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MTE1NzYsImV4cCI6MTY5NTcxMzM3Nn0.P5lmFreqJXM_IjslTmFFjzsv5P1uZeIuUJ6nP3gzAQc"
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MzY4MTcsImV4cCI6MTY5NTczODYxN30.QA5sETPD1T3ijEJdMd8Wr5KBhTdx8CypXv9ayqJWO8I"
   
   useEffect(() => {
     const fetchData = async () => {
