@@ -1,0 +1,7 @@
+/* your css code */
+.header{
+    height: 4.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
