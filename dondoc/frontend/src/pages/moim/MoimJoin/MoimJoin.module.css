@@ -1,0 +1,66 @@
+.topbar {
+    margin-left: 3%;
+    margin-right: 3%;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.backbutton {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.createcontent {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.createment {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.accountinfo {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.moimcontent {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title {
+    font-weight: 900;
+}
+
+.moimtext {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.watchtermsbtn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.checkbox {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.buttondiv {
+    width: 100%;
+}
+
+.submitbutton {
+    width: 100%;
+}/* your css code */

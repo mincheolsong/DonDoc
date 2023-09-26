@@ -1,0 +1,8 @@
+/* your css code */
+.backLogo{
+    z-index: 1;
+    width: 4rem;
+    height: 4rem;
+    position: fixed;
+    color: #D3CFCF;
+}
