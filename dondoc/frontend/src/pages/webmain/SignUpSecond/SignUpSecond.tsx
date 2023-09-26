@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 import { SignUpInput1 } from "../SignUpFirst/SignUpFirst";
 import {useState} from "react"
-import { AiOutlineEye, AiOutlineEyeInvisible } from"react-icons/ai"
 import { moim } from "../../../api/api";
 
 
@@ -124,6 +123,7 @@ const SignUpPost = ()=>{
   moim.post("/api/user/signup",userSetting)
   .then((response)=>{
     console.log(response)
+    naviate('/signupTemp')
   })
   .catch((error)=>{
     console.log(error)

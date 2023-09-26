@@ -42,9 +42,13 @@ function Signin() {
     moim.post("/api/user/signin",userSetting)
     .then((response)=>{
       if(response.data.success == true){
-        dispatch(loginUser(userSetting))
+        const userUpdate = {
+          password:password,
+          phoneNumber:id,
+          accessToken:response.data.response.accessToken
+        }
+        dispatch(loginUser(userUpdate))
         navigate('/')
-        console.log(userInfo)
       }else{
         setErrText(response.data.error.message)
       }

@@ -29,7 +29,7 @@ import SuccessPage from "./pages/webmain/SuccessPage";
 import ErrorPage from "./pages/webmain/ErrorPage";
 import SignUpFirstPage from "./pages/webmain/SignUpFirst";
 import SignUpSecondPage from "./pages/webmain/SignUpSecond";
-
+import CallAccountPage from "./pages/webmain/CallAccount";
 
 function Router() {
 
@@ -48,6 +48,7 @@ function Router() {
             <Route path="/sendmoneysecond" element={<SendMoneySecondPage/>}/>
             <Route path="/error" element={<ErrorPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>
+            <Route path="/callaccount" element={<CallAccountPage/>}/>
             
 
             <Route path="/search" element={<SearchPage/>}/>
