@@ -26,12 +26,11 @@ function CreateAccount() {
   }
 
   const Code = parseInt(bankCode, 10)
-  const phone = parseInt(identificationNumber, 10)
 
   const data = {
     "accountName": accountName,
     "bankCode": Code,
-    "identificationNumber": phone,
+    "identificationNumber": identificationNumber,
     "password": password
   }
 
