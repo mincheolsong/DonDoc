@@ -11,6 +11,7 @@ import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.repository.AccountRepository;
 import com.dondoc.backend.user.repository.UserRepository;
+import com.dondoc.backend.user.service.AccountService;
 import com.dondoc.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,17 +26,41 @@ import java.util.List;
 public class MoimMemberServiceImpl implements MoimMemberService {
 
     private final MoimMemberRepository moimMemberRepository;
-    private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
+    private final AccountService accountService;
+    private final UserService userService;
 
     /**
-     * 모임 생성할 때 사용한는 MoimMember 생성함수
+     * 모임 type이 2인 경우 사용하는 함수
      */
     @Transactional
     @Override
-    public int createMoimMember(User user, Moim moim, LocalDateTime signedAt, Account account, List<MoimCreateDto.InviteDto> manager) {
+    public Long createMoimMember(User user, LocalDateTime signedAt, Long accountId, List<MoimCreateDto.InviteDto> manager) {
+        Account account = accountService.findById(accountId);
 
-        int cnt = 1;
+        MoimMember moimMember = new MoimMember(0,1,signedAt,account); // 모임을 생성한 사람의 MoimMember
+        moimMember.setUser(user);
+        moimMemberRepository.save(moimMember);
+
+        // 초대하는 관리자의 MoimMember 생성
+        MoimCreateDto.InviteDto inviteDto = manager.get(0);
+        Long userId = inviteDto.getUserId();
+        User managerUser = userService.findById(userId);
+
+        MoimMember managerMoimMember = new MoimMember(0,0,signedAt);
+        managerMoimMember.setUser(managerUser);
+        moimMemberRepository.save(managerMoimMember);
+
+        return managerMoimMember.getId();
+    }
+
+    /**
+     * 모임 type이 1, 3인 경우 사용하는 함수
+     */
+    @Transactional
+    @Override
+    public MoimMember createMoimMember(User user, Moim moim, LocalDateTime signedAt, Account account) {
+
+
         // 모임을 생성한 사람의 MoimMember 생성
         // 모임에 대한 승인(status == 1)이 된 상태로 생성
         MoimMember moimMember = new MoimMember(0,1,signedAt,account);
@@ -43,9 +68,7 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         moimMember.setMoim(moim);
         moimMemberRepository.save(moimMember);
 
-        System.out.println("여기까지 실행 됨" + moimMember.getId());
-
-        // 모임 생성 시 필요한 관리자의 MoimMember 생성
+      /*  // 모임 생성 시 필요한 관리자의 MoimMember 생성
         // 모임에 대한 승인이 되지 않은(status == 0) 상태로 생성
         if(manager.size() > 0){
             for(MoimCreateDto.InviteDto InviteDto : manager){
@@ -57,9 +80,16 @@ public class MoimMemberServiceImpl implements MoimMemberService {
                     moimMemberRepository.save(moimMember);
                     cnt+=1;
             }
-        }
+        }*/
 
-        return cnt;
+        return moimMember;
+    }
+
+    @Override
+    public MoimMember findById(Long id) {
+        MoimMember moimMember = moimMemberRepository.findById(id).orElseThrow(() -> new NotFoundException("id가 " + id + "인 moimMember가 없습니다."));
+
+        return moimMember;
     }
 
     /**
@@ -67,23 +97,27 @@ public class MoimMemberServiceImpl implements MoimMemberService {
      */
     @Transactional
     @Override
-    public int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList) {
+    public int inviteMoimMember(int moimType, Moim moim, List<MoimInviteDto.InviteDto> inviteList) {
 
         int cnt = 0;
+        int userType = 1;
 
-        for(MoimInviteDto.InviteDto inviteDto : inviteList){
+        if(moimType==3) { // 모임 타입이 3인경우 모든 유저는 관리자
+            userType=0;
+        }
+
+        for (MoimInviteDto.InviteDto inviteDto : inviteList) {
             Long userId = inviteDto.getUserId();
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new NotFoundException("유저의 정보를 찾을 수 없습니다."));
+            User user = userService.findById(userId);
 
-            MoimMember moimMember = new MoimMember(1,0);
+
+            MoimMember moimMember = new MoimMember(userType, 0);
             moimMember.setUser(user);
             moimMember.setMoim(moim);
 
             moimMemberRepository.save(moimMember);
-            cnt+=1;
+            cnt += 1;
         }
-
 
         return cnt;
     }
@@ -100,15 +134,17 @@ public class MoimMemberServiceImpl implements MoimMemberService {
 
     @Transactional
     @Override
-    public void acceptMoimMember(Long moimMemberId,Long accountId,Long userId) throws Exception{
-        MoimMember moimMember = moimMemberRepository.findById(moimMemberId).orElseThrow(()-> new NotFoundException("moimMemberId : " + moimMemberId + "에 해당하는 moimMember가 존재하지 않습니다"));
-        Account account = accountRepository.findById(accountId).orElseThrow(()-> new NotFoundException("accountId " + accountId + "에 해당하는 account가 존재하지 않습니다"));
+    public void acceptMoimMember(MoimMember moimMember,Long accountId,Long userId) throws Exception{
+
+        Account account = accountService.findById(accountId);
         if(account.getUser().getId()!=userId){
             throw new NotFoundException("userId가 " + userId + "인 사용자는 accountId가 " + accountId + "인 account를 가지고 있지 않습니다");
         }
         if(moimMember.getStatus()==1){
             throw new NotFoundException("이미 모임초대에 승인한 사용자 입니다");
         }
+
+
         moimMember.changeStatus(1);
         moimMember.changeAccount(account);
     }

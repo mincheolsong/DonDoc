@@ -21,7 +21,7 @@ public class MoimCreateDto {
         private String introduce; // 소개글
 
         @ApiModelProperty(value = "모임 종류 (1,2,3)", example = "1")
-        private int moimType; //
+        private int moimType;
 
         @ApiModelProperty(value = "비밀번호", example = "1234")
         private String password; // 비밀번호
@@ -29,7 +29,7 @@ public class MoimCreateDto {
         @ApiModelProperty(value = "연결할 계좌의 id (계좌 테이블의 id값)", example = "1")
         private Long accountId; // 연결할 계좌의 id (계좌 테이블의 id값)
 
-        @ApiModelProperty(value = "관리자로 초대하는 회원id 정보",example = "[{\"userId\": 5}, {\"userId\": 4}]")
+        @ApiModelProperty(value = "관리자로 초대하는 회원id 정보",example = "[{\"userId\": 5}]")
         private List<InviteDto> manager; // 관리자로 초대하는 회원id 정보
     }
 

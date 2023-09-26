@@ -4,15 +4,18 @@ import com.dondoc.backend.moim.entity.Moim;
 import java.util.List;
 import java.util.Map;
 import com.dondoc.backend.moim.dto.*;
+import com.dondoc.backend.user.entity.User;
 
 
 public interface MoimService {
 
     boolean createOnwerAPI(String identificationNumber, String moimName);
 
+    boolean checkActivate(Long moimId) throws Exception;
+
     Map<String,Object> createAccountAPI(String moimName, int bankCode, String identificationNumber, String password);
 
-    Moim createMoim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType, int managerSize);
+    Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType) throws Exception;
 
     boolean checkIdenNumDuplicate(String identificationNumber);
 
@@ -57,4 +60,5 @@ public interface MoimService {
     CancelRequestDto.Response cancelReq(Long userId, CancelRequestDto.Request req) throws Exception;
 
     Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId);
+    //List<MoimMyDataDto.TransferResponse> getTransferAmount(String identificationNumber,String moimAccountNumber,String memberAccountNumber,String month);
 }

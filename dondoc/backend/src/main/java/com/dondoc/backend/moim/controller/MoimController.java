@@ -52,13 +52,9 @@ public class MoimController {
     @PostMapping("/create")
     public ApiResult createMoim(@ApiParam(value = "모임 생성에 필요한 값",required = true) @RequestBody MoimCreateDto.Request req, Authentication authentication){
 
-        // 식별번호 생성
-        String identificationNumber;
-        try {
-            identificationNumber = moimService.makeIdentificationNumber();
-        }catch (Exception e){ // 중복된 식별번호가 생성되면 exception 발생
-            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        // 로그인한 사용자
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        User user = userService.findById(Long.parseLong(userDetails.getUsername()));
 
         // request body로 넘어온 값
         String moimName = req.getMoimName();
@@ -68,41 +64,34 @@ public class MoimController {
         Long accountId = req.getAccountId();
         List<MoimCreateDto.InviteDto> manager = req.getManager();
 
+        // 입력값 올바른지 판단
+        if((moimType==1 || moimType==3) && manager.size()!=0){
+            return ApiUtils.error("모입 타입에 대한 입력값이 올바르지 않습니다",HttpStatus.BAD_REQUEST);
+        }
+        if(moimType==2 && manager.size()!=1){
+            return ApiUtils.error("모입 타입에 대한 입력값이 올바르지 않습니다",HttpStatus.BAD_REQUEST);
+        }
+        if(moimType < 1 || moimType > 3){
+            return ApiUtils.error("모임타입을 잘못 지정했습니다",HttpStatus.BAD_REQUEST);
+        }
+
 
         /**
-         * 예금주 생성
-         * API : /bank/owner/create
-         * param : 식별번호, 모임이름
-         **/
-        if(!moimService.createOnwerAPI(identificationNumber,req.getMoimName())){
-            return ApiUtils.error("예금주 생성에 실패했습니다.", HttpStatus.BAD_REQUEST);
+         * moimType이 2인경우 : 관리자 한명이 초대를 수락해야 모임이 만들어짐
+         */
+        if(moimType==2){
+            // moimMember만 생성
+            Long moimMemberId = moimMemberService.createMoimMember(user, LocalDateTime.now(), accountId, manager);
+
+
+            return ApiUtils.success("관리자로 초대된 사용자의 moimMemberId 는 " + moimMemberId + "입니다.");
         }
 
         /**
-         * 계좌 개설
-         * API : /bank/account/create
-         * param : 모임이름, bankCode(108), 식별번호, 비밀번호
-         **/
-        Map<String,Object> createResult = moimService.createAccountAPI(moimName,108,identificationNumber,password);
-        // 모임 계좌번호
-        String moimAccountNumber = createResult.get("accountNumber").toString();
-        // 모임 계좌 ID
-        Long moimAccountId = Long.parseLong(createResult.get("accountId").toString());
-
-        if(moimAccountNumber==null){
-            return ApiUtils.error("모임 생성에 실패했습니다.",HttpStatus.BAD_REQUEST);
-        }
-
+         * moimType이 2가 아닌 경우 : 바로 모임이 만들어짐
+         */
         try {
-            // 1. 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
-            UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-            User user = userService.findById(Long.parseLong(userDetails.getUsername()));
-            // 2. Moim 엔티티 생성
-            Moim moim = moimService.createMoim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType, manager.size());
-            // 3. Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
-            Account account = accountService.findById(accountId);
-            // 4. MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
-            int cnt = moimMemberService.createMoimMember(user,moim,LocalDateTime.now(),account, manager);
+            Moim moim = moimService.createMoim(user, moimName, introduce, password, accountId, moimType);
             return ApiUtils.success(MoimCreateDto.Response.toDTO(moim));
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
@@ -150,6 +139,7 @@ public class MoimController {
     @PostMapping("/invite")
     public ApiResult invite(@ApiParam(value = "모임 초대에 필요한 값",required = true)@RequestBody MoimInviteDto.Request req, Authentication authentication){
         Long moimId = req.getMoimId();
+        int moimType = req.getMoimType();
         List<MoimInviteDto.InviteDto> inviteList = req.getInvite();
         int cnt;
         try {
@@ -160,7 +150,7 @@ public class MoimController {
             moimMemberService.findMoimMember(userId,moimId);
 
             Moim moim = moimService.findById(moimId);
-            cnt = moimMemberService.inviteMoimMember(moim,inviteList);
+            cnt = moimMemberService.inviteMoimMember(moimType,moim,inviteList);
 
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -175,17 +165,20 @@ public class MoimController {
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
         Long moimId = req.getMoimId();
+        Long moimMemberId = req.getMoimMemberId();
         Long accountId = req.getAccountId();
         Boolean accept = req.getAccept();
         try {
+
             MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
             if (accept) { // 요청 수락
-                moimMemberService.acceptMoimMember(moimMember.getId(),accountId,userId);
+                moimMemberService.acceptMoimMember(moimMember,accountId,userId);
                 return ApiUtils.success("요청이 수락되었습니다.");
             } else { // 요청 거절
                 moimMemberService.deleteMoimMember(moimMember);
                 return ApiUtils.success("요청이 거절되었습니다.");
             }
+
         } catch (Exception e) {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -224,6 +217,21 @@ public class MoimController {
 
         return ApiUtils.success(historyDetail);
     }
+
+    /**
+    @ApiOperation(value = "마이데이터 이체내역 조회",response = ApiResult.class)
+    @PostMapping("/mydata/transferAmount")
+    public ApiResult getTransferAmmount(@RequestBody MoimMyDataDto.TransferRequest req){
+        String identificationNumber = req.getIdentificationNumber();
+        String moimAccountNumber = req.getMoimAccountNumber();
+        String memberAccountNumber = req.getMemberAccountNumber();
+        String month = req.getMonth();
+        List<MoimMyDataDto.TransferResponse> result = moimService.getTransferAmount(identificationNumber,moimAccountNumber,memberAccountNumber,month);
+
+
+
+    }
+    */
 
 
     /** 관리자에게 출금 요청 */

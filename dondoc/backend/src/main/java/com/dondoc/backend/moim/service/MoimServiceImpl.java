@@ -6,8 +6,13 @@ import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.moim.entity.*;
 import com.dondoc.backend.moim.repository.*;
+import com.dondoc.backend.user.entity.Account;
+import com.dondoc.backend.user.entity.User;
+import com.dondoc.backend.user.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +30,7 @@ import java.util.stream.Collectors;
 public class MoimServiceImpl implements MoimService{
 
     private final MoimMemberService moimMemberService;
+    private final AccountService accountService;
     private final MoimRepository moimRepository;
     private final MoimMemberRepository moimMemberRepository;
     private final WithdrawRequestRepository withdrawRequestRepository;
@@ -56,6 +62,20 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
+    public boolean checkActivate(Long moimId) throws Exception {
+        try {
+            Moim moim = findById(moimId);
+            if(moim.getIsActive()==1){
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+
+    }
+
+    @Override
     public Map<String,Object> createAccountAPI(String moimName, int bankCode, String identificationNumber, String password) {
         Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("accountName", moimName);
@@ -83,24 +103,60 @@ public class MoimServiceImpl implements MoimService{
         return null;
     }
 
+
     @Transactional
     @Override
-    public Moim createMoim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType, int managerSize) {
-        if(moimType<1 || moimType>3){
-            throw new RuntimeException("모임 타입을 잘못 지정했습니다");
+    public Moim createMoim(User user, String moimName, String introduce, String password, Long accountId, int moimType) throws Exception {
+
+
+        // 식별번호 생성
+        String identificationNumber;
+        try {
+            identificationNumber = this.makeIdentificationNumber();
+        }catch (Exception e){ // 중복된 식별번호가 생성되면 exception 발생
+            throw new RuntimeException(e.getMessage());
         }
 
-        if(moimType==1 && managerSize!=0){
-            throw new RuntimeException("모임 종류에 맞지않는 매니저를 초대했습니다.");
-        }
-        if(moimType==2 && managerSize!=1){
-            throw new RuntimeException("모임 종류에 맞지않는 매니저를 초대했습니다.");
+        /**
+         * 예금주 생성
+         * API : /bank/owner/create
+         * param : 식별번호, 모임이름
+         **/
+        if(!this.createOnwerAPI(identificationNumber,moimName)){
+            throw new RuntimeException("예금주 생성 중 오류발생");
         }
 
-        Moim moim = new Moim(identificationNumber,moimName,introduce,moimAccountId,moimAccountNumber,limited,moimType);
-        moimRepository.save(moim);
+        /**
+         * 계좌 개설
+         * API : /bank/account/create
+         * param : 모임이름, bankCode(108), 식별번호, 비밀번호
+         **/
+        Map<String,Object> createResult = this.createAccountAPI(moimName,108,identificationNumber,password);
+        // 모임 계좌번호
+        String moimAccountNumber = createResult.get("accountNumber").toString();
+        // 모임 계좌 ID
+        Long moimAccountId = Long.parseLong(createResult.get("accountId").toString());
 
-        return moim;
+        if(moimAccountNumber==null){
+            throw new RuntimeException("계좌 생성에 실패했습니다.");
+        }
+
+
+        try {
+            //  Moim 엔티티 생성
+            Moim moim = new Moim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType);
+            moimRepository.save(moim);
+
+            // Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
+            Account account = accountService.findById(accountId);
+            // 4. MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
+            MoimMember moimMember = moimMemberService.createMoimMember(user,moim,LocalDateTime.now(),account);
+
+            return moim;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+
     }
 
     @Override
@@ -532,6 +588,15 @@ public class MoimServiceImpl implements MoimService{
 
     }
 
+    /**
+    @Override
+    public List<MoimMyDataDto.TransferResponse> getTransferAmount(String identificationNumber, String moimAccountNumber, String memberAccountNumber, String month) {
+
+
+
+
+    }
+    */
 
 
     /** 출금 요청 승인 */

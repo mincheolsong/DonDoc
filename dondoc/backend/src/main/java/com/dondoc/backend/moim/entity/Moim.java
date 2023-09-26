@@ -56,6 +56,9 @@ public class Moim {
     @OneToMany(mappedBy = "moim")
     private List<MoimMember> moimMemberList = new ArrayList<>();
 
+    @Column(name = "isActive",nullable = false)
+    private int isActive; // 0 : 비활성화, 1 : 활성화
+
     public Moim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
@@ -64,6 +67,7 @@ public class Moim {
         this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
+        this.isActive=1;
     }
 
     public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
@@ -73,5 +77,6 @@ public class Moim {
         this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
+        this.isActive = 1;
     }
 }
