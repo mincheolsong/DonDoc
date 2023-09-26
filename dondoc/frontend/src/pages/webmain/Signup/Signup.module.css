@@ -1,0 +1,76 @@
+/* your css code */
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.mainContainerBottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}
+
+
+.Logo{
+    margin-top: 0.5rem;
+    max-height: 11.6rem;
+    z-index: 0.1rem;
+}
+
+input:focus{
+    outline: none;
+    
+}
+
+.IdBox{
+    border:none;
+    caret-color: #0D6EFD;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    width: 90%;
+    height: 4rem;
+    font-size: 1.8rem;
+}
+
+/* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+.scroll::-webkit-scrollbar {
+    display: none;
+}
+.signUpBtn{
+    margin-top: 2rem; /*윗마진 */
+    background-color: #0D6EFD; /*색 조절 */
+    color: white;
+    width: 90%;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-bottom: 3rem;
+}
+
+/*눌렸을때 */
+.signUpBtn:active{
+    background-color: #0056d8;
+    color: white;
+}
+
+.btnBox{
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    border-top: rgba(194, 194, 194, 0.438) solid;
+}
+
+.backLogo{
+    z-index: 1;
+    width: 4rem;
+    height: 4rem;
+    position: fixed;
+    color: #D3CFCF;
+}

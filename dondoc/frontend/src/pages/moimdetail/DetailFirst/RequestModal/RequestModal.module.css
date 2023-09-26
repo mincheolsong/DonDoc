@@ -1,0 +1,105 @@
+.container {
+    z-index: 10000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px; /* 모달 최대 너비 설정 */
+    height: 80vh;
+    max-height: 500px; /* 모달 최대 높이 설정 */
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+}
+
+.requestmoney {
+    width: 40%;
+}
+
+.requestmission {
+    width: 40%;
+}
+
+.icon {
+    width: 4.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+.icon img {
+    width: 100%;
+}
+
+.requesttext {
+    text-align: center;
+}
+
+.requesttext p {
+    margin: 0rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.selectcontent {
+    margin-top: 2rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+}
+
+.inputs {
+    width: 20rem;
+}
+
+.inputs input {
+    margin-bottom: 1rem;
+    width: 100%;
+    height: 3.4rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+.inputs textarea {
+    margin-bottom: 1rem;
+    width: 100%;
+    height: 7.3rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+
+.inputs select {
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    width: 20.533rem;
+    height: 3.4rem;
+}
+
+.btns {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 2rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btns button {
+    width: 12rem;
+    height: 3.6rem;
+}
