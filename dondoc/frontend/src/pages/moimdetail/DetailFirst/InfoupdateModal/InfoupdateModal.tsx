@@ -6,16 +6,11 @@ interface Props {
 }
 
 function InfoupdateModal({setModalOpen}: Props) {
-  const [nowSelected, setNowSelected] = useState<boolean>(true)
+  const [moimInfo, setMoimInfo] = useState<string>('')
 
-  const ClickMissionTab = () => {
-    setNowSelected(false)
-    // console.log(nowSelected)
-  }
-
-  const ClickMoneyTab = () => {
-    setNowSelected(true)
-    // console.log(nowSelected)
+  const InfoChange = (e) => {
+    setMoimInfo(e.target.value)
+    console.log(moimInfo)
   }
 
   const ModalClose = () => {
@@ -38,7 +33,7 @@ function InfoupdateModal({setModalOpen}: Props) {
                 <h2>모임 소개</h2>
               </div>
               <div className={styles.introcontent}>
-                <textarea className={styles.introinput}></textarea>
+                <textarea className={styles.introinput} onChange={InfoChange}></textarea>
               </div>
             </div>
 

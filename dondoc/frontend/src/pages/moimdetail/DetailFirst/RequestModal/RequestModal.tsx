@@ -10,12 +10,24 @@ type Props = {
 function RequestModal({setModalOpen}: Props) {
 
   const [nowSelected, setNowSelected] = useState<boolean>(true)
+  
+  const [moneyTitle, setMoneyTitle] = useState<string>('')
+  const [moneyAmount, setMoneyAmount] = useState<number>(0)
+  const [moneyContent, setMoneyContent] = useState<string>('')
+  const [moneyCategory, setMoneyCategory] = useState<number>(0)
+  
+  const [missionTitle, setMissionTitle] = useState<string>('')
+  const [missionAmount, setMissionAmount] = useState<number>(0)
+  const [missionContent, setMissionContent] = useState<string>('')
+  // const [deadLine, setDeadLine] = useState<date>("0000-00-00")
+
+
 
   const ClickMissionTab = () => {
     setNowSelected(false)
     // console.log(nowSelected)
   }
-
+  
   const ClickMoneyTab = () => {
     setNowSelected(true)
     // console.log(nowSelected)
@@ -24,6 +36,25 @@ function RequestModal({setModalOpen}: Props) {
   const ModalClose = () => {
     setModalOpen(false)
   }
+
+  const ChangeMoneyTitle = (e) => {
+    setMoneyTitle(e.target.value)
+    console.log(e.target.value)
+  }
+
+
+  const ChangeMissionTitle = (e) => {
+    setMissionTitle(e.target.value)
+    console.log(e.target.value)
+  }
+
+  const RequestMoney = () => {
+    console.log('돈 줘!')
+  }
+  const RequestMission = () => {
+    console.log('미션 받아줘!')
+  }
+
 
   return (
     <div className={styles.container}>
@@ -52,56 +83,70 @@ function RequestModal({setModalOpen}: Props) {
 
         <div className={styles.selectcontent}>
           {nowSelected ? (
-            <div className={styles.inputs}>
-              <div className={styles.requestname}>
-                <input type="text" placeholder="요청명" />
-              </div>
-              <div className={styles.requestcost}>
-                <input type="text" placeholder="금액(원)" />
-              </div>
-              <div className={styles.requestinfo}>
-              <textarea placeholder="요청상세"></textarea>
-              </div>
-              <div className={styles.requestcategory}>
-                <select name="category" id="category">
-                  <option value="category">카테고리</option>
-                  <option value="americano">아메리카노</option>
-                  <option value="caffe latte">카페라테</option>
-                  <option value="cafe au lait">카페오레</option>
-                  <option value="espresso">에스프레소</option>
-                </select>
+            <>
+              <div className={styles.inputs}>
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="요청명" onChange={ChangeMoneyTitle} value={moneyTitle}/>
+                </div>
+                <div className={styles.requestcost}>
+                  <input type="text" placeholder="금액(원)" />
+                </div>
+                <div className={styles.requestinfo}>
+                <textarea placeholder="요청상세"></textarea>
+                </div>
+                <div className={styles.requestcategory}>
+                  <select name="category" id="category">
+                    <option value="category">카테고리</option>
+                    <option value="americano">아메리카노</option>
+                    <option value="caffe latte">카페라테</option>
+                    <option value="cafe au lait">카페오레</option>
+                    <option value="espresso">에스프레소</option>
+                  </select>
+                </div>
+
               </div>
 
-            </div>
+              <div className={styles.btns}>
+                <button onClick={ModalClose}>닫기</button>
+                <button onClick={RequestMoney}>등록하기</button>
+              </div>
+
+            </>
           ) : (
-            <div className={styles.inputs}>
-            <div className={styles.requestname}>
-              <input type="text" placeholder="미션명" />
-            </div>
-            <div className={styles.requestname}>
-              <input type="text" placeholder="금액(원)" />
-            </div>
-            <div className={styles.requestname}>
-              <textarea placeholder="요청상세"></textarea>
-            </div>
-            <div className={styles.requestname}>
-              <label htmlFor="">종료일자</label>
-              <input type="date" />
-            </div>
+            <>
+              <div className={styles.inputs}>
 
-          </div>
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="미션명" onChange={ChangeMissionTitle} value={missionTitle}/>
+                </div>
+                <div className={styles.requestname}>
+                  <input type="text" placeholder="금액(원)" />
+                </div>
+                <div className={styles.requestname}>
+                  <textarea placeholder="요청상세"></textarea>
+                </div>
+                <div className={styles.requestname}>
+                  <label htmlFor="">종료일자</label>
+                  <input type="date" />
+                </div>
+
+              </div>
+
+
+              <div className={styles.btns}>
+                <button onClick={ModalClose}>닫기</button>
+                <button onClick={RequestMission}>등록하기</button>
+              </div>
+
+            </>
           )}
         </div>
 
-        <div className={styles.btns}>
-          <button onClick={ModalClose}>닫기</button>
-          <button>등록하기</button>
-        </div>
 
 
       </div>
     </div>
   );
-};
+}
 
 export default RequestModal;
