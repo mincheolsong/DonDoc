@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from './pages/webmain/Home/Home'
 import SigninPage from './pages/webmain/Signin/Signin'
-import SignupPage from './pages/webmain/Signup/Signup'
 import SearchPage from './pages/search/Search/Search' 
 import MypagePage from './pages/mypage/Mypage/Mypage' 
 import SettingPage from './pages/mypage/Setting/Setting' 
@@ -41,7 +40,7 @@ function Router() {
             <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
             <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
             
-            <Route path="/signup" element={<SignupPage/>}/>
+     
             <Route path="/signupTemp" element={<SignupTempPage/>}/>
             <Route path="/" element={<HomePage/>}/>
             <Route path="/accountInfo" element={<AccountInfoPage/>}/>

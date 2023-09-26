@@ -1,16 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export type UserType ={
+  phoneNumber :string;
+  accessToken:string;
+  isLogin:boolean
+}
+
+
+const initialState:UserType = {
+  phoneNumber:"",
+  accessToken:"",
+  isLogin:false,
+
+}
+
 const userSlice = createSlice({
   name: 'userSlice',
-  initialState: { 
-    
-    value: 0, token: null, user: null, effectNum : 0, effectMenu : null
-  
-  
-  },
+  initialState,
   reducers: {
-  
+  loginUser(state, action) {
+      state.accessToken = action.payload.accessToken
+      state.isLogin = true
+      state.phoneNumber = action.payload.phoneNumber
+    }
   },
 });
+
+
+export const {
+  loginUser
+} = userSlice.actions;
 
 export default userSlice; 
