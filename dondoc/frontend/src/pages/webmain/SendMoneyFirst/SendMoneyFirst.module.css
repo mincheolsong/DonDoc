@@ -1,0 +1,93 @@
+/* your css code */
+.container{
+    height: 100vh;
+    overflow: hidden;
+}
+
+.midContainer{
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.itemBox1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    min-height: 6rem;
+}
+.bankBtn{
+    background-color: white;
+    border: solid 0px;
+    border-radius: 0.7rem;
+    margin-right: 2rem;
+}
+
+.inputBox{
+    border: 0;
+    border-radius: 0.7rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.confirmBtn{
+    margin-top: 3rem; /*윗마진 */
+    background-color: #0D6EFD; /*색 조절 */
+    color: white;
+    width: 30%;
+    height: 4.5rem; /*높이조절 */
+    font-size: 2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+/*눌렸을때 */
+.confirmBtn:active{
+    background-color: #0056d8;
+    color: white;
+}
+
+
+.bottomContainer{
+    border: 0;
+    border-top: 0.6rem solid #ececec;
+    border-radius: 0.6rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow: hidden;
+    width: 95%;
+    height: 60vh;
+}
+
+.searchBox{
+    border: 0.2rem #DFDFE6 solid; 
+    border-radius: 0.5rem;
+    height: 2rem;
+    margin-right: 2rem;
+
+}
+
+.friendAccount{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin: 0px;
+}
+
+.bottomBox{
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+}
+
+
