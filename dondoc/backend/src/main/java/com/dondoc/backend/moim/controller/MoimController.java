@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -167,6 +168,7 @@ public class MoimController {
 
         return ApiUtils.success( "moimId = " + moimId + "에 " + cnt + "명 초대 성공");
     }
+
     @ApiOperation(value = "모임초대 수락 또는 거절", notes = "모임초대를 수락 또는 거절하는 API", response = ApiResult.class)
     @PatchMapping("/invite/check")
     public ApiResult inviteCheck(@ApiParam(value = "모임초대 수락 또는 거절에 필요한 값 (거절의 경우 accountId 입력 x)",required = true)@RequestBody MoimInviteCheck.Request req,Authentication authentication) {
@@ -227,9 +229,11 @@ public class MoimController {
     /** 관리자에게 출금 요청 */
     @ApiOperation(value = "출금 요청", notes = "관리자에게 출금 요청하는 API", response = ApiResult.class)
     @PostMapping("/withdraw_req")
-    public ApiResult<?> withdrawReq(@ApiParam(value = "출금 요청에 필요한 Request Dto",required = true) @Valid @RequestBody WithdrawRequestDto.Request req) {
+    public ApiResult<?> withdrawReq(@ApiParam(value = "출금 요청에 필요한 Request Dto",required = true) @Valid @RequestBody WithdrawRequestDto.Request req,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            WithdrawRequestDto.Response result = moimService.withdrawReq(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            WithdrawRequestDto.Response result = moimService.withdrawReq(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -240,9 +244,11 @@ public class MoimController {
     /** 관리자에게 미션 요청 */
     @ApiOperation(value = "미션 요청", notes = "관리자에게 미션 요청하는 API", response = ApiResult.class)
     @PostMapping("/mission_req")
-    public ApiResult<?> missionReq(@ApiParam(value = "미션 요청에 필요한 Request Dto",required = true) @Valid @RequestBody MissionRequestDto.Request req) {
+    public ApiResult<?> missionReq(@ApiParam(value = "미션 요청에 필요한 Request Dto",required = true) @Valid @RequestBody MissionRequestDto.Request req,
+                                   @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            MissionRequestDto.Response result = moimService.missionReq(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            MissionRequestDto.Response result = moimService.missionReq(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -253,9 +259,11 @@ public class MoimController {
     /** 요청 관리/목록 - 전체 리스트 조회 */
     @ApiOperation(value = "요청 리스트 조회", notes = "출금/미션의 요청 리스트를 조회하는 API", response = ApiResult.class)
     @PostMapping("/list_req")
-    public ApiResult<?> getRequestList(@ApiParam(value = "요청 리스트 조회에 필요한 Request Dto",required = true) @Valid @RequestBody AllRequestDto.Request req) {
+    public ApiResult<?> getRequestList(@ApiParam(value = "요청 리스트 조회에 필요한 Request Dto",required = true) @Valid @RequestBody AllRequestDto.Request req,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            AllRequestDto.Response result = moimService.getRequestList(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            AllRequestDto.Response result = moimService.getRequestList(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -266,9 +274,26 @@ public class MoimController {
     /** 요청 상세조회 */
     @ApiOperation(value = "요청 상세조회", notes = "출금/미션의 요청을 상세 조회하는 API", response = ApiResult.class)
     @PostMapping("/detail_req")
-    public ApiResult<?> getRequestDetail(@ApiParam(value = "요청 상세조회에 필요한 Request Dto",required = true) @Valid @RequestBody DetailRequestDto.Request req) {
+    public ApiResult<?> getRequestDetail(@ApiParam(value = "요청 상세조회에 필요한 Request Dto",required = true) @Valid @RequestBody DetailRequestDto.Request req,
+                                         @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            DetailRequestDto.Response result = moimService.getRequestDetail(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            DetailRequestDto.Response result = moimService.getRequestDetail(userId, req);
+            return ApiUtils.success(result);
+        }catch(Exception e){
+            log.error(e.getMessage());
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /** 요청 취소하기*/
+    @ApiOperation(value = "요청 취소하기", notes = "출금/미션의 요청을 취소하는 API", response = ApiResult.class)
+    @PostMapping("/cancel_req")
+    public ApiResult<?> cancelReq(@ApiParam(value = "요청 취소에 필요한 Request Dto",required = true) @Valid @RequestBody CancelRequestDto.Request req,
+                                  @AuthenticationPrincipal UserDetails userDetails) {
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            CancelRequestDto.Response result = moimService.cancelReq(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -279,9 +304,11 @@ public class MoimController {
     /** 출금 요청 승인 */
     @ApiOperation(value = "출금요청 승인", notes = "관리자가 출금 요청을 승인하는 API", response = ApiResult.class)
     @PostMapping("/allow_req")
-    public ApiResult<?> allowRequest(@ApiParam(value = "출금요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req) {
+    public ApiResult<?> allowRequest(@ApiParam(value = "출금요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            AllowRequestDto.Response result = moimService.allowRequest(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            AllowRequestDto.Response result = moimService.allowRequest(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -293,9 +320,11 @@ public class MoimController {
     /** 출금 요청 거절 */
     @ApiOperation(value = "출금요청 거절", notes = "관리자가 출금 요청을 거절하는 API", response = ApiResult.class)
     @PostMapping("/reject_req")
-    public ApiResult<?> rejectRequest(@ApiParam(value = "출금요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req) {
+    public ApiResult<?> rejectRequest(@ApiParam(value = "출금요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req,
+                                      @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            String result = moimService.rejectRequest(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            String result = moimService.rejectRequest(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -306,9 +335,11 @@ public class MoimController {
     /** 미션 요청 승인 */
     @ApiOperation(value = "미션요청 승인", notes = "관리자가 미션 요청을 승인하는 API", response = ApiResult.class)
     @PostMapping("/allow_mission")
-    public ApiResult<?> allowMissionRequest(@ApiParam(value = "미션요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req) {
+    public ApiResult<?> allowMissionRequest(@ApiParam(value = "미션요청 승인에 필요한 Request Dto",required = true) @Valid @RequestBody AllowRequestDto.Request req,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            AllowRequestDto.Response result = moimService.allowMissionRequest(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            AllowRequestDto.Response result = moimService.allowMissionRequest(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -320,9 +351,11 @@ public class MoimController {
     /** 미션 요청 거절 */
     @ApiOperation(value = "미션요청 거절", notes = "관리자가 미션 요청을 거절하는 API", response = ApiResult.class)
     @PostMapping("/reject_mission")
-    public ApiResult<?> rejectMissionRequest(@ApiParam(value = "미션요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req) {
+    public ApiResult<?> rejectMissionRequest(@ApiParam(value = "미션요청 거절에 필요한 Request Dto",required = true) @Valid @RequestBody RejectRequestDto.Request req,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            String result = moimService.rejectMissionRequest(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            String result = moimService.rejectMissionRequest(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -333,9 +366,11 @@ public class MoimController {
     /** 미션 성공 */
     @ApiOperation(value = "미션 성공", notes = "관리자가 미션성공 인증하는 API", response = ApiResult.class)
     @PostMapping("/success_mission")
-    public ApiResult<?> successMission(@ApiParam(value = "미션 성공에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req) {
+    public ApiResult<?> successMission(@ApiParam(value = "미션 성공에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            SuccessOrNotMissionDto.Response result = moimService.successMission(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            SuccessOrNotMissionDto.Response result = moimService.successMission(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -346,9 +381,11 @@ public class MoimController {
     /** 미션 실패 */
     @ApiOperation(value = "미션 실패", notes = "관리자가 미션실패 인증하는 API", response = ApiResult.class)
     @PostMapping("/fail_mission")
-    public ApiResult<?> failMission(@ApiParam(value = "미션 실패에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req) {
+    public ApiResult<?> failMission(@ApiParam(value = "미션 실패에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            SuccessOrNotMissionDto.Response result = moimService.failMission(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            SuccessOrNotMissionDto.Response result = moimService.failMission(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -359,9 +396,11 @@ public class MoimController {
     /** 미션 포기 */
     @ApiOperation(value = "미션 포기", notes = "회원이 미션 포기하는 API", response = ApiResult.class)
     @PostMapping("/quit_mission")
-    public ApiResult<?> quitMission(@ApiParam(value = "미션 포기에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req) {
+    public ApiResult<?> quitMission(@ApiParam(value = "미션 포기에 필요한 Request Dto",required = true) @Valid @RequestBody SuccessOrNotMissionDto.Request req,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
         try{
-            SuccessOrNotMissionDto.Response result = moimService.quitMission(req);
+            Long userId = Long.parseLong(userDetails.getUsername());
+            SuccessOrNotMissionDto.Response result = moimService.quitMission(userId, req);
             return ApiUtils.success(result);
         }catch(Exception e){
             log.error(e.getMessage());
@@ -372,9 +411,10 @@ public class MoimController {
 
     /** 나의 미션 조회 */
     @ApiOperation(value = "나의 미션 조회", notes = "내 미션 리스트를 조회하는 API", response = ApiResult.class)
-    @GetMapping("/my_mission/{userId}")
-    public ApiResult<?> getMyMission(@ApiParam(value = "미션 리스트를 조회에 필요한 회원 ID",required = true) @Valid @PathVariable Long userId) {
+    @GetMapping("/my_mission")
+    public ApiResult<?> getMyMission(@AuthenticationPrincipal UserDetails userDetails) {
         try{
+            Long userId = Long.parseLong(userDetails.getUsername());
             List<MissionInfoDto.Response> result = moimService.getMyMission(userId);
             return ApiUtils.success(result);
         }catch(Exception e){

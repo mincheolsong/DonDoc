@@ -14,19 +14,15 @@ public class DetailRequestDto {
     @Data
     public static class Request {
 
-        @ApiModelProperty(value = "회원 ID")
-        @NotNull(message = "회원의 ID를 입력해주세요.")
-        private Long userId;
-
-        @ApiModelProperty(value = "모임 ID")
+        @ApiModelProperty(value = "모임 ID", example = "1")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
-        @ApiModelProperty(value = "조회 할 요청타입")
+        @ApiModelProperty(value = "조회 할 요청타입", example = "1")
         @NotNull(message = "조회 할 요청타입을 입력해주세요.")
         private int requestType;
 
-        @ApiModelProperty(value = "조회 할 요청 ID")
+        @ApiModelProperty(value = "조회 할 요청 ID", example = "1")
         @NotNull(message = "조회 할 요청 ID를 입력해주세요.")
         private Long requestId;
     }

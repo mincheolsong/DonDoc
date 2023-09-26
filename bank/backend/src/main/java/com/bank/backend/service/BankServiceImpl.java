@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -307,7 +308,7 @@ public class BankServiceImpl implements BankService {
 
     // 계좌 이체
     @Override
-    @Transactional
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception{
         // 송금인 조회(사실은 필요 없을 수도), 혹시 모른 경우 대비해서 실행(계좌는 있는데 예금주가 존재하지 않는 경우) => DB 데이터 손실
         Owner owner = ownerRepository.findByIdentificationNumber(EncryptionUtils.encryption(request.getIdentificationNumber(), SALT))

@@ -17,27 +17,23 @@ public class WithdrawRequestDto {
     @Data
     public static class Request {
 
-        @ApiModelProperty(value = "회원 ID")
-        @NotNull(message = "회원의 ID를 입력해주세요.")
-        private Long userId;
-
-        @ApiModelProperty(value = "모임 ID")
+        @ApiModelProperty(value = "모임 ID", example = "1")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
-        @ApiModelProperty(value = "사용처")
+        @ApiModelProperty(value = "사용처", example = "옷 사고싶어요")
         @NotBlank(message = "사용처를 입력하세요.")
         private String title;
 
-        @ApiModelProperty(value = "요청 금액")
+        @ApiModelProperty(value = "요청 금액", example = "14000")
         @NotNull(message = "요청 금액을 입력하세요.")
         private int amount;
 
-        @ApiModelProperty(value = "요청 상세내용")
+        @ApiModelProperty(value = "요청 상세내용", example = "맨투맨 살래요")
         @NotBlank(message = "요청 상세내용을 입력하세요.")
         private String content;
 
-        @ApiModelProperty(value = "카테고리 ID")
+        @ApiModelProperty(value = "카테고리 ID", example = "2")
         @NotNull(message = "카테고리의 ID를 입력하세요.")
         private Long categoryId;
 
