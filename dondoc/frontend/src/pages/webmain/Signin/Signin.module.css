@@ -1,0 +1,65 @@
+/* your css code */
+.inputBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+
+}
+.containerTop{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+.IdBox{
+    border:none;
+    caret-color: #0D6EFD;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    width: 100%;
+    height: 4rem;
+}
+
+input:focus{
+    outline: none;
+    
+}
+
+.Logo{
+    margin-top: 5rem;
+    max-height: 20rem;
+    max-width: 14rem;
+}
+
+.containerMid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUpbtn{
+    border-right: 0.09rem solid #a3a3a3;
+    height: 2rem;
+}
+
+
+/*주버튼 */
+.loginBtn{
+    margin-top: 3rem; /*윗마진 */
+    background-color: #0D6EFD; /*색 조절 */
+    color: white;
+    width: 90%;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    
+}
+
+/*눌렸을때 */
+.loginBtn:active{
+    background-color: #0056d8;
+    color: white;
+}
