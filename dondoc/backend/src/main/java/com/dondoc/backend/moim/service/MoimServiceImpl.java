@@ -237,7 +237,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 요청 금액 -> 가능한지 판단
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -293,7 +293,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 요청 금액 -> 가능한지 판단
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -674,7 +674,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 현재 상황에서 승인할 수 있는 요청인지 -> limited 확인
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -883,10 +883,15 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_Id(userId)
+        MoimMember member = moimMemberRepository.findTop1ByUser_Id(userId)
                 .orElseThrow(()-> new NotFoundException("미션 정보가 없습니다."));
 
+        log.info("member : {}", member.getUser().getName());
+
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
+
+
+        log.info("missionList : {}", missionList.size());
 
         List<MissionInfoDto.Response> resultMissionList = missionList.stream()
                 .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
