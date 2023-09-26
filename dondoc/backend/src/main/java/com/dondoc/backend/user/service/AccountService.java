@@ -10,7 +10,7 @@ import java.util.List;
 public interface AccountService{
     Account findById(Long accountId);
 
-    AccountListDto.Response loadBankList(Long userId);
+    AccountListDto.BankResponse loadBankList(Long userId);
     AccountListDto.Response loadList(Long userId);
 
     AccountListDto.Response saveList(Long userId, List<AccountListDto.Request> accountList);

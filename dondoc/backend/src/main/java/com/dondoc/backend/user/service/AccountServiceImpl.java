@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountListDto.Response loadBankList(Long userId) {
+    public AccountListDto.BankResponse loadBankList(Long userId) {
         // 식별번호(핸드폰번호) 확인
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다,"));
@@ -53,13 +53,14 @@ public class AccountServiceImpl implements AccountService {
         log.info(response.get("response").toString());
 
         if (!response.get("success").toString().equals("true")) {
-            return AccountListDto.Response.builder()
+            return AccountListDto.BankResponse.builder()
                     .success(false)
                     .msg("계좌 목록 불러올 수 없습니다.")
                     .build();
         }
 
-        return AccountListDto.Response.builder()
+
+        return AccountListDto.BankResponse.builder()
                 .msg("계좌 목록을 성공적으로 불러왔습니다.")
                 .success(true)
                 .accountList((List<Account>) response.get("response"))
@@ -75,14 +76,19 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException("등록된 계좌가 없습니다.");
         }
 
-        for (Account account : list) {
-            log.info(account.getAccountId().toString());
+        List<AccountDetailDto.AccountDetail> result = new ArrayList<>();
+
+        for(Account account : list){
+            AccountDetailDto.Response response = accountDetail(account.getAccountId());
+
+            result.add(response.getAccountDetail());
+            log.info(response.getAccountDetail().toString());
         }
 
         return AccountListDto.Response.builder()
                 .msg("계좌 목록을 성공적으로 불러왔습니다.")
                 .success(true)
-                .accountList(list)
+                .accountList(result)
                 .build();
     }
 

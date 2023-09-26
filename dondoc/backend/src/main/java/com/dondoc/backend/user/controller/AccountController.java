@@ -31,10 +31,10 @@ public class AccountController {
     // 계좌 목록 불러오기(은행 API)
     @GetMapping("/account/list/bank")
     @ApiOperation(value = "계좌 목록 불러오기(은행 API)", notes = "계좌 불러오기 API", response = ApiUtils.class)
-    public ApiResult loadAccount(@AuthenticationPrincipal UserDetails userDetails) throws Exception{
+    public ApiResult loadBankAccount(@AuthenticationPrincipal UserDetails userDetails) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
-            AccountListDto.Response res = accountService.loadBankList(userId);
+            AccountListDto.BankResponse res = accountService.loadBankList(userId);
             return ApiUtils.success(res);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -44,7 +44,7 @@ public class AccountController {
     // 등록 계좌 목록 불러오기(서비스)
     @GetMapping("/account/list")
     @ApiOperation(value = "등록 계좌 목록 불러오기", notes = "등록 계좌 불러오기 API", response = ApiUtils.class)
-    public ApiResult selectAccount(@AuthenticationPrincipal UserDetails userDetails) throws Exception{
+    public ApiResult loadAccount(@AuthenticationPrincipal UserDetails userDetails) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
             AccountListDto.Response res = accountService.loadList(userId);

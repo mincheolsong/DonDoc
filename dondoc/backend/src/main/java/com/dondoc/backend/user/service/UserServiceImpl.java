@@ -6,6 +6,7 @@ import com.dondoc.backend.common.jwt.TokenDto;
 import com.dondoc.backend.common.jwt.model.UserDetailsImpl;
 import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.user.dto.user.*;
+import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.repository.AccountRepository;
 import com.dondoc.backend.user.repository.FriendRepository;
@@ -125,7 +126,12 @@ public class UserServiceImpl implements UserService{
         return SignInDto.Response.builder()
                 .success(true)
                 .msg("정상적으로 로그인 되었습니다.")
+                .phoneNumber(user.getPhoneNumber())
                 .name(user.getName())
+                .introduce(user.getIntroduce())
+                .birth(user.getIntroduce())
+                .nickname(user.getName())
+                .imageNumber(user.getImageNumber())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -162,8 +168,22 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-//        Account account = accountRepository.findById(user.getMainAccount())
-//                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+        if(user.getMainAccount() == null){
+            return ProfileDto.Response.builder()
+                    .msg("내 프로필을 불러왔습니다.")
+                    .success(true)
+                    .mine(true)
+                    .imageNumber(user.getImageNumber())
+                    .name(user.getName())
+                    .phoneNumber(user.getPhoneNumber())
+                    .introduce(user.getIntroduce())
+//                    .bankCode(account.getBankCode())
+                    .account("대표계좌가 존재하지 않습니다.")
+                    .build();
+        }
+
+        Account account = accountRepository.findById(user.getMainAccount())
+                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
                 .msg(user.getName() + "님의 프로필을 불러왔습니다.")
@@ -173,8 +193,8 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .introduce(user.getIntroduce())
                 .birth(user.getBirth())
-//                .bankCode(account.getBankCode())
-//                .account(account.getAccountNumber())
+                .bankCode(account.getBankCode())
+                .account(account.getAccountNumber())
                 .build();
     }
 
@@ -183,8 +203,22 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-//        Account account = accountRepository.findById(user.getMainAccount())
-//                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+        if(user.getMainAccount() == null){
+            return ProfileDto.Response.builder()
+                    .msg("내 프로필을 불러왔습니다.")
+                    .success(true)
+                    .mine(true)
+                    .imageNumber(user.getImageNumber())
+                    .name(user.getName())
+                    .phoneNumber(user.getPhoneNumber())
+                    .introduce(user.getIntroduce())
+//                    .bankCode(account.getBankCode())
+                    .account("대표계좌가 존재하지 않습니다.")
+                    .build();
+        }
+
+        Account account = accountRepository.findById(user.getMainAccount())
+                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
                 .msg("내 프로필을 불러왔습니다.")
@@ -194,8 +228,8 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
                 .introduce(user.getIntroduce())
-//                .bankCode(account.getBankCode())
-//                .account(account.getAccountNumber())
+                .bankCode(account.getBankCode())
+                .account(account.getAccountNumber())
                 .build();
     }
 

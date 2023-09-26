@@ -29,6 +29,15 @@ public class AccountListDto {
     @Builder
     public static class Response{
         private String msg;
+        private List<AccountDetailDto.AccountDetail> accountList;
+        @JsonIgnore
+        private boolean success;
+    }
+
+    @Data
+    @Builder
+    public static class BankResponse{
+        private String msg;
         private List<Account> accountList;
         @JsonIgnore
         private boolean success;
