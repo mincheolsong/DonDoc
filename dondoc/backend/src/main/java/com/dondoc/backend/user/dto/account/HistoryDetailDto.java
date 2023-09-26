@@ -12,7 +12,7 @@ public class HistoryDetailDto {
     @Builder
     @ApiModel(value = "거래 내역 상세 조회", description = "거래 내역 상세 조회 API")
     public static class Request{
-        @ApiModelProperty(value = "계좌번호", example = "7186280091782")
+        @ApiModelProperty(value = "계좌번호", example = "5300334585926")
         private String accountNumber;
 
         @ApiModelProperty(value = "거래내역 ID", example = "4")
@@ -50,4 +50,9 @@ public class HistoryDetailDto {
 
         private LocalDateTime createdAt;
     }
+
+
+
+
+
 }

@@ -110,6 +110,7 @@ public class AccountController {
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
     // 거래 상세 내역 확인
     @PostMapping("/history/detail")
     @ApiOperation(value = "계좌 상세 조회", notes = "계좌 상세 조회 API", response = ApiUtils.class)
@@ -124,18 +125,30 @@ public class AccountController {
     }
 
     // 거래 상세 내역 메모 작성
-//    @PostMapping("/history/detail/memo")
-//    @ApiOperation(value = "계좌 상세 조회", notes = "계좌 상세 조회 API", response = ApiUtils.class)
-//    public ApiResult historyDetailMemo(@AuthenticationPrincipal UserDetails userDetails, @RequestBody) throws Exception{
-//        try{
-//            Long userId = Long.parseLong(userDetails.getUsername());
-//            HistoryDetailDto.Response res = accountService.historyDetail(userId, historyDto);
-//            return ApiUtils.success(res);
-//        }catch(NotFoundException e){
-//            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PostMapping("/history/detail/memo")
+    @ApiOperation(value = "거래 내역 메모 작성", notes = "거래 내역 메모 작성 API", response = ApiUtils.class)
+    public ApiResult historyDetailMemo(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HistoryMemoDto.Request memo) throws Exception{
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            HistoryMemoDto.Response res = accountService.historyMemo(userId, memo);
+            return ApiUtils.success(res);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
+    // 계좌 이체
+    @PostMapping("/account/transfer")
+    @ApiOperation(value = "계좌 이체", notes = "계좌 이체 API", response = ApiUtils.class)
+    public ApiResult transferMoney(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TransferDto.Request request) throws Exception{
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            TransferDto.Response res = accountService.transferAmount(userId, request);
+            return ApiUtils.success(res);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
     // 비밀번호 재설정? 이거는 추후에 추가
 }

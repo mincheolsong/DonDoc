@@ -15,13 +15,13 @@ public class AccountListDto {
     @Builder
     @ApiModel(value = "계좌 리스트 등록", description = "계좌 등록 Dto")
     public static class Request{
-        @ApiModelProperty(value = "계좌 ID ", example = "1")
+        @ApiModelProperty(value = "계좌 ID ", example = "6")
         private Long accountId;
 
         @ApiModelProperty(value = "은행 코드", example = "89")
         private Long bankCode;
 
-        @ApiModelProperty(value = "계좌 번호", example = "7186280091782")
+        @ApiModelProperty(value = "계좌 번호", example = "5300334585926")
         private String accountNumber;
     }
 

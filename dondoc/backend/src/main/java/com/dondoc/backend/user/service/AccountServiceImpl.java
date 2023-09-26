@@ -266,4 +266,72 @@ public class AccountServiceImpl implements AccountService {
         log.info(response.toString());
         return null;
     }
+
+    // 거래내역 메모 작성
+    @Override
+    public HistoryMemoDto.Response historyMemo(Long userId, HistoryMemoDto.Request memo) {
+        // 유저 탐색
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        Map<String, Object> requestMap = new HashMap<>();
+
+        requestMap.put("identificationNumber", user.getPhoneNumber());
+        requestMap.put("content", memo.getContent());
+        requestMap.put("historyId", memo.getHistoryId());
+        requestMap.put("accountNumber", memo.getAccountNumber());
+
+        Map response = webClient.post()
+                .uri("/bank/detail_history/memo")
+                .bodyValue(requestMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(!(boolean)response.get("success")){
+            throw new NoSuchElementException("메모 작성을 실패했습니다.");
+        }
+
+        Map<String, String> result = (Map<String, String>)response.get("response");
+
+        return HistoryMemoDto.Response.builder()
+                .msg("메모 작성을 완료하였습니다.")
+                .success(true)
+                .result(result)
+                .build();
+    }
+
+    @Override
+    public TransferDto.Response transferAmount(Long userId, TransferDto.Request request) {
+        // 유저 탐색
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        Map<String, Object> requestMap = new HashMap<>();
+
+        requestMap.put("identificationNumber", user.getPhoneNumber());
+        requestMap.put("accountId", request.getAccountId());
+        requestMap.put("password", request.getPassword());
+        requestMap.put("sign", request.getSign());
+        requestMap.put("toAccount", request.getToAccount());
+        requestMap.put("toCode", request.getToCode());
+        requestMap.put("toSign", request.getToSign());
+        requestMap.put("transferAmount", request.getTransferAmount());
+
+        Map response = webClient.post()
+                .uri("/bank/account/transfer")
+                .bodyValue(requestMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        if(!(boolean)response.get("success")){
+            throw new NoSuchElementException("송금에 실패했습니다.");
+        }
+
+        return TransferDto.Response.builder()
+                .msg((String)response.get("response"))
+                .success(true)
+                .build();
+    }
 }

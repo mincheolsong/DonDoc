@@ -86,7 +86,6 @@ public class UserController {
         }catch(Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
     }
 
     // 로그아웃
