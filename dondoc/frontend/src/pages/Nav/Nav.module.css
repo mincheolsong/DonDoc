@@ -1,0 +1,24 @@
+/* your css code */
+.Nav{
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    border-top: 0.3rem solid #B2B2B2 ;
+    border-radius: 0.5rem;
+}
+.NavIcon{
+    width: 4rem;
+    height: 4rem;
+
+}
+.NavBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
