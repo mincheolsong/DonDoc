@@ -310,8 +310,8 @@ public class MoimServiceImpl implements MoimService{
 
                 Mission missionRequest;
 
-                // 신청인이 관리자일 때 -> 바로 미션 승인 상태로
-                if(member.getUserType() == 0) {
+                // 모입 타입이 한명 관리 && 신청인이 관리자일 때 => 바로 미션 승인 상태로
+                if(member.getMoim().getMoimType()==1 && member.getUserType() == 0) {
                     missionRequest = missionRepository.save(
                             req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), 1, LocalDateTime.now(), req.getEndDate())
                     );
@@ -352,13 +352,13 @@ public class MoimServiceImpl implements MoimService{
                 // 정렬 -> 1. CreatedAt 내림차순
                 withdrawRequestList = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrderByCreatedAtDesc(member, member.getMoim(),0);
 
-                // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
+                // 해당 모임에서의 미션 요청 -> status가 0과 1만 조회 (미션 거절이 되지 않은 것)
                 // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
-                missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member, member.getMoim(), -1);
+                missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
 
             } else { // 전체 조회
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
-                missionList = missionRepository.findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member.getMoim(), -1);
+                missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
             }
 
 
