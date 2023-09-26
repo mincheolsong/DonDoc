@@ -20,7 +20,7 @@ import com.bank.backend.entity.History;
 import javax.validation.Valid;
 
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090", "http://j9d108.p.ssafy.io:5173", "http://j9d108.p.ssafy.io:5174", "http://j9d108.p.ssafy.io:9191"})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
