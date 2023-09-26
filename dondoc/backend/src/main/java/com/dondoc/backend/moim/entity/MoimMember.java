@@ -98,4 +98,7 @@ public class MoimMember {
     }
     public void changeStatus(int status){this.status = status;}
 
+    public void changeAccount(Account account){
+        this.account = account;
+    }
 }

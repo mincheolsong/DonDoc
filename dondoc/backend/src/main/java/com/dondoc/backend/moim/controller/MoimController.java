@@ -51,9 +51,7 @@ public class MoimController {
     @PostMapping("/create")
     public ApiResult createMoim(@ApiParam(value = "모임 생성에 필요한 값",required = true) @RequestBody MoimCreateDto.Request req, Authentication authentication){
 
-        /**
-         * 식별번호 생성
-         **/
+        // 식별번호 생성
         String identificationNumber;
         try {
             identificationNumber = moimService.makeIdentificationNumber();
@@ -89,7 +87,6 @@ public class MoimController {
         String moimAccountNumber = createResult.get("accountNumber").toString();
         // 모임 계좌 ID
         Long moimAccountId = Long.parseLong(createResult.get("accountId").toString());
-        System.out.println("moimAccountId = " + moimAccountId);
 
         if(moimAccountNumber==null){
             return ApiUtils.error("모임 생성에 실패했습니다.",HttpStatus.BAD_REQUEST);
@@ -120,7 +117,7 @@ public class MoimController {
 
         try {
             String userId = userDetails.getUsername();
-            log.info("현재 로그인 한 사용자의 userId : " + userId);
+            log.info("현재 로그인 한 사용자의 userId : {} ", userId);
             List<Moim> moimList = moimService.getMoimList(Long.parseLong(userId));
             for(Moim m : moimList){ // 엔티티를 dto로 변환
                 result.add(MoimListDto.Response.toDTO(m));
@@ -150,11 +147,17 @@ public class MoimController {
 
     @ApiOperation(value = "모임 초대", notes = "모임에 회원을 초대하는 API", response = ApiResult.class)
     @PostMapping("/invite")
-    public ApiResult invite(@ApiParam(value = "모임 초대에 필요한 값",required = true)@RequestBody MoimInviteDto.Request req){
+    public ApiResult invite(@ApiParam(value = "모임 초대에 필요한 값",required = true)@RequestBody MoimInviteDto.Request req, Authentication authentication){
         Long moimId = req.getMoimId();
         List<MoimInviteDto.InviteDto> inviteList = req.getInvite();
         int cnt;
         try {
+            // 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
+            UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+            Long userId = Long.parseLong(userDetails.getUsername());
+            // 모임에 초대하는 사용자가 해당 모임에 존재하는지 확인하는 부분 (존재하지 않으면 Exception 발생)
+            moimMemberService.findMoimMember(userId,moimId);
+
             Moim moim = moimService.findById(moimId);
             cnt = moimMemberService.inviteMoimMember(moim,inviteList);
 
@@ -165,24 +168,59 @@ public class MoimController {
         return ApiUtils.success( "moimId = " + moimId + "에 " + cnt + "명 초대 성공");
     }
     @ApiOperation(value = "모임초대 수락 또는 거절", notes = "모임초대를 수락 또는 거절하는 API", response = ApiResult.class)
-    @PostMapping("/invite/check")
-    public ApiResult inviteCheck(@ApiParam(value = "모임초대 수락 또는 거절에 필요한 값",required = true)@RequestBody MoimInviteCheck.Request req) {
-        Long userId = req.getUserId();
+    @PatchMapping("/invite/check")
+    public ApiResult inviteCheck(@ApiParam(value = "모임초대 수락 또는 거절에 필요한 값 (거절의 경우 accountId 입력 x)",required = true)@RequestBody MoimInviteCheck.Request req,Authentication authentication) {
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
         Long moimId = req.getMoimId();
+        Long accountId = req.getAccountId();
         Boolean accept = req.getAccept();
         try {
             MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
             if (accept) { // 요청 수락
-                moimMemberService.acceptMoimMember(moimMember.getId());
+                moimMemberService.acceptMoimMember(moimMember.getId(),accountId,userId);
                 return ApiUtils.success("요청이 수락되었습니다.");
             } else { // 요청 거절
                 moimMemberService.deleteMoimMember(moimMember);
-                return ApiUtils.success("요청이 수락되었습니다.");
+                return ApiUtils.success("요청이 거절되었습니다.");
             }
         } catch (Exception e) {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @ApiOperation(value = "모임 거래내역 전체 조회", notes = "모임의 거래내역을 전체 조회하는 API", response = ApiResult.class)
+    @PostMapping("/history/list")
+    public ApiResult getHistoryList(@ApiParam(value = "모임 거래내역 전체 조회에 필요한 값",required = true)@RequestBody MoimHistoryDto.ListRequest req) {
+
+        String identificationNumber = req.getIdentificationNumber();
+        String accountNumber = req.getAccountNumber();
+
+        List<Object> historyList = moimService.getHistoryList(identificationNumber, accountNumber);
+
+        if(historyList==null){
+            return ApiUtils.error("모임의 거래내역을 불러오지 못했습니다.",HttpStatus.BAD_REQUEST);
+        }
+
+        return ApiUtils.success(historyList);
+    }
+
+    @ApiOperation(value = "모임 거래내" +
+            "역 상세 조회", notes = "모임의 거래내역을 상세 조회하는 API", response = ApiResult.class)
+    @PostMapping("/history/detail")
+    public ApiResult getHistoryList(@ApiParam(value = "모임 거래내역 상세 조회에 필요한 값",required = true)@RequestBody MoimHistoryDto.DetailRequest req) {
+
+        String identificationNumber = req.getIdentificationNumber();
+        String accountNumber = req.getAccountNumber();
+        Long historyId = req.getHistoryId();
+
+        Object historyDetail = moimService.getHistoryDetail(identificationNumber, accountNumber, historyId);
+
+        if(historyDetail==null){
+            return ApiUtils.error("모임의 상세 거래내역을 불러오지 못했습니다.",HttpStatus.BAD_REQUEST);
+        }
+
+        return ApiUtils.success(historyDetail);
     }
 
 

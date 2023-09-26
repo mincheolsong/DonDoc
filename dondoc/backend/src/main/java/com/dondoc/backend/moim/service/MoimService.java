@@ -28,6 +28,8 @@ public interface MoimService {
 
     Moim findById(Long id) throws Exception;
 
+    List<Object> getHistoryList(String identificationNumber, String accountNumber);
+
     WithdrawRequestDto.Response withdrawReq(WithdrawRequestDto.Request req) throws Exception;
 
     MissionRequestDto.Response missionReq(MissionRequestDto.Request req) throws Exception;
@@ -52,4 +54,5 @@ public interface MoimService {
 
     SuccessOrNotMissionDto.Response quitMission(SuccessOrNotMissionDto.Request req) throws Exception;
 
+    Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId);
 }

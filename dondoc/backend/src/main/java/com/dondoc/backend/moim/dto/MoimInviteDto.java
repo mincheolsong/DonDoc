@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoimInviteDto {
@@ -15,11 +16,11 @@ public class MoimInviteDto {
         @ApiModelProperty(value = "모임테이블의 ID", example = "1")
         private Long moimId;
         @ApiModelProperty(value = "모임에 초대할 userId",example = "[{\"userId\": 5}, {\"userId\": 4}]")
-        private List<InviteDto> invite;
+        private List<InviteDto> invite = new ArrayList<>();
     }
 
     @Getter
-    public class InviteDto{
+    public static class InviteDto{
         private Long userId;
     }
 }
