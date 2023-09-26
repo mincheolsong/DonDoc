@@ -3,8 +3,8 @@ import styles from "./Search.module.css";
 
 
 
-function Search() {
-  const [UserList, setUserList] = useState<[]>([])
+function Noti_List() {
+  const [NoteList, setNoteList] = useState<[]>([])
 
   return (
     <>
@@ -16,4 +16,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default Noti_List;

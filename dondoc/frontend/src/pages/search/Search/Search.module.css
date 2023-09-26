@@ -1,1 +1,19 @@
 /* your css code */
+.Background {
+  width: 100%;
+  height: 100%;
+}
+
+.SearchBar {
+  width: 80vw;
+  height: 6vh;
+  margin-top: 5%;
+  margin-left: 10%;
+  border: white;
+  border-radius: 0.5rem;
+}
+
+.SearchBar::placeholder {
+  text-align: right;
+
+}
