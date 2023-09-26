@@ -23,6 +23,5 @@ public class AccountDetailDto {
         private int balance; // 잔액
         private Long bankCode; // 은행코드
         private String bankName; // 은행이름
-
     }
 }

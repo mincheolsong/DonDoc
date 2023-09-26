@@ -153,6 +153,7 @@ public class AccountServiceImpl implements AccountService {
 
             // Account 객체 생성
             Account account = Account.builder()
+                    .bankName(request.getBankName())
                     .bankCode(request.getBankCode())
                     .accountNumber(request.getAccountNumber())
                     .accountId(request.getAccountId())

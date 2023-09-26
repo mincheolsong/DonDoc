@@ -4,8 +4,10 @@ import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.user.dto.friend.FriendListDto;
 import com.dondoc.backend.user.dto.friend.FriendRequestDto;
 import com.dondoc.backend.user.dto.friend.FriendSearchDto;
+import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.Friend;
 import com.dondoc.backend.user.entity.User;
+import com.dondoc.backend.user.repository.AccountRepository;
 import com.dondoc.backend.user.repository.FriendRepository;
 import com.dondoc.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,12 @@ public class FriendServiceImpl implements FriendService{
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
-    public FriendServiceImpl(FriendRepository friendRepository, UserRepository userRepository) {
+    private final AccountRepository accountRepository;
+
+    public FriendServiceImpl(FriendRepository friendRepository, UserRepository userRepository, AccountRepository accountRepository) {
         this.friendRepository = friendRepository;
         this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
     // 친구 요청 보내기
@@ -121,12 +126,29 @@ public class FriendServiceImpl implements FriendService{
                     .orElseThrow(() -> new NotFoundException("친구를 찾을 수 없습니다."));
         }
 
-        FriendSearchDto.FriendInfo friendInfo = FriendSearchDto.FriendInfo.builder()
-                .id(friend.getId())
-                .name(friend.getName())
-                .imageNumber(friend.getImageNumber() + "")
-                .phoneNumber(friend.getPhoneNumber())
-                .build();
+        FriendSearchDto.FriendInfo friendInfo;
+
+        if(friend.getMainAccount() == null){
+            friendInfo = FriendSearchDto.FriendInfo.builder()
+                    .id(friend.getId())
+                    .name(friend.getName())
+                    .imageNumber(friend.getImageNumber() + "")
+                    .phoneNumber(friend.getPhoneNumber())
+                    .build();
+        }else{
+            Account account = accountRepository.findById(friend.getMainAccount())
+                    .orElseThrow(() -> new NotFoundException("대표계좌가 없습니다."));
+
+            friendInfo = FriendSearchDto.FriendInfo.builder()
+                    .id(friend.getId())
+                    .name(friend.getName())
+                    .imageNumber(friend.getImageNumber() + "")
+                    .phoneNumber(friend.getPhoneNumber())
+                    .bankName(account.getBankName())
+                    .bankCode(account.getBankCode())
+                    .accountNumber(account.getAccountNumber())
+                    .build();
+        }
 
         return FriendSearchDto.Response.builder()
                 .success(true)

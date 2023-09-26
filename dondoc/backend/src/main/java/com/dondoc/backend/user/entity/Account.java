@@ -21,6 +21,9 @@ public class Account {
     @Column(name="bankCode", nullable = false)
     private Long bankCode;
 
+    @Column(name="bankName", nullable = false)
+    private String bankName;
+
     @Column(name="accountId", nullable = false)
     private Long accountId;
 

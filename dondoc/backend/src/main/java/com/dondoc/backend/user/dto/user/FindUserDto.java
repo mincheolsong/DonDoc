@@ -23,6 +23,9 @@ public class FindUserDto {
         private String phoneNumber;
         private String NickName;
         private int imageNumber;
+        private String bankName;
+        private Long bankCode;
+        private String accountNumber;
         private String msg;
         @JsonIgnore
         private boolean success;

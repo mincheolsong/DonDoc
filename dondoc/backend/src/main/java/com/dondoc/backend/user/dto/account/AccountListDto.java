@@ -21,6 +21,9 @@ public class AccountListDto {
         @ApiModelProperty(value = "은행 코드", example = "89")
         private Long bankCode;
 
+        @ApiModelProperty(value = "은행 이름", example = "케이뱅크")
+        private String bankName;
+
         @ApiModelProperty(value = "계좌 번호", example = "5300334585926")
         private String accountNumber;
     }

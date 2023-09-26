@@ -16,6 +16,7 @@ public class ProfileDto {
         private String name;
         private String introduce;
         private Long bankCode;
+        private String bankName;
         private String account;
         private LocalDate birth;
         private String phoneNumber;

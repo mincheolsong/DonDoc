@@ -23,5 +23,8 @@ public class FriendSearchDto {
         private String name;
         private String imageNumber;
         private String phoneNumber;
+        private String bankName;
+        private Long bankCode;
+        private String accountNumber;
     }
 }

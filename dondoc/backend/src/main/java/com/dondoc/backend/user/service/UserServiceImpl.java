@@ -177,6 +177,7 @@ public class UserServiceImpl implements UserService{
                     .name(user.getName())
                     .phoneNumber(user.getPhoneNumber())
                     .introduce(user.getIntroduce())
+//                    .bankName(account.getBankName())
 //                    .bankCode(account.getBankCode())
                     .account("대표계좌가 존재하지 않습니다.")
                     .build();
@@ -193,6 +194,7 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .introduce(user.getIntroduce())
                 .birth(user.getBirth())
+                .bankName(account.getBankName())
                 .bankCode(account.getBankCode())
                 .account(account.getAccountNumber())
                 .build();
@@ -212,6 +214,7 @@ public class UserServiceImpl implements UserService{
                     .name(user.getName())
                     .phoneNumber(user.getPhoneNumber())
                     .introduce(user.getIntroduce())
+//                    .bankName(account.getBankName())
 //                    .bankCode(account.getBankCode())
                     .account("대표계좌가 존재하지 않습니다.")
                     .build();
@@ -228,6 +231,7 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
                 .introduce(user.getIntroduce())
+                .bankName(account.getBankName())
                 .bankCode(account.getBankCode())
                 .account(account.getAccountNumber())
                 .build();
@@ -244,14 +248,34 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        return FindUserDto.Response.builder()
-                .msg("회원정보를 불러왔습니다.")
-                .success(true)
-                .userId(user.getId())
-                .phoneNumber(user.getPhoneNumber())
-                .NickName(user.getNickName())
-                .imageNumber(user.getImageNumber())
-                .build();
+        try{
+            Account account = accountRepository.findById(user.getMainAccount())
+                    .orElseThrow(() -> new NotFoundException("대표계좌를 찾을 수 없습니다."));
+
+            return FindUserDto.Response.builder()
+                    .msg("회원정보를 불러왔습니다.")
+                    .success(true)
+                    .userId(user.getId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .NickName(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .bankName(account.getBankName())
+                    .bankCode(account.getBankCode())
+                    .accountNumber(account.getAccountNumber())
+                    .build();
+        }catch(NotFoundException e){
+            return FindUserDto.Response.builder()
+                    .msg("회원정보를 불러왔습니다.")
+                    .success(true)
+                    .userId(user.getId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .NickName(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .accountNumber("대표계좌가 없습니다.")
+                    .build();
+
+        }
+
     }
 
     @Override
