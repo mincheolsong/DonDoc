@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -27,7 +28,7 @@ import java.util.List;
 * */
 
 @Entity
-@Table(name="User")
+@Table(name="Users")
 @Getter @Setter
 @Builder
 @AllArgsConstructor
@@ -49,9 +50,6 @@ public class User {
     @Column(name="name", nullable = false, length = 20)
     private String name;
 
-    @Column(name="email", nullable = false, length = 50)
-    private String email;
-
     @Column(name="introduce", columnDefinition = "LONGTEXT")
     private String introduce;
 
@@ -65,10 +63,11 @@ public class User {
     private String refreshToken;
 
     @Column(name="mainAccount")
+    // 은행의 계좌 ID로 저장
     private Long mainAccount;
 
-    @Column(name="imageNumber")
-    private Long imageNumber;
+    @Column(name="imageNumber", nullable = false)
+    private int imageNumber;
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate
@@ -78,7 +77,8 @@ public class User {
     private String salt;
 
     @OneToMany(mappedBy = "user")
-    private List<MoimMember> moimMemberList;
+    private List<MoimMember> moimMemberList = new ArrayList<>();
 
-
+//    @OneToMany(mappedBy = "user")
+//    private List<Friend> friendList = new ArrayList<>();
 }

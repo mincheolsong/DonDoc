@@ -5,25 +5,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
+public class FriendSearchDto {
 
-public class FriendListDto {
     @Data
     @Builder
     public static class Response{
-        private List<FriendInfoDto> list;
         private String msg;
+        private FriendInfo friend;
         @JsonIgnore
         private boolean success;
     }
 
     @Data
     @Builder
-    public static class FriendInfoDto {
+    public static class FriendInfo{
         private Long id;
-        private Long friendId; // 상대
-        private LocalDateTime createdAt;
+        private String name;
+        private String imageNumber;
+        private String phoneNumber;
+        private String bankName;
+        private Long bankCode;
+        private String accountNumber;
     }
-
 }

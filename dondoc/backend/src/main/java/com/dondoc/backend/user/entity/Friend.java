@@ -1,5 +1,6 @@
 package com.dondoc.backend.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -24,6 +25,7 @@ public class Friend {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
+    @JsonIgnore
     private User user;
 
     @Column(name="friendId" , nullable = false)

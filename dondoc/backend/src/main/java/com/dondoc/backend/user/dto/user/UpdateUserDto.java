@@ -18,8 +18,7 @@ public class UpdateUserDto {
         private String nickName; // 닉네임
 
         @ApiModelProperty(value = "프로필이미지", example = "2")
-        private Long imageNumber; // 이미지 번호
-
+        private int imageNumber; // 이미지 번호
     }
 
     @Data

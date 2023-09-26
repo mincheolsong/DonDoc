@@ -42,17 +42,11 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)
+                .defaultValue("Bearer ")
                 .build();
 
         parameters.add(parameterBuilder.build());
 
-        parameterBuilder.name("refreshToken")
-                .description("refreshToken")
-                .modelRef(new ModelRef("string"))
-                .parameterType("cookie")
-                .required(false);
-
-        parameters.add(parameterBuilder.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo()) // Swagger UI로 노출할 정보

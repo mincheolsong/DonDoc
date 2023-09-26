@@ -17,7 +17,7 @@ public interface UserService {
 
     ProfileDto.Response myProfile(Long userId);
 
-    FindUserDto.Response findUser(String phoneNumber);
+    FindUserDto.Response findUser(String phoneNumber, String username);
 
     UpdateUserDto.Response updateUser(UpdateUserDto.Request req, Long id);
 
