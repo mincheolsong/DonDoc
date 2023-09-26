@@ -29,10 +29,9 @@
 }
 
 .usersbox {
+    padding: 1rem;
     background-color: white;
     border-radius: 10px;
-    width: 7.4rem;
-    height: 37rem;
 }
 
 .boxunit {
@@ -41,9 +40,12 @@
     border-radius: 1.5rem;
     width: 5.5rem;
     height: 4.7rem;
+    display: center;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+.unitcontent {
+    margin-top: 0.5rem;
 }
 
 .boxunit img {
@@ -51,8 +53,12 @@
     height: 2.6rem;
 }
 
+.boxunit p {
+    margin-top: 0;
+}
+
 .selectuser {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     border-radius: 10px;
     width: 24.2rem;
     height: 37rem;
@@ -64,6 +70,13 @@
     margin-top: 0.5rem;
     margin-right: 1rem;
 }
+
+.invbtn {
+    width: 9.4rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+}
+
 
 .selectcharacter {
     display: flex;
@@ -85,7 +98,8 @@
     border-radius: 1rem;
     display: flex;
     justify-content: space-around;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .accounttext {
@@ -129,6 +143,12 @@
     justify-content: space-around;
 }
 
+.optionbuttons button {
+    width: 10rem;
+    height: 4.2rem;
+    border-radius: 1rem;
+}
+
 
 .moimaccountcontent {
     height: 20vh;
@@ -147,6 +167,10 @@
 .moimaccountinfo {
     display: flex;
     margin-top: 1rem;
+}
+
+.moiminfo {
+    margin-left: 1rem;
 }
 
 .moimbanklogo {
