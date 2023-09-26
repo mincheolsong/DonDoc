@@ -53,8 +53,10 @@ function DetailFirst() {
           
           <div className={styles.usersbox}>
             <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p style={{marginTop:'0rem'}}>라이스</p>
+              <div className={styles.unitcontent}>
+                <img src={haaland} alt="" />
+                <p style={{marginTop:'0rem'}}>라이스</p>
+              </div>
             </div>
             <div className={styles.boxunit}>
               <img src={haaland} alt="" />
