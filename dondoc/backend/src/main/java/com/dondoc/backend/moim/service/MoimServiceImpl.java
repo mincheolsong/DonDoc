@@ -293,7 +293,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 요청 금액 -> 가능한지 판단
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -335,7 +335,7 @@ public class MoimServiceImpl implements MoimService{
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         // 일반 이용자가 다른 사람에게 미션을 부여했을 때
-        if(member.getUserType()==2 && (missionMember.getUser().getPhoneNumber() != member.getUser().getPhoneNumber())){
+        if(member.getUserType()==1 && (missionMember.getUser().getPhoneNumber() != member.getUser().getPhoneNumber())){
             throw new IllegalArgumentException("관리자만 다른 사용자에게 미션을 부여할 수 있습니다.");
         }
 
@@ -349,7 +349,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 요청 금액 -> 가능한지 판단
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -366,8 +366,8 @@ public class MoimServiceImpl implements MoimService{
 
                 Mission missionRequest;
 
-                // 신청인이 관리자일 때 -> 바로 미션 승인 상태로
-                if(member.getUserType() == 1) {
+                // 모입 타입이 한명 관리 && 신청인이 관리자일 때 => 바로 미션 승인 상태로
+                if(member.getMoim().getMoimType()==1 && member.getUserType() == 0) {
                     missionRequest = missionRepository.save(
                             req.saveMissionRequestDto(missionMember, req.getTitle(), req.getContent(), req.getAmount(), 1, LocalDateTime.now(), req.getEndDate())
                     );
@@ -397,7 +397,7 @@ public class MoimServiceImpl implements MoimService{
         List<WithdrawRequest> withdrawRequestList;
         List<Mission> missionList;
 
-        if(member.getUserType()==1) { // 요청자가 모임의 관리자이면
+        if(member.getUserType()==0) { // 요청자가 모임의 관리자이면
 
             // 특정 조회하고자 하는 회원을 입력 했을 때 - 회원별 필터링
             if(req.getFindUserId()!=null){
@@ -408,13 +408,13 @@ public class MoimServiceImpl implements MoimService{
                 // 정렬 -> 1. CreatedAt 내림차순
                 withdrawRequestList = withdrawRequestRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrderByCreatedAtDesc(member, member.getMoim(),0);
 
-                // 해당 모임에서의 미션 요청 -> status가 -1 아닌거 조회 (미션 거절이 되지 않은 것)
+                // 해당 모임에서의 미션 요청 -> status가 0과 1만 조회 (미션 거절이 되지 않은 것)
                 // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
-                missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member, member.getMoim(), -1);
+                missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
 
             } else { // 전체 조회
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
-                missionList = missionRepository.findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(member.getMoim(), -1);
+                missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
             }
 
 
@@ -610,7 +610,7 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 승인하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
 
         WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -681,7 +681,7 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 거절하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
 
         WithdrawRequest withdrawRequest = withdrawRequestRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -714,7 +714,7 @@ public class MoimServiceImpl implements MoimService{
         }
 
         // 일반 이용자가 승인하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
 
         Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -739,7 +739,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 현재 상황에서 승인할 수 있는 요청인지 -> limited 확인
         Map response = webClient.get()
-                .uri("/bank/account/detail/"+member.getAccount().getAccountId())
+                .uri("/bank/account/detail/"+member.getMoim().getMoimAccountId())
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
@@ -781,7 +781,7 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 거절하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
 
         Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -808,7 +808,7 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 승인하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
 
         Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -885,7 +885,7 @@ public class MoimServiceImpl implements MoimService{
         log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 거절하려는 경우
-        if(member.getUserType()!=1)
+        if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
 
         Mission mission = missionRepository.findByMoimMember_MoimAndId(member.getMoim(), req.getRequestId())
@@ -948,10 +948,15 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public List<MissionInfoDto.Response> getMyMission(Long userId) throws Exception {
 
-        MoimMember member = moimMemberRepository.findByUser_Id(userId)
+        MoimMember member = moimMemberRepository.findTop1ByUser_Id(userId)
                 .orElseThrow(()-> new NotFoundException("미션 정보가 없습니다."));
 
+        log.info("member : {}", member.getUser().getName());
+
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
+
+
+        log.info("missionList : {}", missionList.size());
 
         List<MissionInfoDto.Response> resultMissionList = missionList.stream()
                 .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))

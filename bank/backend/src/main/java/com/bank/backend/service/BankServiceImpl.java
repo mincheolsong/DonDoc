@@ -52,7 +52,9 @@ public class BankServiceImpl implements BankService {
         return cnt; // 조회한 계좌목록 갯수 리턴
 
     }
+
     @Override
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new NotFoundException(accountId + "를 accountId로 가지는 계좌가 존재하지 않습니다"));
 
