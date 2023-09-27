@@ -29,6 +29,12 @@ function MoimHome() {
     console.log(myMoimList)
   }
 
+  const navigate = useNavigate()
+
+  const GoMoimDetail = () => {
+    navigate('/detailfirst')
+  }
+
   const [myMoimList, setMyMoimList] = useState<myMoimList[]>([])
 
   // const [userData, setUserData] = useState<[]>([])
@@ -72,7 +78,7 @@ function MoimHome() {
             <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
             <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1> */}
             {myMoimList.length > 0 && myMoimList.map((moim, index) => (
-              <h1 className={styles.moimunit} key={index}>{moim.moimName}</h1>
+              <h1 className={styles.moimunit} key={index} onClick={GoMoimDetail}>{moim.moimName}</h1>
             ))}
           </div>
 
