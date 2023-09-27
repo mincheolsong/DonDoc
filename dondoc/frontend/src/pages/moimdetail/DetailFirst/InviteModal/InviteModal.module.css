@@ -87,6 +87,10 @@
     border: 1px solid black;
 }
 
+.friendunit {
+    border: 1px solid black;
+}
+
 .invitelist {
     display: flex;
     justify-content: center;

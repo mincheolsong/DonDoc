@@ -41,7 +41,7 @@ function CreateResult() {
   const CreateMoim = async () => {
 
     const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MDk3OTksImV4cCI6MTY5NTcxMTU5OX0.y1G32at3zmAKPtE8-TM5ky4SiABVcAd3zOgt2QkcTqg"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MzIxMDUsImV4cCI6MTY5NTczMzkwNX0.V4t56B77uKGgCehjbBStuD58HkpQUTEK58G6J__BB8E"
 
 
     try {

@@ -62,6 +62,7 @@ function MoimSelectAccount() {
   }
 
   const ShowProp = () => {
+    console.log('account', state)
     console.log(selectCategory)
   }
 
