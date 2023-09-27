@@ -26,4 +26,6 @@ public interface AccountService{
     HistoryMemoDto.Response historyMemo(Long userId, HistoryMemoDto.Request memo);
 
     TransferDto.Response transferAmount(Long userId, TransferDto.Request request);
+
+    Account findByAccountId(Long accountId);
 }

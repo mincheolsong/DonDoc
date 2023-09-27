@@ -15,8 +15,7 @@ public class MoimInviteDto {
     public static class Request{
         @ApiModelProperty(value = "모임테이블의 ID", example = "1")
         private Long moimId;
-        @ApiModelProperty(value = "모임 타입", example = "3")
-        private int moimType;
+
         @ApiModelProperty(value = "모임에 초대할 userId",example = "[{\"userId\": 5}, {\"userId\": 4}]")
         private List<InviteDto> invite = new ArrayList<>();
     }

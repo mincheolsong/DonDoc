@@ -10,9 +10,9 @@ public class MoimInviteCheck {
     @Getter
     public static class Request{
 
-        @ApiModelProperty(value = "모임 ID(2인 관리자 모임생성시 초대된 경우 입력X)", example = "1")
+        @ApiModelProperty(value = "모임 ID", example = "1")
         private Long moimId;
-        @ApiModelProperty(value = "모임멤버 ID(2인 관리자 모임생성시 초대된 경우 입력O)", example = "2")
+        @ApiModelProperty(value = "모임멤버 ID", example = "15")
         private Long moimMemberId;
         @ApiModelProperty(value = "수락 또는 거절", example = "true")
         private Boolean accept;

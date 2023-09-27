@@ -156,7 +156,7 @@ public class MoimServiceImpl implements MoimService{
             moimRepository.save(moim);
 
             // 모임 생성자의 Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
-            Account account = accountService.findById(accountId);
+            Account account = accountService.findByAccountId(accountId);
 
             // 모임 생성자의 MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
             moimMemberService.createMoimCreatorMember(user,moim,LocalDateTime.now(),account);
