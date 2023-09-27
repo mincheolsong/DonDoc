@@ -6,14 +6,20 @@ interface Props {
   setModalOpen(id: boolean) : void
 }
 
-type friendList = { friend: object, index:number, 
+type friendList = { friend: inviteUnit,
   id:number,
   friendId:number,
   createdAt:string}
-type inviteList = { inviteUnit: object, index:number, 
+type inviteList = { inviteUnit: inviteUnit, 
   id:number,
   friendId:number,
   createdAt:string}
+type inviteUnit = {
+  id:number,
+  friendId:number,
+  createdAt:string
+
+}
 
 
 function InviteModal({setModalOpen}: Props) {
@@ -30,8 +36,14 @@ function InviteModal({setModalOpen}: Props) {
     // console.log(searchInput)
   }
 
-  const AppendInviteList = (friend: object) => {
-    const newInviteList = [...inviteList, friend];
+  const AppendInviteList = (friend:inviteUnit) => {
+    const newInviteUnit: inviteList = {
+      inviteUnit: friend,
+      id: friend.id,
+      friendId: friend.friendId,
+      createdAt: friend.createdAt,
+    };
+    const newInviteList = [...inviteList, newInviteUnit];
     setInviteList(newInviteList);
   }
 
