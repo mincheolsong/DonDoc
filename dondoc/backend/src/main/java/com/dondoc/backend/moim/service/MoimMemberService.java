@@ -21,8 +21,8 @@ public interface MoimMemberService {
 
     MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
-    void acceptMoimMember(MoimMember moimMember, Long accountId, Long userId) throws Exception;
+    void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
 
-    void deleteMoimMember(MoimMember moimMember) throws Exception;
+//    void deleteMoimMember(Long moimMemberId) throws Exception;
 
 }

@@ -105,9 +105,12 @@ public class MoimMemberServiceImpl implements MoimMemberService {
 
     @Transactional
     @Override
-    public void acceptMoimMember(MoimMember moimMember,Long accountId,Long userId) throws Exception{
+    public void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception{
 
         Account account = accountService.findById(accountId);
+        MoimMember moimMember = this.findById(moimMemberId);
+        int moimType = moimMember.getMoim().getMoimType();
+
         if(account.getUser().getId()!=userId){
             throw new NotFoundException("userId가 " + userId + "인 사용자는 accountId가 " + accountId + "인 account를 가지고 있지 않습니다");
         }
@@ -116,11 +119,17 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         }
 
 
+        if(moimType==2){
+
+        }
+
         moimMember.changeStatus(1);
         moimMember.changeAccount(account);
+
+
     }
 
-    @Transactional
+/*    @Transactional
     @Override
     public void deleteMoimMember(MoimMember moimMember) throws Exception{
         // moimMember를 삭제함과 동시에 양방향 연관관계를 고려하여 삭제해야 함
@@ -134,6 +143,6 @@ public class MoimMemberServiceImpl implements MoimMemberService {
             user.getMoimMemberList().remove(moimMember);
         }
         moimMemberRepository.delete(moimMember);
-    }
+    }*/
 
 }

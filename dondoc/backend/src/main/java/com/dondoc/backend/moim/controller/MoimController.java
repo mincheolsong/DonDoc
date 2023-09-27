@@ -128,7 +128,7 @@ public class MoimController {
     @PostMapping("/invite")
     public ApiResult invite(@ApiParam(value = "모임 초대에 필요한 값",required = true)@RequestBody MoimInviteDto.Request req, Authentication authentication){
         Long moimId = req.getMoimId();
-        int moimType = req.getMoimType();
+
         List<MoimInviteDto.InviteDto> inviteList = req.getInvite();
         int cnt;
         try {
@@ -139,6 +139,8 @@ public class MoimController {
             moimMemberService.findMoimMember(userId,moimId);
 
             Moim moim = moimService.findById(moimId);
+            int moimType = moim.getMoimType();
+
             cnt = moimMemberService.inviteMoimMember(moimType,moim,inviteList);
 
         }catch (Exception e){
@@ -157,14 +159,14 @@ public class MoimController {
         Long moimMemberId = req.getMoimMemberId();
         Long accountId = req.getAccountId();
         Boolean accept = req.getAccept();
+
         try {
 
-            MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
             if (accept) { // 요청 수락
-                moimMemberService.acceptMoimMember(moimMember,accountId,userId);
+                moimMemberService.acceptMoimMember(moimMemberId,accountId,userId);
                 return ApiUtils.success("요청이 수락되었습니다.");
             } else { // 요청 거절
-                moimMemberService.deleteMoimMember(moimMember);
+//                moimMemberService.deleteMoimMember(moimMemberId);
                 return ApiUtils.success("요청이 거절되었습니다.");
             }
 
