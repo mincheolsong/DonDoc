@@ -57,6 +57,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             ,"/api/user/signup"
             ,"/api/user/signin"
             ,"/api/user/find_password"
+            ,"/api/user/sms/signup"
+            ,"/api/user/sms/find_password"
     );
 
     @Override

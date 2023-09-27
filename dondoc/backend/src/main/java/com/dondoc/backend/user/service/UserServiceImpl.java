@@ -5,6 +5,7 @@ import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import com.dondoc.backend.common.jwt.TokenDto;
 import com.dondoc.backend.common.jwt.model.UserDetailsImpl;
 import com.dondoc.backend.common.utils.EncryptionUtils;
+import com.dondoc.backend.common.utils.SMSUtil;
 import com.dondoc.backend.user.dto.user.*;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService{
     private final FriendRepository friendRepository;
 
     private final AccountRepository accountRepository;
+
+    private final SMSUtil smsUtil;
+
 
     // 회원가입
     @Override
@@ -137,9 +141,18 @@ public class UserServiceImpl implements UserService{
                 .build();
     }
 
+
     @Override
     public CertificationDto.Response sendSMS(String phoneNumber) {
-        return null;
+
+        String certificationNumber = encryptionUtils.certificationNumber();
+        smsUtil.sendOne(phoneNumber, certificationNumber);
+
+        return CertificationDto.Response.builder()
+                .certificationNumber(certificationNumber)
+                .msg("인증번호 전송이 완료되었습니다.")
+                .success(true)
+                .build();
     }
 
     @Override
@@ -319,3 +332,4 @@ public class UserServiceImpl implements UserService{
 
 
 }
+

@@ -26,7 +26,6 @@ public class CertificationDto {
 
         private String certificationNumber;
 
-        @JsonIgnore
         private boolean success;
     }
 }
