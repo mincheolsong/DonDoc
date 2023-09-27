@@ -51,11 +51,11 @@ public class MoimController {
     @ApiOperation(value = "모임 생성", notes = "모임을 생성하는 API", response = ApiResult.class)
     @PostMapping("/create")
     public ApiResult createMoim(@ApiParam(value = "모임 생성에 필요한 값",required = true) @RequestBody MoimCreateDto.Request req, Authentication authentication){
-
+        System.out.println("모임생성 컨트롤러 실행됨~!!!!!!!");
         // 로그인한 사용자
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         User user = userService.findById(Long.parseLong(userDetails.getUsername()));
-
+        System.out.println("!@#!@#!#!@" + user);
         // request body로 넘어온 값
         String moimName = req.getMoimName();
         String password = req.getPassword();
@@ -135,19 +135,32 @@ public class MoimController {
             // 현재 로그인한 User 엔티티 찾기 (token 헤더값에서 userId가져오기)
             UserDetails userDetails = (UserDetails)authentication.getPrincipal();
             Long userId = Long.parseLong(userDetails.getUsername());
-            // 모임에 초대하는 사용자가 해당 모임에 존재하는지 확인하는 부분 (존재하지 않으면 Exception 발생)
+
+            // 모임에 초대하는 사용자가 해당 모임에 존재하는지 확인 (존재하지 않으면 Exception 발생)
             moimMemberService.findMoimMember(userId,moimId);
 
             Moim moim = moimService.findById(moimId);
-            int moimType = moim.getMoimType();
 
-            cnt = moimMemberService.inviteMoimMember(moimType,moim,inviteList);
+            cnt = moimMemberService.inviteMoimMember(moim,inviteList);
 
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return ApiUtils.success( "moimId = " + moimId + "에 " + cnt + "명 초대 성공");
+        return ApiUtils.success( "moimId가 " + moimId + "에 " + cnt + "명 초대 성공");
+    }
+
+    @ApiOperation(value = "모임 초대리스트 조회", notes = "초대된 모임 리스트를 조회하는 API", response = ApiResult.class)
+    @GetMapping("/invite/list")
+    public ApiResult inviteList(Authentication authentication){
+
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        List<MoimInviteListDto.Response> inviteList = moimMemberService.findInviteList(userId);
+
+        return ApiUtils.success(inviteList);
+
     }
 
     @ApiOperation(value = "모임초대 수락 또는 거절", notes = "모임초대를 수락 또는 거절하는 API", response = ApiResult.class)
@@ -155,7 +168,6 @@ public class MoimController {
     public ApiResult inviteCheck(@ApiParam(value = "모임초대 수락 또는 거절에 필요한 값 (거절의 경우 accountId 입력 x)",required = true)@RequestBody MoimInviteCheck.Request req,Authentication authentication) {
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         Long userId = Long.parseLong(userDetails.getUsername());
-        Long moimId = req.getMoimId();
         Long moimMemberId = req.getMoimMemberId();
         Long accountId = req.getAccountId();
         Boolean accept = req.getAccept();
