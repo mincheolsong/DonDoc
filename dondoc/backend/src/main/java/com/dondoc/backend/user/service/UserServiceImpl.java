@@ -6,6 +6,7 @@ import com.dondoc.backend.common.jwt.TokenDto;
 import com.dondoc.backend.common.jwt.model.UserDetailsImpl;
 import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.user.dto.user.*;
+import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.repository.AccountRepository;
 import com.dondoc.backend.user.repository.FriendRepository;
@@ -55,12 +56,15 @@ public class UserServiceImpl implements UserService{
         // salt 생성
         String salt  = encryptionUtils.makeSalt();
 
+        if(userRepository.findByPhoneNumber(signUpDto.getPhoneNumber()).isPresent()){
+            throw new NoSuchElementException("이미 존재하는 유저입니다.");
+        }
+
         // User 객체 생성
         User user = User.builder()
                         .phoneNumber(signUpDto.getPhoneNumber())
                         .name(signUpDto.getName())
                         .password(passwordEncoder.encode(signUpDto.getPassword() + salt))
-                        .email(signUpDto.getEmail())
                         .nickName(signUpDto.getNickName())
                         .salt(salt)
                         .build();
@@ -122,7 +126,12 @@ public class UserServiceImpl implements UserService{
         return SignInDto.Response.builder()
                 .success(true)
                 .msg("정상적으로 로그인 되었습니다.")
+                .phoneNumber(user.getPhoneNumber())
                 .name(user.getName())
+                .introduce(user.getIntroduce())
+                .birth(user.getIntroduce())
+                .nickname(user.getName())
+                .imageNumber(user.getImageNumber())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -159,8 +168,23 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-//        Account account = accountRepository.findById(user.getMainAccount())
-//                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+        if(user.getMainAccount() == null){
+            return ProfileDto.Response.builder()
+                    .msg("내 프로필을 불러왔습니다.")
+                    .success(true)
+                    .mine(true)
+                    .imageNumber(user.getImageNumber())
+                    .name(user.getName())
+                    .phoneNumber(user.getPhoneNumber())
+                    .introduce(user.getIntroduce())
+//                    .bankName(account.getBankName())
+//                    .bankCode(account.getBankCode())
+                    .account("대표계좌가 존재하지 않습니다.")
+                    .build();
+        }
+
+        Account account = accountRepository.findById(user.getMainAccount())
+                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
                 .msg(user.getName() + "님의 프로필을 불러왔습니다.")
@@ -170,8 +194,9 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .introduce(user.getIntroduce())
                 .birth(user.getBirth())
-//                .bankCode(account.getBankCode())
-//                .account(account.getAccountNumber())
+                .bankName(account.getBankName())
+                .bankCode(account.getBankCode())
+                .account(account.getAccountNumber())
                 .build();
     }
 
@@ -180,8 +205,23 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-//        Account account = accountRepository.findById(user.getMainAccount())
-//                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+        if(user.getMainAccount() == null){
+            return ProfileDto.Response.builder()
+                    .msg("내 프로필을 불러왔습니다.")
+                    .success(true)
+                    .mine(true)
+                    .imageNumber(user.getImageNumber())
+                    .name(user.getName())
+                    .phoneNumber(user.getPhoneNumber())
+                    .introduce(user.getIntroduce())
+//                    .bankName(account.getBankName())
+//                    .bankCode(account.getBankCode())
+                    .account("대표계좌가 존재하지 않습니다.")
+                    .build();
+        }
+
+        Account account = accountRepository.findById(user.getMainAccount())
+                .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
                 .msg("내 프로필을 불러왔습니다.")
@@ -191,24 +231,51 @@ public class UserServiceImpl implements UserService{
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
                 .introduce(user.getIntroduce())
-//                .bankCode(account.getBankCode())
-//                .account(account.getAccountNumber())
+                .bankName(account.getBankName())
+                .bankCode(account.getBankCode())
+                .account(account.getAccountNumber())
                 .build();
     }
 
     @Override
-    public FindUserDto.Response findUser(String phoneNumber) {
+    public FindUserDto.Response findUser(String phoneNumber, String userId) {
+        User certificationMe = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+        if(certificationMe.getPhoneNumber().equals(phoneNumber)){
+            throw new NoSuchElementException("나를 검색할 수 없습니다.");
+        }
+
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        return FindUserDto.Response.builder()
-                .msg("회원정보를 불러왔습니다.")
-                .success(true)
-                .userId(user.getId())
-                .phoneNumber(user.getPhoneNumber())
-                .NickName(user.getNickName())
-                .imageNumber(user.getImageNumber())
-                .build();
+        try{
+            Account account = accountRepository.findById(user.getMainAccount())
+                    .orElseThrow(() -> new NotFoundException("대표계좌를 찾을 수 없습니다."));
+
+            return FindUserDto.Response.builder()
+                    .msg("회원정보를 불러왔습니다.")
+                    .success(true)
+                    .userId(user.getId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .NickName(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .bankName(account.getBankName())
+                    .bankCode(account.getBankCode())
+                    .accountNumber(account.getAccountNumber())
+                    .build();
+        }catch(NotFoundException e){
+            return FindUserDto.Response.builder()
+                    .msg("회원정보를 불러왔습니다.")
+                    .success(true)
+                    .userId(user.getId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .NickName(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .accountNumber("대표계좌가 없습니다.")
+                    .build();
+
+        }
+
     }
 
     @Override
@@ -232,7 +299,7 @@ public class UserServiceImpl implements UserService{
         }
 
         // 이미지 번호
-        if(user.getImageNumber() == null || !user.getImageNumber().equals(req.getImageNumber())){
+        if(user.getImageNumber() == 0 || !(user.getImageNumber() == req.getImageNumber())){
             log.info("이미지 변경");
             user.setImageNumber(req.getImageNumber());
         }

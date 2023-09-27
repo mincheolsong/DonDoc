@@ -58,7 +58,7 @@ public class JwtTokenProvider {
 
     public Cookie createRefreshToken(TokenDto tokenDto){
         Cookie refreshToken  = new Cookie("refreshToken", createToken(tokenDto, REFRESH_TIME, REFRESH_KEY));
-        refreshToken.setPath("/**");
+        refreshToken.setPath("/");
         refreshToken.setMaxAge((int)REFRESH_TIME);
         return refreshToken;
     }
