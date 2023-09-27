@@ -1,11 +1,58 @@
 import styles from "./MoimHome.module.css";
-import haaland from '../../../assets/bbakbbakyee.jpg'
+// import haaland from '../../../assets/bbakbbakyee.jpg'
+// import { useEffect } from "react";
 import peter from "../../../assets/image/peter.svg"
 import Header from "../../webmain/Header/Header";
 import chelsea from '../../../assets/Chelsea_FC_Logo.jpg'
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+type myMoimList = { moim: object, 
+  moimId:number,
+  moimName:string,
+  introduce:string,
+  moimType:number,
+  identificationNumber:string}
+
 
 function MoimHome() {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
+
+  const ShowState = () => {
+    console.log(myMoimList)
+  }
+
+  const [myMoimList, setMyMoimList] = useState<myMoimList[]>([])
+
+  // const [userData, setUserData] = useState<[]>([])
+
+  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/moim/list`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        console.log('모임 검색결과:', res.data.response)
+        setMyMoimList(res.data.response)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -20,10 +67,13 @@ function MoimHome() {
           </div>
 
           <div className={styles.moimcontent}>
+            {/* <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
             <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
             <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
-            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
-            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
+            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1> */}
+            {myMoimList.length > 0 && myMoimList.map((moim, index) => (
+              <h1 className={styles.moimunit} key={index}>{moim.moimName}</h1>
+            ))}
           </div>
 
         <div className={styles.invitelist}>
@@ -44,6 +94,8 @@ function MoimHome() {
 
         </div>
 
+      <button onClick={ShowState}>보여주라</button>
+
       </div>
     </div>
     </div>
@@ -53,7 +105,13 @@ function MoimHome() {
 export default MoimHome;
 
 
-export function UserBox(props){
+type props = {
+  userCharacter: string,
+  username: string,
+  rightBtn: string
+}
+
+export function UserBox(props:props){
   const navigate = useNavigate()
   const ToCreateMoim = () => {
     navigate('/createmoim')

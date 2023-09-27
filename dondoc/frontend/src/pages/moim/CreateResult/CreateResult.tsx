@@ -3,6 +3,8 @@ import styles from "./CreateResult.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import TermsOfUseModal from './TermsOfUse/TermsOfUse';
 import axios from 'axios';
+import { useSelector } from "react-redux";
+import { UserType } from '../../../store/slice/userSlice';
 
 function CreateResult() {
 
@@ -29,8 +31,13 @@ function CreateResult() {
     navigate(-1)
   }
 
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
+
   const data = {
-    "accountId": category.code,
+    "accountId": account.accountId,
     "introduce": moimInfo,
     "manager": manager,
     "moimName": moimName,
@@ -41,8 +48,6 @@ function CreateResult() {
   const CreateMoim = async () => {
 
     const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMTExMSIsInN1YiI6IjIiLCJpYXQiOjE2OTU3MzIxMDUsImV4cCI6MTY5NTczMzkwNX0.V4t56B77uKGgCehjbBStuD58HkpQUTEK58G6J__BB8E"
-
 
     try {
       const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
@@ -52,6 +57,8 @@ function CreateResult() {
         }
       });
       console.log(response.data)
+      alert('모임이 생성되었습니다.')
+      navigate('/moimhome')
     } catch(error) {
       console.log('error:', error)
     }
@@ -60,6 +67,7 @@ function CreateResult() {
   const WatchInfo = () => {
     console.log('state:',state)
     console.log('data:', data)
+    console.log('token:', token)
   }
 
   return (
