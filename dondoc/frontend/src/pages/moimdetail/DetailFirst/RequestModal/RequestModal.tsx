@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import styles from "./RequestModal.module.css";
 import haaland from "../../../../assets/bbakbbakyee.jpg"
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../../store/slice/userSlice";
 
 type Props = {
   setModalOpen(id: boolean) : void
 }
 
-
 function RequestModal({setModalOpen}: Props) {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
 
   const [nowSelected, setNowSelected] = useState<boolean>(true)
   
@@ -40,21 +46,21 @@ function RequestModal({setModalOpen}: Props) {
 
   const ChangeMoneyTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMoneyTitle(e.target.value)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
   const ChangeMoneyAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value !== '' ? parseInt(e.target.value, 10) : 0;
     setMoneyAmount(newValue);
-    console.log(newValue);
+    // console.log(newValue);
   }
   const ChangeMoneyContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMoneyContent(e.target.value)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
   const ChangeMoneyCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = parseInt(e.target.value, 10);
     setMoneyCategory(selectedValue);
-    console.log(selectedValue);
+    // console.log(selectedValue);
 }
 
 
@@ -89,7 +95,7 @@ function RequestModal({setModalOpen}: Props) {
       const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/withdraw_req`, data, {
         headers: {
           'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + 'token'
+          'Authorization': 'Bearer ' + token
         }
       });
       console.log(response.data)
@@ -97,6 +103,7 @@ function RequestModal({setModalOpen}: Props) {
       console.log('error:', error)
     }
   }
+
   const RequestMission = async() => {
     const data ={
       "amount": missionAmount,
@@ -108,11 +115,16 @@ function RequestModal({setModalOpen}: Props) {
       "userId": 0
     }
 
+    const userInfo:UserType = useSelector((state:{user:UserType})=>{
+      return state.user
+    })
+    const token = userInfo.accessToken
+
     try {
       const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/create`, data, {
         headers: {
           'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + 'token'
+          'Authorization': 'Bearer ' + token
         }
       });
       console.log(response.data)
@@ -162,11 +174,13 @@ function RequestModal({setModalOpen}: Props) {
                 </div>
                 <div className={styles.requestcategory}>
                   <select name="category" id="category" onChange={ChangeMoneyCategory} value={moneyCategory}>
-                    <option value={0}>카테고리</option>
-                    <option value={1}>아메리카노</option>
-                    <option value={2}>카페라테</option>
-                    <option value={3}>카페오레</option>
-                    <option value={4}>에스프레소</option>
+                    <option value={0}>쇼핑</option>
+                    <option value={1}>교육</option>
+                    <option value={2}>식사</option>
+                    <option value={3}>여가</option>
+                    <option value={4}>생활요금</option>
+                    <option value={5}>의료</option>
+                    <option value={6}>기타</option>
                   </select>
                 </div>
 
