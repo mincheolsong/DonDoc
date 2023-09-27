@@ -1,0 +1,17 @@
+.container {
+    width: 5rem;
+    height: 5rem;
+    /* border: 1px solid red; */
+}
+
+.content {
+    text-align: center;
+}
+
+.content img {
+    width: 3.3rem;
+    height: 2.6rem;
+}
+.content p {
+    margin-top: 0;
+}

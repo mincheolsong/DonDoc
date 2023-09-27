@@ -3,6 +3,7 @@ import styles from "./InviteModal.module.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
+import MemberUnit from "./MemberUnit/MemberUnit";
 
 interface Props {
   setModalOpen(id: boolean) : void
@@ -12,14 +13,36 @@ type friendList = { friend: inviteUnit,
   id:number,
   friendId:number,
   createdAt:string}
-type inviteList = { inviteUnit: inviteUnit, 
-  id:number,
-  friendId:number,
-  createdAt:string}
 type inviteUnit = {
   id:number,
   friendId:number,
   createdAt:string
+}
+const initialSearchResult: searchUnit = {
+  userId: 0,
+  phoneNumber: "",
+  imageNumber: 0,
+  bankName: "",
+  bankCode: 0,
+  accountNumber: "",
+  msg: "",
+  nickName: ""
+};
+type searchUnit = {
+  userId: number,
+  phoneNumber: string,
+  imageNumber: number,
+  bankName: string,
+  bankCode: number,
+  accountNumber: string,
+  msg: string,
+  nickName: string
+}
+type newInviteUnit = {
+  userId: number
+}
+type newInviteList = {
+  userId: number
 }
 
 
@@ -29,10 +52,12 @@ function InviteModal({setModalOpen}: Props) {
     return state.user
   })
   const token = userInfo.accessToken
+  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
 
   const [searchInput, setSearchInput] = useState<string>('')
+  const [searchResult, setSearchResult] = useState<searchUnit>(initialSearchResult);
   const [friendList, setFriendList] = useState<friendList[]>([])
-  const [inviteList, setInviteList] = useState<inviteList[]>([])
+  const [inviteList, setInviteList] = useState<newInviteList[]>([])
 
   const ModalClose = () => {
     setModalOpen(false)
@@ -42,38 +67,62 @@ function InviteModal({setModalOpen}: Props) {
     setSearchInput(e.target.value)
     // console.log(searchInput)
   }
-
+  
   const AppendInviteList = (friend: inviteUnit) => {
     // 이미 존재하는지 확인
-    const isAlreadyAdded = inviteList.some((item) => item.id === friend.id);
-  
+    const isAlreadyAdded = inviteList.some((item) => item.userId === friend.friendId);
+
     if (!isAlreadyAdded) {
-      const newInviteUnit: inviteList = {
-        inviteUnit: friend,
-        id: friend.id,
-        friendId: friend.friendId,
-        createdAt: friend.createdAt,
+      const newInviteUnit: newInviteUnit = {
+        userId: friend.friendId,
       };
-      
+
       const newInviteList = [...inviteList, newInviteUnit];
       setInviteList(newInviteList);
     }
-  }
-  
+  };
+
+  const AppendSearchUnit = (unit: searchUnit) => {
+    const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
+    const isSearchResult = searchResult.phoneNumber
+
+    if (!isAlreadyAdded && isSearchResult) {
+      const newInviteUnit: newInviteUnit = {
+        "userId": unit.userId,
+      };
+
+      const newInviteList = [...inviteList, newInviteUnit];
+      setInviteList(newInviteList);
+    }
+  };
 
   const DeleteUnit = (inviteUnit: object) => {
     const updatedInviteList = inviteList.filter(item => item !== inviteUnit);
     setInviteList(updatedInviteList);
   }
 
+  const SearchMember = async() => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/user/find_user/${searchInput}`, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      console.log(res.data.response)
+      setSearchResult(res.data.response)
+    }catch(err) {
+      console.log(err)
+    }
+  }
+
   const WatchSome = () => {
-    console.log(friendList)
+    console.log(inviteList)
   }
 
   useEffect(() => {
     const fetchData = async () => {
 
-      const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
       
       try {
         const res = await axios.get(`${BASE_URL}/api/friend/list`, {
@@ -96,18 +145,13 @@ function InviteModal({setModalOpen}: Props) {
   const InviteMoimFriend = async() => {
     const data = {
       "moimId" : 1,
-      "moimType" : 1,
-      "invite" : [
-        // {
-        //     "userId" : 2
-        // },
-      ]
+      "invite" : inviteList
     }
     try {
       const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/invite`, data, {
         headers: {
           'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + 'token'
+          'Authorization': 'Bearer ' + token
         }
       });
       console.log(response.data)
@@ -132,16 +176,25 @@ function InviteModal({setModalOpen}: Props) {
           <div className={styles.searchbox}>
             <div className={styles.inputgroup}>
               <div className={styles.inputlabel}>
-                <h2>전화번호, 이름</h2>
+                <h2>전화번호</h2>
               </div>
-              <div className={styles.inputbox}>
-                <input type="text" onChange={ChangeSearchInput} value={searchInput}/>
+              <div className={styles.searchgroup}>
+                <div className={styles.inputbox}>
+                  <input type="text" onChange={ChangeSearchInput} value={searchInput}/>
+                </div>
+                <div className={styles.button}>
+                  <button onClick={SearchMember}>검색</button>
+                </div>
               </div>
             </div>
           </div>
           
-          <div className={styles.searchresult}>
-          
+          <div className={styles.searchresult} onClick={() => AppendSearchUnit(searchResult)}>
+            {searchResult.accountNumber ? (
+              <>와아아아아아아</>
+            ):(
+              <>우우우우우우우</>
+            )}
           </div>
 
           <div className={styles.friendlist}>
@@ -165,12 +218,17 @@ function InviteModal({setModalOpen}: Props) {
                 <h2>초대 리스트</h2>
               </div>
               <div className={styles.invitebox}>
-              {inviteList.length > 0 && inviteList.map((inviteUnit, index) => (
-                  <div className={styles.inviteunit} key={index} onClick={() => DeleteUnit(inviteUnit)}>
-                    {inviteUnit.friendId} {inviteUnit.id}
+                {inviteList.length > 0 && (
+                  <div className={styles.inviteunitContainer}>
+                    {inviteList.map((inviteUnit, index) => (
+                      <div className={styles.inviteunit} key={index} onClick={() => DeleteUnit(inviteUnit)}>
+                        <MemberUnit userId={inviteUnit.userId}/>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
+
             </div>
           </div>
 
@@ -179,7 +237,7 @@ function InviteModal({setModalOpen}: Props) {
         <div className={styles.infobtns}>
           <button onClick={WatchSome}>aaa</button>
           <button onClick={ModalClose}>닫기</button>
-          <button onClick={InviteMoimFriend}>수정하기</button>
+          <button onClick={InviteMoimFriend}>초대하기</button>
         </div>
 
       </div>

@@ -1,15 +1,54 @@
 import styles from "./DetailFirst.module.css";
-import { useState } from 'react'
-import haaland from "../../../assets/bbakbbakyee.jpg"
+import { useState, useEffect } from 'react'
+import haaland from "../../../assets/characterImg/0.png"
 import RequestModal from "./RequestModal/RequestModal";
 import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
 import InviteModal from "./InviteModal/InviteModal";
+import axios from "axios";
+import { BASE_URL } from "../../../constants";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
+
+type moimMemberList = {
+  userId: number,
+  moimMemberId: number,
+  userType: number,
+  nickname: string,
+  accountNumber: string,
+  bankCode: number
+}
+const selectedDefault = {
+  userId: 0,
+  moimMemberId: 0,
+  userType: 0,
+  nickname: '',
+  accountNumber: '',
+  bankCode: 0
+}
+type moimDetailInfo = {
+  balance: number,
+  moimName: string,
+  moimAccountNumber: string
+}
+const moimDetailDefault = {
+  balance: 0,
+  moimName: '',
+  moimAccountNumber: ''
+}
 
 function DetailFirst() {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+  const [moimMemberList, setMoimMemberList] = useState<moimMemberList[]>([])
+  const [moimDetailInfo, setMoimDetailInfo] = useState<moimDetailInfo>(moimDetailDefault)
+  const [selectedMember, setSelectedMember] = useState<moimMemberList>(selectedDefault)
 
   const OpenModal = () => {
     setModalOpen(true)
@@ -29,6 +68,37 @@ function DetailFirst() {
   const CloseInfoModal = () => {
     setInfoModalOpen(false)
   }
+
+  const SelectMember = (member:moimMemberList) => {
+    setSelectedMember(member)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // moim/detail/${moimId}
+        const res = await axios.get(`${BASE_URL}/api/moim/detail/1`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        console.log('모임 멤버:', res.data.response)
+        const moimDetail = {
+          balance : res.data.response.balance,
+          moimName : res.data.response.moimName,
+          moimAccountNumber : res.data.response.moimAccountNumber,
+        }
+        setMoimDetailInfo(moimDetail)
+        setMoimMemberList(res.data.response.moimMembers)
+        setSelectedMember(res.data.response.moimMembers[0])
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, []);
 
 
   return (
@@ -52,32 +122,12 @@ function DetailFirst() {
         <div className={styles.userscontent}>
           
           <div className={styles.usersbox}>
-            <div className={styles.boxunit}>
-              <div className={styles.unitcontent}>
+            {moimMemberList.length > 0 && moimMemberList.map((member, index) => (
+              <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
                 <img src={haaland} alt="" />
-                <p style={{marginTop:'0rem'}}>라이스</p>
+                <p>{member.userId}</p>
               </div>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>듀란</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>피터</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>제이든</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>칼리</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>루카</p>
-            </div>
+            ))}
           </div>
 
           <div className={styles.selectuser}>
@@ -87,20 +137,22 @@ function DetailFirst() {
             <div className={styles.selectcharacter}>
               <img src={haaland} alt="" />
             </div>
+
             <div className={styles.selectaccount}>
               <div className={styles.banklogo}>
                 <img src={haaland} alt="" />
               </div>
               <div className={styles.accountinfo}>
                 <div className={styles.accounttext}>
-                  <p>하나</p>
-                  <p>237-128127-12478</p>
+                  <p>{selectedMember.bankCode}</p>
+                  <p>{selectedMember.accountNumber}</p>
                 </div>
               </div>
               <div className={styles.accountowner}>
-                <p>김동혁</p>
+                <p>{selectedMember.nickname}</p>
               </div>
             </div>
+
             <div className={styles.optionbuttons}>
               <button onClick={OpenModal}>요청하기</button> <button>요청확인</button>
             </div>
@@ -134,13 +186,14 @@ function DetailFirst() {
                 <img src={haaland} alt="" className={styles.moimaccountlogo} />
               </div>
               <div className={styles.moiminfo}>
-                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>돈독 모임 계좌</p>
-                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>123-12847-12478</p>
+                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimName}</p>
+                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimAccountNumber}</p>
               </div>
             </div>
             <div className={styles.accountbalance}>
               <div className={styles.accountwon}>
-                <p style={{fontSize: "2.6rem", fontWeight:'900', border: "1px solid black", margin: "0rem"}}>100000원</p>
+                <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance}</p>
+                <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>원</p>
               </div>
               <div className={styles.chargebalance}>
                 <button className={styles.chargebtn}>충전하기</button>
