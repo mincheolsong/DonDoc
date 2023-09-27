@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
-    List<Mission> findByMoimMemberAndMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim, int status);
-    List<Mission> findByMoimMember_MoimAndStatusNotOrderByStatusAscCreatedAtDesc(Moim moim, int status);
+    List<Mission> findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim, int status1, int status2);
+    List<Mission> findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(Moim moim, int status1, int status);
     List<Mission> findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim);
     List<Mission> findByMoimMemberAndStatus(MoimMember moimMember, int status);
     List<Mission> findByStatusOrStatus(int status1, int status2);
