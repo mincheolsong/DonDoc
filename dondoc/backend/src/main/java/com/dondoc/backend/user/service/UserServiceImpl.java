@@ -248,7 +248,17 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        try{
+        if(user.getMainAccount() == null){
+            return FindUserDto.Response.builder()
+                    .msg("회원정보를 불러왔습니다.")
+                    .success(true)
+                    .userId(user.getId())
+                    .phoneNumber(user.getPhoneNumber())
+                    .NickName(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .accountNumber("대표계좌가 없습니다.")
+                    .build();
+        }else{
             Account account = accountRepository.findById(user.getMainAccount())
                     .orElseThrow(() -> new NotFoundException("대표계좌를 찾을 수 없습니다."));
 
@@ -263,17 +273,6 @@ public class UserServiceImpl implements UserService{
                     .bankCode(account.getBankCode())
                     .accountNumber(account.getAccountNumber())
                     .build();
-        }catch(NotFoundException e){
-            return FindUserDto.Response.builder()
-                    .msg("회원정보를 불러왔습니다.")
-                    .success(true)
-                    .userId(user.getId())
-                    .phoneNumber(user.getPhoneNumber())
-                    .NickName(user.getNickName())
-                    .imageNumber(user.getImageNumber())
-                    .accountNumber("대표계좌가 없습니다.")
-                    .build();
-
         }
 
     }
