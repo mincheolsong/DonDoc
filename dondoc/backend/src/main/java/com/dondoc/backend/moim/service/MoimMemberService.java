@@ -3,6 +3,7 @@ package com.dondoc.backend.moim.service;
 import com.dondoc.backend.moim.dto.MoimCreateDto;
 import com.dondoc.backend.moim.dto.MoimDetailDto;
 import com.dondoc.backend.moim.dto.MoimInviteDto;
+import com.dondoc.backend.moim.dto.MoimInviteListDto;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.entity.MoimMember;
 import com.dondoc.backend.user.entity.Account;
@@ -17,11 +18,13 @@ public interface MoimMemberService {
     MoimMember createMoimCreatorMember(User user, Moim moim, LocalDateTime signedAt, Account account);
 
     MoimMember findById(Long id);
-    int inviteMoimMember(int moimType, Moim moim, List<MoimInviteDto.InviteDto> inviteList);
+    int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList);
 
     MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
     void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
+
+    List<MoimInviteListDto.Response> findInviteList(Long userId);
 
 //    void deleteMoimMember(Long moimMemberId) throws Exception;
 
