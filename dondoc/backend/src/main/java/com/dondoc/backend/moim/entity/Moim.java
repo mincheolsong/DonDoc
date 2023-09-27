@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,9 @@ public class Moim {
     @Column(name="introduce", nullable = false, columnDefinition = "LONGTEXT")
     private String introduce;
 
+    /**
+     * 모임계좌의 accountId (은행 Account테이블)
+     */
     @JsonIgnore
     @Column(name="moimAccountId", nullable = false)
     private Long moimAccountId;
@@ -50,13 +54,20 @@ public class Moim {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "moim")
-    private List<MoimMember> moimMemberList;
-    
+    private List<MoimMember> moimMemberList = new ArrayList<>();
+
+    @Column(name = "isActive",nullable = false)
+    private int isActive; // 0 : 비활성화, 1 : 활성화
+
     public Moim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
         this.introduce = introduce;
         this.moimAccountId = moimAccountId;
+        this.moimAccountNumber = moimAccountNumber;
+        this.limited = limited;
+        this.moimType = moimType;
+        this.isActive=1;
     }
 
     public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
@@ -66,5 +77,10 @@ public class Moim {
         this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
+        this.isActive = 1;
+    }
+
+    public void changeIsActive(int isActive){
+        this.isActive = isActive;
     }
 }

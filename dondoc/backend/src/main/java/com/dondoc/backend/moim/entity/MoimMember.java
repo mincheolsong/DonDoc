@@ -3,12 +3,14 @@ package com.dondoc.backend.moim.entity;
 import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,8 +38,10 @@ public class MoimMember {
     private Moim moim;
 
     // 양방향
+    // 일대다 fetch join 을 두 번 사용할 수 없어서 BatchSize로 해결 (여러 MoimMember 객체가 getWithdrawRequest()를 호출할 때 하나의 쿼리(in)로 가져옴)
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "moimMember",cascade = CascadeType.REMOVE)
-    private List<WithdrawRequest> withdrawRequests;
+    private List<WithdrawRequest> withdrawRequests = new ArrayList<>();
     /**
      * 0 : 관리자
      * 1 : 회원
@@ -97,4 +101,7 @@ public class MoimMember {
     }
     public void changeStatus(int status){this.status = status;}
 
+    public void changeAccount(Account account){
+        this.account = account;
+    }
 }

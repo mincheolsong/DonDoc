@@ -13,13 +13,15 @@ import java.util.List;
 
 public interface MoimMemberService {
 
-    int createMoimMember(User user, Moim moim, LocalDateTime signedAt, Account account, List<MoimCreateDto.InviteDto> manager);
+    MoimMember createMoimMember(User user,Moim moim, LocalDateTime signedAt);
+    MoimMember createMoimCreatorMember(User user, Moim moim, LocalDateTime signedAt, Account account);
 
-    int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList);
+    MoimMember findById(Long id);
+    int inviteMoimMember(int moimType, Moim moim, List<MoimInviteDto.InviteDto> inviteList);
 
-    MoimMember findMoimMember(String userId, Long moimId) throws Exception;
+    MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
-    void acceptMoimMember(Long id) throws Exception;
+    void acceptMoimMember(MoimMember moimMember, Long accountId, Long userId) throws Exception;
 
     void deleteMoimMember(MoimMember moimMember) throws Exception;
 
