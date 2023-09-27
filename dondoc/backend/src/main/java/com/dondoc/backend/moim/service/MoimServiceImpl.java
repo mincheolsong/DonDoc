@@ -40,7 +40,7 @@ public class MoimServiceImpl implements MoimService{
     private final MissionRepository missionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
+    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
 
     @Override
     public boolean createOnwerAPI(String identificationNumber, String moimName) {
@@ -143,24 +143,25 @@ public class MoimServiceImpl implements MoimService{
             throw new RuntimeException("계좌 생성에 실패했습니다.");
         }
 
+        System.out.println("1 여기까지 실행됨");
 
         try {
 
             //  Moim 엔티티 생성
             Moim moim = new Moim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType);
-
+            System.out.println("2 여기까지 실행됨");
             // 타입이 2인 모임의 경우 비활성화 해줘야 함 (관리자 한 명이 승인을 하지 않았기 때문)
             if(moimType==2){
                 moim.changeIsActive(0);
             }
             moimRepository.save(moim);
-
+            System.out.println("3 여기까지 실행됨");
             // 모임 생성자의 Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
             Account account = accountService.findByAccountId(accountId);
-
+            System.out.println("4 여기까지 실행됨");
             // 모임 생성자의 MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
             moimMemberService.createMoimCreatorMember(user,moim,LocalDateTime.now(),account);
-
+            System.out.println("5 여기까지 실행됨");
             // 타입이 2인 모임의 경우 초대된 관리자의 MoimMember를 생성해줘야 함
             if(moimType==2){
                 MoimCreateDto.InviteDto inviteDto = manager.get(0);
@@ -168,7 +169,7 @@ public class MoimServiceImpl implements MoimService{
                 User byId = userService.findById(userId);
                 moimMemberService.createMoimMember(byId,moim,LocalDateTime.now());
             }
-
+            System.out.println("6 여기까지 실행됨");
             return moim;
         }catch (Exception e){
             throw new Exception(e.getMessage());

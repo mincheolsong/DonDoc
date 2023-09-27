@@ -4,6 +4,7 @@ import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.moim.dto.MoimCreateDto;
 import com.dondoc.backend.moim.dto.MoimDetailDto;
 import com.dondoc.backend.moim.dto.MoimInviteDto;
+import com.dondoc.backend.moim.dto.MoimInviteListDto;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.entity.MoimMember;
 import com.dondoc.backend.moim.repository.MoimMemberRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -68,10 +70,11 @@ public class MoimMemberServiceImpl implements MoimMemberService {
      */
     @Transactional
     @Override
-    public int inviteMoimMember(int moimType, Moim moim, List<MoimInviteDto.InviteDto> inviteList) {
+    public int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList) {
 
         int cnt = 0;
         int userType = 1;
+        int moimType = moim.getMoimType();
 
         if(moimType==3) { // 모임 타입이 3인경우 모든 유저는 관리자
             userType=0;
@@ -107,7 +110,7 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     @Override
     public void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception{
 
-        Account account = accountService.findById(accountId);
+        Account account = accountService.findByAccountId(accountId);
         MoimMember moimMember = this.findById(moimMemberId);
         int moimType = moimMember.getMoim().getMoimType();
 
@@ -119,14 +122,26 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         }
 
 
-        if(moimType==2){
+        if(moimType==2){ // 모입타입이 2인 모임멤버가 초대를 승인한 경우, moim의 비활성화를 해제해야 함
 
         }
 
         moimMember.changeStatus(1);
         moimMember.changeAccount(account);
 
+    }
 
+    @Override
+    public List<MoimInviteListDto.Response> findInviteList(Long userId) {
+        List<MoimInviteListDto.Response> result = new ArrayList<>();
+        List<MoimMember> inviteList = moimMemberRepository.findInviteList(userId);
+
+        for (MoimMember moimMember : inviteList) {
+            MoimInviteListDto.Response response = new MoimInviteListDto.Response(moimMember.getMoim().getId(),moimMember.getId());
+            result.add(response);
+        }
+
+        return result;
     }
 
 /*    @Transactional

@@ -10,13 +10,11 @@ public class MoimInviteCheck {
     @Getter
     public static class Request{
 
-        @ApiModelProperty(value = "모임 ID", example = "1")
-        private Long moimId;
         @ApiModelProperty(value = "모임멤버 ID", example = "15")
         private Long moimMemberId;
         @ApiModelProperty(value = "수락 또는 거절", example = "true")
         private Boolean accept;
-        @ApiModelProperty(value = "연결할 계좌 accountId(dondoc 서비스)", example = "2")
+        @ApiModelProperty(value = "연결할 계좌 accountId(은행서버의 accountId)", example = "14")
         private Long accountId;
 
     }
