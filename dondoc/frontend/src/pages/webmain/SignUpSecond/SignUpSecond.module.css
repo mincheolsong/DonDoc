@@ -21,7 +21,7 @@
 .Logo{
     margin-top: 4rem;
     max-height: 11.6rem;
-    z-index: 0.1rem;
+    z-index: 2;
 }
 
 input:focus{
