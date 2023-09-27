@@ -18,3 +18,9 @@
     width: 9rem;
     height: 3rem;
 }
+
+.mainBox{
+    position: absolute;
+    z-index: 3;
+    margin-left: 5vw;
+}

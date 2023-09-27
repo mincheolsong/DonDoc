@@ -81,7 +81,8 @@ function SignUpFirst() {
         </div>
 
       <div className={styles.btnBox} >
-        {isPhoneValid ? <button className={styles.signUpBtn} onClick={()=>{naviate('/signupsecond',{state:{phone:phone,name:name}})}}>다음</button> : <button className={styles.signUpBtnDis} disabled>다음</button>}
+        {isPhoneValid ? <button className={styles.signUpBtn} onClick={()=>{
+          naviate('/signupsecond',{state:{phone:phone,name:name}})}}>다음</button> : <button className={styles.signUpBtnDis} disabled>다음</button>}
         
         
       </div>

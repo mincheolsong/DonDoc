@@ -95,3 +95,5 @@ function SignInInput(props:SignProps){
     <input className={styles.IdBox} type={props.type} placeholder={props.name} onChange={props.setting}/>
   )
 }
+
+

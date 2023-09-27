@@ -7,19 +7,3 @@
     height: 90vh;
 }
 
-.accountItem{
-    margin-top: 5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    width: 90%;
-    background-color: white;
-    border-radius: 0.8rem;
-    height: 13%;
-}
-
-.BankIcon{
-    margin-left: 1.3rem;
-    width: 18%;
-}
