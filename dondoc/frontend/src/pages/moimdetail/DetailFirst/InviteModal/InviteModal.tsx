@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import styles from "./InviteModal.module.css";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../../store/slice/userSlice";
 
 interface Props {
   setModalOpen(id: boolean) : void
@@ -18,11 +20,16 @@ type inviteUnit = {
   id:number,
   friendId:number,
   createdAt:string
-
 }
 
 
 function InviteModal({setModalOpen}: Props) {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
+
   const [searchInput, setSearchInput] = useState<string>('')
   const [friendList, setFriendList] = useState<friendList[]>([])
   const [inviteList, setInviteList] = useState<inviteList[]>([])
@@ -36,16 +43,23 @@ function InviteModal({setModalOpen}: Props) {
     // console.log(searchInput)
   }
 
-  const AppendInviteList = (friend:inviteUnit) => {
-    const newInviteUnit: inviteList = {
-      inviteUnit: friend,
-      id: friend.id,
-      friendId: friend.friendId,
-      createdAt: friend.createdAt,
-    };
-    const newInviteList = [...inviteList, newInviteUnit];
-    setInviteList(newInviteList);
+  const AppendInviteList = (friend: inviteUnit) => {
+    // 이미 존재하는지 확인
+    const isAlreadyAdded = inviteList.some((item) => item.id === friend.id);
+  
+    if (!isAlreadyAdded) {
+      const newInviteUnit: inviteList = {
+        inviteUnit: friend,
+        id: friend.id,
+        friendId: friend.friendId,
+        createdAt: friend.createdAt,
+      };
+      
+      const newInviteList = [...inviteList, newInviteUnit];
+      setInviteList(newInviteList);
+    }
   }
+  
 
   const DeleteUnit = (inviteUnit: object) => {
     const updatedInviteList = inviteList.filter(item => item !== inviteUnit);
@@ -53,15 +67,14 @@ function InviteModal({setModalOpen}: Props) {
   }
 
   const WatchSome = () => {
-    console.log(inviteList)
+    console.log(friendList)
   }
 
   useEffect(() => {
     const fetchData = async () => {
 
       const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-      const token = "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi7KCc7J2065OgIiwidXNlcm5hbWUiOiIwMTAxMTExMjIyMiIsInN1YiI6IjEiLCJpYXQiOjE2OTU3MzczMDIsImV4cCI6MTY5NTczOTEwMn0.PWlFV71TuxZwfy3YFsY-FSBaz6Y2C_iROj0MLFAiTT8"
-
+      
       try {
         const res = await axios.get(`${BASE_URL}/api/friend/list`, {
           headers: {
