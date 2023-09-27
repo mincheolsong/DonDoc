@@ -341,4 +341,13 @@ public class AccountServiceImpl implements AccountService {
                 .success(true)
                 .build();
     }
+
+    @Override
+    public Account findByAccountId(Long accountId){
+        return accountRepository.findByAccountId(accountId).orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+    }
 }
+
+
+
+
