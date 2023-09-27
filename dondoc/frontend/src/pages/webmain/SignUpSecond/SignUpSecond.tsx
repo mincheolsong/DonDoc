@@ -5,7 +5,9 @@ import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 import { SignUpInput1 } from "../SignUpFirst/SignUpFirst";
 import {useState} from "react"
 import { moim } from "../../../api/api";
-
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../store/slice/userSlice";
+import OneBtnModal from "../../toolBox/OneBtnModal";
 
 interface PassBox{
   innerText:string;
@@ -15,11 +17,13 @@ interface PassBox{
 }
 
 function SignUpSecond() {
-
-  const naviate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {state} = useLocation();
   const phone = state.phone 
   const name = state.name
+  const [errText,setErrText] = useState<string>('')
+  const [errModal,setErrModal] = useState<boolean>(false)
 
   //유효성검사
   const validatePwd = (password:string) => {
@@ -119,11 +123,21 @@ const userSetting = {
 }
 
 
-const SignUpPost = ()=>{
-  moim.post("/api/user/signup",userSetting)
+const SignInPost = ()=>{
+  moim.post("/api/user/signin",userSetting)
   .then((response)=>{
-    console.log(response)
-    naviate('/signupTemp')
+    if(response.data.success == true){
+      const userUpdate = {
+        password:userSetting.password,
+        phoneNumber:userSetting.phoneNumber,
+        accessToken:response.data.response.accessToken
+      }
+      dispatch(loginUser(userUpdate))
+
+    }else{
+      setErrText(response.data.error.message)
+    }
+    
   })
   .catch((error)=>{
     console.log(error)
@@ -133,9 +147,46 @@ const SignUpPost = ()=>{
 
 
 
+const SignUpPost = ()=>{
+  moim.post("/api/user/signup",userSetting)
+  .then((response)=>{
+    if(response.data.success == true){
+      console.log(response)
+    SignInPost();
+    navigate('/signupTemp')
+    }else{
+      setErrText(response.data.error.message)
+      setErrModal(!errModal)
+    }
+  })
+  .catch((error)=>{
+    console.log(error)
+  })
+}
+
+
+interface OneBtnModal{
+  width : string;
+  height: string;
+  titleText: string;
+  title: boolean;
+  titleFont:string;
+  contentFont: string;
+  contentText: string;
+  btncolor : string;
+  btnTextColor:string;
+  btnText:string;
+  callback:void;
+}
+
+const closeModal = ()=>{
+  setErrModal(!errModal)
+}
+
 
   return (
     <div>
+    {errModal ? <OneBtnModal width="90vw" height="50vh" titleText="" title="false" contentText={errText}  contentFont="1.5rem" btncolor="white" btnTextColor="black" btnText="닫기" callback={closeModal}  /> : ""}
     <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />

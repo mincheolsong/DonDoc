@@ -6,6 +6,15 @@ export type UserType ={
   isLogin:boolean
 }
 
+export type Account = {
+  accountId:number,
+  accountName:string,
+  accountNumber:number,
+  balance:number,
+  bankCode :string,
+  bankName:string,
+}
+
 
 const initialState:UserType = {
   phoneNumber:"",

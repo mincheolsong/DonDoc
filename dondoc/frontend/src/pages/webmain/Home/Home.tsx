@@ -25,7 +25,7 @@ function Home() {
     {/* 나의계좌 */}
     <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
     <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem"}}>나의 계좌</p>
-    <button className={styles.accountBtn}>계좌불러오기</button>
+    <button className={styles.accountBtn} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
     </div>
      {/* 나의계좌 */}
 
