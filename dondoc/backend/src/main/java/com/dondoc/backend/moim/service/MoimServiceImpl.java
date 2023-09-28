@@ -64,6 +64,12 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
+    public void delete(Moim moim) {
+        moimRepository.delete(moim);
+        return;
+    }
+
+    @Override
     public boolean checkActivate(Long moimId) throws Exception {
         try {
             Moim moim = findById(moimId);
