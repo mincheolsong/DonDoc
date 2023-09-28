@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MoimRepository extends JpaRepository<Moim, Long> {
     List<Moim> findByIdentificationNumber(String identificationNumber);
-    @Query("select m from Moim m join MoimMember mm on m.id=mm.moim.id where mm.user.id = :userId")
+    @Query("select m from Moim m join MoimMember mm on m.id=mm.moim.id where m.isActive=1 and mm.status=1 and mm.user.id = :userId")
     List<Moim> getMoimList(@Param("userId")Long userId);
 
     @Query("select distinct m from Moim m join fetch m.moimMemberList mm join fetch mm.account a join fetch mm.user u where m.id = :moimId")
