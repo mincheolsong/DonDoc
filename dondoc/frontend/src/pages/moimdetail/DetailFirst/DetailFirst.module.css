@@ -32,7 +32,8 @@
     padding: 1rem;
     background-color: white;
     border-radius: 10px;
-    min-height: 37rem;
+    height: 37rem;
+    overflow-y: auto;
 }
 
 .boxunit {
@@ -41,7 +42,7 @@
     border-radius: 1.5rem;
     width: 5.5rem;
     height: 4.7rem;
-    display: center;
+    /* display: center; */
     text-align: center;
 }
 
@@ -103,6 +104,11 @@
     margin-bottom: 1.5rem;
 }
 
+.accountwon {
+    display: flex;
+    justify-content: space-between;
+}
+
 .accounttext {
     margin-top: 1rem;
 }
@@ -134,7 +140,7 @@
 }
 
 .accountowner {
-    width: 3.6rem;
+    width: 5rem;
     height: 1.6rem;
 }
 

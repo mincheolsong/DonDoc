@@ -46,8 +46,12 @@
     margin-bottom: 0.3rem;
 }
 
+.searchgroup {
+    display: flex;
+}
+
 .inputbox {
-    width: 22rem;
+    width: 18rem;
     height: 3.4rem;
 }
 
@@ -57,6 +61,12 @@
     border: 1px solid black;
     border-radius: 0.5rem;
 }
+.searchgroup button {
+    margin-left: 1rem;
+    width: 6rem;
+    height: 3.734rem;
+}
+
 
 .searchresult {
     border: 1px solid black;
@@ -96,12 +106,48 @@
     justify-content: center;
 }
 
+/* .invitebox {
+    width: 24.9rem;
+    height: 6.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    display: flex;
+    overflow-x: auto;
+}
+
+.inviteunit {
+    border: 2px solid blue;
+    width: 5rem;
+    height: 5rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 1rem;
+} */
+
 .invitebox {
     width: 24.9rem;
     height: 6.8rem;
     border-radius: 0.5rem;
     border: 1px solid black;
-}
+    display: flex;
+    overflow-x: auto;
+  }
+  
+  .inviteunitContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  
+  .inviteunit {
+    /* border: 1px solid blue; */
+    width: 5rem;
+    height: 5rem;
+    margin-left: 1rem;
+  }
+  
+
 
 .infobtns {
     margin-top: 2rem;
