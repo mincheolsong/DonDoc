@@ -114,15 +114,19 @@ public class MoimDetailDto {
     @Data
     public static class WithDrawRequestDto{
         Long userId;
+        Long moimId;
         Long requestId;
         Long moimMemberId;
+        int requestType; // 출금요청 (0), 미션요청 (1)
         String nickname;
 
-        public WithDrawRequestDto(WithdrawRequest withdrawRequest,MoimMember moimMember){
+        public WithDrawRequestDto(WithdrawRequest withdrawRequest,MoimMember moimMember,Long moimId){
             this.userId = moimMember.getUser().getId();
+            this.moimId = moimId;
             this.requestId = withdrawRequest.getId();
             this.moimMemberId = moimMember.getId();
             this.nickname = moimMember.getUser().getNickName();
+            this.requestType=0;
         }
     }
 }
