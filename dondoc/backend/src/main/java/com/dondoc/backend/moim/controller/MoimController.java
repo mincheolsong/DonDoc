@@ -51,11 +51,9 @@ public class MoimController {
     @ApiOperation(value = "모임 생성", notes = "모임을 생성하는 API", response = ApiResult.class)
     @PostMapping("/create")
     public ApiResult createMoim(@ApiParam(value = "모임 생성에 필요한 값",required = true) @RequestBody MoimCreateDto.Request req, Authentication authentication){
-        System.out.println("모임생성 컨트롤러 실행됨~!!!!!!!");
         // 로그인한 사용자
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         User user = userService.findById(Long.parseLong(userDetails.getUsername()));
-        System.out.println("!@#!@#!#!@" + user);
         // request body로 넘어온 값
         String moimName = req.getMoimName();
         String password = req.getPassword();
@@ -137,11 +135,11 @@ public class MoimController {
             Long userId = Long.parseLong(userDetails.getUsername());
 
             // 모임에 초대하는 사용자가 해당 모임에 존재하는지 and 관리자인지 확인 (exception 던짐)
-            moimMemberService.findMoimMember(userId,moimId);
+            moimMemberService.checkCanInvite(userId,moimId);
 
             Moim moim = moimService.findById(moimId);
 
-            cnt = moimMemberService.inviteMoimMember(moim,inviteList);
+            cnt = moimMemberService.inviteMoimMember(moim,inviteList,userId);
 
         }catch (Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
