@@ -136,7 +136,7 @@ public class MoimController {
             UserDetails userDetails = (UserDetails)authentication.getPrincipal();
             Long userId = Long.parseLong(userDetails.getUsername());
 
-            // 모임에 초대하는 사용자가 해당 모임에 존재하는지 확인 (존재하지 않으면 Exception 발생)
+            // 모임에 초대하는 사용자가 해당 모임에 존재하는지 and 관리자인지 확인 (exception 던짐)
             moimMemberService.findMoimMember(userId,moimId);
 
             Moim moim = moimService.findById(moimId);
@@ -147,7 +147,7 @@ public class MoimController {
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return ApiUtils.success( "moimId가 " + moimId + "에 " + cnt + "명 초대 성공");
+        return ApiUtils.success( "moimId가 " + moimId + "인 모임에 " + cnt + "명 초대 성공");
     }
 
     @ApiOperation(value = "모임 초대리스트 조회", notes = "초대된 모임 리스트를 조회하는 API", response = ApiResult.class)
@@ -175,10 +175,16 @@ public class MoimController {
         try {
 
             if (accept) { // 요청 수락
-                moimMemberService.acceptMoimMember(moimMemberId,accountId,userId);
+                int flag = moimMemberService.acceptMoimMember(moimMemberId, accountId, userId);
+                if(flag==1){
+                    return ApiUtils.success("요청이 수락되었습니다. 모임이 활성화 되었습니다.");
+                }
                 return ApiUtils.success("요청이 수락되었습니다.");
             } else { // 요청 거절
-//                moimMemberService.deleteMoimMember(moimMemberId);
+                int flag = moimMemberService.deleteMoimMember(moimMemberId, userId);
+                if(flag==1){
+                    return ApiUtils.success("요청이 거절되었습니다. 모임이 제거되었습니다.");
+                }
                 return ApiUtils.success("요청이 거절되었습니다.");
             }
 

@@ -11,6 +11,7 @@ public interface MoimService {
 
     boolean createOnwerAPI(String identificationNumber, String moimName);
 
+    void delete(Moim moim);
     boolean checkActivate(Long moimId) throws Exception;
 
     Map<String,Object> createAccountAPI(String moimName, int bankCode, String identificationNumber, String password);

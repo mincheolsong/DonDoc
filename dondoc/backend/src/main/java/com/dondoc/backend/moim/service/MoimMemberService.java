@@ -22,10 +22,10 @@ public interface MoimMemberService {
 
     MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
-    void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
+    int acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
 
     List<MoimInviteListDto.Response> findInviteList(Long userId);
 
-//    void deleteMoimMember(Long moimMemberId) throws Exception;
+    int deleteMoimMember(Long moimMemberId, Long userId) throws Exception;
 
 }
