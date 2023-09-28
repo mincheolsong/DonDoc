@@ -1,0 +1,94 @@
+.topbar {
+    margin-left: 3%;
+    margin-right: 3%;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.backbutton {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.createcontent {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.createment {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.accountinfo {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.moimcontent {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title {
+    font-weight: 900;
+}
+
+.moimtext {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.watchtermsbtn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.openterms {
+    height: 3rem;
+    background-color: white;
+    border: 2px solid #DADADA;
+    border-radius: 0.5rem;
+}
+
+.checkbox {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.buttondiv {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.submitbtn {
+    margin-top: 3rem; /*윗마진 */
+    background-color: #0D6EFD; /*색 조절 */
+    color: white;
+    width: 100%;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    z-index: 9998;
+  }

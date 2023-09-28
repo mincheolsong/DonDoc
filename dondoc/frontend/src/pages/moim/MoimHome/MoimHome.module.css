@@ -87,7 +87,7 @@
 }
 
 .invitebox {
-    width: 80%;
+    width: 90%;
 }
 
 .inviteunit {
@@ -96,6 +96,7 @@
     margin-bottom: 10px;
     border-radius: 10px;
     border: 1px solid black;
+    height: 6.8rem;
     display: flex;
     justify-content: space-between;
 }

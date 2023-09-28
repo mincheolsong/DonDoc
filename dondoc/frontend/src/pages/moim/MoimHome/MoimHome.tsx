@@ -3,12 +3,13 @@ import styles from "./MoimHome.module.css";
 // import { useEffect } from "react";
 import peter from "../../../assets/image/peter.svg"
 import Header from "../../webmain/Header/Header";
-import chelsea from '../../../assets/Chelsea_FC_Logo.jpg'
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MoimInviteUnit from "./MoimInviteUnit/MoimInviteUnit";
+import { BASE_URL } from "../../../constants";
 
 type myMoimList = { moim: object, 
   moimId:number,
@@ -17,6 +18,10 @@ type myMoimList = { moim: object,
   moimType:number,
   identificationNumber:string}
 
+type moimInviteList = {
+  moimId: number,
+  moimMemberId: number
+}
 
 function MoimHome() {
 
@@ -27,6 +32,7 @@ function MoimHome() {
 
   const ShowState = () => {
     console.log(myMoimList)
+    console.log(moimInviteList)
   }
 
   const navigate = useNavigate()
@@ -35,11 +41,14 @@ function MoimHome() {
     navigate('/detailfirst')
   }
 
+  const InviteMoim = (invite:moimInviteList) => {
+    navigate('/moiminfo', {state: {invite:invite}})
+  }
+
   const [myMoimList, setMyMoimList] = useState<myMoimList[]>([])
+  const [moimInviteList, setMoimInviteList] = useState<moimInviteList[]>([])
 
   // const [userData, setUserData] = useState<[]>([])
-
-  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
   
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +66,22 @@ function MoimHome() {
         console.log(err)
       }
     }
+    const MoimInviteList = async() => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/moim/invite/list`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        console.log('나에게 온 초대:', res.data.response)
+        setMoimInviteList(res.data.response)
+      }catch(err) {
+        console.log(err)
+      }
+    }
     fetchData();
+    MoimInviteList();
   }, []);
 
   return (
@@ -73,10 +97,6 @@ function MoimHome() {
           </div>
 
           <div className={styles.moimcontent}>
-            {/* <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
-            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
-            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1>
-            <h1 className={styles.moimunit}>캐러셀해라 노예야 노예야</h1> */}
             {myMoimList.length > 0 && myMoimList.map((moim, index) => (
               <h1 className={styles.moimunit} key={index} onClick={GoMoimDetail}>{moim.moimName}</h1>
             ))}
@@ -89,12 +109,11 @@ function MoimHome() {
 
           <div className={styles.invitecontent}>
             <div className={styles.invitebox}>
-              <div className={styles.inviteunit}>
-                <div className={styles.linkbank}>
-                <img src={chelsea} className={styles.chelsea} alt="" />
+              {moimInviteList.length > 0 && moimInviteList.map((invite, index) => (
+                <div className={styles.inviteunit} key={index} onClick={() => InviteMoim(invite)}>
+                  <MoimInviteUnit moimId={invite.moimId} moimMemberId={invite.moimMemberId}/>
                 </div>
-                <h4 className={styles.invitemessage}>아오아오주연주연시치가 아오동혁시치시치를 행복한 첼시에 초대하였습니다.</h4>
-              </div>
+              ))}
             </div>
           </div>
 
