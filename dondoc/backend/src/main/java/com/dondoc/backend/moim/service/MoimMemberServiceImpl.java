@@ -39,9 +39,9 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     // 모임 생성시 초대된 사람의 MoimMember 생성 함수
     @Transactional
     @Override
-    public MoimMember createMoimMember(User user,Moim moim, LocalDateTime signedAt){
-        MoimMember moimMember = new MoimMember(0,0,signedAt);
-        moimMember.setUser(user);
+    public MoimMember createMoimMember(User inviter,User invitee,Moim moim, LocalDateTime signedAt){
+        MoimMember moimMember = new MoimMember(0,0,signedAt,inviter.getName());
+        moimMember.setUser(invitee);
         moimMember.setMoim(moim);
         moimMemberRepository.save(moimMember);
         return moimMember;
@@ -75,7 +75,7 @@ public class MoimMemberServiceImpl implements MoimMemberService {
      */
     @Transactional
     @Override
-    public int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList) {
+    public int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList,Long inviterId) {
 
         int cnt = 0;
         int userType = 1;
@@ -100,9 +100,9 @@ public class MoimMemberServiceImpl implements MoimMemberService {
             }
 
             User user = userService.findById(userId);
+            User inviteUser = userService.findById(inviterId);
 
-
-            MoimMember moimMember = new MoimMember(userType, 0);
+            MoimMember moimMember = new MoimMember(userType, 0,inviteUser.getName());
             moimMember.setUser(user);
             moimMember.setMoim(moim);
 
@@ -116,6 +116,17 @@ public class MoimMemberServiceImpl implements MoimMemberService {
     @Override
     public MoimMember findMoimMember(Long userId, Long moimId) throws Exception{
         List<MoimMember> moimMembers = moimMemberRepository.findMoimMember(userId, moimId);
+        if(moimMembers.size()==0 || moimMembers.size()>1)
+            throw new RuntimeException("userId가 " + userId+"인 사용자는 "+ "moimId가 " + moimId+ "인 모임에 존재하지 않습니다");
+
+        return moimMembers.get(0);
+
+    }
+
+    @Override
+    public MoimMember checkCanInvite(Long userId, Long moimId) throws Exception{
+        List<MoimMember> moimMembers = moimMemberRepository.findMoimMember(userId, moimId);
+
         if(moimMembers.size()==0 || moimMembers.size()>1)
             throw new RuntimeException("userId가 " + userId+"인 사용자는 "+ "moimId가 " + moimId+ "인 모임에 존재하지 않습니다");
         // 관리자만 모임에 사용자를 초대할 수 있음
@@ -180,7 +191,19 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         List<MoimMember> inviteList = moimMemberRepository.findInviteList(userId);
 
         for (MoimMember moimMember : inviteList) {
-            MoimInviteListDto.Response response = new MoimInviteListDto.Response(moimMember.getMoim().getId(),moimMember.getId());
+            Moim moim = moimMember.getMoim();
+            int type = moim.getMoimType();
+            String moimType = new String();
+            if(type==1){
+                moimType="한명계좌";
+            }else if(type==2){
+                moimType="두명계좌";
+            }else if(type==3){
+                moimType="세명계좌";
+            }
+
+            MoimInviteListDto.Response response = new MoimInviteListDto.Response(moim.getId(),moimMember.getId(),moim.getMoimName(),
+                    moimType,moim.getIntroduce(),moimMember.getInviterName());
             result.add(response);
         }
 

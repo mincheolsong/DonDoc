@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.user.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public interface MoimService {
@@ -28,7 +29,7 @@ public interface MoimService {
 
     List<Moim> findMoimWithMember(Long moimId);
 
-    int searchBalance(String identificationNumber);
+    int searchBalance(String identificationNumber) throws JsonProcessingException;
 
     Moim findById(Long id) throws Exception;
 
