@@ -89,6 +89,7 @@ function DetailFirst() {
           moimName : res.data.response.moimName,
           moimAccountNumber : res.data.response.moimAccountNumber,
         }
+        console.log(moimDetail)
         setMoimDetailInfo(moimDetail)
         setMoimMemberList(res.data.response.moimMembers)
         setSelectedMember(res.data.response.moimMembers[0])

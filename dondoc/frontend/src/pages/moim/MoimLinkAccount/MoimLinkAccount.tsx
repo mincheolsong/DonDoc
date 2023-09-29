@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
+import { BASE_URL } from "../../../constants";
 
 type linkList = { account: object, index:number, 
   accountId:number,
@@ -55,7 +56,6 @@ function MoimLinkAccount() {
     }
   }
 
-  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
   const token = userInfo.accessToken
   
   useEffect(() => {

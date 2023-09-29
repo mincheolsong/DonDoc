@@ -1,4 +1,4 @@
-const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
+const BASE_URL = 'http://j9d108.p.ssafy.io:9191'
 const Bank_List = [
   {code: 2, bank: 'KDB산업은행'},
   {code: 3, bank: 'IBK기업은행'},

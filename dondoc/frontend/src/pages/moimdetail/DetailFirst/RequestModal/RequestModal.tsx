@@ -4,6 +4,7 @@ import haaland from "../../../../assets/bbakbbakyee.jpg"
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
+import { BASE_URL } from "../../../../constants";
 
 type Props = {
   setModalOpen(id: boolean) : void
@@ -66,20 +67,20 @@ function RequestModal({setModalOpen}: Props) {
 
   const ChangeMissionTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMissionTitle(e.target.value)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
   const ChangeMissionAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value !== '' ? parseInt(e.target.value, 10) : 0;
     setMissionAmount(newValue);
-    console.log(newValue);
+    // console.log(newValue);
   }
   const ChangeMissionContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMissionContent(e.target.value)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
   const ChangeMissionDeadLine = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDeadLine(e.target.value)
-    console.log(e.target.value)
+    // console.log(e.target.value)
   }
 
   const RequestMoney = async() => {
@@ -87,12 +88,11 @@ function RequestModal({setModalOpen}: Props) {
       "amount": moneyAmount,
       "categoryId": moneyCategory,
       "content": moneyContent,
-      "moimId": 0,
-      "title": moneyTitle,
-      "userId": 0
+      "moimId": 1,
+      "title": moneyTitle
     }
     try {
-      const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/withdraw_req`, data, {
+      const response = await axios.post(`${BASE_URL}/api/moim/withdraw_req`, data, {
         headers: {
           'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + token
@@ -109,19 +109,12 @@ function RequestModal({setModalOpen}: Props) {
       "amount": missionAmount,
       "content": missionContent,
       "endDate": deadLine,
-      "missionMemberId": 0,
-      "moimId": 0,
-      "title": missionTitle,
-      "userId": 0
+      "missionMemberId": 4,
+      "moimId": 1,
+      "title": missionTitle
     }
-
-    const userInfo:UserType = useSelector((state:{user:UserType})=>{
-      return state.user
-    })
-    const token = userInfo.accessToken
-
     try {
-      const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/create`, data, {
+      const response = await axios.post(`${BASE_URL}/api/moim/mission_req`, data, {
         headers: {
           'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + token
