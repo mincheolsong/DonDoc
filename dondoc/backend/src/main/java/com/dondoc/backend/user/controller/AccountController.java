@@ -113,7 +113,7 @@ public class AccountController {
 
     // 거래 상세 내역 확인
     @PostMapping("/history/detail")
-    @ApiOperation(value = "계좌 상세 조회", notes = "계좌 상세 조회 API", response = ApiUtils.class)
+    @ApiOperation(value = "거래 내역 상세 조회", notes = "거래 내역 상세 조회 API", response = ApiUtils.class)
     public ApiResult historyDetail(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HistoryDetailDto.Request historyDto) throws Exception{
         try{
             Long userId = Long.parseLong(userDetails.getUsername());

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -262,16 +263,34 @@ public class AccountServiceImpl implements AccountService {
         requestMap.put("historyId", historyDto.getHistoryId());
 
         // 요청 전송
-        Map response = webClient.post()
+        Map response = (Map<String, String>)(webClient.post()
                 .uri("/bank/detail_history")
                 .bodyValue(requestMap)
                 .retrieve()
                 .bodyToMono(Map.class)
-                .block();
+                .block()
+                .get("response"));
 
+        Map<String, String> result = (Map<String, String>)response.get("historyId");
 
-        log.info(response.toString());
-        return null;
+        HistoryDetailDto.HistoryDetail historyDetail = HistoryDetailDto.HistoryDetail.builder()
+                .id(Long.parseLong(String.valueOf(result.get("id"))))
+                .toAccount(result.get("toAcocunt"))
+                .toCode(Long.parseLong(String.valueOf(((Map<String, String>)response.get("toCode")).get("bankCodeId"))))
+                .toBankName(((Map<String, String>)response.get("toCode")).get("bankName"))
+                .type(Integer.parseInt(String.valueOf(result.get("type"))))
+                .transferAmount(Integer.parseInt(String.valueOf(result.get("transferAmount"))))
+                .afterBalance(Integer.parseInt(String.valueOf(result.get("afterBalance"))))
+                .sign(result.get("sign"))
+                .toSign(result.get("toSign"))
+                .createdAt(LocalDateTime.parse(result.get("createdAt")))
+                .build();
+
+        return HistoryDetailDto.Response.builder()
+                .success(true)
+                .msg("성공적으로 상세 거래내역을 불러왔습니다.")
+                .historyDetail(historyDetail)
+                .build();
     }
 
     // 거래내역 메모 작성

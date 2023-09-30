@@ -38,6 +38,8 @@ public class HistoryDetailDto {
 
         private Long toCode;
 
+        private String toBankName;
+
         private int type;
 
         private int transferAmount;
