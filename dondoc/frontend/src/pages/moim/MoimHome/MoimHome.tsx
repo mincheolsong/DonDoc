@@ -20,7 +20,11 @@ type myMoimList = { moim: object,
 
 type moimInviteList = {
   moimId: number,
-  moimMemberId: number
+  moimMemberId: number,
+  inviter: string,
+  moimName: string,
+  moimType: string,
+  introduce: string
 }
 
 function MoimHome() {
@@ -31,7 +35,7 @@ function MoimHome() {
   const token = userInfo.accessToken
 
   const ShowState = () => {
-    console.log(myMoimList)
+    console.log(userInfo)
     console.log(moimInviteList)
   }
 
@@ -42,7 +46,7 @@ function MoimHome() {
   }
 
   const InviteMoim = (invite:moimInviteList) => {
-    navigate('/moiminfo', {state: {invite:invite}})
+    navigate(`/moiminfo`, {state: {invite:invite}})
   }
 
   const [myMoimList, setMyMoimList] = useState<myMoimList[]>([])
@@ -89,7 +93,7 @@ function MoimHome() {
       <div className={styles.content}>
 
         <Header />
-        <UserBox userCharacter={peter} username="Jaden" rightBtn="모임 생성"/>
+        <UserBox userCharacter={peter} username={userInfo.phoneNumber} rightBtn="모임 생성"/>
 
         <div className={styles.moimlist}>
           <div className={styles.moimlisttitle}>
@@ -111,7 +115,7 @@ function MoimHome() {
             <div className={styles.invitebox}>
               {moimInviteList.length > 0 && moimInviteList.map((invite, index) => (
                 <div className={styles.inviteunit} key={index} onClick={() => InviteMoim(invite)}>
-                  <MoimInviteUnit moimId={invite.moimId} moimMemberId={invite.moimMemberId}/>
+                  <MoimInviteUnit moimName={invite.moimName} moimMemberId={invite.moimMemberId} inviter={invite.inviter}/>
                 </div>
               ))}
             </div>
