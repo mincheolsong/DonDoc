@@ -69,9 +69,13 @@ public class MoimMember {
     @JoinColumn(name = "accountId")
     private Account account;
 
-    public MoimMember(int userType, int status){
+    @Column(name = "inviterName",length = 20)
+    private String inviterName;
+
+    public MoimMember(int userType, int status,String inviterName){
         this.userType=userType;
         this.status=status;
+        this.inviterName=inviterName;
     }
     public MoimMember(int userType, int status, LocalDateTime signedAt, Account account) {
         this.userType = userType;
@@ -80,10 +84,11 @@ public class MoimMember {
         this.account = account;
     }
 
-    public MoimMember(int userType, int status, LocalDateTime signedAt) {
+    public MoimMember(int userType, int status, LocalDateTime signedAt,String inviterName) {
         this.userType = userType;
         this.status = status;
         this.signedAt = signedAt;
+        this.inviterName=inviterName;
     }
 
     public void setUser(User user){ // MoimMember 처음 생성할 때 User 연관관계 메서드

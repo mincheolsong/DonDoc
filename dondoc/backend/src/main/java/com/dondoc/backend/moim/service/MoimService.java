@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 import com.dondoc.backend.moim.dto.*;
 import com.dondoc.backend.user.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public interface MoimService {
 
     boolean createOnwerAPI(String identificationNumber, String moimName);
 
+    void delete(Moim moim);
     boolean checkActivate(Long moimId) throws Exception;
 
     Map<String,Object> createAccountAPI(String moimName, int bankCode, String identificationNumber, String password);
@@ -27,7 +29,7 @@ public interface MoimService {
 
     List<Moim> findMoimWithMember(Long moimId);
 
-    int searchBalance(String identificationNumber);
+    int searchBalance(String identificationNumber) throws JsonProcessingException;
 
     Moim findById(Long id) throws Exception;
 

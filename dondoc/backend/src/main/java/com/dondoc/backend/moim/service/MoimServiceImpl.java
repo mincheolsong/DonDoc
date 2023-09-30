@@ -10,6 +10,8 @@ import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.service.AccountService;
 import com.dondoc.backend.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,7 +42,7 @@ public class MoimServiceImpl implements MoimService{
     private final MissionRepository missionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
+    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
 
     @Override
     public boolean createOnwerAPI(String identificationNumber, String moimName) {
@@ -61,6 +63,12 @@ public class MoimServiceImpl implements MoimService{
 
         log.debug("creaetOnwerAPI log = {} ", response.toString());
         return false;
+    }
+
+    @Override
+    public void delete(Moim moim) {
+        moimRepository.delete(moim);
+        return;
     }
 
     @Override
@@ -119,6 +127,10 @@ public class MoimServiceImpl implements MoimService{
             throw new RuntimeException(e.getMessage());
         }
 
+        if((moimType!=2 && manager.size()!=0) || (moimType==2 && manager.size()!=1)){
+            throw new RuntimeException("모임생성시 타입에 맞지않는 관리자 초대요청을 보냈습니다.");
+        }
+
         /**
          * 예금주 생성
          * API : /bank/owner/create
@@ -143,33 +155,28 @@ public class MoimServiceImpl implements MoimService{
             throw new RuntimeException("계좌 생성에 실패했습니다.");
         }
 
-        System.out.println("1 여기까지 실행됨");
 
         try {
 
             //  Moim 엔티티 생성
             Moim moim = new Moim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType);
-            System.out.println("2 여기까지 실행됨");
             // 타입이 2인 모임의 경우 비활성화 해줘야 함 (관리자 한 명이 승인을 하지 않았기 때문)
             if(moimType==2){
                 moim.changeIsActive(0);
             }
             moimRepository.save(moim);
-            System.out.println("3 여기까지 실행됨");
             // 모임 생성자의 Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
             Account account = accountService.findByAccountId(accountId);
-            System.out.println("4 여기까지 실행됨");
             // 모임 생성자의 MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
             moimMemberService.createMoimCreatorMember(user,moim,LocalDateTime.now(),account);
-            System.out.println("5 여기까지 실행됨");
             // 타입이 2인 모임의 경우 초대된 관리자의 MoimMember를 생성해줘야 함
             if(moimType==2){
                 MoimCreateDto.InviteDto inviteDto = manager.get(0);
-                Long userId = inviteDto.getUserId();
-                User byId = userService.findById(userId);
-                moimMemberService.createMoimMember(byId,moim,LocalDateTime.now());
+                Long invitee_userId = inviteDto.getUserId(); // 초대될 사람의 userId
+                User invitee = userService.findById(invitee_userId); // 초대될 사람의 User
+
+                moimMemberService.createMoimMember(user,invitee,moim,LocalDateTime.now()); // 제일 앞 User 객체는 모임을 생성한 사람의 User
             }
-            System.out.println("6 여기까지 실행됨");
             return moim;
         }catch (Exception e){
             throw new Exception(e.getMessage());
@@ -209,7 +216,7 @@ public class MoimServiceImpl implements MoimService{
     public MoimDetailDto.Response getMoimDetail(Long userId, Long moimId) throws Exception {
 
         try {
-            MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId); // userType 검사 (Exception 던질 수 있음)
+            MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
             int type = moimMember.getUserType(); // userType
             int status = moimMember.getStatus(); // 초대 승인 여부
 
@@ -223,6 +230,10 @@ public class MoimServiceImpl implements MoimService{
             if(moims.size()!=1) throw new RuntimeException("moimId : " + moimId + "모임 상세조회 실패"); // Moim이 하나가 아니면 에러
 
             Moim moim = moims.get(0);
+
+            if(moim.getIsActive()!=1){
+                throw new RuntimeException("활성화 되지 않은 모임입니다.");
+            }
 
             /** 관리자인 경우 && 초대 승인된 상태 **/
             if(type==0 && status==1) {
@@ -241,7 +252,7 @@ public class MoimServiceImpl implements MoimService{
                          * - 2 : 요청 거절
                          */
                         if(withdrawRequest.getStatus()==0){ // 수락 대기중인 요청이면
-                            withDrawRequestDtos.add(new MoimDetailDto.WithDrawRequestDto(withdrawRequest,member));
+                            withDrawRequestDtos.add(new MoimDetailDto.WithDrawRequestDto(withdrawRequest,member,moimId));
                         }
                     }
                 }
@@ -256,7 +267,8 @@ public class MoimServiceImpl implements MoimService{
                 return result;
             }
 
-            throw new RuntimeException("모임상세조회 실패");
+            return null; // 초대를 승인된 모임이 없을 경우 상세조회 해도 데이터는 없음
+
 
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
@@ -270,21 +282,24 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public int searchBalance(String identificationNumber) {
-        Map<String, Object> bodyMap = new HashMap<>();
-        List<String> identificationNumbers = new ArrayList<>();
-        identificationNumbers.add(identificationNumber);
+    public int searchBalance(String identificationNumber) throws JsonProcessingException {
 
-        bodyMap.put("identificationNumber", identificationNumbers);
+        String jsonBody = "{\"identificationNumber\":[\"" + identificationNumber + "\"]}";
+        System.out.println(jsonBody);
+
 
         Map response = webClient.post()
                 .uri("/bank/account/list")
-                .bodyValue(bodyMap)
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .bodyValue(jsonBody)
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
 
-        if(response.get("success").toString()=="true"){ // 계좌목록 조회 성공 시
+        System.out.println(response);
+
+
+        if(response.get("success").toString().equals("true")){ // 계좌목록 조회 성공 시
             List<Map<String,Object>> response_data = (List<Map<String,Object>>) response.get("response");
             // 모임계좌의 당 식별번호는 하나로 유한함
             Map<String, Object> tmp = response_data.get(0);
@@ -294,9 +309,8 @@ public class MoimServiceImpl implements MoimService{
         }
 
         log.debug("searchBalance log = {} ", response.toString());
-        return 0;
-
-    }                
+        throw new RuntimeException(String.format("식별번호 %s 에 해당하는 계좌가 존재하지 않습니다.", identificationNumber));
+    }
 
     /** 관리자에게 출금 요청 */
     @Override

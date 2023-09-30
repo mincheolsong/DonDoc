@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버
+    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버
 
     public AccountServiceImpl(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;

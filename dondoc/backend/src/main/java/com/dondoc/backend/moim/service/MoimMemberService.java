@@ -14,18 +14,20 @@ import java.util.List;
 
 public interface MoimMemberService {
 
-    MoimMember createMoimMember(User user,Moim moim, LocalDateTime signedAt);
+    MoimMember createMoimMember(User inviter,User invitee,Moim moim, LocalDateTime signedAt);
     MoimMember createMoimCreatorMember(User user, Moim moim, LocalDateTime signedAt, Account account);
 
     MoimMember findById(Long id);
-    int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList);
+    int inviteMoimMember(Moim moim, List<MoimInviteDto.InviteDto> inviteList,Long inviterId);
 
     MoimMember findMoimMember(Long userId, Long moimId) throws Exception;
 
-    void acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
+    MoimMember checkCanInvite(Long userId,Long moimId) throws Exception;
+
+    int acceptMoimMember(Long moimMemberId, Long accountId, Long userId) throws Exception;
 
     List<MoimInviteListDto.Response> findInviteList(Long userId);
 
-//    void deleteMoimMember(Long moimMemberId) throws Exception;
+    int deleteMoimMember(Long moimMemberId, Long userId) throws Exception;
 
 }
