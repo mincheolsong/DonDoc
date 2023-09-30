@@ -9,11 +9,16 @@ export type UserType ={
 export type Account = {
   accountId:number,
   accountName:string,
-  accountNumber:number,
+  accountNumber:string,
   balance:number,
   bankCode :string,
   bankName:string,
 }
+
+export type CheckAccount = Account &{
+  isCheck: boolean
+}
+
 
 
 const initialState:UserType = {

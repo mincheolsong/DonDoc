@@ -5,5 +5,5 @@ export const bank = axios.create({
 });
 
 export const moim = axios.create({
-    baseURL:"http://j9d108.p.ssafy.io:9999"
+    baseURL:"http://j9d108.p.ssafy.io:9191"
 })

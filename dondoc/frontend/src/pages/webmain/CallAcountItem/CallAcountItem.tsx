@@ -1,27 +1,75 @@
 import styles from "./CallAcountItem.module.css";
-import { FaBeer } from 'react-icons/fa';
+
 import {ImCheckboxChecked} from "react-icons/im"
 import {ImCheckboxUnchecked} from "react-icons/im"
+import { CheckAccount } from "../../../store/slice/userSlice";
+import { useState } from "react"
+import hana from "../../../assets/image/hana.svg"
+import { UserType } from "../../../store/slice/userSlice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { moim } from "../../../api/api";
+import { useNavigate } from "react-router-dom";
 
-interface AccountItem{
-  bankCode:string,
-  accountName:string,
-  bankName:string,
-  accountNumber:number,
-  checked:boolean
+type PropsType = {
+  account : CheckAccount[]
 }
 
-function CallAcountItem(props:AccountItem) {
-  return (
-          <div className={styles.accountItem}>
-            <img className={styles.BankIcon} src={props.bankCode} alt="" />
-            <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start"}}>
-              <p>{props.accountName}</p>
-              <p><span>{props.bankName}</span>{props.accountNumber}</p>
-            </div>
-            {props.checked ? <ImCheckboxChecked className={styles.CheckBoxU}/> : <ImCheckboxUnchecked className={styles.CheckBoxC}/>}
+function CallAcountItem(props:PropsType) {
+  const navigate = useNavigate();
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const [AccountData,setAccountData] = useState(props.account)
+  const accountClick = (index:number) =>{
+    const updateAccount = [...AccountData];
+    updateAccount[index].isCheck = !updateAccount[index].isCheck
+    setAccountData(updateAccount)
+  }
+  const [sdeds,setsd] = useState('')
+  const saveAccount = ()=>{
+    const CheckedAccount = AccountData.filter((account)=>{
+     return account.isCheck == true
+    })
+    const postSave = CheckedAccount.map((account)=>{
+      return  account = {
+        accountId : account.accountId,
+        accountNumber: account.accountNumber,
+        bankCode : account.bankCode,
+        bankName : account.bankName
+      }
+    })
+    moim.post('/api/account/account/list/save',postSave,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }})
+    .then((response)=>{
+      console.log(response)
+      console.log(CheckedAccount)
+      navigate("/")
+    })
+    .catch((err)=>{
+      console.log(err)
+      console.log(postSave)
+    })
+  } 
   
+  return (
+    <div style={{textAlign:"center"}}>
+        <div className={styles.mainContainer}>
+        {AccountData.map((account,index)=>(
+          <div key={index} className={styles.accountItem} onClick={()=>{accountClick(index)}}>
+          <img className={styles.BankIcon} src={hana} alt={account.bankCode} />
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start"}}>
+            <p>{account.accountName}</p>
+            <p><span>{account.bankName}</span>{account.accountNumber}</p>
           </div>
+          {account.isCheck ? <ImCheckboxChecked className={styles.CheckBoxU}/> : <ImCheckboxUnchecked className={styles.CheckBoxC}/>}
+          
+        </div>
+        ))}
+        </div>
+        <button className={styles.bottomBtn} onClick={saveAccount}>등록하기</button>
+      </div>
   );
 }
 
