@@ -3,15 +3,43 @@ import Nav from "../../Nav";
 import Header from "../Header";
 import peter from "../../../assets/image/peter.svg"
 import { NavLink } from "react-router-dom";
-import  {useNavigate}  from "react-router-dom";
-
-
+import  {useEffect,useState}  from "react";
+import { useNavigate } from "react-router-dom";
+import { moim } from "../../../api/api";
+import { UserType,Account } from "../../../store/slice/userSlice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 function Home() {
+  Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const goSendMoney = (account:Account) =>{
+    navigate(`/sendmoneyfirst/${account.accountNumber}`)
+  }
+  const goAccountInfo = (account:Account) =>{
+    navigate(`/accountinfo/${account.accountNumber}`,{state:{account:account}})
+  }
   const navigate = useNavigate();
   const goMakeAccount = () =>{
     navigate("makeAccount")
   }
+  const [allAccount,setAllAccount] =useState<Account[]>([])
+
+  useEffect(()=>{
+    moim.get("/api/account/account/list",{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }})
+    .then((response)=>{
+      const formattedAccountList = response.data.response.accountList.map((account:Account) => ({
+        ...account,
+        balance: account.balance.toLocaleString(), // 잔액을 포맷팅하여 문자열로 변환
+      }));
+      setAllAccount(formattedAccountList)
+
+    })
+  },[])
 
   return (
     <div className={styles.container}>
@@ -28,26 +56,31 @@ function Home() {
     <button className={styles.accountBtn} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
     </div>
      {/* 나의계좌 */}
-
-
-    <div className={styles.midContainer}>
+     
+     
+     
+     
+    {allAccount.map((account,index)=>(
+      <div onClick={()=>{
+        goAccountInfo(account)
+      }} className={styles.midContainer}>
       <div style={{display:"flex",flexDirection:"row"}}>
-        은행 사진
-
-        <div>
-        계좌이름
-        <br /> 
-        잔액
-      </div>
-
-      </div>
-    
-      
+      <img src={account.bankCode} alt="" />
       <div>
-        송금버튼
-      </div>
+      {account.accountName}
+      <br /> 
+      {account.balance}원
     </div>
+    </div>
+        
+        <button onClick={(e)=>{
+          e.stopPropagation()
+          goSendMoney(account)}} className={styles.sendMoneyBtn}>송금</button>
+        
+    </div>
+    ))}
     
+  
 
 
 

@@ -8,11 +8,12 @@
     width: 98%;
     height: 10rem ;
     background-color: white;
-    border-radius: 0.6rem;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
+    align-items: center;
+    
 }
 
 .accountBtn{
@@ -49,4 +50,22 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.sendMoneyBtn{
+    
+    background-color: #3772FF; /*색 조절 */
+    color: white;
+    width: 15%;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    
+}
+
+/*눌렸을때 */
+.sendMoneyBtn:active{
+    background-color: #3772FF;
+    color: white;
 }
