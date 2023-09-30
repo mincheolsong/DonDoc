@@ -1,1 +1,44 @@
 /* your css code */
+.accountBox{
+    background-color: #D2E2F5;
+    width: 70%;
+    height: 4rem;
+    border-radius: 0.7rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    box-shadow: 3px 3px 3px rgb(221, 221, 221);
+    margin-bottom: 2rem;
+}
+
+.sendMoneyBtn{
+    
+    background-color: #3772FF; /*색 조절 */
+    color: white;
+    width: 15%;
+    height: 3rem; /*높이조절 */
+    font-size: 1.5rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-left: 1rem;
+    
+}
+
+/*눌렸을때 */
+.sendMoneyBtn:active{
+    background-color: #3772FF;
+    color: white;
+}
+.connected{
+    background-color: white;
+    width: 70%;
+    height: 3rem;
+    border-radius: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+}

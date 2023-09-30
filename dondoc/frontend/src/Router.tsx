@@ -59,8 +59,8 @@ function Router() {
             
             {/* home tap */}
             <Route path="/" element={<HomePage/>}/>
-            <Route path="/accountInfo" element={<AccountInfoPage/>}/>
-            <Route path="/sendmoneyfirst" element={<SendMoneyFirstPage/>}/>
+            <Route path="/accountInfo/:accountid" element={<AccountInfoPage/>}/>
+            <Route path="/sendmoneyfirst/:accountid" element={<SendMoneyFirstPage/>}/>
             <Route path="/sendmoneysecond" element={<SendMoneySecondPage/>}/>
             <Route path="/callaccount" element={<CallAccountPage/>}/>
             <Route path="/error" element={<ErrorPage/>}/>

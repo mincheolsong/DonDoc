@@ -1,6 +1,7 @@
 import styles from "./AccountInfo.module.css";
 import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
-
+import { useLocation,useNavigate } from "react-router-dom";
+import {useEffect} from "react"
 interface BackLogoHeader{
   left : string;
   name : string;
@@ -11,23 +12,35 @@ interface BackLogoHeader{
 
 
 function AccountInfo() {
+  const navigate = useNavigate();
+  const {state} = useLocation();
+  const Account = state.account
+  useEffect(()=>{
+    console.log(Account)
+  },[])
   return (
   <div>
     
-    <BackLogoHeader name="계좌이름" fontSize="2rem" left="5rem" top="0.8rem"/>
+    <BackLogoHeader name={Account.accountName} fontSize="2rem" left="5rem" top="0.8rem"/>
     
     {/* Top */}
     <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}} >
-      <div style={{display:"flex", flexDirection:"row",justifyContent:"end"}}>
-        <p>잔액</p>
-        <button>송금</button>
+      <div style={{display:"flex", flexDirection:"row",justifyContent:"center", width:"100%",alignItems:"center"}}>
+        <p style={{fontWeight:"bold",fontSize:"2.4rem"}}>{Account.balance} 원</p>
+        <button className={styles.sendMoneyBtn} onClick={()=>{
+          navigate('/sendmoneyfirst')
+        }}>송금</button>
       </div>
-      <div>
-        <p>계좌 버튼 ,'복사기능'</p>
+      <div className={styles.accountBox}>
+        <img src={Account.bankCode} alt="" />
+        <div style={{display:"flex",flexDirection:"column"}}>
+          <p style={{margin:"0",color:"#6C6C6C"}}>{Account.accountName}</p>
+          <p style={{margin:"0"}}>{Account.accountNumber}</p>
+        </div>
       </div>
 
-      <div>
-        <button> 연결된 모임보기</button>
+      <div className={styles.connected}>
+         연결된 모임보기
       </div>
 
     </div>
