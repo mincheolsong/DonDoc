@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
 
 interface Props {
-  moimId: number, 
-  moimMemberId: number
+  moimMemberId: number,
+  inviter: string,
+  moimName: string
 }
 
 function MoimInviteUnit(props: Props) {
@@ -26,7 +27,7 @@ function MoimInviteUnit(props: Props) {
           <img src={haaland} alt="" />
         </div>
         <div className={styles.invitemessage}>
-          <p>{props.moimMemberId}님이 {phoneNumber}님을 {props.moimId}모임에 초대하였습니다.</p>
+          <p>{props.inviter}님이 {phoneNumber}님을 {props.moimName}모임에 초대하였습니다.</p>
         </div>
         <div className={styles.btns}>
           <button>자세히</button>

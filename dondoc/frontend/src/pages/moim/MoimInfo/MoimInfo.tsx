@@ -3,8 +3,36 @@ import styles from "./MoimInfo.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import TermsOfUse from '../CreateResult/TermsOfUse/TermsOfUse';
 import SelectAccount from './SelectAccount/SelectAccount';
+import { useSelector } from 'react-redux';
+import { UserType } from '../../../store/slice/userSlice';
+import { BASE_URL } from '../../../constants';
+import axios from 'axios';
+
+type selectedAccount = {
+  accountId: number,
+  accountName: string,
+  accountNumber: string,
+  balance: number,
+  bankCode: number,
+  bankName: string
+}
+
+const defaultAccount: selectedAccount = {
+  accountId: 0,
+  accountName: '',
+  accountNumber: '',
+  balance: 0,
+  bankCode: 0,
+  bankName: ''
+}
+
 
 function MoimInfo() {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
 
   const navigate = useNavigate()
 
@@ -13,6 +41,7 @@ function MoimInfo() {
 
   const [selectAccountOpen, setSelectAccountOpen] = useState<boolean>(false)
   const [termsOpen, setTermsOpen] = useState<boolean>(false)
+  const [selectedAccount, setSelectedAccount] = useState<selectedAccount>(defaultAccount)
 
   const OpenAccounts = () => {
     setSelectAccountOpen(true)
@@ -29,6 +58,48 @@ function MoimInfo() {
   const ToBack = () => {
     navigate(-1)
   }
+
+  const AcceptInvite = async() => {
+    const data = {
+      "accept": true,
+      "accountId": selectedAccount.accountId,
+      "moimMemberId": invite.moimMemberId
+    }
+    try {
+      const res = await axios.patch(`${BASE_URL}/api/moim/invite/check`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      console.log('전송데이터', data)
+      console.log(res.data)
+      // navigate("/moimhome")
+    } catch(err) {
+      console.log(err)
+    }
+  }
+  const RefuseInvite = async() => {
+    const data = {
+      "accept": false,
+      "moimMemberId": invite.moimMemberId
+    }
+    try {
+      const res = await axios.patch(`${BASE_URL}/api/moim/invite/check`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      console.log(res.data)
+      // navigate("/moimhome")
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+
+
 
   return (
     <div className={styles.container}>
@@ -53,19 +124,22 @@ function MoimInfo() {
             <div className={styles.accountinfo}>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>모임이름</p>
-                <p>{invite.moimId}</p>
+                <p>{invite.moimName}</p>
               </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title} onClick={OpenAccounts}>연결계좌</p>
                 <button onClick={OpenAccounts}>연결계좌</button>
               </div>
+              <div className={styles.nowselectedAccount}>
+                <p>{selectedAccount.accountNumber}</p>
+              </div>
               <div className={styles.moimcontent}>
                 <p className={styles.title}>계좌유형</p>
-                <p>aaaa</p>
+                <p>{invite.moimType}</p>
               </div>
               <div className={styles.moiminfo}>
                 <p className={styles.title}>모임소개</p>
-                <p className={styles.moimtext}>aaaa</p>
+                <p className={styles.moimtext}>{invite.introduce}</p>
               </div>
               <div className={styles.watchtermsbtn}>
                 <button className={styles.openterms} onClick={OpenTerms}>
@@ -79,7 +153,8 @@ function MoimInfo() {
           </div>
 
         <div className={styles.buttondiv}>
-            <button className={styles.submitbtn}>모임 가입하기</button>
+            <button className={styles.acceptbtn} onClick={AcceptInvite}>모임 가입하기</button>
+            <button className={styles.refusebtn} onClick={RefuseInvite}>초대 거절하기</button>
         </div>
         
         </div>
@@ -87,7 +162,7 @@ function MoimInfo() {
         {selectAccountOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseAccounts}/>
-              <SelectAccount setSelectAccountOpen={setSelectAccountOpen}/>
+              <SelectAccount setSelectAccountOpen={setSelectAccountOpen} setSelectedAccount={setSelectedAccount} selectedAccount={selectedAccount}/>
             </>
           )}
         {termsOpen && (
