@@ -17,6 +17,12 @@ public interface MoimMemberRepository extends JpaRepository<MoimMember,Long> {
     List<MoimMember> findWithMoimAndUser(@Param("moimMemberId")Long moimMemberId);
     Optional<MoimMember> findTop1ByUser_Id(Long userId);
     Optional<MoimMember> findByUser_IdAndMoim_Id(Long userId, Long moimId);
+
+    @Query("select mm from MoimMember mm join Moim m on mm.moim.id=m.id where m.identificationNumber = :moimIdentificationNumber and mm.user.id = :userId")
+    List<MoimMember> findByUserIdAndMoimINumber(@Param("userId")Long userId,@Param("moimIdentificationNumber")String moimIdentificationNumber);
+
+    @Query("select mm from MoimMember mm where mm.moim.id=:moimId and mm.id=:moimMemberId")
+    Optional<MoimMember> findWithMoimId(@Param("moimId")Long moimId, @Param("moimMemberId")Long moimMemberId);
 }
 
 

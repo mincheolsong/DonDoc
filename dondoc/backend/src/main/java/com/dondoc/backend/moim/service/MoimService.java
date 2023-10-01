@@ -35,7 +35,7 @@ public interface MoimService {
 
     WithdrawRequestDto.Response withdrawReq(Long userId, WithdrawRequestDto.Request req) throws Exception;
 
-    List<Object> getHistoryList(String identificationNumber, String accountNumber);
+    List<MoimHistoryDto.Response> getHistoryList(String identificationNumber, String accountNumber);
 
     MissionRequestDto.Response missionReq(Long userId, MissionRequestDto.Request req) throws Exception;
 
@@ -62,5 +62,8 @@ public interface MoimService {
     CancelRequestDto.Response cancelReq(Long userId, CancelRequestDto.Request req) throws Exception;
 
     Object getHistoryDetail(String identificationNumber, String accountNumber, Long historyId);
-    //List<MoimMyDataDto.TransferResponse> getTransferAmount(String identificationNumber,String moimAccountNumber,String memberAccountNumber,String month);
+
+    List<MoimMyDataDto.TransferResponse> getTransferAmount(String identificationNumber,String moimAccountNumber,String memberAccountNumber,String month);
+
+    MoimMyDataDto.SpendingAmountResponse getSpendingAmmount(Long moimId,Long moimMemberId,Long userId);
 }

@@ -28,6 +28,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account findByAccountNumber(String accountNumber) {
+        List<Account> byAccountNumber = accountRepository.findByAccountNumber(accountNumber);
+        if(byAccountNumber.size()!=1){
+            throw new NotFoundException("계좌를 찾을 수 없습니다.");
+        }
+        return byAccountNumber.get(0);
+    }
+
+    @Override
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
