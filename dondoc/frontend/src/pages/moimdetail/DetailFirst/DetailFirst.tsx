@@ -8,6 +8,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../constants";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
+import { useParams } from "react-router-dom";
 
 type moimMemberList = {
   userId: number,
@@ -37,6 +38,8 @@ const moimDetailDefault = {
 }
 
 function DetailFirst() {
+
+  const { moimId } = useParams();
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -73,11 +76,16 @@ function DetailFirst() {
     setSelectedMember(member)
   }
 
+  const CopyAccount = (account:string) => {
+    console.log(account)
+    navigator.clipboard.writeText(account)
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         // moim/detail/${moimId}
-        const res = await axios.get(`${BASE_URL}/api/moim/detail/1`, {
+        const res = await axios.get(`${BASE_URL}/api/moim/detail/${moimId}`, {
           headers: {
             'Content-Type': 'application/json', 
             'Authorization': 'Bearer ' + token
@@ -139,7 +147,7 @@ function DetailFirst() {
               <img src={haaland} alt="" />
             </div>
 
-            <div className={styles.selectaccount}>
+            <div className={styles.selectaccount} onClick={() => CopyAccount(selectedMember.accountNumber)}>
               <div className={styles.banklogo}>
                 <img src={haaland} alt="" />
               </div>
