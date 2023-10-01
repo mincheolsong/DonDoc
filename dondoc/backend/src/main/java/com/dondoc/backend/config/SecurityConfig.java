@@ -1,6 +1,8 @@
 package com.dondoc.backend.config;
 
 import com.dondoc.backend.common.Filter.JwtAuthFilter;
+import com.dondoc.backend.common.Filter.LogoutFilter;
+import com.dondoc.backend.common.Filter.PathFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private LogoutFilter logoutFilter;
+
+    @Autowired
+    private PathFilter pathFilter;
 
     // Bcrypt 암호화
     @Bean
@@ -78,6 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // OncePerRequestFilter 적용
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(logoutFilter, JwtAuthFilter.class);
+        http.addFilterBefore(pathFilter, LogoutFilter.class);
     }
 
     @Bean

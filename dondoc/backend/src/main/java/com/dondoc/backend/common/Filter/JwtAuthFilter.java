@@ -68,16 +68,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v2/api-docs") ||
                 requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
+            log.info("============= JwtAuthFilter SUCCESS =============");
             filterChain.doFilter(request, response);
             return;
         }
 
+
         if(EXCLUDE_URL.contains(path)){
-            log.info("필터링 하지 않습니다.");
-            log.info("URI 경로 = {}", path);
         }else{
-            log.info("필터링 시작");
-            log.info("URI 경로 = {}", path);
 
             // 헤더에서 인증정보 가져오기
             final String requestTokenHeader = request.getHeader(AUTH_HEADER);
@@ -86,7 +84,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if(requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)){
                 // Bearer을 제외한 토큰 값
                 accessToken = requestTokenHeader.substring(BEARER_PREFIX.length());
-                log.info("accesToken : {}", accessToken);
 
                 try{
                     // 만료 여부 파악
@@ -105,6 +102,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.setStatus(HttpServletResponse.SC_OK);
                         response.setContentType("application/json");
                         response.getWriter().write(jwtAuthFilterException.noRefreshToken());
+                        log.info("refreshToken이 존재하지 않습니다.");
+                        log.info("============= JwtAuthFilter FAIL =============");
                         return;
                     }
 
@@ -132,7 +131,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             // 헤더에 저장
                             response.setHeader(AUTH_HEADER, BEARER_PREFIX + newAccessToken);
                             log.info("재발급 완료 = {}", newAccessToken);
-                            log.info("userId : {}", userId);
                         }
                     }catch (ExpiredJwtException ee){
                         // refershToken 만료
@@ -140,6 +138,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.setContentType("application/json");
                         response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
                         log.info("모든 토큰이 만료되었습니다.");
+                        log.info("============= JwtAuthFilter FAIL =============");
                         return;
                     }
                 }
@@ -147,23 +146,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 // User 인증 정보 불러오기(유효한 accessToken)
                 UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userId);
-                log.info("핸드폰번호 = {}", userDetails.getUsername());
 
                 // User 정보 등록
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                log.info(usernamePasswordAuthenticationToken.getName());
 
             }else{
                 // 인증정보가 존재하지 않음
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.getWriter().write(jwtAuthFilterException.noAuthentication());
+                log.info("인증정보가 존재하지 않습니다.");
+                log.info("============= JwtAuthFilter FAIL =============");
                 return;
             }
         }
-        log.info("필터링 끝");
+        log.info("============= JwtAuthFilter SUCCESS =============");
         filterChain.doFilter(request, response);
 
     }

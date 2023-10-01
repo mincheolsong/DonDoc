@@ -14,6 +14,7 @@ import com.dondoc.backend.user.repository.FriendRepository;
 import com.dondoc.backend.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,6 +45,9 @@ public class UserServiceImpl implements UserService{
     private final AccountRepository accountRepository;
 
     private final SMSUtil smsUtil;
+
+    // redis
+    private final RedisTemplate<String, Object> redisTemplate;
 
 
     // 회원가입
@@ -329,6 +333,11 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
     }
 
+    @Override
+    public void logOut(String token) {
+        // 토큰 무효화 - redis에 추가
+        redisTemplate.opsForSet().add("black", token);
+    }
 
 
 }
