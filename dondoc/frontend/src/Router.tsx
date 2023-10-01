@@ -25,6 +25,9 @@ import MoimLinkAccountPage from './pages/moim/MoimLinkAccount/MoimLinkAccount'
 import MoimSelectAccountPage from './pages/moim/MoimSelectAccount/MoimSelectAccount'
 import CreateResultPage from './pages/moim/CreateResult/CreateResult'
 import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
+import MoimPasswordPage from './pages/moim/CreatePassword/CreatePassword'
+import MoimRePasswordPage from './pages/moim/CreatePasswordRe/CreatePasswordRe'
+import MoimInfoPage from './pages/moim/MoimInfo/MoimInfo'
 
 
 // mission tap
@@ -78,6 +81,9 @@ function Router() {
             <Route path="/moimselect" element={<MoimSelectAccountPage/>}/>
             <Route path="/createresult" element={<CreateResultPage/>}/>
             <Route path="/moimjoin" element={<MoimJoinPage/>}/>
+            <Route path="/moimpassword" element={<MoimPasswordPage/>}/>
+            <Route path="/moimrepassword" element={<MoimRePasswordPage/>}/>
+            <Route path="/moiminfo" element={<MoimInfoPage/>}/>
 
 
             {/* mission tap */}

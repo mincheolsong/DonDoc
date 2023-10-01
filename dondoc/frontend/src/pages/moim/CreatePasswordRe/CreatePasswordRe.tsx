@@ -14,6 +14,12 @@ function CreatePasswordRe () {
 
   const navigate = useNavigate()
   const { state } = useLocation()
+  const moimName = state.moimName
+  const moimInfo = state.moimInfo
+  const account = state.account
+  const category = state.category
+  const manager = state.manager
+
   const PASSWORD_MAX_LENGTH = 4 // 비밀번호 입력길이 제한 설정
 
   useEffect(() => {
@@ -56,6 +62,7 @@ function CreatePasswordRe () {
           console.log(errorCount)
         }
       } else {
+        navigate('/createresult', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category, manager:manager}})
         alert('성공!')
       }
     }
@@ -96,6 +103,9 @@ function CreatePasswordRe () {
     },
     [handlePasswordChange],
   )
+  const ShowPass = () => {
+    console.log(state.password)
+  }
 
 
 
@@ -153,7 +163,7 @@ function CreatePasswordRe () {
           </div>
 
         </div>
-
+            <button onClick={ShowPass}>보여줘</button>
       </div>
     </div>
 

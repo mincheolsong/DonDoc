@@ -1,7 +1,7 @@
 import styles from "./CreatePassword.module.css";
 import React, { useCallback, useEffect } from "react"
-// import axios from "axios"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 function CreatePassword() {
   const [nums, setNums] = React.useState<number[]>([])
@@ -11,9 +11,19 @@ function CreatePassword() {
   const [pwd3, setPwd3] = React.useState<boolean>(false)
   const [pwd4, setPwd4] = React.useState<boolean>(false)
 
+  const navigate = useNavigate()
+
+  const { state } = useLocation()
+  const moimName = state.moimName
+  const moimInfo = state.moimInfo
+  const account = state.account
+  const category = state.category
+  const manager = state.manager
+
 
   // const navigate = useNavigate()
   const PASSWORD_MAX_LENGTH = 4 // 비밀번호 입력길이 제한 설정
+
 
   useEffect(() => {
     const nums_random = Array.from({ length: 10 }, (v, k) => k) // 이 배열을 변경해 입력문자 변경 가능
@@ -44,6 +54,7 @@ function CreatePassword() {
     }
     else if (password.length === 4) {
       setPwd4(true)
+      navigate('/moimrepassword', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category, manager:manager}})
     }
   },[password])
 
@@ -140,10 +151,12 @@ function CreatePassword() {
 
         </div>
 
+        {/* <button onClick={ShowInfo}>클릭</button> */}
+
       </div>
     </div>
 
   )
-};
+}
 
 export default CreatePassword;

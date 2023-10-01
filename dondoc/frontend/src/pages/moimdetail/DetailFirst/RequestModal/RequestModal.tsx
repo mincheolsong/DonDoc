@@ -27,7 +27,7 @@ function RequestModal({setModalOpen}: Props) {
   const [missionTitle, setMissionTitle] = useState<string>('')
   const [missionAmount, setMissionAmount] = useState<number>(0)
   const [missionContent, setMissionContent] = useState<string>('')
-  const [deadLine, setDeadLine] = useState<string>("0000-00-00")
+  const [deadLine, setDeadLine] = useState<string>("2023-10-03")
 
 
 
@@ -99,6 +99,8 @@ function RequestModal({setModalOpen}: Props) {
         }
       });
       console.log(response.data)
+      alert('요청이 완료되었습니다.')
+      setModalOpen(false)
     } catch(error) {
       console.log('error:', error)
     }
@@ -121,6 +123,8 @@ function RequestModal({setModalOpen}: Props) {
         }
       });
       console.log(response.data)
+      alert('요청이 완료되었습니다.')
+      setModalOpen(false)
     } catch(error) {
       console.log('error:', error)
     }

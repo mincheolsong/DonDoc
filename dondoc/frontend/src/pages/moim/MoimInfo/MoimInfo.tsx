@@ -72,9 +72,13 @@ function MoimInfo() {
           'Authorization': 'Bearer ' + token
         }
       })
-      console.log('전송데이터', data)
+      // console.log('전송데이터', data)
       console.log(res.data)
-      // navigate("/moimhome")
+      if (res.data.message == '계좌를 찾을 수 없습니다.') {
+        alert('계좌를 선택해 주세요.')
+      } else{
+        navigate("/moimhome")
+      }
     } catch(err) {
       console.log(err)
     }
@@ -92,7 +96,7 @@ function MoimInfo() {
         }
       })
       console.log(res.data)
-      // navigate("/moimhome")
+      navigate("/moimhome")
     } catch(err) {
       console.log(err)
     }
