@@ -8,6 +8,9 @@ import java.util.List;
 
 @Service
 public interface AccountService{
+
+    Account findByAccountNumber(String accountNumber);
+
     Account findById(Long accountId);
 
     AccountListDto.BankResponse loadBankList(Long userId);
