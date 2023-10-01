@@ -22,4 +22,6 @@ public interface UserService {
     UpdateUserDto.Response updateUser(UpdateUserDto.Request req, Long id);
 
     User findById(Long userId);
+
+    void logOut(String token);
 }

@@ -30,4 +30,8 @@ public class JwtAuthFilterException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(ApiUtils.error(message, HttpStatus.UNAUTHORIZED));
     }
+
+    public String black() throws JsonProcessingException{
+        return createJson("인증정보가 유효하지 않습니다. 다시 로그인 해주세요.");
+    }
 }

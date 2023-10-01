@@ -9,12 +9,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 
@@ -44,7 +49,7 @@ public class UserController {
 
     // 문자인증
     @PostMapping("/sms/signup")
-    @ApiOperation(value = "문자인증(시작안함)", notes = "인증번호 발송 API", response = ApiResult.class)
+    @ApiOperation(value = "문자인증", notes = "인증번호 발송 API", response = ApiResult.class)
     public ApiResult sendSignUpSMS(@RequestBody @ApiParam(value = "인증번호 전송", required = true)String phoneNumber){
         try{
             CertificationDto.Response res = userService.sendSMS(phoneNumber);
@@ -56,7 +61,7 @@ public class UserController {
     }
 
     @PostMapping("/sms/find_password")
-    @ApiOperation(value = "문자인증(시작안함)", notes = "인증번호 발송 API", response = ApiResult.class)
+    @ApiOperation(value = "문자인증", notes = "인증번호 발송 API", response = ApiResult.class)
     public ApiResult sendFindPasswordSMS(@RequestBody @ApiParam(value = "인증번호 전송", required = true)String phoneNumber){
         // 유저 존재 여부 확인
         try {
@@ -90,11 +95,19 @@ public class UserController {
 
     // 로그아웃
     @GetMapping("/logout")
-    @ApiOperation(value = "로그아웃(시작안함)", notes = "로그아웃 API", response = ApiResult.class)
-    public ApiResult logout(HttpServletResponse response){
+    @ApiOperation(value = "로그아웃", notes = "로그아웃 API", response = ApiResult.class)
+    public ApiResult logout(HttpServletResponse response, HttpServletRequest request){
+        // refreshToken 제거
         Cookie cookie = new Cookie("refreshToken","");
+        cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+
+        // accessToken blackList
+        String requestTokenHeader = request.getHeader("Authorization");
+        String token = requestTokenHeader.substring(7);
+        userService.logOut(token);
+
         return ApiUtils.success("로그아웃이 완료되었습니다.");
     }
 
