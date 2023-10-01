@@ -267,9 +267,41 @@ public class FriendServiceImpl implements FriendService{
             }
             friendList.add(temp);
         }
+        List<FriendListDto.FriendInfo> result = new ArrayList<>();
+
+        for(FriendListDto.FriendInfoDto info : friendList){
+            User search = userRepository.findById(info.getFriendId())
+                    .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+            FriendListDto.FriendInfo friendInfo;
+            if(search.getMainAccount() == null){
+                friendInfo = FriendListDto.FriendInfo.builder()
+                        .id(search.getId())
+                        .name(search.getName())
+                        .imageNumber(search.getImageNumber() + "")
+                        .phoneNumber(search.getPhoneNumber())
+                        .accountNumber("대표계좌가 없습니다.")
+                        .build();
+            }else{
+                Account account = accountRepository.findByAccountId(search.getMainAccount())
+                        .orElseThrow(() -> new NotFoundException("대표 계좌가 없습니다."));
+
+                friendInfo = FriendListDto.FriendInfo.builder()
+                        .id(search.getId())
+                        .name(search.getName())
+                        .imageNumber(search.getImageNumber() + "")
+                        .phoneNumber(search.getPhoneNumber())
+                        .bankName(account.getBankName())
+                        .bankCode(account.getBankCode())
+                        .accountNumber(account.getAccountNumber())
+                        .build();
+            }
+
+            result.add(friendInfo);
+        }
 
         return FriendListDto.Response.builder()
-                .list(friendList)
+                .list(result)
                 .msg("친구 목록을 불러왔습니다.")
                 .success(true)
                 .build();

@@ -12,7 +12,7 @@ public class FriendListDto {
     @Data
     @Builder
     public static class Response{
-        private List<FriendInfoDto> list;
+        private List<FriendInfo> list;
         private String msg;
         @JsonIgnore
         private boolean success;
@@ -25,5 +25,18 @@ public class FriendListDto {
         private Long friendId; // 상대
         private LocalDateTime createdAt;
     }
+
+    @Data
+    @Builder
+    public static class FriendInfo{
+        private Long id;
+        private String name;
+        private String imageNumber;
+        private String phoneNumber;
+        private String bankName;
+        private Long bankCode;
+        private String accountNumber;
+    }
+
 
 }
