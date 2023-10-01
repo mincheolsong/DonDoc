@@ -2,15 +2,10 @@ package com.dondoc.backend.moim.controller;
 
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
-import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.moim.dto.*;
-import com.dondoc.backend.moim.entity.Mission;
 import com.dondoc.backend.moim.entity.Moim;
-import com.dondoc.backend.moim.entity.MoimMember;
-import com.dondoc.backend.moim.entity.WithdrawRequest;
 import com.dondoc.backend.moim.service.MoimMemberService;
 import com.dondoc.backend.moim.service.MoimService;
-import com.dondoc.backend.user.entity.Account;
 import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.service.AccountService;
 import com.dondoc.backend.user.service.UserService;
@@ -25,13 +20,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import javax.validation.Valid;
 
 
@@ -73,8 +64,6 @@ public class MoimController {
             return ApiUtils.error("모임타입을 잘못 지정했습니다",HttpStatus.BAD_REQUEST);
         }
 
-
-
         try {
             Moim moim;
             moim = moimService.createMoim(user, moimName, introduce, password, accountId, moimType,manager);
@@ -85,6 +74,7 @@ public class MoimController {
         }
 
     }
+
     @ApiOperation(value = "모임 리스트", notes = "헤더의 accessToken토큰을 이용해 현재 사용자의 모임 리스트를 가져오는 API", response = ApiResult.class)
     @GetMapping("/list") // 헤더의 토큰을 이용해서 가져온 userId를 이용해서 moimList를 조회
     public ApiResult getMoimList(Authentication authentication){
@@ -198,7 +188,7 @@ public class MoimController {
         String identificationNumber = req.getIdentificationNumber();
         String accountNumber = req.getAccountNumber();
 
-        List<Object> historyList = moimService.getHistoryList(identificationNumber, accountNumber);
+        List<MoimHistoryDto.Response> historyList = moimService.getHistoryList(identificationNumber, accountNumber);
 
         if(historyList==null){
             return ApiUtils.error("모임의 거래내역을 불러오지 못했습니다.",HttpStatus.BAD_REQUEST);
@@ -225,21 +215,51 @@ public class MoimController {
         return ApiUtils.success(historyDetail);
     }
 
-    /**
     @ApiOperation(value = "마이데이터 이체내역 조회",response = ApiResult.class)
     @PostMapping("/mydata/transferAmount")
-    public ApiResult getTransferAmmount(@RequestBody MoimMyDataDto.TransferRequest req){
+    public ApiResult getTransferAmmount(@ApiParam(value = "마이데이터 이체내역 조회에 필요한 값",required = true)@RequestBody MoimMyDataDto.TransferRequest req,Authentication authentication){
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
         String identificationNumber = req.getIdentificationNumber();
         String moimAccountNumber = req.getMoimAccountNumber();
         String memberAccountNumber = req.getMemberAccountNumber();
         String month = req.getMonth();
+
+        try {
+            int i = moimMemberService.checkUserType(userId, identificationNumber);
+
+            if( i == 1 ) { // 1(사용자)면 본인만 조회가능, memberAccountNumber가 본인의 AccountNumber인지 확인
+                moimMemberService.checkMyAccount(userId,memberAccountNumber);
+            }
+        }catch (Exception e){
+            return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
+
         List<MoimMyDataDto.TransferResponse> result = moimService.getTransferAmount(identificationNumber,moimAccountNumber,memberAccountNumber,month);
 
+        if(result!=null){
+            return ApiUtils.success(result);
+        }
 
+        return ApiUtils.error("마이데이터 이체내역 조회 실패.",HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "마이데이터 소비내역 조회",response = ApiResult.class)
+    @GetMapping("/mydata/spendingAmount/{moimId}/{moimMemberId}")
+    public ApiResult getSpendingAmmount(@ApiParam(value = "마이데이터 소비내역 조회에 필요한 값",required = true)@PathVariable("moimId")Long moimId,@ApiParam(value = "마이데이터 소비내역 조회에 필요한 값",required = true) @PathVariable("moimMemberId")Long moimMemberId,Authentication authentication){
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Long userId = Long.parseLong(userDetails.getUsername());
+
+        try {
+            MoimMyDataDto.SpendingAmountResponse spendingAmountResponse = moimService.getSpendingAmmount(moimId, moimMemberId, userId);
+            return ApiUtils.success(spendingAmountResponse);
+        }catch (Exception e){
+            return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
 
     }
-    */
-
 
     /** 관리자에게 출금 요청 */
     @ApiOperation(value = "출금 요청", notes = "관리자에게 출금 요청하는 API", response = ApiResult.class)

@@ -30,4 +30,9 @@ public interface MoimMemberService {
 
     int deleteMoimMember(Long moimMemberId, Long userId) throws Exception;
 
+    int checkUserType(Long userId, String moimIdentificationNumber);
+
+    void checkMyAccount(Long userId, String memberAccountNumber);
+
+    MoimMember findWithMoimId(Long moimId, Long moimMemberId);
 }

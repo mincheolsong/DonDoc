@@ -1,6 +1,5 @@
 package com.dondoc.backend.moim.service;
 
-import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.EncryptionUtils;
 import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.moim.dto.*;
@@ -11,18 +10,17 @@ import com.dondoc.backend.user.entity.User;
 import com.dondoc.backend.user.service.AccountService;
 import com.dondoc.backend.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -576,25 +574,40 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<Object> getHistoryList(String identificationNumber, String accountNumber) {
+    public List<MoimHistoryDto.Response> getHistoryList(String identificationNumber, String accountNumber) {
         Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("identificationNumber", identificationNumber);
         bodyMap.put("accountNumber", accountNumber);
 
-        Map response = webClient.post()
+        MoimHistoryApiDto.ListResponse response = webClient.post()
                 .uri("/bank/history")
                 .bodyValue(bodyMap)
                 .retrieve()
-                .bodyToMono(Map.class)
+                .bodyToMono(MoimHistoryApiDto.ListResponse.class)
                 .block();
 
-        if(response.get("success").toString()=="true"){
-            List<Object> list = (List<Object>)response.get("response");
-            return list;
-        }else{
-            return null;
+        if(response.getSuccess().equals("true")){
+            List<MoimHistoryDto.Response> result = new ArrayList<>();
+            List<MoimHistoryApiDto.ListResponseResponse> apiResponseList = response.getResponse();
+
+            for (MoimHistoryApiDto.ListResponseResponse apiResponse : apiResponseList) {
+                MoimHistoryApiDto.History history = apiResponse.getHistoryId();
+                int type = history.getType();
+                String content = null;
+                if(type==1){ // 송금이면 요청내용
+                    content = history.getToSign();
+                }else if(type==2){ // 입금이면 메모
+                    content = apiResponse.getMemo();
+                }
+                MoimHistoryDto.Response res = new MoimHistoryDto.Response(history.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), history.getId(), history.getToAccount(),
+                        history.getType(),history.getTransferAmount(), history.getAfterBalance(),content);
+                result.add(res);
+            }
+
+            return result;
         }
 
+        return null;
     }
 
     @Override
@@ -620,15 +633,89 @@ public class MoimServiceImpl implements MoimService{
 
     }
 
-    /**
     @Override
     public List<MoimMyDataDto.TransferResponse> getTransferAmount(String identificationNumber, String moimAccountNumber, String memberAccountNumber, String month) {
 
+        // 접근한 사용자의 권한 검사
 
 
+        List<MoimHistoryDto.Response> historyList = this.getHistoryList(identificationNumber, moimAccountNumber);
+        List<MoimMyDataDto.TransferResponse> result = new ArrayList<>();
+        DecimalFormat decFormat = new DecimalFormat("###,###");
 
+        if(historyList!=null){
+            // memberAccount에 해당하는 member 이름 찾기
+            Account account = accountService.findByAccountNumber(memberAccountNumber);
+            String name = account.getUser().getName();
+
+            if(month.length()==1){
+                month = "0"+month;
+            }
+
+            for (MoimHistoryDto.Response response : historyList) {
+                if(response.getToAccount().equals(memberAccountNumber) && response.getDate().substring(5,7).equals(month)){
+                    String transAmount = new String();
+
+                    if(response.getType()==1){ // 송금
+                        transAmount = decFormat.format(response.getTransferAmount());
+                        transAmount = "-"+transAmount;
+                    }else if(response.getType()==2){ // 입금
+                        transAmount = "+"+transAmount;
+                    }
+
+                    result.add(new MoimMyDataDto.TransferResponse(response.getDate(),name,transAmount,response.getAfterBalance(),response.getContent()));
+                }
+            }
+
+            return result;
+        }
+
+
+        return null;
     }
-    */
+
+    @Override
+    public MoimMyDataDto.SpendingAmountResponse getSpendingAmmount(Long moimId,Long moimMemberId,Long userId) {
+
+        try {
+
+            moimMemberService.findWithMoimId(moimId,moimMemberId);
+
+            MoimMember moimMember = moimMemberService.findMoimMember(userId, moimId);
+            if(moimMember.getUserType()==1 && moimMember.getId()!=moimMemberId){  // 일반 사용자는 자기 자신만 조회할 수 있음
+                throw new RuntimeException("일반 사용자는 자기 자신의 마이데이터만 조회할 수 있습니다.");
+            }
+
+        }catch (Exception e){
+            throw new NotFoundException(e.getMessage());
+        }
+        // status=1 이고 해당 모임멤버
+        List<WithdrawRequest> spendingAmount = withdrawRequestRepository.findSpendingAmount(moimMemberId);
+
+        MoimMyDataDto.SpendingAmountResponse result = new MoimMyDataDto.SpendingAmountResponse();
+
+        for (WithdrawRequest withdrawRequest : spendingAmount) {
+            Category category = withdrawRequest.getCategory();
+            Long categoryId = category.getId();
+            int amount = withdrawRequest.getAmount();
+
+            result.changeTotal(amount);
+            if(categoryId==0){
+                result.changeShopping(amount);
+            }else if(categoryId==1){
+                result.changeEducation(amount);
+            }else if(categoryId==2){
+                result.changeFood(amount);
+            }else if(categoryId==3){
+                result.changeLeisure(amount);
+            }else if(categoryId==4){
+                result.changeShopping(amount);
+            }else if(categoryId==5){
+                result.changeEtc(amount);
+            }
+        }
+        return result;
+    }
 
 
     /** 출금 요청 승인 */
@@ -677,7 +764,7 @@ public class MoimServiceImpl implements MoimService{
         bodyMap.put("transferAmount", withdrawRequest.getAmount());
         bodyMap.put("password", req.getPassword());
         bodyMap.put("sign", "");
-        bodyMap.put("toSign", "");
+        bodyMap.put("toSign", withdrawRequest.getTitle());
 
         Map response = webClient.post()
                 .uri("/bank/account/transfer")

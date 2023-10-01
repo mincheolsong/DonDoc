@@ -242,4 +242,31 @@ public class MoimMemberServiceImpl implements MoimMemberService {
         return flag;
     }
 
+    @Override
+    public int checkUserType(Long userId, String moimIdentificationNumber) {
+        List<MoimMember> moimMembers = moimMemberRepository.findByUserIdAndMoimINumber(userId, moimIdentificationNumber);
+        if(moimMembers.size()==0 || moimMembers.size() > 1){
+            throw new NotFoundException("모임멤버 조회 실패");
+        }
+
+        MoimMember moimMember = moimMembers.get(0);
+
+        return moimMember.getUserType();
+    }
+
+    @Override
+    public void checkMyAccount(Long userId, String memberAccountNumber) {
+        Account byAccountNumber = accountService.findByAccountNumber(memberAccountNumber);
+        if(byAccountNumber.getUser().getId()!=userId){
+            throw new NotFoundException("일반사용자는 다른 사용자의 마이데이터를 볼 수 없습니다.");
+        }
+    }
+
+    @Override
+    public MoimMember findWithMoimId(Long moimId, Long moimMemberId) {
+        MoimMember moimMember = moimMemberRepository.findWithMoimId(moimId, moimMemberId).orElseThrow(() -> new NotFoundException("moimId가 " + moimId + "인 모임에 moimMemberId가 " +
+                moimMemberId + "인 moimMember가 없습니다."));
+        return moimMember;
+    }
+
 }
