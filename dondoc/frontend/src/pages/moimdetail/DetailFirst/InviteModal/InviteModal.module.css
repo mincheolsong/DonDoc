@@ -71,11 +71,46 @@
 .searchresult {
     border: 1px solid black;
     border-radius: 0.5rem;
-    width: 27.5rem;
+    width: 24.9rem;
     height: 4.9rem;
     margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
+}
+.searchresultunit {
+    width: 100%;
+    height: 4.9rem;
+    display: flex;
+}
+
+.usercharacter {
+    width: 20%;
+    height: 100%;
+    border: 1px solid black;
+    display: flex;
+}
+.userImg {
+    width: 80%;
+    height: 80%;
+    border: 1px solid yellow;
+    margin: auto;
+}
+.userImg img {
+    width: 100%;
+    height: 100%;
+}
+.useraccount {
+    width: 60%;
+    height: 100%;
+    border: 1px solid blue;
+}
+.appendbtn {
+    width: 20%;
+    height: 100%;
+    display: flex;
+}
+.appendbtn button {
+    margin: auto;
 }
 
 
