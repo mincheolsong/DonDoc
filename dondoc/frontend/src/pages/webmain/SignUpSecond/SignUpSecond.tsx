@@ -186,7 +186,7 @@ const closeModal = ()=>{
 
   return (
     <div>
-    {errModal ? <OneBtnModal width="90vw" height="50vh" titleText="" title="false" contentText={errText}  contentFont="1.5rem" btncolor="white" btnTextColor="black" btnText="닫기" callback={closeModal}  /> : ""}
+    {errModal ? <OneBtnModal width="80vw" height="50vh" titleText="" title="false" contentText={errText}  contentFont="1.5rem" btncolor="white" btnTextColor="black" btnText="닫기" callback={closeModal}  /> : ""}
     <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
       <div className={styles.mainContainer}>
         <img className={styles.Logo} src={dondoc} />
