@@ -4,19 +4,29 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
 import MemberUnit from "./MemberUnit/MemberUnit";
+import { BASE_URL } from "../../../../constants";
 
 interface Props {
-  setModalOpen(id: boolean) : void
+  setModalOpen(id: boolean) : void,
+  moimIdNumber: string
 }
 
 type friendList = { friend: inviteUnit,
   id:number,
-  friendId:number,
-  createdAt:string}
+  name:string,
+  imageNumber:string,
+  phoneNumber:string,
+  bankName:string,
+  bankCode:number,
+  accountNumber:string}
 type inviteUnit = {
   id:number,
-  friendId:number,
-  createdAt:string
+  name:string,
+  imageNumber:string,
+  phoneNumber:string,
+  bankName:string,
+  bankCode:number,
+  accountNumber:string
 }
 const initialSearchResult: searchUnit = {
   userId: 0,
@@ -46,13 +56,13 @@ type newInviteList = {
 }
 
 
-function InviteModal({setModalOpen}: Props) {
+function InviteModal({setModalOpen, moimIdNumber}: Props) {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
   const token = userInfo.accessToken
-  const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
+  const moimId = parseInt(moimIdNumber, 10);
 
   const [searchInput, setSearchInput] = useState<string>('')
   const [searchResult, setSearchResult] = useState<searchUnit>(initialSearchResult);
@@ -70,11 +80,11 @@ function InviteModal({setModalOpen}: Props) {
   
   const AppendInviteList = (friend: inviteUnit) => {
     // 이미 존재하는지 확인
-    const isAlreadyAdded = inviteList.some((item) => item.userId === friend.friendId);
+    const isAlreadyAdded = inviteList.some((item) => item.userId === friend.id);
 
     if (!isAlreadyAdded) {
       const newInviteUnit: newInviteUnit = {
-        userId: friend.friendId,
+        userId: friend.id,
       };
 
       const newInviteList = [...inviteList, newInviteUnit];
@@ -124,8 +134,14 @@ function InviteModal({setModalOpen}: Props) {
           'Authorization': 'Bearer ' + token
         }
       });
-      console.log(res.data.response)
-      setSearchResult(res.data.response)
+      if (res.data.response) {
+        console.log(res.data.response)
+        setSearchResult(res.data.response)
+      } else {
+        // 검색 결과가 없을 때 처리할 로직 추가
+        console.log('검색 결과가 없습니다.');
+        setSearchResult(initialSearchResult); // 또는 다른 초기값을 설정할 수 있음
+      }
     }catch(err) {
       console.log(err)
     }
@@ -146,7 +162,7 @@ function InviteModal({setModalOpen}: Props) {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('검색결과:', res.data.response.list)
+        console.log('친구리스트:', res.data.response.list)
         setFriendList(res.data.response.list)
       }
       catch(err) {
@@ -159,17 +175,18 @@ function InviteModal({setModalOpen}: Props) {
 
   const InviteMoimFriend = async() => {
     const data = {
-      "moimId" : 1,
+      "moimId" : moimId,
       "invite" : inviteList
     }
     try {
-      const response = await axios.post(`http://j9d108.p.ssafy.io:9999/api/moim/invite`, data, {
+      const response = await axios.post(`${BASE_URL}/api/moim/invite`, data, {
         headers: {
           'Content-Type': 'application/json', 
           'Authorization': 'Bearer ' + token
         }
       });
       console.log(response.data)
+      setModalOpen(false)
     } catch(error) {
       console.log('error:', error)
     }
@@ -244,7 +261,7 @@ function InviteModal({setModalOpen}: Props) {
                         </div>
                       </div>
                       <div className={styles.useraccount}>
-                        <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.friendId}</h2>
+                        <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.name}</h2>
                         {searchResult.accountNumber == "대표계좌가 없습니다." ? (
                           <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.phoneNumber}</h3>
                           ):(

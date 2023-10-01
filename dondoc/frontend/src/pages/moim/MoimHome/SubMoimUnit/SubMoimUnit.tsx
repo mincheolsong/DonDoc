@@ -1,5 +1,5 @@
 import styles from "./SubMoimUnit.module.css";
-import haaland from "../../../../assets/bbakbbakyee.jpg";
+import MoimLogo from "../../../../assets/MoimLogo/moimlogo.svg";
 import {useEffect, useState} from 'react';
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -59,8 +59,12 @@ function SubMoimUnit(props: Props) {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('모임  조회결과:', res.data.response)
-        setMoimInfo(res.data.response)
+        if (res.data.response){
+          console.log('모임  조회결과:', res.data.response)
+          setMoimInfo(res.data.response)
+        } else {
+          console.log('없음')
+        }
       }
       catch(err) {
         console.log(err)
@@ -73,7 +77,7 @@ function SubMoimUnit(props: Props) {
     <div className={styles.container}>
       <div className={styles.moimtop}>
         <div className={styles.moimmembers}>
-          {moimInfo.moimMembers.length > 0 && moimInfo.moimMembers.slice(0, 5).map((member, index) => (
+          {moimInfo.moimMembers.length > 0 && moimInfo.moimMembers.map((member, index) => (
               <div className={styles.moimunit} key={index}>
                 <p style={{marginTop:'0.2rem', marginBottom:'0', marginLeft: '0.5rem'}}>{member.nickname}</p>
               </div>
@@ -81,7 +85,7 @@ function SubMoimUnit(props: Props) {
         </div>
         <div className={styles.moimicon}>
           <div className={styles.iconplace}>
-            <img src={haaland} alt="" />
+            <img src={MoimLogo} alt="" />
           </div>
         </div>
       </div>

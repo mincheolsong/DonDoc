@@ -24,7 +24,7 @@ function CreateMoim() {
     if (moimName && moimInfo) {
       navigate('/moimlink', {state: {moimName:moimName, moimInfo:moimInfo}})
     } else {
-      console.log('입력해주세요')
+      alert('모임 정보를 입력해주세요')
     }
     // console.log(moimName)
     // console.log(moimInfo)

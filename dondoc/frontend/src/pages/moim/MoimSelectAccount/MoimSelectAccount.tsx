@@ -58,7 +58,11 @@ function MoimSelectAccount() {
   }
 
   const ToNext = () => {
-    navigate('/createresult', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory, manager:[], password:"1234"}})
+    if(selectCategory.code) {
+      navigate('/moimpassword', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory, manager:[]}})
+    } else {
+      alert('계좌 유형을 선택해주세요.')
+    }
   }
 
   const ShowProp = () => {

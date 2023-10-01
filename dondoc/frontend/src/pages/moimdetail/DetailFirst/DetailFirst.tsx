@@ -52,6 +52,7 @@ function DetailFirst() {
   const [moimMemberList, setMoimMemberList] = useState<moimMemberList[]>([])
   const [moimDetailInfo, setMoimDetailInfo] = useState<moimDetailInfo>(moimDetailDefault)
   const [selectedMember, setSelectedMember] = useState<moimMemberList>(selectedDefault)
+  const [moimIdNumber, setMoimIdNumber] = useState<string>('')
 
   const OpenModal = () => {
     setModalOpen(true)
@@ -101,6 +102,7 @@ function DetailFirst() {
         setMoimDetailInfo(moimDetail)
         setMoimMemberList(res.data.response.moimMembers)
         setSelectedMember(res.data.response.moimMembers[0])
+        setMoimIdNumber(res.data.response.moimId)
       }
       catch(err) {
         console.log(err)
@@ -176,7 +178,7 @@ function DetailFirst() {
           {inviteModalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseInviteModal}/>
-              <InviteModal setModalOpen={setInviteModalOpen} />
+              <InviteModal setModalOpen={setInviteModalOpen} moimIdNumber={moimIdNumber}/>
             </>
           )}
           {infoModalOpen && (
