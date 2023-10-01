@@ -64,7 +64,7 @@ function Router() {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/accountInfo/:accountid" element={<AccountInfoPage/>}/>
             <Route path="/sendmoneyfirst/:accountid" element={<SendMoneyFirstPage/>}/>
-            <Route path="/sendmoneysecond" element={<SendMoneySecondPage/>}/>
+            <Route path="/sendmoneysecond/:accountid" element={<SendMoneySecondPage/>}/>
             <Route path="/callaccount" element={<CallAccountPage/>}/>
             <Route path="/error" element={<ErrorPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>

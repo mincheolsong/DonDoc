@@ -6,9 +6,8 @@
 
 .midContainer{
     width: 98%;
-    height: 10rem ;
+    height: 8rem ;
     background-color: white;
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -61,11 +60,11 @@
     font-size: 1.2rem;
     border-radius: 0.8rem;
     border: 0;
-    
+    margin-right: 2.5rem;
 }
 
 /*눌렸을때 */
 .sendMoneyBtn:active{
-    background-color: #3772FF;
+    background-color: #0056d8;
     color: white;
 }

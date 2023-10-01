@@ -16,7 +16,7 @@ function Home() {
     return state.user
   })
   const goSendMoney = (account:Account) =>{
-    navigate(`/sendmoneyfirst/${account.accountNumber}`)
+    navigate(`/sendmoneyfirst/${account.accountId}`,{state:{account:account}})
   }
   const goAccountInfo = (account:Account) =>{
     navigate(`/accountinfo/${account.accountNumber}`,{state:{account:account}})
@@ -26,6 +26,7 @@ function Home() {
     navigate("makeAccount")
   }
   const [allAccount,setAllAccount] =useState<Account[]>([])
+
 
   useEffect(()=>{
     moim.get("/api/account/account/list",{headers:{
@@ -46,7 +47,8 @@ function Home() {
       {/* 헤더, 유저박스 */}
       <Header/>
       <div style={{display:"flex" , flexDirection:"column",  alignItems:"center", marginTop:"1.5rem"}}>
-      <UserBox userCharacter={peter} username="peter" rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
+      <UserBox userCharacter={`src/assets/characterImg/${1}.png`} username={userInfo.phoneNumber} rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
+
       {/* 헤더, 유저박스 */}
 
 
@@ -65,14 +67,14 @@ function Home() {
         goAccountInfo(account)
       }} className={styles.midContainer}>
       <div style={{display:"flex",flexDirection:"row"}}>
-      <img src={account.bankCode} alt="" />
-      <div>
-      {account.accountName}
+      <img style={{marginLeft:"7%",width:"25%",height:"100%"}} src={`/src/assets/Bank_Logo/${account.bankCode}.svg`} alt="" />
+      <div style={{width:"20rem",fontWeight:"bold",marginLeft:"3rem"}}>
+      <p style={{margin:"0",fontSize:"1.2rem",color:"#6C6C6C"}}>{account.accountName}</p>
       <br /> 
-      {account.balance}원
+      <p style={{margin:"0",fontSize:"1.6rem"}}>{account.balance}원</p>
     </div>
     </div>
-        
+    
         <button onClick={(e)=>{
           e.stopPropagation()
           goSendMoney(account)}} className={styles.sendMoneyBtn}>송금</button>

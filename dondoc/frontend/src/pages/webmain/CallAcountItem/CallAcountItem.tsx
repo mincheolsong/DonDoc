@@ -58,7 +58,7 @@ function CallAcountItem(props:PropsType) {
         <div className={styles.mainContainer}>
         {AccountData.map((account,index)=>(
           <div key={index} className={styles.accountItem} onClick={()=>{accountClick(index)}}>
-          <img className={styles.BankIcon} src={hana} alt={account.bankCode} />
+          <img className={styles.BankIcon} src={`/src/assets/Bank_Logo/${account.bankCode}.svg`} alt={account.bankCode} />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start"}}>
             <p>{account.accountName}</p>
             <p><span>{account.bankName}</span>{account.accountNumber}</p>
