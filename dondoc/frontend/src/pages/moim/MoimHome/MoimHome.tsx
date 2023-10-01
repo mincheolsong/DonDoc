@@ -2,6 +2,7 @@ import styles from "./MoimHome.module.css";
 // import haaland from '../../../assets/bbakbbakyee.jpg'
 // import { useEffect } from "react";
 import peter from "../../../assets/image/peter.svg"
+import SubMoimUnit from "./SubMoimUnit/SubMoimUnit";
 import Header from "../../webmain/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -41,8 +42,8 @@ function MoimHome() {
 
   const navigate = useNavigate()
 
-  const GoMoimDetail = () => {
-    navigate('/detailfirst')
+  const GoMoimDetail = (moimId:number) => {
+    navigate(`/detailfirst/${moimId}`)
   }
 
   const InviteMoim = (invite:moimInviteList) => {
@@ -102,7 +103,10 @@ function MoimHome() {
 
           <div className={styles.moimcontent}>
             {myMoimList.length > 0 && myMoimList.map((moim, index) => (
-              <h1 className={styles.moimunit} key={index} onClick={GoMoimDetail}>{moim.moimName}</h1>
+              <div className={styles.moimunit} key={index} onClick={() => GoMoimDetail(moim.moimId)}>
+                <SubMoimUnit 
+                moimId={moim.moimId}/>
+              </div>
             ))}
           </div>
 

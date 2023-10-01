@@ -82,19 +82,34 @@ function InviteModal({setModalOpen}: Props) {
     }
   };
 
+  // const AppendSearchUnit = (unit: searchUnit) => {
+  //   const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
+  //   const isSearchResult = searchResult.phoneNumber
+
+  //   if (!isAlreadyAdded && isSearchResult) {
+  //     const newInviteUnit: newInviteUnit = {
+  //       "userId": unit.userId,
+  //     };
+
+  //     const newInviteList = [...inviteList, newInviteUnit];
+  //     setInviteList(newInviteList);
+  //   }
+  // };
   const AppendSearchUnit = (unit: searchUnit) => {
-    const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
-    const isSearchResult = searchResult.phoneNumber
-
-    if (!isAlreadyAdded && isSearchResult) {
-      const newInviteUnit: newInviteUnit = {
-        "userId": unit.userId,
-      };
-
-      const newInviteList = [...inviteList, newInviteUnit];
-      setInviteList(newInviteList);
+    if (searchResult && searchResult.accountNumber) {
+      const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
+  
+      if (!isAlreadyAdded) {
+        const newInviteUnit: newInviteUnit = {
+          userId: unit.userId,
+        };
+  
+        const newInviteList = [...inviteList, newInviteUnit];
+        setInviteList(newInviteList);
+      }
     }
   };
+  
 
   const DeleteUnit = (inviteUnit: object) => {
     const updatedInviteList = inviteList.filter(item => item !== inviteUnit);
@@ -190,10 +205,27 @@ function InviteModal({setModalOpen}: Props) {
           </div>
           
           <div className={styles.searchresult} onClick={() => AppendSearchUnit(searchResult)}>
-            {searchResult.accountNumber ? (
-              <>와아아아아아아</>
+            {searchResult && searchResult.accountNumber ? (
+              <div className={styles.searchresultunit}>
+                <div className={styles.usercharacter}>
+                  <div className={styles.userImg}>
+                    <img src="" alt="" />
+                  </div>
+                </div>
+                <div className={styles.useraccount}>
+                  <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.nickName}</h2>
+                  {searchResult.accountNumber == "대표계좌가 없습니다." ? (
+                    <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.phoneNumber}</h3>
+                    ):(
+                    <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.accountNumber}</h3>
+                  )}
+                </div>
+                <div className={styles.appendbtn}>
+                  <button>추가</button>
+                </div>
+              </div>
             ):(
-              <>우우우우우우우</>
+              <></>
             )}
           </div>
 
@@ -204,9 +236,26 @@ function InviteModal({setModalOpen}: Props) {
               </div>
               <div className={styles.friendbox}>
                 {friendList.length > 0 && friendList.map((friend, index) => (
-                  <div className={styles.friendunit} onClick={() => AppendInviteList(friend)} key={index}>
-                    {friend.friendId} {friend.id}
-                  </div>
+                  // <div className={styles.friendunit} onClick={() => AppendInviteList(friend)} key={index}>
+                    <div className={styles.searchresultunit} onClick={() => AppendInviteList(friend)} key={index}>
+                      <div className={styles.usercharacter}>
+                        <div className={styles.userImg}>
+                          <img src="" alt="" />
+                        </div>
+                      </div>
+                      <div className={styles.useraccount}>
+                        <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.friendId}</h2>
+                        {searchResult.accountNumber == "대표계좌가 없습니다." ? (
+                          <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.phoneNumber}</h3>
+                          ):(
+                          <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.accountNumber}</h3>
+                        )}
+                      </div>
+                      <div className={styles.appendbtn}>
+                        <button>추가</button>
+                      </div>
+                    </div>
+                  // </div>
                 ))}
               </div>
             </div>
