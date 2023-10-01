@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버
+    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버
 
     public AccountServiceImpl(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
@@ -364,5 +364,31 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findByAccountId(Long accountId){
         return accountRepository.findByAccountId(accountId).orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+    }
+
+    @Override
+    public AccountCertificationDto.Response certificationAccount(String accountNumber, Long bankCode) {
+        Map<String, Object> requestMap = new HashMap<>();
+
+        requestMap.put("accountNumber", accountNumber);
+        requestMap.put("bankCode", bankCode);
+
+        Map response = (Map<String, String>)webClient.post()
+                .uri("/bank/account/certification")
+                .bodyValue(requestMap)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block()
+                .get("response");
+
+        if(response == null){
+            throw new NotFoundException("계좌를 찾을 수 없습니다.");
+        }
+
+        return AccountCertificationDto.Response.builder()
+                .msg("계좌 조회에 성공했습니다.")
+                .success(true)
+                .response(response)
+                .build();
     }
 }

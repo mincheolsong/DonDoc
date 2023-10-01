@@ -28,4 +28,6 @@ public interface AccountService{
     TransferDto.Response transferAmount(Long userId, TransferDto.Request request);
 
     Account findByAccountId(Long accountId);
+
+    AccountCertificationDto.Response certificationAccount(String accountNumber, Long bankCode);
 }

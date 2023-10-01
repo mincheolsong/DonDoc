@@ -150,5 +150,15 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/account/certification")
+    @ApiOperation(value = "계좌 실명 조회", notes = "계좌 실명 조회 API ", response = ApiUtils.class)
+    public ApiResult certificationAccount(@RequestBody AccountCertificationDto.Request request){
+        try{
+            AccountCertificationDto.Response res = accountService.certificationAccount(request.getAccountNumber(), request.getBankCode());
+            return ApiUtils.success(res);
+        }catch(NotFoundException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
     // 비밀번호 재설정? 이거는 추후에 추가
 }
