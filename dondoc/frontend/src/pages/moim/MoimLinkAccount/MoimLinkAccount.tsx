@@ -15,15 +15,26 @@ type linkList = { account: object, index:number,
   bankCode:number,
   bankName:string}
 
-function MoimLinkAccount() {
-  const [selectAccount, setSelectAccount] = useState<object>({
-    accountId:0,
+type selectAccount = {
+  accountId:number,
+  accountName:string,
+  accountNumber:string,
+  accountbalance:number,
+  bankCode:number,
+  bankName:string
+}
+
+const defaultAccount = {
+  accountId:0,
   accountName:'',
   accountNumber:'',
   accountbalance:0,
   bankCode:0,
   bankName:''
-  })
+}
+
+function MoimLinkAccount() {
+  const [selectAccount, setSelectAccount] = useState<selectAccount>(defaultAccount)
   const [linkList, setLinkList] = useState<linkList[]>([])
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -35,7 +46,7 @@ function MoimLinkAccount() {
   const moimName = state.moimName
   const moimInfo = state.moimInfo
 
-  const ChangeSelectAccount = (account:object) => {
+  const ChangeSelectAccount = (account:selectAccount) => {
     setSelectAccount(account)
   }
 
@@ -49,10 +60,10 @@ function MoimLinkAccount() {
   }
 
   const ToNext = () => {
-    if (selectAccount) {
+    if (selectAccount.accountNumber) {
       navigate('/moimselect', { state: { moimName: moimName, moimInfo: moimInfo, account: selectAccount } })
     } else {
-      console.log('선택해주세요')
+      alert('연결 계좌를 선택해주세요')
     }
   }
 

@@ -1,5 +1,5 @@
 import styles from "./MoimInviteUnit.module.css";
-import haaland from "../../../../assets/bbakbbakyee.jpg";
+import haaland from "../../../../assets/MoimLogo/dondoclogo.svg";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
