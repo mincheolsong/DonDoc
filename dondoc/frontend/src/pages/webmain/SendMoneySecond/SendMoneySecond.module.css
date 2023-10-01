@@ -76,3 +76,12 @@
     background-color: #0056d8;
     color: white;
 }
+
+.won{
+    font-size: 2.3rem;
+    right: 17%;
+    position: fixed;
+    font-weight: bold;
+    z-index: 1;
+
+}
