@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from "./MoimSelectAccount.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
 
 
 type datas = {type:object,
@@ -37,9 +38,9 @@ const datas = [
 function MoimSelectAccount() {
 
   const [selectCategory, setSelectCategory] = useState<data>({
-    name:'',
-    info:'',
-    code:0
+    name:'한명 관리',
+    info:'한명 관리 계좌는 관리자 한명이 계좌의 이체권한을 가지는 모임통장 형식입니다.',
+    code:1
   })
 
   const ChangeCategory = (type:data) => {
@@ -52,10 +53,6 @@ function MoimSelectAccount() {
   const moimName = state.moimName
   const moimInfo = state.moimInfo
   const account = state.account
-
-  const ToBack = () => {
-    navigate(-1)
-  }
 
   const ToNext = () => {
     if(selectCategory.code) {
@@ -73,7 +70,7 @@ function MoimSelectAccount() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-
+        {/* 
         <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback} onClick={ToBack}>
@@ -83,7 +80,8 @@ function MoimSelectAccount() {
           <div className={styles.pagename}>
             <h3>모임통장 생성</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name="연결계좌"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>

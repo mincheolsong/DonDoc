@@ -1,11 +1,11 @@
 import styles from "./MoimLinkAccount.module.css";
-import ssafylogo from '../../../assets/ssafy_logo.png'
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { BASE_URL } from "../../../constants";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
 type linkList = { account: object, index:number, 
   accountId:number,
@@ -50,9 +50,6 @@ function MoimLinkAccount() {
     setSelectAccount(account)
   }
 
-  const ToBack = () => {
-    navigate(-1)
-  }
   const watchList = () => {
     console.log(linkList)
     console.log(selectAccount)
@@ -94,7 +91,7 @@ function MoimLinkAccount() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.topbar}>
+        {/* <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback} onClick={ToBack}>
               back
@@ -103,7 +100,8 @@ function MoimLinkAccount() {
           <div className={styles.pagename}>
             <h3>모임통장 생성</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name="계좌유형"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
@@ -115,7 +113,7 @@ function MoimLinkAccount() {
               <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account)}>
                 <div className={styles.accountunit}>
                   <div className={styles.banklogo}>
-                    <img src={ssafylogo} alt="" className={styles.ssafylogo} />
+                    <img src={`src/assets/Bank_Logo/${account.bankCode}.svg`} alt="이미지가 없습니다" className={styles.ssafylogo} />
                   </div>
                   <div className={styles.accountinfo}>
                     <p>{`${account.accountName}`}</p>
