@@ -137,24 +137,31 @@ public class UserController {
 
     }
 
-    // 프로필 검색
+    // 다른사람 프로필 검색
     @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 검색", notes = "프로필 검색 API", response = ApiResult.class)
     public ApiResult findProfile(@PathVariable @ApiParam(value = "유저 아이디") Long userId ,@AuthenticationPrincipal UserDetails userDetails){
         try{
             log.info(userDetails.getUsername());
             log.info(userId.toString());
-            if(Long.parseLong(userDetails.getUsername()) == userId){
-                ProfileDto.Response profileDto = userService.myProfile(userId);
-                return ApiUtils.success(profileDto);
-            }else{
-                ProfileDto.Response profileDto = userService.findProfile(userId);
-                return ApiUtils.success(profileDto);
-            }
+            ProfileDto.Response profileDto = userService.findProfile(userId);
+            return ApiUtils.success(profileDto);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
 
+    @GetMapping("/profile/myprofile")
+    @ApiOperation(value = "내 프로필 조회", notes = "내 프로필 조회 API", response = ApiResult.class)
+    public ApiResult myProfile(@AuthenticationPrincipal UserDetails userDetails){
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            log.info(userId.toString());
+            ProfileDto.Response profileDto = userService.myProfile(userId);
+            return ApiUtils.success(profileDto);
+        }catch(NotFoundException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     // 사용자 검색(친구 추가 또는 모임에서 멤버 초대할때) => 핸드폰 번호로 검색 => don't search me

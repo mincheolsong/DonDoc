@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService{
 
         if(user.getMainAccount() == null){
             return ProfileDto.Response.builder()
-                    .msg("내 프로필을 불러왔습니다.")
+                    .msg(user.getName() + "님의 프로필을 불러왔습니다.")
                     .success(true)
                     .mine(true)
                     .imageNumber(user.getImageNumber())
