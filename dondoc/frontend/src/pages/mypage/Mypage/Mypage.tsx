@@ -3,16 +3,39 @@ import { UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import Nav from "../../Nav";
 import {useEffect, useState} from "react"
-interface Props {
+import { useNavigate } from "react-router-dom";
+import InputBtnModal from "../../toolBox/InputBtnModal";
+import { moim } from "../../../api/api";
 
-}
-
-function Mypage(props: Props) {
+function Mypage() {
+  const navigate = useNavigate();
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
   
+  
+
+  const [nickNameModal,setNickNameModal] = useState<boolean>(false);
+ 
+  const nickNameChangeR = (nickname:string)=>{
+    console.log(nickname)
+    moim.put('/api/user/update/nickname',nickname,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
+      console.log(response)
+    }).catch((err)=>{
+      console.log(err)
+    })
+    setNickNameModal(false)
+  }
+
+  const nickNameChangeL = (nickname:string)=>{
+    console.log(nickname)
+    setNickNameModal(false)
+  }
+
+
   useEffect(()=>{
     console.log(userInfo)
   },[])
@@ -21,27 +44,46 @@ function Mypage(props: Props) {
     <div className={styles.mainContainer}>
       <img className={styles.settingIcon} src={"/src/assets/image/setting.svg"} alt="" />
       <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%"}}>마이페이지</p>
+      
+      {/* 캐릭터 */}
       {userInfo.imageNumber==0 ? <img onClick={()=>{
-          console.log('12')
+          navigate("/changecharacter")
         }} style={{marginTop:"5%",marginBottom:"2%",width:"40%"}} src={"/src/assets/image/NoUserIcon.svg"} alt="" />
        :
        <div onClick={()=>{
-        console.log('12')
+        navigate("/changecharacter")
       }} className={styles.characterBox}>
         <img style={{width:"90%"}}  src={`/src/assets/characterImg/${userInfo.imageNumber}.png`} alt="" />
        </div>
         }
+        {/* 캐릭터 */}
+        {nickNameModal ? <InputBtnModal callbackRight={nickNameChangeR} callbackLeft={nickNameChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.nickname} width="90vw" height="35vh"/> : ''}
+      
+
+        {/* 이름 */}
         <div onClick={()=>{
-          console.log('15')
+          setNickNameModal(true)
         }} style={{display:"flex",justifyContent:"center",alignItems:"baseline",width:"40%",marginTop:"2%"}}>
         <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginLeft:"12%"}}>{userInfo.nickname} </p><img style={{marginLeft:"5%",width:"1.2rem"}} src={'/src/assets/image/pencil.svg'} alt="" />
         </div>
         <p style={{fontSize:"1.4rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{userInfo.name}</p>
-        <img style={{width:"30%"}} src="/src/assets/image/friendList.svg" alt="" />
+         {/* 이름 */}
 
+
+       {/* 친구목록 */}
+        <img style={{width:"30%"}} src="/src/assets/image/friendList.svg" alt="" />
+        {/* 친구목록 */}
+
+
+{/* 대표계좌 */}
         <div style={{width:"80%",display:"flex",justifyContent:"space-between", alignItems:"center",marginTop:"3%" }}>
-          <p style={{fontWeight:"bold",fontSize:"2rem"}}>대표계좌</p><img style={{width:"32%"}} src="/src/assets/image/moimBtn.svg" alt="" />
+          <p style={{fontWeight:"bold",fontSize:"2rem"}}>대표계좌</p><img onClick={()=>{
+            navigate('/accountlist')
+          }} style={{width:"32%"}} src="/src/assets/image/moimBtn.svg" alt="" />
         </div>
+
+
+
 
         {userInfo.mainAccount ? <div className={styles.accountBox}>
         <img src={`/src/assets/Bank_Logo/${Account.bankCode}.svg`} alt="" />
@@ -51,14 +93,18 @@ function Mypage(props: Props) {
         </div>
       </div>
          : ''}
-
+{/* 대표계좌 */}
           
+
+          {/* 소개 */}
          <div className={styles.bottomMemo}>
           <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",}}>소개</p>
           <div style={{backgroundColor:"white",width:"100%",minHeight:"10rem",borderRadius:"0.8rem",display:"flex",justifyContent:"center",alignItems:"center"}}>
             {userInfo.introduce ? <p>{userInfo.introduce}</p> : <p style={{fontSize:"1.5rem",color:"#9F9F9F"}}>소개를 입력해주세요</p> }
             
           </div>
+
+          {/* 소개 */}
          </div>
 
 
