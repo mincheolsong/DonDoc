@@ -45,7 +45,11 @@ function Signin() {
         const userUpdate = {
           password:password,
           phoneNumber:id,
-          accessToken:response.data.response.accessToken
+          accessToken:response.data.response.accessToken,
+          name:response.data.response.name,
+          nickname:response.data.response.nickname,
+          imageNumber:response.data.response.imageNumber,
+          userId:response.data.response.userId
         }
         dispatch(loginUser(userUpdate))
      

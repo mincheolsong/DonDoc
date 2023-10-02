@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 export type UserType ={
   phoneNumber :string;
   accessToken:string;
-  isLogin:boolean
+  isLogin:boolean;
+  name:string;
+  nickname:string;
+  imageNumber:number;
 }
 
 export type Account = {
@@ -25,7 +28,9 @@ const initialState:UserType = {
   phoneNumber:"",
   accessToken:"",
   isLogin:false,
-
+  name:"",
+  nickname:"",
+  imageNumber:0,
 }
 
 const userSlice = createSlice({
@@ -36,6 +41,9 @@ const userSlice = createSlice({
       state.accessToken = action.payload.accessToken
       state.isLogin = true
       state.phoneNumber = action.payload.phoneNumber
+      state.name = action.payload.name
+      state.nickname = action.payload.nickname
+      state.imageNumber = action.payload.imageNumber
     }
   },
 });

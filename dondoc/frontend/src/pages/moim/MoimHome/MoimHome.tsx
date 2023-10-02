@@ -1,7 +1,7 @@
 import styles from "./MoimHome.module.css";
 // import haaland from '../../../assets/bbakbbakyee.jpg'
 // import { useEffect } from "react";
-import peter from "../../../assets/image/peter.svg"
+// import peter from "../../../assets/characterImg/"
 import SubMoimUnit from "./SubMoimUnit/SubMoimUnit";
 import Header from "../../webmain/Header/Header";
 import { useNavigate } from "react-router-dom";
@@ -66,6 +66,7 @@ function MoimHome() {
         });
         console.log('모임 검색결과:', res.data.response)
         setMyMoimList(res.data.response)
+        console.log('유저 정보:', userInfo)
       }
       catch(err) {
         console.log(err)
@@ -94,7 +95,7 @@ function MoimHome() {
       <div className={styles.content}>
 
         <Header />
-        <UserBox userCharacter={peter} username={userInfo.phoneNumber} rightBtn="모임 생성"/>
+        <UserBox userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="모임 생성"/>
 
         <div className={styles.moimlist}>
           <div className={styles.moimlisttitle}>

@@ -2,13 +2,15 @@ import styles from "./DetailFirst.module.css";
 import { useState, useEffect } from 'react'
 import haaland from "../../../assets/characterImg/0.png"
 import RequestModal from "./RequestModal/RequestModal";
-import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
+// import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
 import InviteModal from "./InviteModal/InviteModal";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { useParams } from "react-router-dom";
+import dondocLogo from "../../../assets/MoimLogo/dondoclogo.svg"
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
 type moimMemberList = {
   userId: number,
@@ -48,7 +50,7 @@ function DetailFirst() {
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+  // const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
   const [moimMemberList, setMoimMemberList] = useState<moimMemberList[]>([])
   const [moimDetailInfo, setMoimDetailInfo] = useState<moimDetailInfo>(moimDetailDefault)
   const [selectedMember, setSelectedMember] = useState<moimMemberList>(selectedDefault)
@@ -66,12 +68,12 @@ function DetailFirst() {
   const CloseInviteModal = () => {
     setInviteModalOpen(false)
   }
-  const OpenINfoModal = () => {
-    setInfoModalOpen(true)
-  }
-  const CloseInfoModal = () => {
-    setInfoModalOpen(false)
-  }
+  // const OpenINfoModal = () => {
+  //   setInfoModalOpen(true)
+  // }
+  // const CloseInfoModal = () => {
+  //   setInfoModalOpen(false)
+  // }
 
   const SelectMember = (member:moimMemberList) => {
     setSelectedMember(member)
@@ -116,28 +118,36 @@ function DetailFirst() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
+        {/* <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback}>
               back
             </button>
           </div>
           <div className={styles.pagename}>
-            <h3>올해는 다이어트 성공</h3>
+            <h3>{moimDetailInfo.moimName}</h3>
           </div>
           <div className={styles.bookicon} onClick={OpenINfoModal}>
             <h3>ICON</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name={moimDetailInfo.moimName} fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.userscontent}>
           
           <div className={styles.usersbox}>
             {moimMemberList.length > 0 && moimMemberList.map((member, index) => (
-              <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
-                <img src={haaland} alt="" />
-                <p>{member.userId}</p>
-              </div>
+              selectedMember.userId === member.userId ? (
+                <div style={{backgroundColor: '#526BEA', color: 'white'}} className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  <img src={haaland} alt="" />
+                  <p>{member.nickname}</p>
+                </div>
+              ) : (
+                <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  <img src={haaland} alt="" />
+                  <p>{member.nickname}</p>
+                </div>
+              )
             ))}
           </div>
 
@@ -151,7 +161,7 @@ function DetailFirst() {
 
             <div className={styles.selectaccount} onClick={() => CopyAccount(selectedMember.accountNumber)}>
               <div className={styles.banklogo}>
-                <img src={haaland} alt="" />
+                <img src={`/src/assets/Bank_Logo/${selectedMember.bankCode}.svg`} alt="" />
               </div>
               <div className={styles.accountinfo}>
                 <div className={styles.accounttext}>
@@ -181,12 +191,12 @@ function DetailFirst() {
               <InviteModal setModalOpen={setInviteModalOpen} moimIdNumber={moimIdNumber}/>
             </>
           )}
-          {infoModalOpen && (
+          {/* {infoModalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
               <InfoUpdateModal setModalOpen={setInfoModalOpen} />
             </>
-          )}
+          )} */}
 
         </div>
 
@@ -194,7 +204,7 @@ function DetailFirst() {
           <div className={styles.moimaccountbox}>
             <div className={styles.moimaccountinfo}>
               <div className={styles.moimbanklogo}>
-                <img src={haaland} alt="" className={styles.moimaccountlogo} />
+                <img src={dondocLogo} alt="" className={styles.moimaccountlogo} />
               </div>
               <div className={styles.moiminfo}>
                 <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimName}</p>
