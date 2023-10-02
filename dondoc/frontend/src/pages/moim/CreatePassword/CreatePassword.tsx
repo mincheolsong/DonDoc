@@ -1,6 +1,7 @@
 import styles from "./CreatePassword.module.css";
 import React, { useCallback, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
 
 function CreatePassword() {
@@ -101,9 +102,7 @@ function CreatePassword() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
-          <button>back</button>
-        </div>
+        <BackLogoHeader name="비밀번호 등록"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.inputment}>
           <h1>비밀번호를 등록해주세요</h1>

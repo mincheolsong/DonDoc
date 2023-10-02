@@ -5,6 +5,7 @@ import TermsOfUseModal from './TermsOfUse/TermsOfUse';
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import { UserType } from '../../../store/slice/userSlice';
+import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
 
 function CreateResult() {
 
@@ -25,10 +26,6 @@ function CreateResult() {
   }
   const CloseTerms = () => {
     setTermsOpen(false)
-  }
-
-  const ToBack = () => {
-    navigate(-1)
   }
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -74,7 +71,7 @@ function CreateResult() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
+        {/* <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback} onClick={ToBack}>
               back
@@ -83,7 +80,8 @@ function CreateResult() {
           <div className={styles.pagename}>
             <h3>모임통장 생성</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name="연결계좌"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
