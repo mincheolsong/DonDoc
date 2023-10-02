@@ -339,6 +339,21 @@ public class UserServiceImpl implements UserService{
         redisTemplate.opsForSet().add("black", token);
     }
 
+    @Override
+    public IntroduceDto.Response changeIntroduce(Long userId, String introduce) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        user.setIntroduce(introduce);
+
+        userRepository.save(user);
+
+        return IntroduceDto.Response.builder()
+                .msg("소개글의 변경이 완료되었습니다.")
+                .success(true)
+                .build();
+    }
+
 
 }
 

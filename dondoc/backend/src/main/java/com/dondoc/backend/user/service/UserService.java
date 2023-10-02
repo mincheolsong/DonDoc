@@ -24,4 +24,6 @@ public interface UserService {
     User findById(Long userId);
 
     void logOut(String token);
+
+    IntroduceDto.Response changeIntroduce(Long userId, String introduce);
 }

@@ -189,4 +189,16 @@ public class UserController {
     }
 
 
+    @PutMapping("/profile/introduce")
+    @ApiOperation(value = "소개글 변경", notes = "소개글 변경 API", response = ApiResult.class)
+    public ApiResult changeIntroduce(@AuthenticationPrincipal UserDetails userDetails, @RequestBody String introduce){
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            IntroduceDto.Response response = userService.changeIntroduce(userId, introduce);
+            return ApiUtils.success(response.getMsg());
+        }catch (NotFoundException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }
