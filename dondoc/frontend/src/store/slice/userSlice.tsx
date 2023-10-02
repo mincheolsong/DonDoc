@@ -5,7 +5,9 @@ export type UserType ={
   accessToken:string;
   isLogin:boolean;
   name:string;
-  nickname:string;
+  introduce:string;
+  nickname:string|null;
+  mainAccount:string|null;
   imageNumber:number;
 }
 
@@ -29,8 +31,11 @@ const initialState:UserType = {
   accessToken:"",
   isLogin:false,
   name:"",
+  introduce:"",
   nickname:"",
+  mainAccount:"",
   imageNumber:0,
+
 }
 
 const userSlice = createSlice({
@@ -42,7 +47,9 @@ const userSlice = createSlice({
       state.isLogin = true
       state.phoneNumber = action.payload.phoneNumber
       state.name = action.payload.name
+      state.introduce = action.payload.introduce
       state.nickname = action.payload.nickname
+      state.mainAccount = action.payload.mainAccount
       state.imageNumber = action.payload.imageNumber
     }
   },

@@ -1,8 +1,6 @@
 import styles from "./Home.module.css";
 import Nav from "../../Nav";
 import Header from "../Header";
-import peter from "../../../assets/image/peter.svg"
-import { NavLink } from "react-router-dom";
 import  {useEffect,useState}  from "react";
 import { useNavigate } from "react-router-dom";
 import { moim } from "../../../api/api";
@@ -38,8 +36,12 @@ function Home() {
         balance: account.balance.toLocaleString(), // 잔액을 포맷팅하여 문자열로 변환
       }));
       setAllAccount(formattedAccountList)
-
+  
     })
+    .catch((err)=>{
+      console.log(err)
+    })
+    console.log(userInfo)
   },[])
 
   return (
@@ -47,7 +49,7 @@ function Home() {
       {/* 헤더, 유저박스 */}
       <Header/>
       <div style={{display:"flex" , flexDirection:"column",  alignItems:"center", marginTop:"1.5rem"}}>
-      <UserBox userCharacter={`src/assets/characterImg/${1}.png`} username={userInfo.phoneNumber} rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
+      <UserBox userId={userInfo.phoneNumber} userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
 
       {/* 헤더, 유저박스 */}
 
@@ -104,7 +106,7 @@ export function UserBox(props){
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
       <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{props.username} 의 DonDoc</p>
       <button className={styles.myProfileBtn} onClick={()=>{
-        navigate("/mypage")
+        navigate(`/mypage/${props.userId}`)
       }}> 나의프로필가기</button>
     </div>
       </div>
@@ -120,12 +122,3 @@ export function UserBox(props){
 
 }
 
-
-
-export function accountItem(){
-  return(
-    <div>
-      
-    </div>
-  )
-}

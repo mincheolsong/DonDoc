@@ -41,18 +41,21 @@ function Signin() {
   const SignInPost = ()=>{
     moim.post("/api/user/signin",userSetting)
     .then((response)=>{
+      console.log(response)
       if(response.data.success == true){
         const userUpdate = {
           password:password,
           phoneNumber:id,
+          
           accessToken:response.data.response.accessToken,
-          name:response.data.response.name,
           nickname:response.data.response.nickname,
+          name:response.data.response.name,
+          introduce:response.data.response.introduce,
+          mainAccount:response.data.response.mainAccount,
           imageNumber:response.data.response.imageNumber,
-          userId:response.data.response.userId
         }
         dispatch(loginUser(userUpdate))
-     
+        
         navigate('/')
       }else{
         setErrText(response.data.error.message)
