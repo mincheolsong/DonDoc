@@ -16,7 +16,6 @@ function AccountInfo() {
   const {state} = useLocation();
   const Account = state.account
   useEffect(()=>{
-    console.log(Account.bankCode)
   },[])
   return (
   <div>
@@ -31,8 +30,8 @@ function AccountInfo() {
           navigate(`/sendmoneyfirst/${Account.accountNumber}`,{state:{account:Account}})
         }}>송금</button>
       </div>
+
       <div className={styles.accountBox}>
-        
         <img src={`/src/assets/Bank_Logo/${Account.bankCode}.svg`} alt="" />
         <div style={{display:"flex",flexDirection:"column"}}>
           <p style={{margin:"0",color:"#6C6C6C"}}>{Account.accountName}</p>

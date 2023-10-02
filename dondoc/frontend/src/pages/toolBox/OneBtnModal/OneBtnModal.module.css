@@ -20,7 +20,8 @@
 }
 
 .mainBox{
-    position: absolute;
+    position: fixed;
     z-index: 3;
-    margin-left: 5vw;
+    left: 10%;
+    top: 0.1rem;
 }
