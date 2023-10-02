@@ -147,9 +147,9 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
     }
   }
 
-  const WatchSome = () => {
-    console.log(inviteList)
-  }
+  // const WatchSome = () => {
+  //   console.log(inviteList)
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -226,7 +226,7 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
               <div className={styles.searchresultunit}>
                 <div className={styles.usercharacter}>
                   <div className={styles.userImg}>
-                    <img src="" alt="" />
+                    <img src={`/src/assets/characterImg/${searchResult.imageNumber}.png`} alt="" />
                   </div>
                 </div>
                 <div className={styles.useraccount}>
@@ -257,7 +257,7 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
                     <div className={styles.searchresultunit} onClick={() => AppendInviteList(friend)} key={index}>
                       <div className={styles.usercharacter}>
                         <div className={styles.userImg}>
-                          <img src="" alt="" />
+                          <img src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
                         </div>
                       </div>
                       <div className={styles.useraccount}>
@@ -301,7 +301,7 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
         </div>
 
         <div className={styles.infobtns}>
-          <button onClick={WatchSome}>aaa</button>
+          {/* <button onClick={WatchSome}>aaa</button> */}
           <button onClick={ModalClose}>닫기</button>
           <button onClick={InviteMoimFriend}>초대하기</button>
         </div>
