@@ -1,1 +1,29 @@
 /* your css code */
+.midContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: scroll;
+    height: 45vh;
+    width: 90%;
+    background-color: white;
+    justify-content: center;
+    border-radius: 0.8rem;
+    
+}
+.characterIcon{
+    width: 30%;
+    margin-bottom: 3%;
+}
+
+.selectBtn{
+    width: 40%;
+    height: 3.3rem;
+    margin-top: 5%;
+    background-color: white;
+    border: 0.1rem solid #E2E2E2;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 2rem;
+
+}

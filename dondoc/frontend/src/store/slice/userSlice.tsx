@@ -35,7 +35,6 @@ const initialState:UserType = {
   nickname:"",
   mainAccount:"",
   imageNumber:0,
-
 }
 
 const userSlice = createSlice({
@@ -51,13 +50,16 @@ const userSlice = createSlice({
       state.nickname = action.payload.nickname
       state.mainAccount = action.payload.mainAccount
       state.imageNumber = action.payload.imageNumber
-    }
+    },
+  changeImage(state,action){
+    state.imageNumber = action.payload.imageNumber
+  }
   },
 });
 
 
 export const {
-  loginUser
+  loginUser,changeImage
 } = userSlice.actions;
 
 export default userSlice; 
