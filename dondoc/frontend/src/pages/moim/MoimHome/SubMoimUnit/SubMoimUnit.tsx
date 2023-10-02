@@ -50,7 +50,6 @@ function SubMoimUnit(props: Props) {
   const [moimInfo, setMoimInfo] = useState<moimInfo>(defaultMoimInfo)
 
   useEffect(() => {
-    console.log(props.moimId)
     const fetchData = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/moim/detail/${props.moimId}`, {
@@ -60,7 +59,7 @@ function SubMoimUnit(props: Props) {
           }
         });
         if (res.data.response){
-          console.log('모임  조회결과:', res.data.response)
+          // console.log('모임  조회결과:', res.data.response)
           setMoimInfo(res.data.response)
         } else {
           console.log('없음')

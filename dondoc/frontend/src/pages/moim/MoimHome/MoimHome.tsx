@@ -17,7 +17,9 @@ type myMoimList = { moim: object,
   moimName:string,
   introduce:string,
   moimType:number,
-  identificationNumber:string}
+  identificationNumber:string,
+  userType:number,
+  accountId:number}
 
 type moimInviteList = {
   moimId: number,
@@ -42,8 +44,8 @@ function MoimHome() {
 
   const navigate = useNavigate()
 
-  const GoMoimDetail = (moimId:number) => {
-    navigate(`/detailfirst/${moimId}`)
+  const GoMoimDetail = (moim:myMoimList) => {
+    navigate(`/detailfirst/${moim.moimId}`, {state: {userType: moim.userType, accountId:moim.accountId}})
   }
 
   const InviteMoim = (invite:moimInviteList) => {
@@ -66,7 +68,6 @@ function MoimHome() {
         });
         console.log('모임 검색결과:', res.data.response)
         setMyMoimList(res.data.response)
-        console.log('유저 정보:', userInfo)
       }
       catch(err) {
         console.log(err)
@@ -104,7 +105,7 @@ function MoimHome() {
 
           <div className={styles.moimcontent}>
             {myMoimList.length > 0 && myMoimList.map((moim, index) => (
-              <div className={styles.moimunit} key={index} onClick={() => GoMoimDetail(moim.moimId)}>
+              <div className={styles.moimunit} key={index} onClick={() => GoMoimDetail(moim)}>
                 <SubMoimUnit 
                 moimId={moim.moimId}/>
               </div>
