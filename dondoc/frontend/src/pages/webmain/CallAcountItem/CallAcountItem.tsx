@@ -1,10 +1,8 @@
 import styles from "./CallAcountItem.module.css";
-
 import {ImCheckboxChecked} from "react-icons/im"
 import {ImCheckboxUnchecked} from "react-icons/im"
 import { CheckAccount } from "../../../store/slice/userSlice";
 import { useState } from "react"
-import hana from "../../../assets/image/hana.svg"
 import { UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { moim } from "../../../api/api";

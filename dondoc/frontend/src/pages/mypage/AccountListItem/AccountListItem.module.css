@@ -1,0 +1,49 @@
+/* your css code */
+.accountItem{
+    margin-top: 13%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    background-color: white;
+    border-radius: 0.8rem;
+    height: 13%;
+}
+
+.BankIcon{
+    margin-left: 1.3rem;
+    width: 18%;
+}
+
+.CheckBoxU{
+    width: 30%;
+    height: 30%;
+    fill: #3772FF;
+
+}
+
+.CheckBoxC{
+    width: 30%;
+    height: 30%;   
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 83vh;
+    overflow: scroll;
+}
+
+.bottomBtn{
+    border-radius: 0.6rem;
+    border: solid #E4E4E4 0.1rem;;
+    background-color: white;
+    width: 40%;
+    height: 5rem;
+    font-weight: bold;
+    margin-bottom: 10%;
+
+}
