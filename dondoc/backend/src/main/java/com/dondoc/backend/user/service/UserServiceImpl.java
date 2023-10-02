@@ -192,6 +192,7 @@ public class UserServiceImpl implements UserService{
                     .mine(true)
                     .imageNumber(user.getImageNumber())
                     .name(user.getName())
+                    .nickName(user.getNickName())
                     .phoneNumber(user.getPhoneNumber())
                     .introduce(user.getIntroduce())
 //                    .bankName(account.getBankName())
@@ -209,6 +210,7 @@ public class UserServiceImpl implements UserService{
                 .mine(false)
                 .imageNumber(user.getImageNumber())
                 .name(user.getName())
+                .nickName(user.getNickName())
                 .introduce(user.getIntroduce())
                 .birth(user.getBirth())
                 .bankName(account.getBankName())
@@ -229,6 +231,7 @@ public class UserServiceImpl implements UserService{
                     .mine(true)
                     .imageNumber(user.getImageNumber())
                     .name(user.getName())
+                    .nickName(user.getNickName())
                     .phoneNumber(user.getPhoneNumber())
                     .introduce(user.getIntroduce())
 //                    .bankName(account.getBankName())
@@ -246,6 +249,7 @@ public class UserServiceImpl implements UserService{
                 .mine(true)
                 .imageNumber(user.getImageNumber())
                 .name(user.getName())
+                .nickName(user.getNickName())
                 .phoneNumber(user.getPhoneNumber())
                 .introduce(user.getIntroduce())
                 .bankName(account.getBankName())
@@ -295,39 +299,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UpdateUserDto.Response updateUser(UpdateUserDto.Request req, Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
-
-        // 비밀번호 체크
-        if(!passwordEncoder.matches(req.getPassword() + user.getSalt() , user.getPassword())){
-            log.info("비밀번호 변경");
-            String salt = encryptionUtils.makeSalt();
-            String password = passwordEncoder.encode(req.getPassword() + salt);
-            user.setSalt(salt);
-            user.setPassword(password);
-        }
-
-        // 닉네임 체크
-        if(!user.getNickName().equals(req.getNickName())){
-            log.info("닉네임변경");
-            user.setNickName(req.getNickName());
-        }
-
-        // 이미지 번호
-        if(user.getImageNumber() == 0 || !(user.getImageNumber() == req.getImageNumber())){
-            log.info("이미지 변경");
-            user.setImageNumber(req.getImageNumber());
-        }
-
-        userRepository.save(user);
-        log.info("완료");
-        return UpdateUserDto.Response.builder()
-                .msg("회원정보 변경이 완료되었습니다.")
-                .success(true)
-                .build();
-    }
-    @Override
     public User findById(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
@@ -350,6 +321,60 @@ public class UserServiceImpl implements UserService{
 
         return IntroduceDto.Response.builder()
                 .msg("소개글의 변경이 완료되었습니다.")
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public UpdateUserDto.Response updateImage(Long userId, int imageNumber) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        user.setImageNumber(imageNumber);
+
+        userRepository.save(user);
+
+        return UpdateUserDto.Response.builder()
+                .msg("프로필 이미지 변경이 완료되었습니다.")
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public UpdateUserDto.Response updateNickName(Long userId, String nickName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        user.setNickName(nickName);
+
+        userRepository.save(user);
+
+        return UpdateUserDto.Response.builder()
+                .msg("닉네임 변경이 완료되었습니다.")
+                .success(true)
+                .build();
+    }
+
+    @Override
+    public UpdateUserDto.Response updatePassword(Long userId, UpdateUserDto.Request req) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        // 비밀번호 체크
+        if(passwordEncoder.matches(req.getPassword() + user.getSalt() , user.getPassword())){
+            log.info("비밀번호 일치");
+            String salt = encryptionUtils.makeSalt();
+            String password = passwordEncoder.encode(req.getNewPassword() + salt);
+            user.setSalt(salt);
+            user.setPassword(password);
+        }else{
+            throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
+        }
+
+        userRepository.save(user);
+
+        return UpdateUserDto.Response.builder()
+                .msg("비밀번호 변경이 완료되었습니다.")
                 .success(true)
                 .build();
     }

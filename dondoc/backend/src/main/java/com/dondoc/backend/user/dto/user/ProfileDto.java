@@ -14,6 +14,7 @@ public class ProfileDto {
     public static class Response{
         private int imageNumber;
         private String name;
+        private String nickName;
         private String introduce;
         private Long bankCode;
         private String bankName;

@@ -124,12 +124,39 @@ public class UserController {
         }
     }
 
-    // 회원 정보 변경
-    @PutMapping("/update")
-    @ApiOperation(value = "회원정보 변경", notes = "회원정보 변경 API", response = ApiResult.class)
-    public ApiResult updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserDto.Request req){
+    // 이미지 번호 변경
+    @PutMapping("/update/image")
+    @ApiOperation(value = "프로필 이미지 변경", notes = "프로필 이미지 변경 API", response = ApiResult.class)
+    public ApiResult updateImage(@AuthenticationPrincipal UserDetails userDetails, int imageNumber){
         try{
-            UpdateUserDto.Response res = userService.updateUser(req, Long.parseLong(userDetails.getUsername()));
+            Long userId = Long.parseLong(userDetails.getUsername());
+            UpdateUserDto.Response res = userService.updateImage(userId, imageNumber);
+            return ApiUtils.success(res.getMsg());
+        }catch(Exception e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    // 닉네임 변경
+    @PutMapping("/update/nickname")
+    @ApiOperation(value = "닉네임 변경", notes = "닉네임 변경 API", response = ApiResult.class)
+    public ApiResult updateNickName(@AuthenticationPrincipal UserDetails userDetails, String nickName){
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            UpdateUserDto.Response res = userService.updateNickName(userId, nickName);
+            return ApiUtils.success(res.getMsg());
+        }catch(Exception e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 비밀번호 변경
+    @PutMapping("/update/password")
+    @ApiOperation(value = "비밀번호 변경", notes = "비밀번호 변경 API", response = ApiResult.class)
+    public ApiResult updatePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserDto.Request req){
+        try{
+            Long userId = Long.parseLong(userDetails.getUsername());
+            UpdateUserDto.Response res = userService.updatePassword(userId, req);
             return ApiUtils.success(res.getMsg());
         }catch(Exception e){
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
