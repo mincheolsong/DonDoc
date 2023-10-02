@@ -5,7 +5,10 @@ import searchIcon from "../../../assets/image/search.svg"
 import {useState,useEffect} from "react"
 import SelectIcon from "../../toolBox/SelectIcon";
 import { useNavigate,useLocation } from "react-router-dom";
-
+import { moim } from "../../../api/api";
+import { UserType } from "../../../store/slice/userSlice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import OneBtnModal from "../../toolBox/OneBtnModal";
 interface sendMoneyAccount{
   accountId: string|null;
   password:string|null;
@@ -24,7 +27,11 @@ function SendMoneyFirst() {
   const [iconModal,setIconModal] = useState<boolean>(false);
   const [iconN,setIconN] = useState<string>('');
   const [toAccountNumber,setToAccountNumber] = useState<string>('');
-  const [secondSuccess,setSecondSuccess] = useState<boolean>(true);
+  const [secondSuccessModal,setSecondSuccessModal] = useState<boolean>(false);
+  const [failText,setFailText] = useState<string>('')
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
   // const IconClick = 
   // "accountId": 6,
   // "password": 1234,
@@ -41,10 +48,8 @@ function SendMoneyFirst() {
   const iconC = (code:string)=>{
     setIconN(code);
     setIconModal(!iconModal)
-    console.log(iconN)
   }
   useEffect(()=>{
-    console.log(state)
     
     const AccountTo = 
       {
@@ -60,17 +65,41 @@ function SendMoneyFirst() {
     setToAccount(AccountTo)
   },[])
 
+
+  const modalclose = ()=>{
+    setSecondSuccessModal(false)
+  }
+
+
   const goSendMoneySecond = ()=>{
-    const newSecondAccount = {...toAccountSetting,
-      toAccount : toAccountNumber,
-      toCode : iconN
-    }
-    setToAccount(newSecondAccount)
-    naviate(`/sendmoneysecond/${toAccountSetting?.accountId}`,{state:{myAccount:state,toAccount:newSecondAccount}})
-    console.log(toAccountSetting)
     
-      
-  
+   
+    const checkId = {
+      accountNumber:toAccountNumber,
+      bankCode: iconN
+    }
+    moim.post(`/api/account/account/certification`,checkId,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }})
+    .then((response)=>{
+      if(response.data.success == true){
+        const newSecondAccount = {...toAccountSetting,
+          toAccount : toAccountNumber,
+          toCode : iconN,
+          sign: response.data.response.response.ownerName
+        }
+        naviate(`/sendmoneysecond/${toAccountSetting?.accountId}`,{state:{myAccount:state,toAccount:newSecondAccount}})
+      }else{
+        setFailText(response.data.error.message)
+        setSecondSuccessModal(true)
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
+
+    
   }
 
 
@@ -78,6 +107,7 @@ function SendMoneyFirst() {
     <div className={styles.container}>
       <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="0.8rem" />
       <div className={styles.midContainer}>
+      {secondSuccessModal ? <OneBtnModal width="80vw" height="30vh" title={false} titleText="" contentFont="1.3rem" contentText={failText} btncolor="white" btnTextColor="black" btnText="닫기" callback={modalclose} /> : ''}
         <p style={{fontSize:"2.7rem", fontWeight:"bold",marginTop:"3rem"}}>
           누구에게 송금할까요? 
         </p>
@@ -100,7 +130,7 @@ function SendMoneyFirst() {
       <p style={{fontSize:"2.4rem",fontWeight:"bold",marginLeft:"1rem",marginBottom:"0.4rem"}}>친구목록에서 보내기</p>
 
          {iconModal ? <SelectIcon iconClick={iconC}/> : ' '} 
-        
+         
 
 
       <div className={styles.bottomBox}>

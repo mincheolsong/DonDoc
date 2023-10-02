@@ -4,17 +4,24 @@ import hana from "../../../assets/image/hana.svg"
 import { AiFillCheckSquare } from 'react-icons/ai';
 import { useNavigate,useLocation } from "react-router-dom";
 import {useEffect ,useState} from 'react'
-
+import { moim } from "../../../api/api";
 
 function SendMoneySecond() {
   
   const naviate = useNavigate();
   const {state} = useLocation();
-  const [toTransferAmount,setToTransferAmount] = useState<number|string>(0)
+  const toAccount = state.toAccount
+  const [toTransferAmount,setToTransferAmount] = useState<number|string>('')
   const transC = (e:React.ChangeEvent<HTMLInputElement>) =>{
     const value: string = e.target.value;
     const removedCommaValue: number = Number(value.replaceAll(",", ""));
     setToTransferAmount(removedCommaValue.toLocaleString());
+  }
+  const sendMoneyFinal = ()=>{
+    const sendMoney = {...toAccount,
+    transferAmount : toTransferAmount
+    }
+    console.log(sendMoney)
   }
   useEffect(()=>{
     console.log(state)
@@ -37,7 +44,7 @@ function SendMoneySecond() {
       <img src={`/src/assets/Bank_Logo/${state.toAccount.toCode}.svg`} style={{marginLeft:"2rem",marginRight:"10%"}} />
           <div className={styles.botItemInner}>
               
-              <p style={{margin:"0px",fontWeight:"bold",marginTop:'1.7rem',fontSize:"1.4rem"}}> {state.toAccount.sign}<AiFillCheckSquare color="#00D26A"/> </p>
+              <p style={{margin:"0px",fontWeight:"bold",marginTop:'1.7rem',fontSize:"1.4rem",display:"flex", alignItems:"center"}}>{state.toAccount.sign}&nbsp; <AiFillCheckSquare color="#00D26A"/> </p>
               <p style={{margin:"0px",color:"#626262",fontSize:"1.1rem",fontWeight:"bold"}}> {state.toAccount.toAccount}</p>
           
           </div>
@@ -49,7 +56,7 @@ function SendMoneySecond() {
         <input onChange={transC} style={{textAlign:"center"}} type="text" value={toTransferAmount} className={styles.inputBox} />
         <span className={styles.won}>원</span>
         </div>
-        <button className={styles.confirmBtn}>확인</button>
+        <button onClick={sendMoneyFinal} className={styles.confirmBtn}>확인</button>
       </div>
 
 

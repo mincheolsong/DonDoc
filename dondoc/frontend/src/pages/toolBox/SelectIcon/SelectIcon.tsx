@@ -10,7 +10,7 @@ function SelectIcon(props) {
   return (
     <div className={styles.IconBox}>
         {Bank_List.map((bank,index)=>(
-            <div onClick={()=>{clickHandler(bank.code)}} className={styles.Icon}>
+            <div key={index} onClick={()=>{clickHandler(bank.code)}} className={styles.Icon}>
             <img src={`/src/assets/Bank_Logo/${bank.code}.svg`} alt="" />
             <p>{bank.bank}</p>
             </div>
