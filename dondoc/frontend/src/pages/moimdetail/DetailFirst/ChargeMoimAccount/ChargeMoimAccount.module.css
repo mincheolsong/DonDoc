@@ -70,4 +70,8 @@
 .infobtns button {
     width: 12rem;
     height: 3.6rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
 }

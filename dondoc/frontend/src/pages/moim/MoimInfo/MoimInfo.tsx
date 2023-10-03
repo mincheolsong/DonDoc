@@ -59,30 +59,36 @@ function MoimInfo() {
     navigate(-1)
   }
 
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
+
   const AcceptInvite = async() => {
     const data = {
       "accept": true,
       "accountId": selectedAccount.accountId,
       "moimMemberId": invite.moimMemberId
     }
-    try {
-      const res = await axios.patch(`${BASE_URL}/api/moim/invite/check`, data, {
-        headers: {
-          'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + token
+    if (agreeTerms) {
+        try {
+          const res = await axios.patch(`${BASE_URL}/api/moim/invite/check`, data, {
+            headers: {
+              'Content-Type': 'application/json', 
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          // console.log('전송데이터', data)
+          console.log(res.data)
+          if (!res.data.success) {
+            alert(res.data.error.message)
+          } else{
+            navigate("/moimhome")
+          }
+        } catch(err) {
+          console.log(err)
         }
-      })
-      // console.log('전송데이터', data)
-      console.log(res.data)
-      if (res.data.message == '계좌를 찾을 수 없습니다.') {
-        alert('계좌를 선택해 주세요.')
-      } else{
-        navigate("/moimhome")
+      } else {
+        alert('약관에 동의해주세요.');
       }
-    } catch(err) {
-      console.log(err)
     }
-  }
   const RefuseInvite = async() => {
     const data = {
       "accept": false,
@@ -151,7 +157,14 @@ function MoimInfo() {
                 </button>
               </div>
               <div className={styles.checkbox}>
-                <input type="checkbox" id="scales" name="sclaes" /><label htmlFor="scales">약관에 동의합니다</label>
+                <input
+                  type="checkbox"
+                  id="scales"
+                  name="sclaes"
+                  checked={agreeTerms}
+                  onChange={() => setAgreeTerms(!agreeTerms)}
+                />
+                <label htmlFor="scales">약관에 동의합니다</label>
               </div>
             </div>
           </div>

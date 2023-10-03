@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import { UserType } from '../../../store/slice/userSlice';
 import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
+import { BASE_URL } from '../../../constants';
 
 function CreateResult() {
 
@@ -42,30 +43,51 @@ function CreateResult() {
     "password": password
   }
 
+  // const CreateMoim = async () => {
+  //   try {
+  //     const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
+  //       headers: {
+  //         'Content-Type': 'application/json', 
+  //         'Authorization': 'Bearer ' + token
+  //       }
+  //     });
+  //     console.log(response.data)
+  //     alert('모임이 생성되었습니다.')
+  //     navigate('/moimhome')
+  //   } catch(error) {
+  //     console.log('error:', error)
+  //   }
+  // }
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
+
   const CreateMoim = async () => {
-
-    const BASE_URL = 'http://j9d108.p.ssafy.io:9999'
-
-    try {
-      const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
-        headers: {
-          'Content-Type': 'application/json', 
-          'Authorization': 'Bearer ' + token
-        }
-      });
-      console.log(response.data)
-      alert('모임이 생성되었습니다.')
-      navigate('/moimhome')
-    } catch(error) {
-      console.log('error:', error)
+    if (agreeTerms) {
+      try {
+        const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+        });
+        console.log(response.data);
+        alert('모임이 생성되었습니다.');
+        navigate('/moimhome');
+      } catch (error) {
+        console.log('error:', error);
+      }
+    } else {
+      // 약관에 동의하지 않은 경우 경고 메시지 표시
+      alert('약관에 동의해주세요.');
     }
   }
 
-  const WatchInfo = () => {
-    console.log('state:',state)
-    console.log('data:', data)
-    console.log('token:', token)
-  }
+// ...
+
+  // const WatchInfo = () => {
+  //   console.log('state:',state)
+  //   console.log('data:', data)
+  //   console.log('token:', token)
+  // }
 
   return (
     <div className={styles.container}>
@@ -81,7 +103,7 @@ function CreateResult() {
             <h3>모임통장 생성</h3>
           </div>
         </div> */}
-        <BackLogoHeader name="연결계좌"fontSize="2rem" left="5rem" top="0.8rem"/>
+        <BackLogoHeader name="모임통장 생성"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
@@ -111,8 +133,18 @@ function CreateResult() {
                   약관보기
                 </button>
               </div>
-              <div className={styles.checkbox}>
+              {/* <div className={styles.checkbox}>
                 <input type="checkbox" id="scales" name="sclaes" /><label htmlFor="scales">약관에 동의합니다</label>
+              </div> */}
+              <div className={styles.checkbox}>
+                <input
+                  type="checkbox"
+                  id="scales"
+                  name="sclaes"
+                  checked={agreeTerms}
+                  onChange={() => setAgreeTerms(!agreeTerms)}
+                />
+                <label htmlFor="scales">약관에 동의합니다</label>
               </div>
             </div>
           </div>
@@ -123,7 +155,7 @@ function CreateResult() {
         
         </div>
 
-        <button onClick={WatchInfo}></button>
+        {/* <button onClick={WatchInfo}></button> */}
 
         {termsOpen && (
             <>

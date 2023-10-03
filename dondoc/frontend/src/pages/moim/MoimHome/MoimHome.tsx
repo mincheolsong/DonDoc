@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MoimInviteUnit from "./MoimInviteUnit/MoimInviteUnit";
 import { BASE_URL } from "../../../constants";
+import Nav from "../../Nav/Nav";
 
 type myMoimList = { moim: object, 
   moimId:number,
@@ -132,6 +133,8 @@ function MoimHome() {
       <button onClick={ShowState}>보여주라</button>
 
       </div>
+
+      <Nav />
     </div>
     </div>
   );
