@@ -23,7 +23,7 @@
 
 .userscontent {
     margin-top: 1rem;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     justify-content: space-around;
 }
@@ -167,7 +167,7 @@
 
 .moimaccountcontent {
     height: 20vh;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
 }
 

@@ -28,6 +28,7 @@ import MoimJoinPage from './pages/moim/MoimJoin/MoimJoin'
 import MoimPasswordPage from './pages/moim/CreatePassword/CreatePassword'
 import MoimRePasswordPage from './pages/moim/CreatePasswordRe/CreatePasswordRe'
 import MoimInfoPage from './pages/moim/MoimInfo/MoimInfo'
+import AccountPassword from "./pages/moimdetail/DetailFirst/ChargeMoimAccount/AccountPassword/AccountPassword";
 
 
 // mission tap
@@ -84,6 +85,7 @@ function Router() {
             <Route path="/moimpassword" element={<MoimPasswordPage/>}/>
             <Route path="/moimrepassword" element={<MoimRePasswordPage/>}/>
             <Route path="/moiminfo" element={<MoimInfoPage/>}/>
+            <Route path="/accountpassword" element={<AccountPassword/>}/>
 
 
             {/* mission tap */}

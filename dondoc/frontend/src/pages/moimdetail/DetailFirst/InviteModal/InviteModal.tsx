@@ -185,8 +185,11 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
           'Authorization': 'Bearer ' + token
         }
       });
-      console.log(response.data)
-      setModalOpen(false)
+      if (response.data.success == true) {
+        // console.log(response.data)
+        alert('초대에 성공하였습니다.')
+        setModalOpen(false)
+      }
     } catch(error) {
       console.log('error:', error)
     }
