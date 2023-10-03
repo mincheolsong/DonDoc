@@ -94,7 +94,7 @@ function Router() {
             <Route path="/accountlist" element={<AccountListPage/>}/>
             <Route path="/changepassword" element={<ChangePasswordPage/>}/>
             <Route path="/changecharacter" element={<ChangeCharacterPage/>}/>
-            <Route path="/diffprofile" element={<DiffProfilePage/>}/>
+            <Route path="/diffprofile/:userId" element={<DiffProfilePage/>}/>
             <Route path='/mypage/:userId' element={<MypagePage/>}/>
             <Route path="/setting" element={<SettingPage/>}/>
             <Route path="/friendlist" element={<FriendListPage/>}/>

@@ -7,12 +7,15 @@ import { UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { moim } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeMainAccount } from "../../../store/slice/userSlice";
 
 type PropsType = {
   account : CheckAccount[]
 }
 
 function AccountListItem(props:PropsType) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -38,15 +41,16 @@ function AccountListItem(props:PropsType) {
      return account.isCheck == true
     })
    
-    moim.put('/api/account/account/main',CheckedAccount?.accountId,{headers:{
+    moim.put('/api/account/account/main',{accountId:CheckedAccount?.accountId},{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }})
     .then((response)=>{
+      dispatch(changeMainAccount({mainAccount:CheckedAccount?.accountId}))
       console.log(response)
-      console.log(CheckedAccount)
       navigate(`/mypage/${userInfo.phoneNumber}`)
     })
     .catch((err)=>{
+      console.log(CheckedAccount)
       console.log(err)
 
     })

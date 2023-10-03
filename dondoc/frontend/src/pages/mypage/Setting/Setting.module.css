@@ -1,1 +1,21 @@
 /* your css code */
+.mainBox{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.settingItem{
+    margin-top: 15%;
+    background-color: white;
+    border-radius: 0.6rem;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+    font-size: 2rem;
+    font-weight: bold;
+}

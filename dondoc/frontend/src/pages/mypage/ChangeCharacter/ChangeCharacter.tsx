@@ -25,7 +25,7 @@ function ChangeCharacter() {
       imageNumber:selectedNum,
       nickName:userInfo.nickname
     }
-    moim.put("/api/user/update/image",{imageNumber:selectedNum},{headers:{
+    moim.put(`/api/user/update/image`,{imageNumber:selectedNum},{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
       console.log(response)
