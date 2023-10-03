@@ -92,6 +92,7 @@ public class AccountController {
     public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OneRequestDto.AccountId info) throws Exception{
         try{
             Long accountId = info.getAccountId();
+            log.info(accountId.toString());
             Long userId = Long.parseLong(userDetails.getUsername());
             AccountDto.Response res = accountService.setAccount(userId, accountId);
             return ApiUtils.success(res);

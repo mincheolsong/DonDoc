@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService{
                     .build();
         }
 
-        Account account = accountRepository.findById(user.getMainAccount())
+        Account account = accountRepository.findByAccountId(user.getMainAccount())
                 .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
@@ -240,7 +240,7 @@ public class UserServiceImpl implements UserService{
                     .build();
         }
 
-        Account account = accountRepository.findById(user.getMainAccount())
+        Account account = accountRepository.findByAccountId(user.getMainAccount())
                 .orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
 
         return ProfileDto.Response.builder()
@@ -280,7 +280,7 @@ public class UserServiceImpl implements UserService{
                     .accountNumber("대표계좌가 없습니다.")
                     .build();
         }else{
-            Account account = accountRepository.findById(user.getMainAccount())
+            Account account = accountRepository.findByAccountId(user.getMainAccount())
                     .orElseThrow(() -> new NotFoundException("대표계좌를 찾을 수 없습니다."));
 
             return FindUserDto.Response.builder()
