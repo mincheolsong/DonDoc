@@ -51,6 +51,10 @@ import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
 import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
 import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
 
+//Notification
+import Noti_List from "./pages/notification/noti_list";
+import Friend_Re from "./pages/notification/Request/FriendRequest/Friend_Re";
+
 function Router() {
 
     return (
@@ -108,7 +112,9 @@ function Router() {
             <Route path="/detailsecond/:moimId" element={<DetailSecond/>}/>
             <Route path="/detailthird/:moimId" element={<DetailThird/>}/>
 
-
+            {/* Notification */}
+            <Route path='/notification/:userId' element={<Noti_List />}></Route>
+            <Route path='/notification/:userId/FriendRequests' element={<Friend_Re />}></Route>
 
             
         </Routes>
