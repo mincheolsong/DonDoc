@@ -6,9 +6,9 @@ import styles from "./Search.module.css";
 import { BASE_URL } from "../../../constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { dividerClasses } from "@mui/material";
 
-type User = {
+
+type Result = {
   userId: number,
   phoneNumber: string,
   imageNumber: number,
@@ -20,7 +20,7 @@ type User = {
 }
 
 function Search() {
-  const [Result, setUserList] = useState<User[]>([])
+  const [Result, setUserList] = useState<Result[]>([])
   const [PhoneNumber, setPhoneNumber] = useState<string>('')
 
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ function Search() {
   const token = userInfo.accessToken
 
   const GoProfile = (id:number) => {
-    navigate(`profile/${id}`)
+    navigate(`/profile/${id}`)
   }
 
   const InputNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -56,19 +56,19 @@ function Search() {
   return (
     <>
     <div className={styles.Background}>
-      <button onClick={SearchUser}>검색</button>
+      <button onClick={SearchUser} >검색</button>
       <input className={styles.SearchBar} placeholder="추가하고 싶은 친구의 전화번호를 입력해 주세요."
       onChange={InputNumber}/>
       {Result.length ?     <div className={styles.topContainer}>
       <div style={{display:"flex",width:"60%"}}>
-      <img src={Result.imageNumber} style={{width:"35%"}} />
+      <img src={Result[0].imageNumber} style={{width:"35%"}} />
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Result.nickname}</p>
+      <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Result[0].nickName}</p>
     </div>
       </div>
     <div>
       <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} 
-      onClick = {() => GoProfile(Result.userId)}>프로필 가기</button>
+      onClick = {() => GoProfile(Result[0].userId)}>프로필 가기</button>
     </div>
   </div> : <div className={styles.ResultContainer}>검색 내용이 없습니다.</div>}
     

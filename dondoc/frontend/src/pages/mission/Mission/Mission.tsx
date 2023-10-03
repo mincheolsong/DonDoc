@@ -1,12 +1,11 @@
 import styles from "./Mission.module.css";
+import Header from "../../webmain/Header/Header";
 
-interface Props {
 
-}
-
-function Mission(props: Props) {
+function Mission() {
   return (
     <>
+    <Header />
       <div />
     </>
   );
