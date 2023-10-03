@@ -5,9 +5,7 @@ import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.user.dto.user.*;
 import com.dondoc.backend.user.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
@@ -128,9 +126,9 @@ public class UserController {
     // 이미지 번호 변경
     @PutMapping("/update/image")
     @ApiOperation(value = "프로필 이미지 변경", notes = "프로필 이미지 변경 API", response = ApiResult.class)
-    public ApiResult updateImage(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, Integer> info ){
+    public ApiResult updateImage(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OneRequestDto.ImageNumber info ){
         try{
-            Integer imageNumber = info.get("imageNumber");
+            Integer imageNumber = info.getImageNumber();
             Long userId = Long.parseLong(userDetails.getUsername());
             UpdateUserDto.Response res = userService.updateImage(userId, imageNumber);
             return ApiUtils.success(res.getMsg());
@@ -142,9 +140,9 @@ public class UserController {
     // 닉네임 변경
     @PutMapping("/update/nickname")
     @ApiOperation(value = "닉네임 변경", notes = "닉네임 변경 API", response = ApiResult.class)
-    public ApiResult updateNickName(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> info){
+    public ApiResult updateNickName(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OneRequestDto.NickName info){
         try{
-            String nickName = info.get("nickName");
+            String nickName = info.getNickName();
             Long userId = Long.parseLong(userDetails.getUsername());
             UpdateUserDto.Response res = userService.updateNickName(userId, nickName);
             return ApiUtils.success(res.getMsg());
@@ -221,9 +219,9 @@ public class UserController {
 
     @PutMapping("/profile/introduce")
     @ApiOperation(value = "소개글 변경", notes = "소개글 변경 API", response = ApiResult.class)
-    public ApiResult changeIntroduce(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> info){
+    public ApiResult changeIntroduce(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OneRequestDto.Introduce info){
         try{
-            String introduce = info.get("introduce");
+            String introduce = info.getIntroduce();
             Long userId = Long.parseLong(userDetails.getUsername());
             IntroduceDto.Response response = userService.changeIntroduce(userId, introduce);
             return ApiUtils.success(response.getMsg());

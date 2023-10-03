@@ -4,6 +4,7 @@ import com.dondoc.backend.common.exception.NotFoundException;
 import com.dondoc.backend.common.utils.ApiUtils;
 import com.dondoc.backend.common.utils.ApiUtils.ApiResult;
 import com.dondoc.backend.user.dto.account.*;
+import com.dondoc.backend.user.dto.user.OneRequestDto;
 import com.dondoc.backend.user.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -88,9 +89,9 @@ public class AccountController {
     // 대표계좌 설정
     @PutMapping("/account/main")
     @ApiOperation(value = "대표 계좌 설정", notes = "대표 계좌 설정 API", response = ApiUtils.class)
-    public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, Long> info) throws Exception{
+    public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OneRequestDto.AccountId info) throws Exception{
         try{
-            Long accountId = info.get("accountId");
+            Long accountId = info.getAccountId();
             Long userId = Long.parseLong(userDetails.getUsername());
             AccountDto.Response res = accountService.setAccount(userId, accountId);
             return ApiUtils.success(res);
