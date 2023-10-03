@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService{
                 .introduce(user.getIntroduce())
                 .birth(user.getIntroduce())
                 .nickname(user.getNickName())
+                .mainAccount(user.getMainAccount().toString())
                 .imageNumber(user.getImageNumber())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
