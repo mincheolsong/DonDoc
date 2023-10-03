@@ -30,7 +30,7 @@ function MoimInviteUnit(props: Props) {
           <p>{props.inviter}님이 {phoneNumber}님을 {props.moimName}모임에 초대하였습니다.</p>
         </div>
         <div className={styles.btns}>
-          <button>자세히</button>
+          {/* <button>자세히</button> */}
         </div>
       </div>
     </div>
