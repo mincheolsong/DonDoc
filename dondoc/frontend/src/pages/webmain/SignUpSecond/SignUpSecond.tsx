@@ -59,34 +59,36 @@ const [nickInnerColor,setNickInnerColor] = useState<boolean>(false);
 const onChangePass = (e:React.ChangeEvent<HTMLInputElement>) => {
   const currentPass = e.target.value;
   setPassWord(currentPass);
-
-  if (validatePwd(currentPass)) {
-    setPassMsg("올바른 비밀번호 입니다.");
-    setPassInnerColor(true)
-  } else {
-
-    if(!currentPass){
-      setPassMsg("")
-    }else
-    setPassMsg("영문 + 숫자 + 특수문자를 포함한 8자리 이상");
-    setPassInnerColor(false)
+  if(!currentPass){
+    setPassMsg("")
+  }{
+    if (validatePwd(currentPass)) {
+      setPassMsg("올바른 비밀번호 입니다.");
+      setPassInnerColor(true)
+    } else {
+      setPassMsg("영문 + 숫자 + 특수문자를 포함한 8자리 이상");
+      setPassInnerColor(false)
+    }
   }
+  
 };
 
 const onChangeConPass = (e:React.ChangeEvent<HTMLInputElement>) => {
   const currentConPass = e.target.value;
-  if (passWord == currentConPass){
+  if(!currentConPass){
+    setConPassMsg("")
+  }else{
+    if (passWord == currentConPass){
     setConPassMsg("비밀번호가 일치합니다.")
     setConPassWord(true)
     setConPassInnerColor(true)
-  } else {
-    if(!currentConPass){
-      setConPassMsg("")
-    }else
+  } 
+   else{
     setConPassMsg("비밀번호가 일치하지 않습니다.");
     setConPassWord(false)
     setConPassInnerColor(false)
-  }
+  }}
+  
 };
 
 const onChangeNick = (e:React.ChangeEvent<HTMLInputElement>) => {

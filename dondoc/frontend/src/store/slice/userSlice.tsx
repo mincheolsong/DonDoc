@@ -53,13 +53,23 @@ const userSlice = createSlice({
     },
   changeImage(state,action){
     state.imageNumber = action.payload.imageNumber
+  },
+  changeIntroduce(state,action){
+    state.introduce = action.payload.introduce
+  },
+  changeNickName(state,action){
+    state.nickname = action.payload.nickname
+  },
+  changeMainAccount(state,action){
+    state.mainAccount = action.payload.mainAccount
   }
   },
+  
 });
 
 
 export const {
-  loginUser,changeImage
+  loginUser,changeImage,changeIntroduce,changeNickName,changeMainAccount
 } = userSlice.actions;
 
 export default userSlice; 
