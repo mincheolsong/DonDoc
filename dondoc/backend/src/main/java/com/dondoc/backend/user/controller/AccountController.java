@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -87,8 +88,9 @@ public class AccountController {
     // 대표계좌 설정
     @PutMapping("/account/main")
     @ApiOperation(value = "대표 계좌 설정", notes = "대표 계좌 설정 API", response = ApiUtils.class)
-    public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, Long accountId) throws Exception{
+    public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, Long> info) throws Exception{
         try{
+            Long accountId = info.get("accountId");
             Long userId = Long.parseLong(userDetails.getUsername());
             AccountDto.Response res = accountService.setAccount(userId, accountId);
             return ApiUtils.success(res);

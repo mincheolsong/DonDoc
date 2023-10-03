@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -127,8 +128,9 @@ public class UserController {
     // 이미지 번호 변경
     @PutMapping("/update/image")
     @ApiOperation(value = "프로필 이미지 변경", notes = "프로필 이미지 변경 API", response = ApiResult.class)
-    public ApiResult updateImage(@AuthenticationPrincipal UserDetails userDetails, int imageNumber){
+    public ApiResult updateImage(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, Integer> info ){
         try{
+            Integer imageNumber = info.get("imageNumber");
             Long userId = Long.parseLong(userDetails.getUsername());
             UpdateUserDto.Response res = userService.updateImage(userId, imageNumber);
             return ApiUtils.success(res.getMsg());
@@ -140,8 +142,9 @@ public class UserController {
     // 닉네임 변경
     @PutMapping("/update/nickname")
     @ApiOperation(value = "닉네임 변경", notes = "닉네임 변경 API", response = ApiResult.class)
-    public ApiResult updateNickName(@AuthenticationPrincipal UserDetails userDetails, String nickName){
+    public ApiResult updateNickName(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> info){
         try{
+            String nickName = info.get("nickName");
             Long userId = Long.parseLong(userDetails.getUsername());
             UpdateUserDto.Response res = userService.updateNickName(userId, nickName);
             return ApiUtils.success(res.getMsg());
@@ -218,8 +221,9 @@ public class UserController {
 
     @PutMapping("/profile/introduce")
     @ApiOperation(value = "소개글 변경", notes = "소개글 변경 API", response = ApiResult.class)
-    public ApiResult changeIntroduce(@AuthenticationPrincipal UserDetails userDetails, String introduce){
+    public ApiResult changeIntroduce(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> info){
         try{
+            String introduce = info.get("introduce");
             Long userId = Long.parseLong(userDetails.getUsername());
             IntroduceDto.Response response = userService.changeIntroduce(userId, introduce);
             return ApiUtils.success(response.getMsg());
