@@ -211,6 +211,8 @@ public class AccountServiceImpl implements AccountService {
 
         if (account.getUser().equals(user)) {
             user.setMainAccount(accountId);
+        }else{
+            throw new NoSuchElementException("유저가 일치하지 않습니다.");
         }
 
 

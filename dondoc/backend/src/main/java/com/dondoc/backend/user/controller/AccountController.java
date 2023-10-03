@@ -97,6 +97,8 @@ public class AccountController {
             return ApiUtils.success(res);
         }catch(NotFoundException e){
             return ApiUtils.error(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(NoSuchElementException e){
+            return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
