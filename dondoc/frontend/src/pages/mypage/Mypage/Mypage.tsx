@@ -1,28 +1,39 @@
 import styles from "./Mypage.module.css";
-import { UserType } from "../../../store/slice/userSlice";
+import { Account, UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import Nav from "../../Nav";
 import {useEffect, useState} from "react"
 import { useNavigate } from "react-router-dom";
 import InputBtnModal from "../../toolBox/InputBtnModal";
 import { moim } from "../../../api/api";
+import { changeIntroduce,changeNickName } from "../../../store/slice/userSlice";
+import { useDispatch } from "react-redux";
+
+import { useLocation } from "react-router-dom";
 
 function Mypage() {
-  const navigate = useNavigate();
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
-  
-  
+  const [mainAccount,setMainAccount] = useState<Account>()
+  const [mainAccountCheck,setMainAccountCheck] = useState<boolean>(false);
 
+  
+// 모달 
   const [nickNameModal,setNickNameModal] = useState<boolean>(false);
- 
+  const [introduceModal,setIntroduceModal] = useState<boolean>(false);
+//  
+
+//모달이벤트 닉네임
   const nickNameChangeR = (nickname:string)=>{
-    console.log(nickname)
-    moim.put('/api/user/update/nickname',nickname,{headers:{
+    moim.put('/api/user/update/nickname',{nickName:nickname},{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
+      dispatch(changeNickName({nickname:nickname}))
       console.log(response)
     }).catch((err)=>{
       console.log(err)
@@ -35,16 +46,55 @@ function Mypage() {
     setNickNameModal(false)
   }
 
+// 모달이벤트 소개
+
+const introduceChangeR = (intro:string)=>{
+  moim.put('/api/user/profile/introduce',{introduce:intro},{headers:{
+    Authorization: `Bearer ${userInfo.accessToken}`
+  }}).then((response)=>{
+    dispatch(changeIntroduce({introduce:intro}))
+    console.log(response)
+  }).catch((err)=>{
+    console.log(err)
+  })
+  setIntroduceModal(false)
+}
+
+const introduceChangeL = (intro:string)=>{
+  console.log(intro)
+  setIntroduceModal(false)
+}
+
+
+
+
+
+useEffect(()=>{ 
+  moim.get(`/api/account/account/detail/${userInfo.mainAccount}`,{headers:{
+    Authorization: `Bearer ${userInfo.accessToken}`}})
+    .then((response)=>{
+      setMainAccount(response.data.response.accountDetail)
+    }).catch((err)=>{
+      console.log(err)
+    }).finally(()=>{
+      setMainAccountCheck(true)
+    })
+  },[])
+
+
 
   useEffect(()=>{
-    console.log(userInfo)
+    // console.log(userInfo)
+    console.log(location.pathname)
   },[])
 
   return (
     <div className={styles.mainContainer}>
-      <img className={styles.settingIcon} src={"/src/assets/image/setting.svg"} alt="" />
+      <img onClick={()=>{
+        navigate('/setting')
+      }} className={styles.settingIcon} src={"/src/assets/image/setting.svg"} alt=""/>
       <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%"}}>마이페이지</p>
-      
+
       {/* 캐릭터 */}
       {userInfo.imageNumber==0 ? <img onClick={()=>{
           navigate("/changecharacter")
@@ -58,7 +108,7 @@ function Mypage() {
         }
         {/* 캐릭터 */}
         {nickNameModal ? <InputBtnModal callbackRight={nickNameChangeR} callbackLeft={nickNameChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.nickname} width="90vw" height="35vh"/> : ''}
-      
+        {introduceModal ? <InputBtnModal callbackRight={introduceChangeR} callbackLeft={introduceChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.introduce} width="90vw" height="35vh"/> : ''}
 
         {/* 이름 */}
         <div onClick={()=>{
@@ -85,22 +135,24 @@ function Mypage() {
 
 
 
-        {userInfo.mainAccount ? <div className={styles.accountBox}>
-        <img src={`/src/assets/Bank_Logo/${Account.bankCode}.svg`} alt="" />
+        {mainAccountCheck? <div className={styles.accountBox}>
+        <img src={`/src/assets/Bank_Logo/${mainAccount.bankCode}.svg`} alt="" />
         <div style={{display:"flex",flexDirection:"column"}}>
-          <p style={{margin:"0",color:"#6C6C6C"}}>{Account.accountName}</p>
-          <p style={{margin:"0"}}>{Account.accountNumber}</p>
+          <p style={{margin:"0",color:"#6C6C6C"}}>{mainAccount.accountName}</p>
+          <p style={{margin:"0"}}>{mainAccount.accountNumber}</p>
         </div>
       </div>
-         : ''}
-{/* 대표계좌 */}
+         : ''} 
+{/* 대표계좌
           
 
           {/* 소개 */}
          <div className={styles.bottomMemo}>
           <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",}}>소개</p>
-          <div style={{backgroundColor:"white",width:"100%",minHeight:"10rem",borderRadius:"0.8rem",display:"flex",justifyContent:"center",alignItems:"center"}}>
-            {userInfo.introduce ? <p>{userInfo.introduce}</p> : <p style={{fontSize:"1.5rem",color:"#9F9F9F"}}>소개를 입력해주세요</p> }
+          <div onClick={()=>{
+            setIntroduceModal(!introduceModal)
+          }} style={{backgroundColor:"white",width:"100%",minHeight:"10rem",borderRadius:"0.8rem",display:"flex",justifyContent:"center",alignItems:"center"}}>
+            {userInfo.introduce ? <p>{userInfo.introduce}</p> : <p style={{fontSize:"1.5rem",color:"#9F9F9F"}}>소개를 입력해 주세요.</p> }
             
           </div>
 

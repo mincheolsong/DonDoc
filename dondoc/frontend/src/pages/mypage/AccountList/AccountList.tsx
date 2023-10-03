@@ -21,14 +21,12 @@ function AccountList() {
       Authorization: `Bearer ${userInfo.accessToken}`
     }})
     .then((response)=>{
-      console.log(response)
       const Data = response.data.response.accountList
       const Account = Data.map((account:CheckAccount)=>{
         account.isCheck = false
         return account
       })
       setAllAccount(Account)
-      console.log(Account)
     })
     .catch((err)=>{
       console.log(err)

@@ -54,6 +54,7 @@ function Signin() {
           mainAccount:response.data.response.mainAccount,
           imageNumber:response.data.response.imageNumber,
         }
+        console.log(response.data.response)
         dispatch(loginUser(userUpdate))
         
         navigate('/')
