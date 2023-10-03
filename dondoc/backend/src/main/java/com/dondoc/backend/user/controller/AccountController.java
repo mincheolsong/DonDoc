@@ -85,7 +85,7 @@ public class AccountController {
     }
 
     // 대표계좌 설정
-    @GetMapping("/account/main")
+    @PutMapping("/account/main")
     @ApiOperation(value = "대표 계좌 설정", notes = "대표 계좌 설정 API", response = ApiUtils.class)
     public ApiResult setAccount(@AuthenticationPrincipal UserDetails userDetails, Long accountId) throws Exception{
         try{
