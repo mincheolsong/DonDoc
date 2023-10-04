@@ -154,7 +154,6 @@ public class MoimMemberServiceImpl implements MoimMemberService {
 
         int flag = 0;
         Account account = accountService.findByAccountId(accountId);
-        System.out.println("findWithMoinMember fetch join 시작");
         MoimMember moimMember = this.findWithMoimAndUser(moimMemberId);
         Moim moim = moimMember.getMoim();
         User user = moimMember.getUser();

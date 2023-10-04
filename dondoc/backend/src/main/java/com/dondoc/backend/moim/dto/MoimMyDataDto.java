@@ -39,35 +39,68 @@ public class MoimMyDataDto {
 
     @Data
     public static class SpendingAmountResponse{
-        private int total;
-        private int shoppping;
-        private int education;
-        private int food;
-        private int leisure;
-        private int etc;
+        private int thisTotal;
+        private int lastTotal;
+        private int thisShoppping;
+        private int lastShoppping;
+        private int thisEducation;
+        private int lastEducation;
+        private int thisFood;
+        private int lastFood;
+        private int thisLeisure;
+        private int lastLeisure;
+        private int thisEtc;
+        private int lastEtc;
 
-        public void changeTotal(int n){
-            this.total += n;
+        public void changeThisTotal(int n){
+            this.thisTotal += n;
         }
 
-        public void changeShopping(int n){
-            this.shoppping+=n;
+        public void changeThisShopping(int n){
+            this.thisShoppping+=n;
         }
 
-        public void changeEducation(int n){
-            this.education+=n;
+        public void changeThisEducation(int n){
+            this.thisEducation+=n;
         }
 
-        public void changeFood(int n){
-            this.food+=n;
+        public void changeThisFood(int n){
+            this.thisFood+=n;
         }
 
-        public void changeLeisure(int n){
-            this.leisure+=n;
+        public void changeThisLeisure(int n){
+            this.thisLeisure+=n;
         }
 
-        public void changeEtc(int n){
-            this.etc+=n;
+        public void changeThisEtc(int n){
+            this.thisEtc+=n;
         }
+
+
+
+        public void changeLastTotal(int n){
+            this.lastTotal += n;
+        }
+
+        public void changeLastShopping(int n){
+            this.lastShoppping+=n;
+        }
+
+        public void changeLastEducation(int n){
+            this.lastEducation+=n;
+        }
+
+        public void changeLastFood(int n){
+            this.lastFood+=n;
+        }
+
+        public void changeLastLeisure(int n){
+            this.lastLeisure+=n;
+        }
+
+        public void changeLastEtc(int n){
+            this.lastEtc+=n;
+        }
+
     }
 }
