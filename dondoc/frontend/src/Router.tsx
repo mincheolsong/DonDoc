@@ -47,9 +47,9 @@ import FriendListPage from './pages/mypage/FriendList/FriendList'
 
 //moim detail
 import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
-import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
-import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
-import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
+// import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
+// import DetailSecond from './pages/moimdetail/DetailSecond/DetailSecond'
+// import DetailThird from './pages/moimdetail/DetailThird/DetailThird'
 
 function Router() {
 
@@ -104,9 +104,9 @@ function Router() {
 
             {/* moim detail */}
             <Route path="/detailmain/:moimId" element={<DetailMain/>}/>
-            <Route path="/detailfirst/:moimId" element={<DetailFirst/>}/>
+            {/* <Route path="/detailfirst/:moimId" element={<DetailFirst/>}/>
             <Route path="/detailsecond/:moimId" element={<DetailSecond/>}/>
-            <Route path="/detailthird/:moimId" element={<DetailThird/>}/>
+            <Route path="/detailthird/:moimId" element={<DetailThird/>}/> */}
 
 
 

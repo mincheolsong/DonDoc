@@ -46,7 +46,7 @@ function MoimHome() {
   const navigate = useNavigate()
 
   const GoMoimDetail = (moim:myMoimList) => {
-    navigate(`/detailfirst/${moim.moimId}`, {state: {userType: moim.userType, accountId:moim.accountId}})
+    navigate(`/detailmain/${moim.moimId}`, {state: {userType: moim.userType, accountId:moim.accountId}})
   }
 
   const InviteMoim = (invite:moimInviteList) => {
