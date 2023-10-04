@@ -9,14 +9,14 @@ import axios from "axios";
 import { BASE_URL } from "../../../constants";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
-import { useParams } from "react-router-dom";
 import dondocLogo from "../../../assets/MoimLogo/dondoclogo.svg"
-import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
+// import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 // import { useLocation } from "react-router-dom";
 
 type Props = {
   accountId : number,
-  userType : number
+  userType : number,
+  moimId: string | undefined
 }
 
 type moimMemberList = {
@@ -50,9 +50,7 @@ const moimDetailDefault = {
   moimAccountNumber: ''
 }
 
-function DetailFirst({userType, accountId}: Props) {
-
-  const { moimId } = useParams();
+function DetailFirst({userType, accountId, moimId}: Props) {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -136,7 +134,7 @@ function DetailFirst({userType, accountId}: Props) {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <BackLogoHeader name={moimDetailInfo.moimName} fontSize="2rem" left="5rem" top="0.8rem"/>
+        {/* <BackLogoHeader name={moimDetailInfo.moimName} fontSize="2rem" left="5rem" top="0.8rem"/> */}
 
         <div className={styles.userscontent}>
           
