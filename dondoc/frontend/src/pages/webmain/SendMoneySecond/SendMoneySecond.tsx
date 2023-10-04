@@ -5,9 +5,12 @@ import { AiFillCheckSquare } from 'react-icons/ai';
 import { useNavigate,useLocation } from "react-router-dom";
 import {useEffect ,useState} from 'react'
 import { moim } from "../../../api/api";
-
+import { UserType } from "../../../store/slice/userSlice";
+import { useSelector } from "react-redux";
 function SendMoneySecond() {
-  
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
   const naviate = useNavigate();
   const {state} = useLocation();
   const toAccount = state.toAccount
@@ -19,12 +22,15 @@ function SendMoneySecond() {
   }
   const sendMoneyFinal = ()=>{
     const sendMoney = {...toAccount,
-    transferAmount : toTransferAmount
+    transferAmount : toTransferAmount,
+    accountId:state.myAccount.account.accountId,
+    toSign:userInfo.name
     }
-    console.log(sendMoney)
+    // console.log(sendMoney)
+    naviate('/sendmoneypassword',{state: sendMoney})
   }
   useEffect(()=>{
-    console.log(state)
+    // console.log(state)
   },[])
   return (
     <div style={{height:"100vh"}}>
@@ -56,7 +62,8 @@ function SendMoneySecond() {
         <input onChange={transC} style={{textAlign:"center"}} type="text" value={toTransferAmount} className={styles.inputBox} />
         <span className={styles.won}>원</span>
         </div>
-        <button onClick={sendMoneyFinal} className={styles.confirmBtn}>확인</button>
+        {toTransferAmount ? <button onClick={sendMoneyFinal} className={styles.confirmBtn}>확인</button> : <button  className={styles.confirmBtndis}>확인</button> }
+
       </div>
 
 

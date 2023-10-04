@@ -46,12 +46,12 @@ function AccountListItem(props:PropsType) {
     }})
     .then((response)=>{
       dispatch(changeMainAccount({mainAccount:CheckedAccount?.accountId}))
-      console.log(response)
+      // console.log(response)
       navigate(`/mypage/${userInfo.phoneNumber}`)
     })
     .catch((err)=>{
-      console.log(CheckedAccount)
-      console.log(err)
+      // console.log(CheckedAccount)
+      // console.log(err)
 
     })
   } 

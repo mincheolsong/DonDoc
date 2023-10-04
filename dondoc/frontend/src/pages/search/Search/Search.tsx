@@ -46,9 +46,9 @@ function Search() {
       }}
       );
       setUserList(response.data.response)
-      console.log(response.data.response)
+      // console.log(response.data.response)
     } catch(error) {
-      console.log('error:', error)
+      // console.log('error:', error)
     }
   }
 

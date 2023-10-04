@@ -41,7 +41,7 @@ function Signin() {
   const SignInPost = ()=>{
     moim.post("/api/user/signin",userSetting)
     .then((response)=>{
-      console.log(response)
+      // console.log(response)
       if(response.data.success == true){
         const userUpdate = {
           password:password,
@@ -54,7 +54,7 @@ function Signin() {
           mainAccount:response.data.response.mainAccount,
           imageNumber:response.data.response.imageNumber,
         }
-        console.log(response.data.response)
+        // console.log(response.data.response)
         dispatch(loginUser(userUpdate))
         
         navigate('/')
@@ -64,7 +64,7 @@ function Signin() {
       
     })
     .catch((error)=>{
-      console.log(error)
+      // console.log(error)
     })
   }
 
