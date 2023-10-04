@@ -60,3 +60,31 @@
     display: flex;
     justify-content: center;
 }
+
+.requestlist {
+    margin-top: 10%;
+    min-height: 75%;
+    border: 1px solid black;
+}
+
+.requestunit {
+    border: 1px solid black;
+    display: flex;
+}
+
+
+
+
+
+
+
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
+    z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }
