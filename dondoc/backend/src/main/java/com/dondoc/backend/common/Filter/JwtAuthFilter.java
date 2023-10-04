@@ -69,7 +69,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v2/api-docs") ||
-                requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
+                requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")
+                || requestURI.startsWith("/websocket")) {
 
             filterChain.doFilter(request, response);
             return;
