@@ -12,7 +12,12 @@ import { UserType } from "../../../store/slice/userSlice";
 import { useParams } from "react-router-dom";
 import dondocLogo from "../../../assets/MoimLogo/dondoclogo.svg"
 import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+
+type Props = {
+  accountId : number,
+  userType : number
+}
 
 type moimMemberList = {
   userId: number,
@@ -45,7 +50,7 @@ const moimDetailDefault = {
   moimAccountNumber: ''
 }
 
-function DetailFirst() {
+function DetailFirst({userType, accountId}: Props) {
 
   const { moimId } = useParams();
 
@@ -53,10 +58,6 @@ function DetailFirst() {
     return state.user
   })
   const token = userInfo.accessToken
-
-  const { state } = useLocation()
-  const userType = state.userType
-  const accountId = state.accountId
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)

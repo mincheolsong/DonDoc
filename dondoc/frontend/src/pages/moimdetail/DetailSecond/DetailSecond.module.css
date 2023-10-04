@@ -1,1 +1,62 @@
-/* your css code */
+.content {
+    display: flex;
+    justify-content: center;
+}
+
+
+.pagetitle {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.maincontent {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 500px;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+}
+
+.requestmoney {
+    width: 40%;
+}
+
+.requestmission {
+    width: 40%;
+}
+
+.icon {
+    width: 4.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+.icon img {
+    width: 100%;
+}
+
+.requesttext {
+    text-align: center;
+}
+
+.requesttext p {
+    margin: 0rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.selectcontent {
+    margin-top: 2rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+}
