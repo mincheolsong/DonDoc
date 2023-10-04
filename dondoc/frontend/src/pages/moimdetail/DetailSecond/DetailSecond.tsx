@@ -1,21 +1,89 @@
 import styles from "./DetailSecond.module.css";
-import BackLogoHeader from "../../toolBox/BackLogoHeader/BackLogoHeader";
-import {useState} from 'react'
+// import BackLogoHeader from "../../toolBox/BackLogoHeader/BackLogoHeader";
+import {useState, useEffect} from 'react'
 import MissionIcon from "/src/assets/MoimLogo/missionicon.svg"
 import MoneyIcon from "/src/assets/MoimLogo/moneyicon.svg"
+import axios from "axios";
+import { BASE_URL } from "../../../constants";
+import { UserType } from "../../../store/slice/userSlice";
+import { useSelector } from "react-redux";
+import RequestInfoModal from "./RequestInfo/RequestInfo";
 
-function DetailSecond() {
+type Props = {
+  moimId: string | undefined
+}
+type category = {
+  id: number,
+  name: string
+}
+
+type withdrawRequestList = {
+  amount:string,
+  category: category,
+  content: string,
+  moimMemberName: string,
+  status: number,
+  title:string
+}
+type missionList = {
+  amount: number,
+  content: string,
+  endDate: string,
+  missionMemberName: string,
+  status: number,
+  title: string
+}
+
+
+function DetailSecond({moimId}: Props) {
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
 
   const [nowSelected, setNowSelected] = useState<boolean>(true)
+  const [withdrawRequestList, setWithdrawRequestList] = useState<withdrawRequestList[]>([])
+  const [missionList, setMissionList] = useState<missionList[]>([])
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+  const OpenInfoModal = () => {
+    setInfoModalOpen(true)
+  }
+  const CloseInfoModal = () => {
+    setInfoModalOpen(false)
+  }
   const ClickMissionTab = () => {
     setNowSelected(false)
   }
   const ClickMoneyTab = () => {
     setNowSelected(true)
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // moim/detail/${moimId}
+        const data = {moimId : moimId}
+        const res = await axios.post(`${BASE_URL}/api/moim/list_req`, data, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        console.log('요청리스트:', res.data.response)
+        setWithdrawRequestList(res.data.response.withdrawRequestList)
+        setMissionList(res.data.response.missionList)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className={styles.container}>
-      <BackLogoHeader name="오늘부터 다이어트" fontSize="2rem" left="5rem" top="0.8rem"/>
+      {/* <BackLogoHeader name="오늘부터 다이어트" fontSize="2rem" left="5rem" top="0.8rem"/> */}
       <div className={styles.content}>
 
       <div className={styles.requests}>
@@ -30,7 +98,7 @@ function DetailSecond() {
                 <img src={MoneyIcon} alt="" />
               </div>
               <div className={styles.requesttext}>
-                <p style={{color: nowSelected ? '#7677E8' : '', borderBottom: nowSelected ? '2px solid #7677E8' : ''}}>요청하기</p>
+                <p style={{color: nowSelected ? '#7677E8' : '', borderBottom: nowSelected ? '2px solid #7677E8' : ''}}>이체요청</p>
               </div>
             </div>
 
@@ -45,6 +113,36 @@ function DetailSecond() {
           </div>
 
 
+          <div className={styles.requestlist}>
+            {nowSelected ? (
+              <>
+                {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
+                  <div className={styles.requestunit} key={index} onClick={OpenInfoModal}>
+                    <p>{money.amount}</p>
+                    <p>{money.category.id}</p>
+                    <p>{money.category.name}</p>
+                    <p>{money.content}</p>
+                    <p>{money.moimMemberName}</p>
+                    <p>{money.status}</p>
+                    <p>{money.title}</p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {missionList.length > 0 && missionList.map((mission, index) => (
+                  <div className={styles.requestunit} key={index}>
+                    <p>{mission.amount}</p>
+                    <p>{mission.content}</p>
+                    <p>{mission.endDate}</p>
+                    <p>{mission.missionMemberName}</p>
+                    <p>{mission.status}</p>
+                    <p>{mission.title}</p>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
 
 
         </div>
@@ -53,7 +151,14 @@ function DetailSecond() {
 
 
       </div>
+        
 
+      {infoModalOpen && (
+        <>
+          <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
+          <RequestInfoModal setInfoModalOpen={setInfoModalOpen}/>
+        </>
+      )}
 
       </div>
     </div>

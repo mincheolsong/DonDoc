@@ -97,7 +97,7 @@ function MoimHome() {
       <div className={styles.content}>
 
         <Header />
-        <UserBox userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="모임 생성"/>
+        <UserBox userId={userInfo.phoneNumber} userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="모임 생성"/>
 
         <div className={styles.moimlist}>
           <div className={styles.moimlisttitle}>
@@ -146,7 +146,8 @@ export default MoimHome;
 type props = {
   userCharacter: string,
   username: string,
-  rightBtn: string
+  rightBtn: string,
+  userId: string
 }
 
 export function UserBox(props:props){
@@ -162,7 +163,7 @@ export function UserBox(props:props){
         <div style={{marginLeft:"1rem",textAlign:"center"}}>
           <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{props.username} 의 DonDoc</p>
           <button className={styles.myProfileBtn} onClick={()=>{
-            navigate("/mypage")
+            navigate(`/mypage/${props.userId}`)
             }}> 나의프로필가기</button>
         </div>
       </div>

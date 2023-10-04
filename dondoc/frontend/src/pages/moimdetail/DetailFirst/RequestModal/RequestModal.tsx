@@ -99,9 +99,13 @@ function RequestModal({setModalOpen}: Props) {
           'Authorization': 'Bearer ' + token
         }
       });
-      console.log(response.data)
-      alert('요청이 완료되었습니다.')
-      setModalOpen(false)
+      if(response.data.success) {
+        console.log(response.data)
+        alert('요청이 완료되었습니다.')
+        setModalOpen(false)
+      } else {
+        alert(response.data.error.message)
+      }
     } catch(error) {
       console.log('error:', error)
     }
@@ -123,9 +127,13 @@ function RequestModal({setModalOpen}: Props) {
           'Authorization': 'Bearer ' + token
         }
       });
-      console.log(response.data)
-      alert('요청이 완료되었습니다.')
-      setModalOpen(false)
+      if (response.data.success) {
+        console.log(response.data)
+        alert('요청이 완료되었습니다.')
+        setModalOpen(false)
+      } else {
+        alert(response.data.error.message)
+      }
     } catch(error) {
       console.log('error:', error)
     }

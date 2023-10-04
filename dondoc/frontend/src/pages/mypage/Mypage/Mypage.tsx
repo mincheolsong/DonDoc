@@ -74,10 +74,11 @@ useEffect(()=>{
     Authorization: `Bearer ${userInfo.accessToken}`}})
     .then((response)=>{
       setMainAccount(response.data.response.accountDetail)
+      if(response.data.response.accountDetail){
+        setMainAccountCheck(true)
+      }
     }).catch((err)=>{
       console.log(err)
-    }).finally(()=>{
-      setMainAccountCheck(true)
     })
   },[])
 
