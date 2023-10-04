@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./RequestModal.module.css";
-import haaland from "../../../../assets/bbakbbakyee.jpg"
+import MissionIcon from "/src/assets/MoimLogo/missionicon.svg"
+import MoneyIcon from "/src/assets/MoimLogo/moneyicon.svg"
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../store/slice/userSlice";
@@ -138,7 +139,7 @@ function RequestModal({setModalOpen}: Props) {
         <div className={styles.toptab}>
           <div className={styles.requestmoney} onClick={ClickMoneyTab}>
             <div className={styles.icon}>
-              <img src={haaland} alt="" />
+              <img src={MoneyIcon} alt="" />
             </div>
             <div className={styles.requesttext}>
               <p style={{color: nowSelected ? '#7677E8' : '', borderBottom: nowSelected ? '2px solid #7677E8' : ''}}>요청하기</p>
@@ -147,7 +148,7 @@ function RequestModal({setModalOpen}: Props) {
 
           <div className={styles.requestmission} onClick={ClickMissionTab}>
             <div className={styles.icon}>
-              <img src={haaland} alt="" />
+              <img src={MissionIcon} alt="" />
             </div>
             <div className={styles.requesttext}>
               <p style={{color: !nowSelected ? '#DD7979' : '', borderBottom: !nowSelected ? '2px solid #DD7979' : ''}}>미션등록</p>
