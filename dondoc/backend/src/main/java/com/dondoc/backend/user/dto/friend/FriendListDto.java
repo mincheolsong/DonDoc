@@ -22,6 +22,7 @@ public class FriendListDto {
     @Builder
     public static class FriendInfoDto {
         private Long id;
+        private Long userId;
         private Long friendId; // 상대
         private LocalDateTime createdAt;
     }
@@ -30,6 +31,7 @@ public class FriendListDto {
     @Builder
     public static class FriendInfo{
         private Long id;
+        private Long userId;
         private String name;
         private String imageNumber;
         private String phoneNumber;

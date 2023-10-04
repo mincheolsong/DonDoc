@@ -243,7 +243,18 @@ public class FriendServiceImpl implements FriendService{
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
         // 조회한 친구 목록 객체
-        List<Friend> list = friendRepository.findByUserOrFriendIdAndStatus(user, userId, 1);
+        List<Friend> list_receive = friendRepository.findByFriendIdAndStatus(userId, 1);
+        List<Friend> list_send = friendRepository.findByUserAndStatus(user, 1);
+
+        List<Friend> list = new ArrayList<>();
+
+        for(Friend friend : list_receive){
+            list.add(friend);
+        }
+
+        for(Friend friend : list_send){
+            list.add(friend);
+        }
 
         // 응답을 위한 친구 목록 객체
         List<FriendListDto.FriendInfoDto> friendList = new ArrayList<>();
@@ -254,6 +265,7 @@ public class FriendServiceImpl implements FriendService{
             if(friend.getUser().getId().equals(userId)){
                 temp = FriendListDto.FriendInfoDto.builder()
                         .id(friend.getId())
+                        .userId(friend.getUser().getId())
                         .friendId(friend.getFriendId())
                         .createdAt(friend.getCreatedAt())
                         .build();
@@ -261,12 +273,14 @@ public class FriendServiceImpl implements FriendService{
                 // 현재 이 정보가 상대의 정보
                 temp = FriendListDto.FriendInfoDto.builder()
                         .id(friend.getId())
+                        .userId(friend.getFriendId())
                         .friendId(friend.getUser().getId())
                         .createdAt(friend.getCreatedAt())
                         .build();
             }
             friendList.add(temp);
         }
+
         List<FriendListDto.FriendInfo> result = new ArrayList<>();
 
         for(FriendListDto.FriendInfoDto info : friendList){
@@ -276,7 +290,8 @@ public class FriendServiceImpl implements FriendService{
             FriendListDto.FriendInfo friendInfo;
             if(search.getMainAccount() == null){
                 friendInfo = FriendListDto.FriendInfo.builder()
-                        .id(search.getId())
+                        .id(info.getId())
+                        .userId(search.getId())
                         .name(search.getName())
                         .imageNumber(search.getImageNumber() + "")
                         .phoneNumber(search.getPhoneNumber())
@@ -287,7 +302,8 @@ public class FriendServiceImpl implements FriendService{
                         .orElseThrow(() -> new NotFoundException("대표 계좌가 없습니다."));
 
                 friendInfo = FriendListDto.FriendInfo.builder()
-                        .id(search.getId())
+                        .id(info.getId())
+                        .userId(search.getId())
                         .name(search.getName())
                         .imageNumber(search.getImageNumber() + "")
                         .phoneNumber(search.getPhoneNumber())
