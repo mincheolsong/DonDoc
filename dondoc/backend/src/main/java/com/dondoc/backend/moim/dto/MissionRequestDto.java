@@ -73,6 +73,7 @@ public class MissionRequestDto {
     @Data
     public static class Response {
 
+        private Long missionId;
         private String missionMemberName; // 미션 할 사람
         private String title; // 미션명
         private int amount; // 요청 금액
@@ -83,6 +84,7 @@ public class MissionRequestDto {
 
         public static MissionRequestDto.Response toDTO(Mission entity) {
             return Response.builder()
+                    .missionId(entity.getId())
                     .missionMemberName(entity.getMoimMember().getUser().getName())
                     .title(entity.getTitle())
                     .amount(entity.getAmount())

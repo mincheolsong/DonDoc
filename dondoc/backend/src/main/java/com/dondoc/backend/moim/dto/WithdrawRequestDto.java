@@ -54,6 +54,7 @@ public class WithdrawRequestDto {
     @Data
     public static class Response {
 
+        private Long withdrawId;
         private String moimMemberName; // 신청인
         private String title; // 사용처
         private int amount; // 요청 금액
@@ -63,6 +64,7 @@ public class WithdrawRequestDto {
 
         public static WithdrawRequestDto.Response toDTO(WithdrawRequest entity) {
             return Response.builder()
+                    .withdrawId(entity.getId())
                     .moimMemberName(entity.getMoimMember().getUser().getName())
                     .title(entity.getTitle())
                     .amount(entity.getAmount())
