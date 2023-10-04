@@ -18,7 +18,6 @@ function CreatePasswordRe () {
   const moimInfo = state.moimInfo
   const account = state.account
   const category = state.category
-  const manager = state.manager
 
   const PASSWORD_MAX_LENGTH = 4 // 비밀번호 입력길이 제한 설정
 
@@ -62,7 +61,7 @@ function CreatePasswordRe () {
           console.log(errorCount)
         }
       } else {
-        navigate('/createresult', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category, manager:manager}})
+        navigate('/createresult', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category}})
         alert('비밀번호가 설정되었습니다!')
       }
     }
