@@ -80,6 +80,7 @@ public class MissionRequestDto {
         private String content; // 요청 상세 내용
         private LocalDate endDate; // 미션 종료일자
         private int status; // 상태
+        private int imageNumber;
 
 
         public static MissionRequestDto.Response toDTO(Mission entity) {
@@ -91,6 +92,7 @@ public class MissionRequestDto {
                     .content(entity.getContent())
                     .status(entity.getStatus())
                     .endDate(entity.getEndDate())
+                    .imageNumber(entity.getMoimMember().getUser().getImageNumber())
                     .build();
         }
     }

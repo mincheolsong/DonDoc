@@ -61,6 +61,7 @@ public class WithdrawRequestDto {
         private String content; // 요청 상세 내용
         private Category category; // 카테고리
         private int status; // 상태
+        private int imageNumber;
 
         public static WithdrawRequestDto.Response toDTO(WithdrawRequest entity) {
             return Response.builder()
@@ -71,6 +72,7 @@ public class WithdrawRequestDto {
                     .content(entity.getContent())
                     .status(entity.getStatus())
                     .category(entity.getCategory())
+                    .imageNumber(entity.getMoimMember().getUser().getImageNumber())
                     .build();
         }
     }
