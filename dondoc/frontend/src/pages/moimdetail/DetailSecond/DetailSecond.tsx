@@ -23,7 +23,9 @@ type withdrawRequestList = {
   content: string,
   moimMemberName: string,
   status: number,
-  title:string
+  title:string,
+  withdrawId: number,
+  imageNumber: number
 }
 type missionList = {
   amount: number,
@@ -31,7 +33,9 @@ type missionList = {
   endDate: string,
   missionMemberName: string,
   status: number,
-  title: string
+  title: string,
+  missionId: number,
+  imageNumber: number
 }
 
 
@@ -46,8 +50,13 @@ function DetailSecond({moimId}: Props) {
   const [withdrawRequestList, setWithdrawRequestList] = useState<withdrawRequestList[]>([])
   const [missionList, setMissionList] = useState<missionList[]>([])
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
-  const OpenInfoModal = () => {
+  const [requestType, setRequestType] = useState<number>(0)
+  const [requestId, setRequestId] = useState<number>(0)
+
+  const OpenInfoModal = (type: number, id:number) => {
     setInfoModalOpen(true)
+    setRequestType(type)
+    setRequestId(id)
   }
   const CloseInfoModal = () => {
     setInfoModalOpen(false)
@@ -117,8 +126,10 @@ function DetailSecond({moimId}: Props) {
             {nowSelected ? (
               <>
                 {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
-                  <div className={styles.requestunit} key={index} onClick={OpenInfoModal}>
+                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId)}>
                     <p>{money.amount}</p>
+                    <p>{money.withdrawId}</p>
+                    <p>{money.imageNumber}</p>
                     <p>{money.category.id}</p>
                     <p>{money.category.name}</p>
                     <p>{money.content}</p>
@@ -131,8 +142,10 @@ function DetailSecond({moimId}: Props) {
             ) : (
               <>
                 {missionList.length > 0 && missionList.map((mission, index) => (
-                  <div className={styles.requestunit} key={index}>
+                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId)}>
                     <p>{mission.amount}</p>
+                    <p>{mission.missionId}</p>
+                    <p>{mission.imageNumber}</p>
                     <p>{mission.content}</p>
                     <p>{mission.endDate}</p>
                     <p>{mission.missionMemberName}</p>
@@ -156,7 +169,7 @@ function DetailSecond({moimId}: Props) {
       {infoModalOpen && (
         <>
           <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
-          <RequestInfoModal setInfoModalOpen={setInfoModalOpen}/>
+          <RequestInfoModal setInfoModalOpen={setInfoModalOpen} moimId={moimId} requestType={requestType}  token={token} requestId={requestId}/>
         </>
       )}
 
