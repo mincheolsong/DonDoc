@@ -41,13 +41,13 @@ function CallAcountItem(props:PropsType) {
       Authorization: `Bearer ${userInfo.accessToken}`
     }})
     .then((response)=>{
-      console.log(response)
-      console.log(CheckedAccount)
+      // console.log(response)
+      // console.log(CheckedAccount)
       navigate("/")
     })
     .catch((err)=>{
-      console.log(err)
-      console.log(postSave)
+      // console.log(err)
+      // console.log(postSave)
     })
   } 
   
