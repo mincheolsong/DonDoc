@@ -191,8 +191,6 @@ public class BankServiceImpl implements BankService {
     @Override
     public List<HistoryDto.Response> getHistoryList(HistoryDto.Request req) throws Exception {
 
-        log.info("Req - {}", req.toString());
-
         String identificationNumber = EncryptionUtils.encryption(req.getIdentificationNumber(), SALT);
 
         // 해당 예금주 탐색
