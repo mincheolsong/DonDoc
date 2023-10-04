@@ -9,12 +9,12 @@ function Header() {
       <img src={dondocLogo} />
       
       <NavLink
-      to="/">
+      to="/notification">
       <img src={bellicon} />
       </NavLink>
       
     </div>
   );
-};
+}
 
 export default Header;
