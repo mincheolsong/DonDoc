@@ -8,18 +8,11 @@ import { NavLink, useLocation } from "react-router-dom";
 import { UserType } from "../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 
-interface props{
-  dest : string
-  name : string
-}
-
 function Nav() {
   const location = useLocation();
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
-
-
   return (
     <div className={styles.Nav}>
       <div className={styles.NavBox} >

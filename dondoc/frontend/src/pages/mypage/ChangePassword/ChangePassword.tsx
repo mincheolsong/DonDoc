@@ -136,9 +136,9 @@ const changePassPost = ()=>{
       // 실패시 모달에 들어갈 함수 
     }
   
-    console.log(response)
+    // console.log(response)
   }).catch((err)=>{
-    console.log(err)
+    // console.log(err)
   })
 }
 

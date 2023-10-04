@@ -85,3 +85,16 @@
     z-index: 1;
 
 }
+
+.confirmBtndis{
+    margin-top: 3rem; /*윗마진 */
+    background-color: #797979; /*색 조절 */
+    color: white;
+    width: 30%;
+    height: 4.5rem; /*높이조절 */
+    font-size: 2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}

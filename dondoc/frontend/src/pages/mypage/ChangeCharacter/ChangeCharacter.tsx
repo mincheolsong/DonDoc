@@ -28,9 +28,9 @@ function ChangeCharacter() {
     moim.put(`/api/user/update/image`,{imageNumber:selectedNum},{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+      // console.log(response)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
 
     dispatch(changeImage({imageNumber:selectedNum}))

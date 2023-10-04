@@ -12,7 +12,7 @@ import ErrorPage from "./pages/webmain/ErrorPage";
 import SignUpFirstPage from "./pages/webmain/SignUpFirst";
 import SignUpSecondPage from "./pages/webmain/SignUpSecond";
 import CallAccountPage from "./pages/webmain/CallAccount";
-
+import SendMoneyPasswordPage from "./pages/webmain/SendMoneyPassword";
 
 // search
 import SearchPage from './pages/search/Search/Search' 
@@ -73,6 +73,7 @@ function Router() {
             <Route path="/callaccount" element={<CallAccountPage/>}/>
             <Route path="/error" element={<ErrorPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>
+            <Route path="/sendmoneypassword" element={<SendMoneyPasswordPage/>}/>
 
 
             {/* search */}

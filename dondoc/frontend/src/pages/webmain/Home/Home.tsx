@@ -39,9 +39,9 @@ function Home() {
   
     })
     .catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
-    console.log(userInfo)
+    // console.log(userInfo)
   },[])
 
   return (

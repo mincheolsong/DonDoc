@@ -23,6 +23,14 @@ interface diffUser{
 
 type DiffPro = UserType &{
   id:number;
+  userId:number;
+}
+
+interface requestF{
+  createdAt: string
+  friendId: number
+  id: number
+  status: number
 }
 
 function DiffProfile() {
@@ -32,10 +40,53 @@ function DiffProfile() {
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [profile,setProfile] = useState<diffUser>()
   const [requestRelation,setRequestRelation] = useState<number>(0);
+  const [friendId,setFriendId] = useState<number>();
+  const [requestId,setRequestId] = useState<number>();
+
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
+
+  // 아무사이도 아닌 상태 0 , 내가 친구보내고 안받은상태 1, 내가 친구받은상태 2 , 친구상태 3
+
+  const typeZero = ()=>{
+    moim.post(`/api/friend/request/${userId}`,null,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
+      console.log(response)
+    }).catch((err)=>{
+      console.log(err)
+      console.log(userId)
+      console.log(userInfo.accessToken)
+    })
+  }
+
+
+  const typeOne = ()=>{
+    moim.delete(`/api/friend/request/delete/${userId}`,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((respnse)=>{
+      console.log(respnse)
+    })
+
+  }
+
+
+  const typeTwo = ()=>{
+    moim.put(`api/friend/request/deny/${1}`,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
+      console.log(response)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  const typeThree = ()=>{
+
+  }
+
 
 
 
@@ -48,10 +99,17 @@ function DiffProfile() {
     moim.get('api/friend/request/send/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
+      
       const myQList = response.data.response.list
-      myQList.find((p)=>{
-        if(p.friendId == userId)
-         setRequestRelation(1)
+      console.log(myQList)
+      myQList.filter((p:requestF,index:number)=>{
+        if(p.friendId == userId){
+          console.log(1)
+          setRequestRelation(1)
+          setRequestId(p.id)
+          window.location.reload()
+        }
+         
       })
     })
 
@@ -60,8 +118,10 @@ function DiffProfile() {
     }}).then((response)=>{
       const myQList = response.data.response.list
       myQList.find((p)=>{
-        if(p.friendId == userId)
-         setRequestRelation(2)
+        if(p.friendId == userId){
+          setRequestRelation(2)
+        }
+         
       })
     })
 
@@ -73,10 +133,11 @@ function DiffProfile() {
     }})
     .then((response)=>{
       const myFList = response.data.response.list
-      
+ 
       myFList.find((profile:DiffPro)=>{
         if(profile.id == userId){
           setRequestRelation(3)
+          setFriendId(profile.id)
         }
       })
 
@@ -103,9 +164,9 @@ function DiffProfile() {
         phoneNumber:response.data.response.phoneNumber
       }
       setProfile(diffProfile)
-      console.log(diffProfile)
+      // console.log(response)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
     .finally(()=>{
       setIsLoading(true)
@@ -128,8 +189,8 @@ function DiffProfile() {
        </div>
 
        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginTop:"3%"}}>{profile?.nickName} </p>
-       {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{profile?.name}</p> :""}
-        {requestRelation == 0 ? <button className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
+        {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{profile?.name}</p> :""}
+        {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
         {requestRelation == 1 ? <button className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
         {requestRelation == 2 ? <button className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>수락하기</button> : ""}
         {requestRelation == 3 ? <button className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>나의친구</button> : ""}

@@ -142,7 +142,7 @@ const SignInPost = ()=>{
     
   })
   .catch((error)=>{
-    console.log(error)
+    // console.log(error)
   })
 }
 
@@ -153,7 +153,7 @@ const SignUpPost = ()=>{
   moim.post("/api/user/signup",userSetting)
   .then((response)=>{
     if(response.data.success == true){
-      console.log(response)
+      // console.log(response)
     SignInPost();
     navigate('/signupTemp')
     }else{
@@ -162,7 +162,7 @@ const SignUpPost = ()=>{
     }
   })
   .catch((error)=>{
-    console.log(error)
+    // console.log(error)
   })
 }
 

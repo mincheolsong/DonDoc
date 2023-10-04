@@ -9,6 +9,8 @@ import { moim } from "../../../api/api";
 import { UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import OneBtnModal from "../../toolBox/OneBtnModal";
+import { friend } from "../../mypage/FriendList/FriendList";
+import {BiSearch} from "react-icons/bi"
 interface sendMoneyAccount{
   accountId: string|null;
   password:string|null;
@@ -29,6 +31,14 @@ function SendMoneyFirst() {
   const [toAccountNumber,setToAccountNumber] = useState<string>('');
   const [secondSuccessModal,setSecondSuccessModal] = useState<boolean>(false);
   const [failText,setFailText] = useState<string>('')
+
+
+  const [searchBox,setSearchBox] = useState<string>('')
+  const [friendList,setFriendList] = useState<friend[]>([])
+  const [searchFriend,setSearchFriend] = useState<friend[]>([]) 
+
+  const navigate = useNavigate();
+
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
@@ -65,6 +75,23 @@ function SendMoneyFirst() {
     setToAccount(AccountTo)
   },[])
 
+  useEffect(()=>{
+    moim.get("/api/friend/list",{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
+      // console.log(response)
+      const FriendAccountList = response.data.response.list.filter((account:friend,index:number)=>{
+        if(account.bankCode){
+          return account
+        }
+      })
+
+      setFriendList(FriendAccountList)
+    }).catch((err)=>{
+      // console.log(err)
+    })
+  },[])
+
 
   const modalclose = ()=>{
     setSecondSuccessModal(false)
@@ -73,7 +100,6 @@ function SendMoneyFirst() {
 
   const goSendMoneySecond = ()=>{
     
-   
     const checkId = {
       accountNumber:toAccountNumber,
       bankCode: iconN
@@ -95,13 +121,22 @@ function SendMoneyFirst() {
       }
     })
     .catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
-
-
     
   }
 
+
+  const searchF = (e)=>{
+    const currentT = e.target.value
+    setSearchBox(currentT)
+    const searchF = friendList.filter((item)=>{
+        return item.phoneNumber.includes(currentT) || item.name.includes(currentT)
+    })
+    setSearchFriend(searchF)
+  }
+
+ 
 
   return (
     <div className={styles.container}>
@@ -136,23 +171,60 @@ function SendMoneyFirst() {
       <div className={styles.bottomBox}>
 
       <div className={styles.bottomContainer}>
-        <div style={{display:"flex", flexDirection:"row",justifyContent:"center",alignItems:"center",marginTop:"1rem"}}>
-        <input className={styles.searchBox} type="text" />
-         <img src={searchIcon} style={{width:"3rem"}} />
-        </div>
-         <hr style={{width:"90%", marginTop:"2rem"}} />
+      <div style={{marginBottom:"10%"}}>
+      <input onChange={searchF} className={styles.searchBox} placeholder="이름, 전화번호" type="text" name="" id="" />
+      <BiSearch className={styles.searchIcon}/>
+      </div>
+         <hr style={{width:"90%", marginTop:"0"}} />
         
         
         {/*  여기 .map 으로 계좌 불러오기  */}
-        <div style={{width:"100%",overflow:"scroll"}}> 
-          <div className={styles.friendAccount} >
-            <img style={{width:"6rem"}} src={hana} alt="" />
-            <div>
-              <p style={{fontWeight:"bold",fontSize:"1.7rem",margin:"0.2rem"}}>신제형</p>
-              <p style={{fontWeight:"bold",fontSize:"1.3rem",color:"#A4A4A4",margin:"0.2rem"}}>182391284923817498237489</p>
-            </div>
-          </div>
 
+      <div style={{overflowY:"scroll",overflowX:"hidden"}}>
+        {searchBox ? 
+        <div>
+        {searchFriend.map((friend,index)=>(
+          <div key={index}
+          onClick={()=>{
+            const newSecondAccount = {
+              toAccount : friend.accountNumber,
+              toCode : friend.bankCode,
+              sign: friend.name
+            }
+            naviate(`/sendmoneysecond/${toAccountSetting?.accountId}`,{state:{myAccount:state,toAccount:newSecondAccount}})
+          }} 
+          className={styles.friendBox}>
+          <img style={{height:"6vh"}} src={`/src/assets/Bank_Logo/${friend.bankCode}.svg`} alt="" />
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
+            <p style={{fontSize:"1rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
+            <p style={{fontSize:"1rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.bankName} {friend.accountNumber}</p>
+          </div>
+    
+        </div>
+        ))}
+
+        </div>
+        : 
+        <div>
+        {friendList.map((friend,index)=>(
+          <div key={index}  onClick={()=>{
+            const newSecondAccount = {
+              toAccount : friend.accountNumber,
+              toCode : friend.bankCode,
+              sign: friend.name
+            }
+            naviate(`/sendmoneysecond/${toAccountSetting?.accountId}`,{state:{myAccount:state,toAccount:newSecondAccount}})
+          }}  className={styles.friendBox}>
+          <img style={{height:"6vh"}} src={`/src/assets/Bank_Logo/${friend.bankCode}.svg`} alt="" />
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
+            <p style={{fontSize:"1rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
+            <p style={{fontSize:"1rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.bankName} {friend.accountNumber}</p>
+          </div>
+        </div>
+        
+        ))}
+        </div>}
+        </div>
           
         </div>
 
@@ -161,7 +233,6 @@ function SendMoneyFirst() {
       </div>
       
     
-    </div>
   );
 }
 

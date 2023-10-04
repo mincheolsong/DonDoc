@@ -15,28 +15,33 @@ interface TowBtnModal{
   rightBtnTextColor: string;
   leftBtnText:string;
   rightBtnText: string;
-  callbackLeft(id:boolean):void;
+  callbackLeft():void;
   callbackRight():void;
 }
 
 export function TowBtnModal(props:TowBtnModal){
- 
+  const clickHandlerR = () =>{
+    props.callbackRight();
+  }
+  const clickHandlerL = () =>{
+    props.callbackLeft();
+  }
 
   return(
-    <div style={{display:"flex",justifyContent:"center", zIndex:"1"}}>
+    <div style={{display:"flex",justifyContent:"center", zIndex:"2",position:"fixed",top:"15%"}}>
       <div className={styles.nomalBox} style={{width:props.width, height: props.height}}>
        {props.title ? <p  style={{fontSize:props.titleFont, marginTop:"0" ,fontWeight:"bold"}}>{props.titleText}</p> : ''}
         <p  style={{fontSize:props.contentFont, fontWeight:"bold"}}>{props.contentText}</p>
         <div style={{marginTop:"8%", width:"68%", display:"flex", justifyContent:"space-between"}}>
           <button 
            onClick={()=>{
-            props.callbackLeft(false)
+            clickHandlerL()
           }}
           className={styles.modalButton} style={{backgroundColor:props.leftBtnColor,color:props.leftBtnTextColor,fontSize:"1rem"}}>{props.leftBtnText}</button> 
           
           <button
            onClick={()=>{
-            props.callbackRight()
+            clickHandlerR()
           }}
           className={styles.modalButton} style={{backgroundColor:props.rightBtnColor, color:props.rightBtnTextColor,fontSize:"1rem"}}>{props.rightBtnText}</button>
         </div>

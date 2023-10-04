@@ -26,6 +26,7 @@ function Mypage() {
 // 모달 
   const [nickNameModal,setNickNameModal] = useState<boolean>(false);
   const [introduceModal,setIntroduceModal] = useState<boolean>(false);
+
 //  
 
 //모달이벤트 닉네임
@@ -34,15 +35,15 @@ function Mypage() {
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
       dispatch(changeNickName({nickname:nickname}))
-      console.log(response)
+      // console.log(response)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
     setNickNameModal(false)
   }
 
   const nickNameChangeL = (nickname:string)=>{
-    console.log(nickname)
+    // console.log(nickname)
     setNickNameModal(false)
   }
 
@@ -53,15 +54,15 @@ const introduceChangeR = (intro:string)=>{
     Authorization: `Bearer ${userInfo.accessToken}`
   }}).then((response)=>{
     dispatch(changeIntroduce({introduce:intro}))
-    console.log(response)
+    // console.log(response)
   }).catch((err)=>{
-    console.log(err)
+    // console.log(err)
   })
   setIntroduceModal(false)
 }
 
 const introduceChangeL = (intro:string)=>{
-  console.log(intro)
+  // console.log(intro)
   setIntroduceModal(false)
 }
 
@@ -86,7 +87,7 @@ useEffect(()=>{
 
   useEffect(()=>{
     // console.log(userInfo)
-    console.log(location.pathname)
+    // console.log(location.pathname)
   },[])
 
   return (
@@ -122,7 +123,7 @@ useEffect(()=>{
 
 
        {/* 친구목록 */}
-        <img style={{width:"30%"}} src="/src/assets/image/friendList.svg" alt="" />
+        <img onClick={()=>{navigate('/friendlist')}} style={{width:"30%"}} src="/src/assets/image/friendList.svg" alt="" />
         {/* 친구목록 */}
 
 
@@ -137,10 +138,10 @@ useEffect(()=>{
 
 
         {mainAccountCheck? <div className={styles.accountBox}>
-        <img src={`/src/assets/Bank_Logo/${mainAccount.bankCode}.svg`} alt="" />
+        <img src={`/src/assets/Bank_Logo/${mainAccount?.bankCode}.svg`} alt="" />
         <div style={{display:"flex",flexDirection:"column"}}>
-          <p style={{margin:"0",color:"#6C6C6C"}}>{mainAccount.accountName}</p>
-          <p style={{margin:"0"}}>{mainAccount.accountNumber}</p>
+          <p style={{margin:"0",color:"#6C6C6C"}}>{mainAccount?.accountName}</p>
+          <p style={{margin:"0"}}>{mainAccount?.accountNumber}</p>
         </div>
       </div>
          : ''} 
