@@ -130,7 +130,20 @@ public class UserServiceImpl implements UserService{
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         log.info(usernamePasswordAuthenticationToken.getName());
 
-
+        if(user.getMainAccount() == null){
+            return SignInDto.Response.builder()
+                    .success(true)
+                    .msg("정상적으로 로그인 되었습니다.")
+                    .phoneNumber(user.getPhoneNumber())
+                    .name(user.getName())
+                    .introduce(user.getIntroduce())
+                    .birth(user.getIntroduce())
+                    .nickname(user.getNickName())
+                    .imageNumber(user.getImageNumber())
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        }
         return SignInDto.Response.builder()
                 .success(true)
                 .msg("정상적으로 로그인 되었습니다.")
