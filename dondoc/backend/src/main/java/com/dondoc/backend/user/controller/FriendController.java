@@ -36,7 +36,6 @@ public class FriendController {
     public ApiResult friendRequest(@PathVariable @ApiParam(value = "친구 ID", required = true) Long friendId,
                 @AuthenticationPrincipal UserDetails userDetails) throws Exception{
         try{
-            log.info(friendId.toString());
             Long userId = Long.parseLong(userDetails.getUsername());
             FriendRequestDto.Response res = friendService.friendRequest(friendId, userId);
             return ApiUtils.success(res.getMsg());

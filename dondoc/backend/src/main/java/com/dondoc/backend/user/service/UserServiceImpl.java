@@ -91,14 +91,10 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByPhoneNumber(req.getPhoneNumber())
                 .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
-        log.info("user {}",user.getName());
-
         // 비밀번호 검증
         if(!passwordEncoder.matches(req.getPassword() + user.getSalt() , user.getPassword())){
             throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
         }
-
-        log.info("certification");
 
         // 토큰 Dto
         TokenDto tokenDto = TokenDto.builder()
@@ -112,23 +108,17 @@ public class UserServiceImpl implements UserService{
         String accessToken = jwtTokenProvider.createAccessToken(tokenDto);
         Cookie refreshToken = jwtTokenProvider.createRefreshToken(tokenDto);
 
-        // 토큰 등록
-        log.info("access : {}" , accessToken);
-        log.info("refresh : {}" , refreshToken.getValue());
-
         // DB RefreshToken 저장
         user.setRefreshToken(refreshToken.getValue());
         userRepository.save(user);
 
         // User 인증 정보 불러오기(유효한 accessToken)
         UserDetailsImpl userDetails = (UserDetailsImpl)userDetailsService.loadUserByUsername(user.getId().toString());
-        log.info("핸드폰번호 = {}", userDetails.getUsername());
 
         // User 정보 등록
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        log.info(usernamePasswordAuthenticationToken.getName());
 
         if(user.getMainAccount() == null){
             return SignInDto.Response.builder()
@@ -376,7 +366,6 @@ public class UserServiceImpl implements UserService{
 
         // 비밀번호 체크
         if(passwordEncoder.matches(req.getPassword() + user.getSalt() , user.getPassword())){
-            log.info("비밀번호 일치");
             String salt = encryptionUtils.makeSalt();
             String password = passwordEncoder.encode(req.getNewPassword() + salt);
             user.setSalt(salt);

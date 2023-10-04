@@ -170,8 +170,6 @@ public class UserController {
     @ApiOperation(value = "프로필 검색", notes = "프로필 검색 API", response = ApiResult.class)
     public ApiResult findProfile(@PathVariable @ApiParam(value = "유저 아이디") Long userId ,@AuthenticationPrincipal UserDetails userDetails){
         try{
-            log.info(userDetails.getUsername());
-            log.info(userId.toString());
             ProfileDto.Response profileDto = userService.findProfile(userId);
             return ApiUtils.success(profileDto);
         }catch(NotFoundException e){
@@ -184,7 +182,6 @@ public class UserController {
     public ApiResult myProfile(@AuthenticationPrincipal UserDetails userDetails){
         try{
             Long userId = Long.parseLong(userDetails.getUsername());
-            log.info(userId.toString());
             ProfileDto.Response profileDto = userService.myProfile(userId);
             return ApiUtils.success(profileDto);
         }catch(NotFoundException e){
@@ -209,8 +206,6 @@ public class UserController {
     @ApiOperation(value = "UserDetails Test",notes="test",response=ApiResult.class)
     public ApiResult test(@AuthenticationPrincipal UserDetails userDetails){
         if(userDetails != null){
-            log.info(userDetails.getUsername());
-            log.info(userDetails.getAuthorities().toString());
             return ApiUtils.success("good");
         }
             return ApiUtils.error("bad", HttpStatus.UNAUTHORIZED);

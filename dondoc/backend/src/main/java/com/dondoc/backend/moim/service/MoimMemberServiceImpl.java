@@ -95,7 +95,6 @@ public class MoimMemberServiceImpl implements MoimMemberService {
             Optional<MoimMember> byUserIdAndMoimId = moimMemberRepository.findByUser_IdAndMoim_Id(userId, moim.getId());
 
             if(byUserIdAndMoimId.isPresent()){
-                log.info("이미 초대된 사용자 입니다. userId : {}",userId);
                 continue;
             }
 

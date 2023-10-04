@@ -43,7 +43,6 @@ public class LogoutFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v2/api-docs") ||
                 requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
-            log.info("============= LogoutFilter SUCCESS =============");
             filterChain.doFilter(request, response);
             return;
         }
@@ -59,10 +58,7 @@ public class LogoutFilter extends OncePerRequestFilter {
                     response.setContentType("application/json");
                     response.getWriter().write(jwtAuthFilterException.black());
 
-                    log.info("로그아웃 된 토큰입니다.");
-                    log.error("============= LogoutFilter FAIL =============");
                 } else {
-                    log.info("============= LogoutFilter SUCCESS =============");
                     filterChain.doFilter(request, response);
                 }
             } catch (NullPointerException e) {
@@ -70,11 +66,8 @@ public class LogoutFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
                 response.getWriter().write(jwtAuthFilterException.noAuthentication());
-                log.info("토큰이 존재하지 않습니다.");
-                log.error("============= LogoutFilter FAIL =============");
             }
         }else{
-            log.info("============= LogoutFilter SUCCESS =============");
             filterChain.doFilter(request,response);
         }
 

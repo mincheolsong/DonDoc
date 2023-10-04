@@ -60,8 +60,6 @@ public class AccountServiceImpl implements AccountService {
                 .bodyToMono(Map.class)
                 .block();
 
-        log.info(response.get("response").toString());
-
         if (!response.get("success").toString().equals("true")) {
             return AccountListDto.BankResponse.builder()
                     .success(false)
@@ -92,7 +90,6 @@ public class AccountServiceImpl implements AccountService {
             AccountDetailDto.Response response = accountDetail(account.getAccountId());
 
             result.add(response.getAccountDetail());
-            log.info(response.getAccountDetail().toString());
         }
 
         return AccountListDto.Response.builder()
@@ -116,14 +113,12 @@ public class AccountServiceImpl implements AccountService {
                     .retrieve()
                     .bodyToMono(Map.class)
                     .block();
-            log.info(response.toString());
 
             try {
                 Map<String, String> res = (Map<String, String>) response.get("response");
                 String account = res.get("accountNumber");
 
                 if (!account.equals(compare.getAccountNumber())) {
-                    log.info("계좌 불일치");
                     throw new NoSuchElementException("계좌 정보가 잘못 되었습니다.");
                 }
 
@@ -149,7 +144,6 @@ public class AccountServiceImpl implements AccountService {
             }
 
             if (!status) {
-                log.info(accountId.toString());
                 accountRepository.deleteByAccountId(accountId);
             }
         }
@@ -232,8 +226,6 @@ public class AccountServiceImpl implements AccountService {
                 .retrieve()
                 .bodyToMono(Map.class)
                 .block();
-
-        log.info(response.toString());
 
         if(!(boolean)response.get("success")){
             throw new NotFoundException("계좌 정보를 찾을 수 없습니다.");

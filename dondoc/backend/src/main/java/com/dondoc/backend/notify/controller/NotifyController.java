@@ -40,7 +40,6 @@ public class NotifyController {
 
         try {
             String userId = userDetails.getUsername();
-            log.info("현재 로그인 한 사용자의 userId : {} ", userId);
             List<Notify> notifyList = notifyService.getNotifyList(Long.parseLong(userId));
             for(Notify n : notifyList){ // 엔티티를 dto로 변환
                 result.add(NotifyListDto.Response.toDTO(n));

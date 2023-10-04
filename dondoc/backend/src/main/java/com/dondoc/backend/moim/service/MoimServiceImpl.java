@@ -59,7 +59,6 @@ public class MoimServiceImpl implements MoimService{
             return true;
         }
 
-        log.debug("creaetOnwerAPI log = {} ", response.toString());
         return false;
     }
 
@@ -107,7 +106,6 @@ public class MoimServiceImpl implements MoimService{
             return result;
         }
 
-        log.debug("creaetMoimAPI log = {} ", response.toString());
         return null;
     }
 
@@ -306,7 +304,6 @@ public class MoimServiceImpl implements MoimService{
             return Integer.parseInt(result);
         }
 
-        log.debug("searchBalance log = {} ", response.toString());
         throw new RuntimeException(String.format("식별번호 %s 에 해당하는 계좌가 존재하지 않습니다.", identificationNumber));
     }
 
@@ -358,8 +355,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         // 미션 할 사람
         MoimMember missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
@@ -368,8 +363,6 @@ public class MoimServiceImpl implements MoimService{
         if(member.getUserType()==1 && (missionMember.getUser().getPhoneNumber() != member.getUser().getPhoneNumber())){
             throw new IllegalArgumentException("관리자만 다른 사용자에게 미션을 부여할 수 있습니다.");
         }
-
-        log.info("missionMember : {}", missionMember.getUser().getName());
 
         // 종료날짜가 오늘이거나 이전의 날짜를 입력했을 때
         LocalDate now = LocalDate.now();
@@ -422,8 +415,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         List<WithdrawRequest> withdrawRequestList;
         List<Mission> missionList;
 
@@ -464,13 +455,9 @@ public class MoimServiceImpl implements MoimService{
                 .map(entity -> WithdrawRequestDto.Response.toDTO(entity))
                 .collect(Collectors.toList());
 
-        log.info("withdrawRequestList Size : {}", withdrawRequestList.size());
-
         List<MissionRequestDto.Response> resultMission = missionList.stream()
                 .map(entity -> MissionRequestDto.Response.toDTO(entity))
                 .collect(Collectors.toList());
-
-        log.info("missionList Size : {}", missionList.size());
 
         return AllRequestDto.Response.toDTO(resultWithdrawRequest, resultMission);
 
@@ -482,8 +469,6 @@ public class MoimServiceImpl implements MoimService{
 
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
-
-        log.info("member : {}", member.getUser().getName());
 
         if(req.getRequestType() == 0) { // 출금 요청 조회
             WithdrawRequest withdrawRequest;
@@ -526,8 +511,6 @@ public class MoimServiceImpl implements MoimService{
 
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
-
-        log.info("member : {}", member.getUser().getName());
 
         if(req.getRequestType() == 0) { // 출금 요청 조회
 
@@ -726,8 +709,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         // 일반 이용자가 승인하려는 경우
         if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 승인할 수 있습니다.");
@@ -751,9 +732,6 @@ public class MoimServiceImpl implements MoimService{
                 throw new IllegalArgumentException("본인의 출금 요청에 승인할 수 없습니다.");
             }
         }
-
-        log.info("moimMemberAccountNumber : {}", moimMember.getAccount().getAccountNumber());
-        log.info("moimAccountNumber : {}", moimMember.getMoim().getMoimAccountNumber());
 
         // 내가 등록해놓은 계좌로 이체 => Bank 계좌이체 API 사용
         Map<String, Object> bodyMap = new HashMap<>();
@@ -797,8 +775,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         // 일반 이용자가 거절하려는 경우
         if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
@@ -824,8 +800,6 @@ public class MoimServiceImpl implements MoimService{
 
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
-
-        log.info("member : {}", member.getUser().getName());
 
         // 관리자 비밀번호 확인
         if(!passwordEncoder.matches(req.getPassword() + member.getUser().getSalt() , member.getUser().getPassword())){
@@ -897,8 +871,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         // 일반 이용자가 거절하려는 경우
         if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
@@ -923,8 +895,6 @@ public class MoimServiceImpl implements MoimService{
 
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
-
-        log.info("member : {}", member.getUser().getName());
 
         // 일반 이용자가 승인하려는 경우
         if(member.getUserType()!=0)
@@ -1001,8 +971,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         // 일반 이용자가 거절하려는 경우
         if(member.getUserType()!=0)
             throw new IllegalArgumentException("관리자만 거절할 수 있습니다.");
@@ -1037,8 +1005,6 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         Mission mission = missionRepository.findByMoimMemberAndMoimMember_MoimAndId(member, member.getMoim(), req.getRequestId())
                 .orElseThrow(()-> new IllegalArgumentException("요청 정보가 없습니다. 정보를 다시 확인해 주세요."));
 
@@ -1070,12 +1036,7 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findTop1ByUser_Id(userId)
                 .orElseThrow(()-> new NotFoundException("미션 정보가 없습니다."));
 
-        log.info("member : {}", member.getUser().getName());
-
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
-
-
-        log.info("missionList : {}", missionList.size());
 
         List<MissionInfoDto.Response> resultMissionList = missionList.stream()
                 .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
