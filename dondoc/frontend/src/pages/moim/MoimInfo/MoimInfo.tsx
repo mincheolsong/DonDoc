@@ -127,7 +127,7 @@ function MoimInfo() {
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
-            <h2>모임 개설준비가 완료 되었습니다</h2>
+            <h2>모임 가입 정보</h2>
           </div>
 
           <div className={styles.accountcontent}>

@@ -83,7 +83,7 @@ function SelectAccount({setSelectAccountOpen, setSelectedAccount, selectedAccoun
               <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account)}>
                 <div className={styles.accountunit}>
                   <div className={styles.banklogo}>
-                    <img src="" alt="" className={styles.ssafylogo} />
+                    <img src={`src/assets/Bank_Logo/${account.bankCode}.svg`} alt="" className={styles.ssafylogo} />
                   </div>
                   <div className={styles.accountinfo}>
                     <p>{`${account.accountName}`}</p>

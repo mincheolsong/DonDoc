@@ -7,6 +7,18 @@ import { useSelector } from "react-redux";
 import { UserType } from '../../../store/slice/userSlice';
 import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
 import { BASE_URL } from '../../../constants';
+import InviteManagerModal from './InviteManagerModal';
+
+type manager = {
+  userId: number,
+  phoneNumber: string,
+  nickName: string
+}
+const initialSearchResult: manager = {
+  userId: 0,
+  phoneNumber: "",
+  nickName: ""
+};
 
 function CreateResult() {
 
@@ -17,10 +29,11 @@ function CreateResult() {
   const moimInfo = state.moimInfo
   const account = state.account
   const category = state.category
-  const manager = state.manager
   const password = state.password
 
   const [termsOpen, setTermsOpen] = useState<boolean>(false)
+  const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)
+  const [manager, setManager] = useState<manager>(initialSearchResult)
 
   const OpenTerms = () => {
     setTermsOpen(true)
@@ -28,6 +41,13 @@ function CreateResult() {
   const CloseTerms = () => {
     setTermsOpen(false)
   }
+  const OpenInviteModal = () => {
+    setInviteModalOpen(true)
+  }
+  const CloseInviteModal = () => {
+    setInviteModalOpen(false)
+  }
+
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -37,72 +57,47 @@ function CreateResult() {
   const data = {
     "accountId": account.accountId,
     "introduce": moimInfo,
-    "manager": manager,
+    "manager": [{ "userId": manager.userId }],
     "moimName": moimName,
     "moimType": category.code,
     "password": password
   }
 
-  // const CreateMoim = async () => {
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
-  //       headers: {
-  //         'Content-Type': 'application/json', 
-  //         'Authorization': 'Bearer ' + token
-  //       }
-  //     });
-  //     console.log(response.data)
-  //     alert('모임이 생성되었습니다.')
-  //     navigate('/moimhome')
-  //   } catch(error) {
-  //     console.log('error:', error)
-  //   }
-  // }
+  const showdata = () => {
+    console.log(data)
+  }
+
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
 
   const CreateMoim = async () => {
-    if (agreeTerms) {
-      try {
-        const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-          },
-        });
-        console.log(response.data);
-        alert('모임이 생성되었습니다.');
-        navigate('/moimhome');
-      } catch (error) {
-        console.log('error:', error);
+    if (category.code == 2 && manager.phoneNumber) {
+      if (agreeTerms) {
+        try {
+          const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+          });
+          console.log(response.data);
+          alert('모임이 생성되었습니다.');
+          navigate('/moimhome');
+        } catch (error) {
+          console.log('error:', error);
+        }
+      } else {
+        // 약관에 동의하지 않은 경우 경고 메시지 표시
+        alert('약관에 동의해주세요.');
       }
     } else {
-      // 약관에 동의하지 않은 경우 경고 메시지 표시
-      alert('약관에 동의해주세요.');
+      alert('매니저를 초대해 주세요.')
     }
   }
-
-// ...
-
-  // const WatchInfo = () => {
-  //   console.log('state:',state)
-  //   console.log('data:', data)
-  //   console.log('token:', token)
-  // }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
-        {/* <div className={styles.topbar}>
-          <div className={styles.backbutton}>
-            <button className={styles.toback} onClick={ToBack}>
-              back
-            </button>
-          </div>
-          <div className={styles.pagename}>
-            <h3>모임통장 생성</h3>
-          </div>
-        </div> */}
         <BackLogoHeader name="모임통장 생성"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
@@ -124,6 +119,17 @@ function CreateResult() {
                 <p className={styles.title}>계좌유형</p>
                 <p>{category.name}</p>
               </div>
+              {category.code == 2 ? (
+                <>
+                  <div className={styles.moimcontent}>
+                    <p className={styles.title}>매니저</p>
+                    <button className={styles.invitebtn} onClick={OpenInviteModal}>매니저 초대</button>
+                  </div>
+                  <h3 style={{marginTop:'0', marginBottom:'2rem', textAlign:'end'}}>{manager.nickName} {manager.phoneNumber}</h3>
+                </>
+              ):(
+                <></>
+              )}
               <div className={styles.moiminfo}>
                 <p className={styles.title}>모임소개</p>
                 <p className={styles.moimtext}>{moimInfo}</p>
@@ -155,16 +161,21 @@ function CreateResult() {
         
         </div>
 
-        {/* <button onClick={WatchInfo}></button> */}
-
         {termsOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseTerms}/>
               <TermsOfUseModal setTermsOpen={setTermsOpen} />
             </>
           )}
+        {inviteModalOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseInviteModal}/>
+              <InviteManagerModal setInviteModalOpen={setInviteModalOpen} token={token} setManager={setManager}/>
+            </>
+          )}
 
       </div>
+      <button onClick={showdata}></button>
     </div>
   );
 }
