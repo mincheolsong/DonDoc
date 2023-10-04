@@ -40,7 +40,7 @@ public class MoimServiceImpl implements MoimService{
     private final MissionRepository missionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
+    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
 
     @Override
     public boolean createOnwerAPI(String identificationNumber, String moimName) {
