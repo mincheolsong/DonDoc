@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export type UserType ={
+  userId: number,
   phoneNumber :string;
   accessToken:string;
   isLogin:boolean;
@@ -27,6 +28,7 @@ export type CheckAccount = Account &{
 
 
 const initialState:UserType = {
+  userId: 0,
   phoneNumber:"",
   accessToken:"",
   isLogin:false,
