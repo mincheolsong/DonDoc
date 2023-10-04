@@ -1,8 +1,12 @@
 package com.dondoc.backend.webSocket;
 
+import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import com.dondoc.backend.notify.service.NotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -21,6 +25,7 @@ public class EchoHandler extends TextWebSocketHandler {
     // 로그인중인 유저 1대1 매핑
     private Map<String, WebSocketSession> users = new HashMap<>();
     private final NotifyService notifyService;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     /**
@@ -32,7 +37,7 @@ public class EchoHandler extends TextWebSocketHandler {
         sessions.add(session);
         String userId = getUserId(session);
         if(userId!=null){ // 로그인 값이 있는 경우에만
-            log.info(userId); // 현재 접속한 사람의 userId
+            log.info("[webSocket] 현재 접속한 사람의 userId : {}",userId); // 현재 접속한 사람의 userId
             users.put(userId, session);
         }
     }
@@ -58,44 +63,72 @@ public class EchoHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         // 알림을 보낸 사용자의 ID
-        String userId = getUserId(session);
+//        String userId = getUserId(session);
 
         String msg = message.getPayload();
-        if(msg!=null){
-            String[] strs = msg.split(",");
-            log.info(strs.toString());
+        log.info("Socket Msg : {}",msg);
+        if(msg!=null) {
+            JSONParser jsonParser = new JSONParser();
 
-            if(strs!=null && strs.length==4){
-                /**
-                 * 알림타입
-                 *  - 1 : 모임초대
-                 *  - 2 : 이체요청
-                 *  - 3 : 미션요청
-                 *  - 4 : 이체승인
-                 *  - 5 : 이체거절
-                 *  - 6 : 친구요청
-                 */
-                String type = strs[0]; // 알림타입
-                String title = strs[1]; // 알림제목
-                String content = strs[2]; // 알림내용
-                Long target = Long.valueOf(strs[3]); // 회원ID (알림 받을사람의 ID)
+            try {
 
+                Object object = jsonParser.parse(msg);
+                JSONObject jsonObj = (JSONObject) object;
+                String token = (String)jsonObj.get("Authorization");
+                String userId = null;
 
-                // Notify 테이블에 저장
-                notifyService.createNotify(type,title,content,target);
-
-                // 알림을 받을 사용자의 webSocketSession
-                WebSocketSession targetSession = users.get(target.toString());
-                /**
-                 * (서버 -> 클라이언트)
-                 * 서버에서 클라이언트로 메시지 전송하는 부분
-                 */
-                // 알림을 받을 사용자가 접속한 상태이면, 서버에서 클라이언트로 알림을 보내는 부분
-                if(targetSession!=null){
-                    TextMessage textMessage = new TextMessage(type+","+title+","+content+","+userId);
-                    targetSession.sendMessage(textMessage);
+                if (token != null && token.startsWith("Bearer ")) {
+                    token = token.substring(7);
+                    if (!jwtTokenProvider.isTokenExpired(token)) {
+                        // JWT 토큰이 유효한 경우, 사용자 정보를 추출하고 속성(attributes)에 저장합니다.
+                        userId = jwtTokenProvider.getClaims(token).getSubject();
+                        users.put(userId, session);
+                    }
                 }
 
+                String alarm = (String)jsonObj.get("alarm");
+
+                if(alarm!=null && userId!=null){
+                    String[] strs = alarm.split(",");
+                    log.info(strs.toString());
+
+                    if (strs != null && strs.length == 4) {
+                        /**
+                         * 알림타입
+                         *  - 1 : 모임초대
+                         *  - 2 : 이체요청
+                         *  - 3 : 미션요청
+                         *  - 4 : 이체승인
+                         *  - 5 : 이체거절
+                         *  - 6 : 친구요청
+                         */
+                        String type = strs[0]; // 알림타입
+                        String title = strs[1]; // 알림제목
+                        String content = strs[2]; // 알림내용
+                        Long target = Long.valueOf(strs[3]); // 회원ID (알림 받을사람의 ID)
+
+
+                        // Notify 테이블에 저장
+                        notifyService.createNotify(type, title, content, target);
+
+                        // 알림을 받을 사용자의 webSocketSession
+                        WebSocketSession targetSession = users.get(target.toString());
+                        /**
+                         * (서버 -> 클라이언트)
+                         * 서버에서 클라이언트로 메시지 전송하는 부분
+                         */
+                        // 알림을 받을 사용자가 접속한 상태이면, 서버에서 클라이언트로 알림을 보내는 부분
+                        if (targetSession != null) {
+                            TextMessage textMessage = new TextMessage(type + "," + title + "," + content + "," + userId);
+                            targetSession.sendMessage(textMessage);
+                        }
+
+                    }
+
+                }
+
+            } catch (Exception e) { // Parse Exception
+                log.error(e.getMessage());
             }
         }
     }
@@ -105,11 +138,12 @@ public class EchoHandler extends TextWebSocketHandler {
      * 알람을 보내는 유저(댓글작성, 좋아요 누르는 유저)
      */
     private String getUserId(WebSocketSession session) {
+        Map<String, Object> attributes = session.getAttributes();
         String loginUserId;
-        if (session.getPrincipal() == null) {
+        if (attributes == null || attributes.get("userId")==null) {
             loginUserId = null;
         } else {
-            loginUserId = session.getPrincipal().getName();
+            loginUserId = (String) attributes.get("userId");
         }
         return loginUserId;
     }

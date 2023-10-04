@@ -88,6 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setExposedHeaders(List.of("*")); // 헤더 값 접근
 
         // 도메인 추가
+        configuration.addAllowedOrigin("http://localhost:3000"); // 신뢰하는 도메인 지정
+
         configuration.addAllowedOrigin("http://localhost:5174"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:5173"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:9191"); // 신뢰하는 도메인 지정
