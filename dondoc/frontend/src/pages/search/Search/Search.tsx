@@ -6,9 +6,11 @@ import styles from "./Search.module.css";
 import { BASE_URL } from "../../../constants";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {BiSearch} from "react-icons/bi"
+import BackLogoHeader from "../../toolBox/BackLogoHeader";
 
 
-type Result = {
+type Results = {
   userId: number,
   phoneNumber: string,
   imageNumber: number,
@@ -19,8 +21,19 @@ type Result = {
   nickName: string
 }
 
+const initialSearchResult: Results = {
+  userId: 0,
+  phoneNumber: "",
+  imageNumber: 0,
+  bankName: "",
+  bankCode: 0,
+  accountNumber: "",
+  msg: "",
+  nickName: ""
+};
+
 function Search() {
-  const [Result, setUserList] = useState<Result[]>([])
+  const [Result, setResult] = useState<Results>(initialSearchResult)
   const [PhoneNumber, setPhoneNumber] = useState<string>('')
 
   const navigate = useNavigate()
@@ -29,8 +42,8 @@ function Search() {
   })
   const token = userInfo.accessToken
 
-  const GoProfile = (id:number) => {
-    navigate(`/profile/${id}`)
+  const GoProfile = (id:string) => {
+    navigate(`/mypage/${id}`)
   }
 
   const InputNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -39,16 +52,22 @@ function Search() {
 
   const SearchUser = async() => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/user/find_user/${PhoneNumber}`,{
+      const res = await axios.get(`${BASE_URL}/api/user/find_user/${PhoneNumber}`, {
         headers: {
-        'Content-Type': 'application/json', 
-        'Authorization': 'Bearer ' + token
-      }}
-      );
-      setUserList(response.data.response)
-      // console.log(response.data.response)
-    } catch(error) {
-      // console.log('error:', error)
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (res.data.response) {
+        console.log(res.data.response)
+        setResult(res.data.response)
+      } else {
+        alert(res.data.error.message)
+
+        setResult(initialSearchResult);
+      }
+    }catch(err) {
+      console.log(err)
     }
   }
 
@@ -56,21 +75,24 @@ function Search() {
   return (
     <>
     <div className={styles.Background}>
-      <button onClick={SearchUser} >검색</button>
-      <input className={styles.SearchBar} placeholder="추가하고 싶은 친구의 전화번호를 입력해 주세요."
-      onChange={InputNumber}/>
-      {Result.length ?     <div className={styles.topContainer}>
+    <BackLogoHeader name="사용자 검색" left="13%" fontSize="1.5rem" top="3%"/>
+
+    <div style={{marginBottom:"20%"}}>
+      <input onChange={InputNumber} className={styles.searchBox} placeholder="전화번호를 입력해주세요" type="text" name="" id="" />
+      <BiSearch className={styles.searchIcon} onClick={SearchUser}/>
+      </div>
+      {Result.userId ? (<div className={styles.topContainer}>
       <div style={{display:"flex",width:"60%"}}>
-      <img src={Result[0].imageNumber} style={{width:"35%"}} />
+      <img src={`/src/assets/characterImg/${Result.imageNumber}.png`} style={{width:"35%"}} />
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Result[0].nickName}</p>
+      <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Result.nickName}</p>
     </div>
       </div>
     <div>
       <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} 
-      onClick = {() => GoProfile(Result[0].userId)}>프로필 가기</button>
+      onClick = {() => GoProfile(Result.phoneNumber)}>프로필 가기</button>
     </div>
-  </div> : <div className={styles.ResultContainer}>검색 내용이 없습니다.</div>}
+  </div>) : <div className={styles.ResultContainer}>검색 내용이 없습니다.</div>}
     
     </div>
     <Nav />

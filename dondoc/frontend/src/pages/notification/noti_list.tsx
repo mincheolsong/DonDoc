@@ -39,7 +39,7 @@ function Noti_List() {
         'Authorization': 'Bearer ' + token
       }}
       );
-      setFriendRe(response.data.response)
+      setFriendRe(response.data.response.list)
       console.log(response.data.response)
     } catch(error) {
       console.log('error:', error)

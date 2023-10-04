@@ -114,8 +114,8 @@ function Router() {
             <Route path="/detailthird/:moimId" element={<DetailThird/>}/> */}
 
             {/* Notification */}
-            <Route path='/notification/:userId' element={<Noti_List />}></Route>
-            <Route path='/notification/:userId/FriendRequests' element={<Friend_Re />}></Route>
+            <Route path='/notification/' element={<Noti_List />}></Route>
+            <Route path='/notification/FriendRequests' element={<Friend_Re />}></Route>
 
             
         </Routes>
