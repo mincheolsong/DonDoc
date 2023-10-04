@@ -56,7 +56,7 @@ function MoimSelectAccount() {
 
   const ToNext = () => {
     if(selectCategory.code) {
-      navigate('/moimpassword', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory, manager:[]}})
+      navigate('/moimpassword', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory}})
     } else {
       alert('계좌 유형을 선택해주세요.')
     }

@@ -19,7 +19,6 @@ function CreatePassword() {
   const moimInfo = state.moimInfo
   const account = state.account
   const category = state.category
-  const manager = state.manager
 
 
   // const navigate = useNavigate()
@@ -55,7 +54,7 @@ function CreatePassword() {
     }
     else if (password.length === 4) {
       setPwd4(true)
-      navigate('/moimrepassword', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category, manager:manager}})
+      navigate('/moimrepassword', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category}})
     }
   },[password])
 
