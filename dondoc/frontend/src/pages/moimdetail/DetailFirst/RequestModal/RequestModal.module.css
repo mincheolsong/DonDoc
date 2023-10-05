@@ -89,6 +89,10 @@
     height: 3.4rem;
 }
 
+.inputs option {
+    width: 20.533rem;
+}
+
 .btns {
     position: absolute;
     bottom: 0;

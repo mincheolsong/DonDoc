@@ -128,6 +128,9 @@ function InviteManagerModal({setInviteModalOpen, setManager, token}: Props) {
           </div>
 
         </div>
+        <div className={styles.btndiv}>
+          <button className={styles.closebtn} onClick={() => {setInviteModalOpen(false)}}>닫기</button>
+        </div>
 
       </div>
     </div>
