@@ -418,13 +418,16 @@ public class MoimServiceImpl implements MoimService{
     /** 요청 관리/목록 - 전체 리스트 조회 */
     @Override
     public AllRequestDto.Response getRequestList(Long userId, AllRequestDto.Request req) throws Exception {
-
+        // moimmember를 조회
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
         log.info("member : {} " , member.toString());
 
+        // 송금 요청 리스트
         List<WithdrawRequest> withdrawRequestList;
+
+        // 미션 리스트
         List<Mission> missionList;
 
         log.info("moimId : {} " , member.getMoim().getId());
@@ -447,7 +450,8 @@ public class MoimServiceImpl implements MoimService{
             } else { // 전체 조회
 
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
-                missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
+                missionList = missionRepository.test1(member.getMoim().getId(),0,1);
+//                missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
             }
 
 

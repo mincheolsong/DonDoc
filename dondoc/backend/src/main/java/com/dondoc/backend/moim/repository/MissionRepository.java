@@ -4,6 +4,8 @@ import com.dondoc.backend.moim.entity.Mission;
 import com.dondoc.backend.moim.entity.Moim;
 import com.dondoc.backend.moim.entity.MoimMember;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +20,9 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     Optional<Mission> findByMoimMemberAndMoimMember_MoimAndId(MoimMember moimMember, Moim moim, Long id);
     Optional<Mission> findByMoimMember_MoimAndId(Moim moim, Long id);
+
+//    findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc
+    @Query("select m from Mission m where m.moimMember.moim.id=:moimId and (m.status=:status1 or m.status=:status2)")
+    List<Mission> test1(@Param("moimId")Long moimId,@Param("status1") int status1,@Param("status2") int status2);
 
 }

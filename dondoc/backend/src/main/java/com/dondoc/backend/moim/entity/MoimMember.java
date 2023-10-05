@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name="MoimMember")
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
