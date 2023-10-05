@@ -5,7 +5,7 @@ import { BASE_URL } from "../../../../constants";
 import { UserType } from "../../../../store/slice/userSlice";
 import { useSelector } from "react-redux";
 import BackLogoHeader from "../../../toolBox/BackLogoHeader/BackLogoHeader";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Request = {
   id: number,
