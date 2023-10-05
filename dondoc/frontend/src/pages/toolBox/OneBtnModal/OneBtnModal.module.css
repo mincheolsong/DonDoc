@@ -3,7 +3,6 @@
     background-color: white;
     border: solid 0.2rem #E4E4E4 ;
     border-radius: 0.6rem;
-    margin-top: 40%;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -17,4 +16,23 @@
     border-radius: 0.7rem;
     width: 9rem;
     height: 3rem;
+    font-family: "NT";
+}
+
+.mainBox{
+    z-index: 3;
+    top: 0.1rem;
+}
+.boxbox{
+    font-family: "BD";
+    top:0;
+    position: fixed;
+    height: 100%;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.226);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
 }

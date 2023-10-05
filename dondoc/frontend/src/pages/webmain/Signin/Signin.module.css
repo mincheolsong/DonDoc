@@ -4,6 +4,8 @@
     flex-direction: column;
     align-items: center;
     width: 90%;
+    font-family: "NT";
+    font-size: 1.5rem;
 
 }
 .containerTop{
@@ -52,14 +54,30 @@ input:focus{
     color: white;
     width: 90%;
     height: 3.5rem; /*높이조절 */
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     border-radius: 0.8rem;
     border: 0;
-    
+    font-family: "NT";
+ 
 }
 
 /*눌렸을때 */
 .loginBtn:active{
     background-color: #0056d8;
     color: white;
+}
+
+.signUpBtnDis{
+    position: fixed;
+    bottom: 10%;
+    margin-top: 2rem; /*윗마진 */
+    background-color: #b1b1b1; /*색 조절 */
+    color: white;
+    width: 90%;
+    height: 4rem; /*높이조절 */
+    font-size: 2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-bottom: 3rem;
+    font-weight: bold;
 }

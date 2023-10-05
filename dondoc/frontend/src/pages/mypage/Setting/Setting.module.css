@@ -1,1 +1,36 @@
 /* your css code */
+.mainBox{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settingItem{
+    margin-top: 15%;
+    background-color: white;
+    border-radius: 0.6rem;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: "BD";
+}
+.logoutIcon{
+    width: 80%;
+    border-radius: 0.6rem;
+    background-color: #C2C2C2;
+    height: 8vh;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: "BD";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}

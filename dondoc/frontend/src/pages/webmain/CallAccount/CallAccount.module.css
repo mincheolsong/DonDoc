@@ -1,0 +1,9 @@
+/* your css code */
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 90vh;
+}
+

@@ -1,63 +1,91 @@
 import styles from "./MoimLinkAccount.module.css";
-import ssafylogo from '../../../assets/ssafy_logo.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
+import { BASE_URL } from "../../../constants";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
-const datas = [
-  {
-    'bank': '하나은행',
-    'name': '영플러스통장',
-    'accountnumber': '237-128127-12478'
-  },
-  {
-    'bank': '대구은행',
-    'name': '영마이너스통장',
-    'accountnumber': '237-131131-34678'
-  },
-  {
-    'bank': '우리은행',
-    'name': '영앰지통장',
-    'accountnumber': '010-124527-12458'
-  }
-];
+type linkList = { account: object, index:number, 
+  accountId:number,
+  accountName:string,
+  accountNumber:string,
+  accountbalance:number,
+  bankCode:number,
+  bankName:string}
+
+type selectAccount = {
+  accountId:number,
+  accountName:string,
+  accountNumber:string,
+  accountbalance:number,
+  bankCode:number,
+  bankName:string
+}
+
+const defaultAccount = {
+  accountId:0,
+  accountName:'',
+  accountNumber:'',
+  accountbalance:0,
+  bankCode:0,
+  bankName:''
+}
 
 function MoimLinkAccount() {
-  const [selectAccount, setSelectAccount] = useState<string>('')
+  const [selectAccount, setSelectAccount] = useState<selectAccount>(defaultAccount)
+  const [linkList, setLinkList] = useState<linkList[]>([])
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
 
   const navigate = useNavigate()
   const { state } = useLocation()
   const moimName = state.moimName
   const moimInfo = state.moimInfo
 
-  const ChangeSelectAccount = (accountName) => {
-    setSelectAccount(accountName)
-  }
-
-  const ToBack = () => {
-    navigate(-1)
+  const ChangeSelectAccount = (account:selectAccount) => {
+    setSelectAccount(account)
   }
 
   const ToNext = () => {
-    if (selectAccount) {
+    if (selectAccount.accountNumber) {
       navigate('/moimselect', { state: { moimName: moimName, moimInfo: moimInfo, account: selectAccount } })
     } else {
-      console.log('선택해주세요')
+      alert('연결 계좌를 선택해주세요')
     }
   }
+
+  const token = userInfo.accessToken
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const AccountList = await axios.get(`${BASE_URL}/api/account/account/list`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        console.log('검색결과:', AccountList.data.response)
+        setLinkList(AccountList.data.response.accountList)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+
+    fetchData();
+  }, []);
+  
+
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.topbar}>
-          <div className={styles.backbutton}>
-            <button className={styles.toback} onClick={ToBack}>
-              back
-            </button>
-          </div>
-          <div className={styles.pagename}>
-            <h3>모임통장 생성</h3>
-          </div>
-        </div>
+        <BackLogoHeader name="계좌유형"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
@@ -65,22 +93,22 @@ function MoimLinkAccount() {
           </div>
 
           <div className={styles.accounts}>
-            {datas.map((account, index) => (
-              <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account.name)}>
+            {linkList.length > 0 && linkList.map((account, index) => (
+              <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account)}>
                 <div className={styles.accountunit}>
                   <div className={styles.banklogo}>
-                    <img src={ssafylogo} alt="" className={styles.ssafylogo} />
+                    <img src={`src/assets/Bank_Logo/${account.bankCode}.svg`} alt="이미지가 없습니다" className={styles.ssafylogo} />
                   </div>
                   <div className={styles.accountinfo}>
-                    <p>{`${account.bank} ${account.name}`}</p>
-                    <p className={styles.accountnumber}>{`${account.bank} ${account.accountnumber}`}</p>
+                    <p>{`${account.accountName}`}</p>
+                    <p className={styles.accountnumber}>{`${account.bankName} ${account.accountNumber}`}</p>
                   </div>
                   <div className={styles.selectcount}>
                     <input 
                       type="radio" 
                       id={`account-${index}`} 
-                      checked={account.name === selectAccount}
-                      onChange={() => ChangeSelectAccount(account.name)} />
+                      checked={account === selectAccount}
+                      onChange={() => ChangeSelectAccount(account)} />
                   </div>
                 </div>
               </label>

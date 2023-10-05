@@ -1,5 +1,6 @@
 /* your css code */
 .etcPages{
+    font-family: "NT";
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -13,12 +14,13 @@
 
 /*주버튼 */
 .confirmBtn{
+    font-family: "BD";
     margin-top: 54%; /*윗마진 */
     background-color: #0D6EFD; /*색 조절 */
     color: white;
     width: 90%;
     height: 4.5rem; /*높이조절 */
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border-radius: 0.8rem;
     border: 0;
     font-weight: bold;
