@@ -5,6 +5,8 @@ import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 import { moim } from "../../../api/api";
 import { UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux";
+import {MdOutlineArrowBack} from "react-icons/md"
+
 function SendMoneyPassword() {
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -121,10 +123,10 @@ function SendMoneyPassword() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <BackLogoHeader name="비밀번호 등록"fontSize="2rem" left="5rem" top="0.8rem"/>
+        <BackLogoHeader fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.inputment}>
-          <h1>비밀번호를 등록해주세요</h1>
+          <h1>비밀번호를 입력해주세요.</h1>
         </div>
 
         <div className={styles.PwdContainer}>
@@ -163,7 +165,7 @@ function SendMoneyPassword() {
               className={`${styles.num_button__flex} ${styles.spread_effect} ${styles.fantasy_font__2_3rem}`}
               onClick={erasePasswordOne}
             >
-              ←
+              <MdOutlineArrowBack className={styles.BackIcon}/>
             </button>
           </div>
 

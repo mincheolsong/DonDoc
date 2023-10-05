@@ -23,6 +23,7 @@
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
+    font-family: "BD";
 }
 
 .botItem{
@@ -33,6 +34,7 @@
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
+    font-family: "BD";
 }
 
 .topItemInner{
@@ -69,6 +71,7 @@
     border: 0;
     margin-bottom: 1rem;
     font-weight: bold;
+    font-family: "BD";
 }
 
 /*눌렸을때 */
@@ -83,6 +86,7 @@
     position: fixed;
     font-weight: bold;
     z-index: 1;
+    font-family: "BD";
 
 }
 
@@ -96,5 +100,6 @@
     border-radius: 0.8rem;
     border: 0;
     margin-bottom: 1rem;
-    font-weight: bold;
+    font-weight: bold; 
+    font-family: "BD";
 }

@@ -12,7 +12,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    
+    font-family: "NT";
 }
 
 .accountBtn{
@@ -22,8 +22,9 @@
     height: 2.2rem;
     font-size: 1.1rem;
     color: #4F4F4F;
-    font-weight: bold;
+
     margin-bottom: 0.8rem;
+    font-family: "LH";
 }
 
 
@@ -33,11 +34,11 @@
     background-color: white;
     border-radius: 0.8rem;
     border: solid #E4E4E4 0.1rem;
-    height: 2rem;
+    height: 2.5rem;
     color: black;
-    font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-right: 1rem;
+    font-family: "LH";
 }
 
 .topContainer{
@@ -52,7 +53,7 @@
 }
 
 .sendMoneyBtn{
-    
+    font-family: "BD";
     background-color: #3772FF; /*색 조절 */
     color: white;
     width: 15%;

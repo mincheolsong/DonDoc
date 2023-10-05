@@ -29,6 +29,7 @@
 }
 
 .mainContainer{
+    font-family: "BD";
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -45,5 +46,5 @@
     height: 5rem;
     font-weight: bold;
     margin-bottom: 10%;
-
+    font-family: "LH";
 }

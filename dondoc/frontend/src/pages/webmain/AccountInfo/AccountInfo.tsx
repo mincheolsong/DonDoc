@@ -83,7 +83,7 @@ function AccountInfo() {
     
     {/* Top */}
     <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}} >
-      <div style={{display:"flex", flexDirection:"row",justifyContent:"center", width:"100%",alignItems:"center"}}>
+      <div style={{display:"flex", flexDirection:"row",justifyContent:"center", width:"100%",alignItems:"center",marginTop:"4%",fontFamily:""}}>
         <p style={{fontWeight:"bold",fontSize:"2.4rem"}}>{Account.balance} 원</p>
         <button className={styles.sendMoneyBtn} onClick={()=>{
           navigate(`/sendmoneyfirst/${Account.accountNumber}`,{state:{account:Account}})
@@ -113,7 +113,7 @@ function AccountInfo() {
 
     {/* Mid */}
         <div style={{width:"100%"}}>
-          <p style={{marginLeft:"5%",fontSize:"2rem",fontWeight:"bold"}}>사용내역</p>
+          <p style={{marginLeft:"5%",fontSize:"2rem",fontWeight:"bold",fontFamily:"NT"}}>사용내역</p>
         </div>
     
 
@@ -122,18 +122,18 @@ function AccountInfo() {
    <br />
       <div>                           
       {historyList.map((history,index)=>(
-        <div key={index} style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"90vw",marginTop:'5%'}}>
+        <div key={index} style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"90vw",marginTop:'5%',fontFamily:"NT"}}>
           
-        <div style={{display:"flex",flexDirection:"column"}}>
+        <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"row"}}>
             <img style={{marginRight:"10%"}} src={`/src/assets/Bank_Logo/${history.toCode.bankCodeId}.svg`} alt="은행로고" />
             <div style={{display:"flex",flexDirection:"column",width:"40vw", justifyContent:"center"}}>
-                <p style={{margin:0,color:"#717171"}}>{history.historyId.createdAt.date} | {history.historyId.createdAt.at}</p>
-                <p style={{margin:0,fontWeight:"bold",fontSize:"1.3rem"}}>{history.historyId.sign}</p>
+                <p style={{margin:0,color:"#717171",fontSize:"1.2rem",fontWeight:"bold"}}>{history.historyId.createdAt.date} | {history.historyId.createdAt.at}</p>
+                <p style={{margin:0,fontWeight:"bold",fontSize:"1.4rem"}}>{history.historyId.sign}</p>
             </div>
           </div>
         
-          <p onClick={()=>{}} style={{fontWeight:"bold"}}>{history.memo ? `${history.memo}`  : ""}</p>
+          <p onClick={()=>{}} style={{fontWeight:"bold",marginBottom:"3%"}}>{history.memo ? `${history.memo}`  : ""}</p>
 
         </div>
 

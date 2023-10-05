@@ -82,7 +82,7 @@ function SignUpFirst() {
     <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
         <div className={styles.mainContainer}>
           <img className={styles.Logo} src={dondoc} />
-          <p style={{fontSize:"1.5rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem"}}>회원가입</p>
+          <p style={{fontSize:"2rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem",fontFamily:"NT"}}>회원가입</p>
         </div>
   
 
@@ -95,7 +95,7 @@ function SignUpFirst() {
           {certificationBtn ?  
             <div style={{display:"flex",width:"100%",flexDirection:"column"}}>
             <input type="text" value={phone} className={styles.IdBoxdis} disabled/>
-            <p style={{ margin:"0", color : innerColor ? "green" : "#FF001F ", fontWeight:"bold" }}>{phoneMsg}</p>
+            <p style={{ margin:"0", color : innerColor ? "green" : "#FF001F ", fontWeight:"bold" ,fontFamily:"NT"}}>{phoneMsg}</p>
           </div>
           :  <SignUpInput1 type='text' innerText='전화번호' change={onChangePhone} helpMsg={phoneMsg} inner={innerColor}/>}
           {certificationBtn ? <button className={styles.confirmPass2dis}>인증하기</button> : <button onClick={()=>{
@@ -120,7 +120,7 @@ function SignUpFirst() {
           {certificationBtn ? 
           <div>
             <input onChange={onChangeCer} placeholder="인증번호를 입력해주세요." className={styles.cerInput} type="text" name="" id="" /> <button style={{width:"5.5rem",border:"0", backgroundColor:"#0D6EFD",color:"white", borderRadius:"0.5rem",height:"3.8rem",marginLeft:"3%"}} onClick={cerBtn}>확인</button>
-            <p style={{marginLeft:"10%",color:smsColor ?  "green" : "#FF001F " ,fontWeight:"bold"}}>{smsMsg}</p>
+            <p style={{marginLeft:"10%",color:smsColor ?  "green" : "#FF001F " ,fontWeight:"bold",fontFamily:"NT"}}>{smsMsg}</p>
           </div>
           
           
@@ -153,7 +153,7 @@ export function SignUpInput1(props:SignUpInput){
     <div style={{display:"flex",width:"100%",flexDirection:"column"}}>
       <input type={props.type} placeholder={props.innerText} className={styles.IdBox} onChange={props.change}
       />
-      <p style={{ margin:"0", color : props.inner ? "green" : "#FF001F ", fontWeight:"bold" }}>{props.helpMsg}</p>
+      <p style={{ margin:"0", color : props.inner ? "green" : "#FF001F ", fontWeight:"bold",fontFamily:"NT" }}>{props.helpMsg}</p>
     </div>
     
   )

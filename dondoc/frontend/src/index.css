@@ -35,14 +35,29 @@ body {
 }
 
 @font-face{
-  font-family: "barundotum";
+  font-family: "BD";
   font-weight: normal;
   src: url("/src/font/HakgyoansimBareondotumR.ttf") format("woff");
 }
 
+@font-face{
+  font-family: "barundotumB";
+  font-weight: bold;
+  src: url("/src/font/HakgyoansimBareondotumB.ttf") format("woff");
+}
 
 @font-face{
-  font-family: "LHL";
-  font-weight:100;
+  font-family: "LH";
+  font-weight:normal;
   src: url("/src/font/LHL.ttf") format("woff");
+}
+@font-face{
+  font-family: "NT";
+  font-weight:normal;
+  src: url("/src/font/NotoSansKR-Regular.ttf") format("woff");
+}
+@font-face{
+  font-family: "Number";
+  font-weight:normal;
+  src: url("/src/font/Biryani-Regular.ttf") format("woff");
 }
