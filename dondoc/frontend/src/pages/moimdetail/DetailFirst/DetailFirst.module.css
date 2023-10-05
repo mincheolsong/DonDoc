@@ -244,6 +244,6 @@
 
   .bookmark {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -0.5rem;
+    left: -0.5rem;
   }
