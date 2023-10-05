@@ -104,8 +104,8 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
           className={styles.friendBox}>
           <img style={{height:"100%"}} src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
-            <p style={{fontSize:"1rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
-            <p style={{fontSize:"1rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.phoneNumber}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.phoneNumber}</p>
           </div>
           <button onClick={(e)=>{
             deleteF(friend.id,e )
@@ -122,8 +122,8 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
           }} className={styles.friendBox}>
           <img style={{height:"100%"}} src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
-            <p style={{fontSize:"1rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
-            <p style={{fontSize:"1rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.phoneNumber}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.phoneNumber}</p>
           </div>
           <button onClick={(e)=>{
             deleteF(friend.id,e)

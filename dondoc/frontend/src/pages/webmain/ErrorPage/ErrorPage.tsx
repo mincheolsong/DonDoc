@@ -10,7 +10,7 @@ function ErrorPage() {
       <div className={styles.etcPages}>
         <img style={{marginTop:"15%"}} src={Error} alt="" />
         <p style={{fontSize:"2rem",fontWeight:"bold"}}>이체에 실패했습니다.</p>
-        <p style={{fontSize:"1.5rem",fontWeight:"bold"}}>실패사유 : {state}</p>
+        <p style={{fontSize:"1.5rem",fontWeight:"bold",width:"85%",textAlign:"center"}}>실패사유 : {state}</p>
         <button onClick={()=>{
           navigate('/')
         }} className={styles.confirmBtn}>돌아가기</button>

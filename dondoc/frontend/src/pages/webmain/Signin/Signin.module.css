@@ -4,6 +4,8 @@
     flex-direction: column;
     align-items: center;
     width: 90%;
+    font-family: "NT";
+    font-size: 1.5rem;
 
 }
 .containerTop{
@@ -52,10 +54,11 @@ input:focus{
     color: white;
     width: 90%;
     height: 3.5rem; /*높이조절 */
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     border-radius: 0.8rem;
     border: 0;
-    
+    font-family: "NT";
+ 
 }
 
 /*눌렸을때 */

@@ -16,8 +16,11 @@
     border-radius: 0.7rem;
     width: 9rem;
     height: 3rem;
+    font-family: "BD";
+    font-weight: bold;
 }
 .boxbox{
+    font-family: "BD";
     top:0;
     position: fixed;
     height: 100%;

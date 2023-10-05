@@ -41,8 +41,8 @@ function SendMoneySecond() {
         <img src={`/src/assets/Bank_Logo/${state.myAccount.account.bankCode}.svg`} style={{marginLeft:"2rem",marginRight:"10%"}} />
         <div className={styles.topItemInner}>
             <p style={{margin:"0px",fontWeight:"bold",marginTop:'1.7rem',fontSize:"1.4rem"}}> {state.myAccount.account.accountName}</p>
-            <p style={{margin:"0px",color:"#626262",fontSize:"1.1rem",fontWeight:"bold"}}> {state.myAccount.account.accountNumber}</p>
-            <p style={{margin:"0px",textAlign:"end",fontWeight:"bold",marginRight:"1rem"}}> {state.myAccount.account.balance}</p>
+            <p style={{marginTop:"1%",color:"#626262",fontSize:"1.1rem",fontWeight:"bold"}}> {state.myAccount.account.accountNumber}</p>
+            <p style={{margin:"0px",textAlign:"end",fontWeight:"bold",marginRight:"1.3rem"}}> {state.myAccount.account.balance} 원</p>
         </div>
       </div>
   
@@ -51,13 +51,13 @@ function SendMoneySecond() {
           <div className={styles.botItemInner}>
               
               <p style={{margin:"0px",fontWeight:"bold",marginTop:'1.7rem',fontSize:"1.4rem",display:"flex", alignItems:"center"}}>{state.toAccount.sign}&nbsp; <AiFillCheckSquare color="#00D26A"/> </p>
-              <p style={{margin:"0px",color:"#626262",fontSize:"1.1rem",fontWeight:"bold"}}> {state.toAccount.toAccount}</p>
+              <p style={{margin:"0px",marginTop:"2%",color:"#626262",fontSize:"1.1rem",fontWeight:"bold"}}> {state.toAccount.toAccount}</p>
           
           </div>
       </div>
 
       <div style={{marginTop:"1.5rem",width:"90%",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-        <p style={{fontWeight:"bold", fontSize:"1.5rem"}}>얼마를 보낼까요?</p> 
+        <p style={{fontWeight:"bold", fontSize:"1.5rem",fontFamily:"BD"}}>얼마를 보낼까요?</p> 
         <div style={{display:"flex",alignItems:"center"}}>
         <input onChange={transC} style={{textAlign:"center"}} type="text" value={toTransferAmount} className={styles.inputBox} />
         <span className={styles.won}>원</span>

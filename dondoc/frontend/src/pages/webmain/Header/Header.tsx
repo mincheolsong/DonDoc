@@ -31,7 +31,7 @@ function Header() {
 
   return (
     <div className={styles.header}>
-      <img src={'/src/assets/image/dondoc.svg'} />
+      <img  style={{width:"10rem"}} src={'/src/assets/image/dondoc.svg'} />
       {notify ? <NavLink
       to="/notification">
       <img src={'/src/assets/image/redBell.svg'} />

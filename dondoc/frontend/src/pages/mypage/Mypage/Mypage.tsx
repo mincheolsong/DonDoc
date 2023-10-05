@@ -96,7 +96,7 @@ useEffect(()=>{
       <img onClick={()=>{
         navigate('/setting')
       }} className={styles.settingIcon} src={"/src/assets/image/setting.svg"} alt=""/>
-      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%"}}>마이페이지</p>
+      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%",fontFamily:"NT"}}>마이페이지</p>
 
       {/* 캐릭터 */}
       {userInfo.imageNumber==0 ? <img onClick={()=>{
@@ -111,15 +111,15 @@ useEffect(()=>{
         }
         {/* 캐릭터 */}
         
-        {introduceModal ? <InputBtnModal callbackRight={introduceChangeR} callbackLeft={introduceChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.introduce} width="90vw" height="35vh"/> : ''}
+        {introduceModal ? <InputBtnModal callbackRight={introduceChangeR} callbackLeft={introduceChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.8rem" contentText={userInfo.introduce} width="90vw" height="35vh"/> : ''}
 
         {/* 이름 */}
         <div onClick={()=>{
           setNickNameModal(true)
         }} style={{display:"flex",justifyContent:"center",alignItems:"baseline",width:"40%",marginTop:"2%"}}>
-        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginLeft:"12%"}}>{userInfo.nickname} </p><img style={{marginLeft:"5%",width:"1.2rem"}} src={'/src/assets/image/pencil.svg'} alt="" />
+        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginLeft:"12%",fontFamily:"NT"}}>{userInfo.nickname} </p><img style={{marginLeft:"5%",width:"1.2rem"}} src={'/src/assets/image/pencil.svg'} alt="" />
         </div>
-        <p style={{fontSize:"1.4rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{userInfo.name}</p>
+        <p style={{fontSize:"1.4rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%",fontFamily:"NT"}}>{userInfo.name}</p>
          {/* 이름 */}
 
 
@@ -130,7 +130,7 @@ useEffect(()=>{
 
 {/* 대표계좌 */}
         <div style={{width:"80%",display:"flex",justifyContent:"space-between", alignItems:"center",marginTop:"3%" }}>
-          <p style={{fontWeight:"bold",fontSize:"2rem"}}>대표계좌</p><img onClick={()=>{
+          <p style={{fontWeight:"bold",fontSize:"2rem",fontFamily:"BD"}}>대표계좌</p><img onClick={()=>{
             navigate('/accountlist')
           }} style={{width:"32%"}} src="/src/assets/image/moimBtn.svg" alt="" />
         </div>
@@ -139,10 +139,10 @@ useEffect(()=>{
 
 
         {mainAccountCheck? <div className={styles.accountBox}>
-        <img src={`/src/assets/Bank_Logo/${mainAccount?.bankCode}.svg`} alt="" />
-        <div style={{display:"flex",flexDirection:"column"}}>
-          <p style={{margin:"0",color:"#6C6C6C"}}>{mainAccount?.accountName}</p>
-          <p style={{margin:"0"}}>{mainAccount?.accountNumber}</p>
+        <img style={{marginLeft:"4%"}} src={`/src/assets/Bank_Logo/${mainAccount?.bankCode}.svg`} alt="" />
+        <div style={{display:"flex",flexDirection:"column",fontFamily:"NT",marginLeft:"5%"}}>
+          <p style={{margin:"0",color:"#6C6C6C",fontSize:"1.3rem"}}>{mainAccount?.accountName}</p>
+          <p style={{margin:"0",fontSize:"1.4rem"}}>{mainAccount?.accountNumber}</p>
         </div>
       </div>
          : ''} 
@@ -151,11 +151,11 @@ useEffect(()=>{
 
           {/* 소개 */}
          <div className={styles.bottomMemo}>
-          <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",}}>소개</p>
+          <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",marginBottom:"3%"}}>소개</p>
           <div onClick={()=>{
             setIntroduceModal(!introduceModal)
           }} style={{backgroundColor:"white",width:"100%",minHeight:"10rem",borderRadius:"0.8rem",display:"flex",justifyContent:"center",alignItems:"center"}}>
-            {userInfo.introduce ? <p>{userInfo.introduce}</p> : <p style={{fontSize:"1.5rem",color:"#9F9F9F"}}>소개를 입력해 주세요.</p> }
+            {userInfo.introduce ? <p style={{fontFamily:"BD",fontWeight:"bold",fontSize:"1.4rem"}}>{userInfo.introduce}</p> : <p style={{fontSize:"1.5rem",color:"#9F9F9F",fontFamily:"BD",fontWeight:"bold"}}>소개를 입력해 주세요.</p> }
             
           </div>
 

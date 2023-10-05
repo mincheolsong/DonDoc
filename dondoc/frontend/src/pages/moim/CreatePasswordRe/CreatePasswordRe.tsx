@@ -58,7 +58,6 @@ function CreatePasswordRe () {
           setErrorCount(errorCount + 1)
           alert(`${errorCount}회 오류!`)
           setPassword("")
-          console.log(errorCount)
         }
       } else {
         navigate('/createresult', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category}})
@@ -102,9 +101,6 @@ function CreatePasswordRe () {
     },
     [handlePasswordChange],
   )
-  const ShowPass = () => {
-    console.log(state.password)
-  }
 
 
 
@@ -160,7 +156,6 @@ function CreatePasswordRe () {
           </div>
 
         </div>
-            <button onClick={ShowPass}>보여줘</button>
       </div>
     </div>
 

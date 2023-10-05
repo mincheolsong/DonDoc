@@ -2,7 +2,7 @@
 .accountBox{
     background-color: #D2E2F5;
     width: 70%;
-    height: 4rem;
+    height: 5rem;
     border-radius: 0.7rem;
     font-weight: bold;
     display: flex;
@@ -11,10 +11,12 @@
     align-items: center;
     box-shadow: 3px 3px 3px rgb(221, 221, 221);
     margin-bottom: 2rem;
+    font-family: "BD";
+    font-size: 1.3rem;
 }
 
 .sendMoneyBtn{
-    
+    font-family: "BD";
     background-color: #3772FF; /*색 조절 */
     color: white;
     width: 15%;
@@ -41,4 +43,5 @@
     justify-content: center;
     font-size: 1.4rem;
     font-weight: bold;
+    font-family: "NT";
 }
