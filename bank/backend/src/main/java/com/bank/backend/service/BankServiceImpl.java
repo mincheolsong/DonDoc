@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -51,7 +52,9 @@ public class BankServiceImpl implements BankService {
         return cnt; // 조회한 계좌목록 갯수 리턴
 
     }
+
     @Override
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public AccountDetailDto.Response findByAccountId(Long accountId) throws Exception {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new NotFoundException(accountId + "를 accountId로 가지는 계좌가 존재하지 않습니다"));
 
@@ -69,10 +72,7 @@ public class BankServiceImpl implements BankService {
 
         // 존재하는 경우
         if(owner.isPresent()){
-            return OwnerDto.Response.builder()
-                    .owner(owner.get())
-                    .isPresent(false)
-                .build();
+            throw new RuntimeException("존재하는 예금주입니다.");
         }
 
         // 존재하지 않음
@@ -103,10 +103,7 @@ public class BankServiceImpl implements BankService {
                     .build();
         }
 
-        // 존재하지 않음
-        return OwnerDto.Response.builder()
-                .isPresent(true)
-                .build();
+        throw new NoSuchElementException("예금주 정보가 존재하지 않습니다.");
     }
     // 예금주 생성
     @Override
@@ -126,10 +123,7 @@ public class BankServiceImpl implements BankService {
 
         // 개수의 초과
         if(!creatable){
-            return AccountDto.Response.builder()
-                    .msg("생성가능한 계좌의 수가 초과했습니다.")
-                    .success(false)
-                    .build();
+            throw new Exception("생성가능한 계좌의 수가 초과했습니다.");
         }
 
         // 은행 코드 탐색
@@ -159,12 +153,17 @@ public class BankServiceImpl implements BankService {
         // 계좌 저장
         accountRepository.save(account);
 
+        // 저장한 계좌의 ID
+        Account searchAccount = accountRepository.findByAccountNumber(account.getAccountNumber())
+                .orElseThrow(() -> new NoSuchElementException("계좌 등록이 정상적으로 이루어지지 않았습니다."));
+
         // 완료 반환
         return AccountDto.Response.builder()
                 .msg("계좌 생성이 완료되었습니다.")
                 .bankName(bankCode.getBankName())
-                .accountNumber(accountNumber)
+                .accountNumber(account.getAccountNumber())
                 .ownerName(account.getOwner().getOwnerName())
+                .accountId(searchAccount.getId())
                 .success(true)
                 .build();
     }
@@ -175,6 +174,7 @@ public class BankServiceImpl implements BankService {
         // 예금주 조회
         Owner owner = ownerRepository.findByIdentificationNumber(identification)
                 .orElseThrow(() -> new NoSuchElementException("예금주가 존재하지 않습니다."));
+
         // 계좌 목록 조회
         List<Account> accountList = accountRepository.findAllByOwner(owner);
 
@@ -277,7 +277,7 @@ public class BankServiceImpl implements BankService {
             Memo ret = memoRepository.save(
                     MemoDto.Request.saveMemoDto(history, req.getContent())
             );
-            
+
             return MemoDto.Response.toDTO(ret);
         } else { // 작성 된 메모가 있을 때
             memo.get().setContent(req.getContent());
@@ -296,14 +296,8 @@ public class BankServiceImpl implements BankService {
 
         // 조회 완료
         if(request.getBankCode() != account.getBankCode().getId()){
-
-            // 조회 실패
-            return AccountCertificationDto.Response.builder()
-                    .msg("계좌 정보가 일치하지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("계좌정보가 일치하지 않습니다.");
         }
-
 
         return AccountCertificationDto.Response.builder()
                 .accountNumber(account.getAccountNumber())
@@ -316,7 +310,7 @@ public class BankServiceImpl implements BankService {
 
     // 계좌 이체
     @Override
-    @Transactional
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public TransferDto.Response transfer(TransferDto.Request request) throws Exception{
         // 송금인 조회(사실은 필요 없을 수도), 혹시 모른 경우 대비해서 실행(계좌는 있는데 예금주가 존재하지 않는 경우) => DB 데이터 손실
         Owner owner = ownerRepository.findByIdentificationNumber(EncryptionUtils.encryption(request.getIdentificationNumber(), SALT))
@@ -327,10 +321,7 @@ public class BankServiceImpl implements BankService {
                 .orElseThrow(() -> new NoSuchElementException("계좌 정보가 존재하지 않습니다."));
 
         if(!sendAccount.isStatus()){
-            return TransferDto.Response.builder()
-                    .msg("정지된 계좌입니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("정지된 계좌입니다.");
         }
 
         // 상대방 계좌 조회
@@ -339,10 +330,7 @@ public class BankServiceImpl implements BankService {
 
         // 비밀번호 길이 오류
         if(request.getPassword().toString().length() != 4){
-            return TransferDto.Response.builder()
-                    .msg("비밀번호의 길이가 맞지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("비밀번호의 길이가 맞지 않습니다.");
         }
 
         // 해시 생성
@@ -358,17 +346,10 @@ public class BankServiceImpl implements BankService {
                 sendAccount.setStatus(false);
 
                 // 계좌 정지
-                return TransferDto.Response.builder()
-                        .msg("비밀번호 5회 실패로 계좌가 정저됩니다.")
-                        .success(false)
-                        .build();
+                throw new NoSuchElementException("비밀번호 5회 실패로 계좌가 정지됩니다.");
             }
-
             // 비밀번호 오류
-            return TransferDto.Response.builder()
-                    .msg("비밀번호가 일치하지 않습니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
         }
 
         // 거래금액
@@ -382,10 +363,7 @@ public class BankServiceImpl implements BankService {
 
         // 잔액 부족
         if(sendBalance < 0){
-            return TransferDto.Response.builder()
-                    .msg("잔액이 부족합니다.")
-                    .success(false)
-                    .build();
+            throw new NoSuchElementException("잔액이 부족합니다.");
         }
 
         if(request.getSign() == ""){

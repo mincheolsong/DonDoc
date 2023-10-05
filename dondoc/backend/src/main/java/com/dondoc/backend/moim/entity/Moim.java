@@ -1,11 +1,13 @@
 package com.dondoc.backend.moim.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,8 +33,15 @@ public class Moim {
     @Column(name="introduce", nullable = false, columnDefinition = "LONGTEXT")
     private String introduce;
 
-    @Column(name="moimAccount", nullable = false, length = 50)
-    private String moimAccount;
+    /**
+     * 모임계좌의 accountId (은행 Account테이블)
+     */
+    @JsonIgnore
+    @Column(name="moimAccountId", nullable = false)
+    private Long moimAccountId;
+
+    @Column(name="moimAccountNumber", nullable = false, length = 50)
+    private String moimAccountNumber;
 
     @Column(name="limited", nullable = false)
     private int limited;
@@ -45,13 +54,33 @@ public class Moim {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "moim")
-    private List<MoimMember> moimMemberList;
-    public Moim(String identificationNumber, String moimName, String introduce, String moimAccount, int limited, int moimType) {
+    private List<MoimMember> moimMemberList = new ArrayList<>();
+
+    @Column(name = "isActive",nullable = false)
+    private int isActive; // 0 : 비활성화, 1 : 활성화
+
+    public Moim(String identificationNumber, String moimName, String introduce, Long moimAccountId, String moimAccountNumber, int limited, int moimType) {
         this.identificationNumber = identificationNumber;
         this.moimName = moimName;
         this.introduce = introduce;
-        this.moimAccount = moimAccount;
+        this.moimAccountId = moimAccountId;
+        this.moimAccountNumber = moimAccountNumber;
         this.limited = limited;
         this.moimType = moimType;
+        this.isActive=1;
+    }
+
+    public Moim(String identificationNumber, String moimName, String introduce, String moimAccountNumber, int limited, int moimType) {
+        this.identificationNumber = identificationNumber;
+        this.moimName = moimName;
+        this.introduce = introduce;
+        this.moimAccountNumber = moimAccountNumber;
+        this.limited = limited;
+        this.moimType = moimType;
+        this.isActive = 1;
+    }
+
+    public void changeIsActive(int isActive){
+        this.isActive = isActive;
     }
 }

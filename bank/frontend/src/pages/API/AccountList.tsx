@@ -6,11 +6,11 @@ import { BASE_URL } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 
 interface account {
-accountName: string,
-accountNumber: number,
-accountId: number,
-bankName: string,
-balance: number
+  accountName: string,
+  accountNumber: number,
+  accountId: number,
+  bankName: string,
+  balance: number
 }
 
 function AccountList() {

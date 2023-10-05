@@ -5,9 +5,12 @@ import { BASE_URL } from '../../constants';
 import { useLocation } from 'react-router-dom';
 
 interface Transaction {
-  afterBalance: number;
+  historyId : {
+    afterBalance: number
+  }
   // 다른 필드들을 여기에 추가
 }
+
 
 function AccountDetail() {
   // const [accountNumber, setAccountNumber] = React.useState<string>('');
@@ -34,6 +37,7 @@ function AccountDetail() {
       if(response.data.error) {
         alert(response.data.error.message)
       } else {
+        console.log(response.data.response[0].historyId.afterBalance)
         setTransLog(response.data.response)
       }
     } catch {
@@ -54,7 +58,7 @@ function AccountDetail() {
           <div className={styles.contentbox}>
             <ul className={styles.accountInfoContainer}>
                 {TransLog.length ? TransLog.map((log) => (
-                  <li>{log.afterBalance}</li>
+                  <li>{log.historyId.afterBalance}</li>
                 )) : <span>거래 내역이 없습니다.</span>}
               </ul>
           </div>

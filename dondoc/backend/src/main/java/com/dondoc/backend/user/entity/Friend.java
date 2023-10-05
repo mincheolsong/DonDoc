@@ -1,11 +1,13 @@
 package com.dondoc.backend.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="Friend")
@@ -23,10 +25,11 @@ public class Friend {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
+    @JsonIgnore
     private User user;
 
     @Column(name="friendId" , nullable = false)
-    private int friendId;
+    private Long friendId;
 
     @Column(name="status" , nullable = false)
     private int status;
