@@ -59,16 +59,16 @@ function Search() {
         }
       });
       if (res.data.response) {
-        console.log(res.data.response)
+        // console.log(res.data.response)
         setResult(res.data.response)
       } else {
-        console.log(res.data)
+        // console.log(res.data)
         alert(res.data.error.message)
 
         setResult(initialSearchResult);
       }
     }catch(err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

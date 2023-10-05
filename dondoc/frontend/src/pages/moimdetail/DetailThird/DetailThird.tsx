@@ -96,7 +96,7 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
     })
     .then((res) => {
       
-      console.log(res.data.response)
+      // console.log(res.data.response)
       setThisData(res.data.response.thisMonth)
       // setLastData(res.data.response.LastMonth)
     })
@@ -115,8 +115,8 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
       }
     })
     .then((res) => {
-      console.log(Tmonth)
-      console.log(res.data)
+      // console.log(Tmonth)
+      // console.log(res.data)
       setTransferList(res.data.response)
     })
   },[MAccount])

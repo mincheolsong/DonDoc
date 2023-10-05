@@ -68,7 +68,7 @@ function InviteManagerModal({setInviteModalOpen, setManager, token}: Props) {
         setSearchResult(initialSearchResult); // 또는 다른 초기값을 설정할 수 있음
       }
     }catch(err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

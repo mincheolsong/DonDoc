@@ -88,7 +88,7 @@ function DetailSecond({moimId, memberType, moimType}: Props) {
         setMissionList(res.data.response.missionList)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
     fetchData();

@@ -124,7 +124,7 @@ function DetailFirst({userType, accountId, moimId}: Props) {
         setMoimIdNumber(res.data.response.moimId)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
     fetchData();
