@@ -75,11 +75,9 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
 
   const ChangeSearchInput = (e:React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value)
-    // console.log(searchInput)
   }
   
   const AppendInviteList = (friend: inviteUnit) => {
-    // 이미 존재하는지 확인
     const isAlreadyAdded = inviteList.some((item) => item.userId === friend.id);
 
     if (!isAlreadyAdded) {
@@ -92,19 +90,6 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
     }
   };
 
-  // const AppendSearchUnit = (unit: searchUnit) => {
-  //   const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
-  //   const isSearchResult = searchResult.phoneNumber
-
-  //   if (!isAlreadyAdded && isSearchResult) {
-  //     const newInviteUnit: newInviteUnit = {
-  //       "userId": unit.userId,
-  //     };
-
-  //     const newInviteList = [...inviteList, newInviteUnit];
-  //     setInviteList(newInviteList);
-  //   }
-  // };
   const AppendSearchUnit = (unit: searchUnit) => {
     if (searchResult && searchResult.accountNumber) {
       const isAlreadyAdded = inviteList.some((item) => item.userId === unit.userId);
@@ -186,7 +171,6 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
         }
       });
       if (response.data.success == true) {
-        // console.log(response.data)
         alert('초대에 성공하였습니다.')
         setModalOpen(false)
       }
@@ -256,26 +240,20 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
               </div>
               <div className={styles.friendbox}>
                 {friendList.length > 0 && friendList.map((friend, index) => (
-                  // <div className={styles.friendunit} onClick={() => AppendInviteList(friend)} key={index}>
-                    <div className={styles.searchresultunit} onClick={() => AppendInviteList(friend)} key={index}>
-                      <div className={styles.usercharacter}>
-                        <div className={styles.userImg}>
-                          <img src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
-                        </div>
-                      </div>
-                      <div className={styles.useraccount}>
-                        <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.name}</h2>
-                        {searchResult.accountNumber == "대표계좌가 없습니다." ? (
-                          <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.phoneNumber}</h3>
-                          ):(
-                          <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{searchResult.accountNumber}</h3>
-                        )}
-                      </div>
-                      <div className={styles.appendbtn}>
-                        <button>추가</button>
+                  <div className={styles.myfriendunit} onClick={() => AppendInviteList(friend)} key={index}>
+                    <div className={styles.usercharacter}>
+                      <div className={styles.userImg}>
+                        <img src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
                       </div>
                     </div>
-                  // </div>
+                    <div className={styles.useraccount}>
+                      <h2 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.name}</h2>
+                      <h3 style={{marginTop:'0.5rem', marginBottom:'0.5rem'}}>{friend.phoneNumber}</h3>
+                    </div>
+                    <div className={styles.appendbtn}>
+                      <button>추가</button>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>

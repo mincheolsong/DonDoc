@@ -82,7 +82,7 @@ function DetailSecond({moimId, memberType}: Props) {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('요청리스트:', res.data.response)
+        // console.log('요청리스트:', res.data.response)
         setWithdrawRequestList(res.data.response.withdrawRequestList)
         setMissionList(res.data.response.missionList)
       }
@@ -211,7 +211,7 @@ function DetailSecond({moimId, memberType}: Props) {
             setInfoModalOpen={setInfoModalOpen} moimId={moimId} 
             requestType={requestType} token={token} 
             requestId={requestId} requestState={requestState}
-            memberType={memberType}/>
+            memberType={memberType} myPhone={userInfo.phoneNumber}/>
         </>
       )}
 

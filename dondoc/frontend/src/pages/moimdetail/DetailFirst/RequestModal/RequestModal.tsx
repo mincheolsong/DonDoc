@@ -105,7 +105,6 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
         }
       });
       if(response.data.success) {
-        console.log(response.data)
         alert('요청이 완료되었습니다.')
         window.location.reload()
       } else {
@@ -137,9 +136,8 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
         }
       });
       if (response.data.success) {
-        console.log(response.data)
         alert('요청이 완료되었습니다.')
-        setModalOpen(false)
+        window.location.reload()
       } else {
         alert(response.data.error.message)
       }
@@ -147,11 +145,6 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
       console.log('error:', error)
     }
   }
-
-  const showdata = () => {
-    console.log(data)
-  }
-
 
   return (
     <div className={styles.container}>
@@ -235,7 +228,6 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
               <div className={styles.btns}>
                 <button onClick={ModalClose}>닫기</button>
                 <button onClick={RequestMission}>등록하기</button>
-                <button onClick={showdata}>보여줘</button>
               </div>
 
             </>

@@ -37,12 +37,6 @@ function MoimHome() {
     return state.user
   })
   const token = userInfo.accessToken
-
-  const ShowState = () => {
-    console.log(userInfo)
-    console.log(moimInviteList)
-  }
-
   const navigate = useNavigate()
 
   const GoMoimDetail = (moim:myMoimList) => {
@@ -67,7 +61,7 @@ function MoimHome() {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('모임 검색결과:', res.data.response)
+        // console.log('모임 검색결과:', res.data.response)
         setMyMoimList(res.data.response)
       }
       catch(err) {
@@ -82,7 +76,7 @@ function MoimHome() {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('나에게 온 초대:', res.data.response)
+        // console.log('나에게 온 초대:', res.data.response)
         setMoimInviteList(res.data.response)
       }catch(err) {
         console.log(err)
@@ -129,8 +123,6 @@ function MoimHome() {
           </div>
 
         </div>
-
-      <button onClick={ShowState}>보여주라</button>
 
       </div>
 

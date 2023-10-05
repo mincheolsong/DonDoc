@@ -26,6 +26,7 @@ function AcceptPassword() {
   const { state } = useLocation()
   const moimId = state.moimId
   const requestId = state.requestId
+  const requestType = state.type
 
   // const navigate = useNavigate()
   const PASSWORD_MAX_LENGTH = 4 // 비밀번호 입력길이 제한 설정
@@ -66,24 +67,69 @@ function AcceptPassword() {
           requestId: requestId,
           password: password
         }
-        try {
-          const res = await axios.post(`${BASE_URL}/api/moim/allow_req`, data, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token,
-            },
-          });
-          if (res.data.success) {
-            console.log(res.data.response);
-            navigate(-1);
-          } else {
-            // 검색 결과가 없을 때 처리할 로직 추가
-            setPassword('')
-            console.log('error', res);
-            alert('비밀번호를 확인해 주세요')
+        if(requestType == 0) {
+          try {
+            const res = await axios.post(`${BASE_URL}/api/moim/allow_req`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+              },
+            });
+            if (res.data.success) {
+              // console.log(res.data.response);
+              alert(res.data.response.msg)              
+              navigate(-1);
+            } else {
+              // 검색 결과가 없을 때 처리할 로직 추가
+              setPassword('')
+              console.log('error', res);
+              alert('비밀번호를 확인해 주세요')
+            }
+          } catch (err) {
+            console.log('error', err);
           }
-        } catch (err) {
-          console.log('error', err);
+        } else if (requestType == 1) {
+          try {
+            const res = await axios.post(`${BASE_URL}/api/moim/success_mission`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+              },
+            });
+            if (res.data.success) {
+              // console.log(res.data.response);
+              alert(res.data.response.msg)
+              navigate(-1);
+            } else {
+              // 검색 결과가 없을 때 처리할 로직 추가
+              setPassword('')
+              console.log('error', res);
+              alert('비밀번호를 확인해 주세요')
+            }
+          } catch (err) {
+            console.log('error', err);
+          }
+        } else if (requestType == 2) {
+          try {
+            const res = await axios.post(`${BASE_URL}/api/moim/fail_mission`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+              },
+            });
+            if (res.data.success) {
+              alert(res.data.response.msg)
+              // console.log(res.data.response);
+              navigate(-1);
+            } else {
+              // 검색 결과가 없을 때 처리할 로직 추가
+              setPassword('')
+              console.log('error', res);
+              alert('비밀번호를 확인해 주세요')
+            }
+          } catch (err) {
+            console.log('error', err);
+          }
         }
       };
       sendAxiosRequest(); // axios 요청 보내기

@@ -47,28 +47,6 @@ function ChargeMoimAccount(props: Props) {
     transferAmount: amount}})
   }
 
-  // const AccountTransfer = async() => {
-  //   try {
-  //     const res = await axios.post(`${BASE_URL}/api/account/account/transfer`, data, {
-  //       headers: {
-  //         'Content-Type': 'application/json', 
-  //         'Authorization': 'Bearer ' + token
-  //       }
-  //     });
-  //     if (res.data.success) {
-  //       console.log(res.data.response)
-  //       // props.setModalOpen(false)
-  //       location.reload()
-  //     } else {
-  //       // 검색 결과가 없을 때 처리할 로직 추가
-  //       console.log(res);
-  //     }
-  //   }catch(err) {
-  //     console.log(err)
-  //   }
-  // }
-
-
   return (
     <div className={styles.container}>
       <div className={styles.content}>

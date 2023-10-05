@@ -62,25 +62,10 @@ function MoimSelectAccount() {
     }
   }
 
-  const ShowProp = () => {
-    console.log('account', state)
-    console.log(selectCategory)
-  }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        {/* 
-        <div className={styles.topbar}>
-          <div className={styles.backbutton}>
-            <button className={styles.toback} onClick={ToBack}>
-              back
-            </button>
-          </div>
-          <div className={styles.pagename}>
-            <h3>모임통장 생성</h3>
-          </div>
-        </div> */}
         <BackLogoHeader name="연결계좌"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
@@ -117,8 +102,6 @@ function MoimSelectAccount() {
         <div className={styles.buttondiv}>
             <button className={styles.submitbtn} onClick={ToNext}>다음</button>
         </div>
-        
-        <button onClick={ShowProp}></button>
 
         </div>
 

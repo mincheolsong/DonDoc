@@ -49,7 +49,7 @@ function DetailMain() {
   return (
     <div className={styles.container}>
 
-<BackLogoHeader name={moimName} fontSize="2rem" left="5rem" top="0.8rem"/>
+      <BackLogoHeader name={moimName} fontSize="2rem" left="5rem" top="0.8rem"/>
 
       <DetailFirst userType={userType} accountId={accountId} moimId={moimId}/>
       <DetailSecond moimId={moimId} memberType={userType}/>
