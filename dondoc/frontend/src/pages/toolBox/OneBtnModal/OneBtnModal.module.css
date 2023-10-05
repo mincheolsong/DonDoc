@@ -16,6 +16,7 @@
     border-radius: 0.7rem;
     width: 9rem;
     height: 3rem;
+    font-family: "NT";
 }
 
 .mainBox{
@@ -23,6 +24,7 @@
     top: 0.1rem;
 }
 .boxbox{
+    font-family: "BD";
     top:0;
     position: fixed;
     height: 100%;
@@ -32,4 +34,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
+   
 }

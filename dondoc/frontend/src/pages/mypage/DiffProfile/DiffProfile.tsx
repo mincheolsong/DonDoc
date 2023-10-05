@@ -241,7 +241,7 @@ function DiffProfile() {
 
       <div  className={styles.mainContainer}>
     
-      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%"}}>{profile?.nickName} 의페이지</p>
+      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%",fontFamily:"NT"}}>{profile?.nickName} 의페이지</p>
       <div className={styles.characterBox}>
         <img style={{width:"90%"}}  src={`/src/assets/characterImg/${profile?.imageNumber}.png`} alt="" />
        </div>
@@ -249,7 +249,7 @@ function DiffProfile() {
        {deleteFriendModal ? <TowBtnModal width="90vw" height="30vh" contentText="친구 삭제를 하시겠습니까?" contentFont="1.5rem" rightBtnText="취소" leftBtnText="친구삭제" rightBtnColor="white" rightBtnTextColor="black" leftBtnColor="#FF001F" leftBtnTextColor="white" callbackLeft={typeThree} callbackRight={closeDeleteFriendModal}  /> : ""}
 
        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginTop:"3%"}}>{profile?.nickName} </p>
-        {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{profile?.name}</p> :""}
+        {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"1%"}}>{profile?.name}</p> :""}
         {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
         {requestRelation == 1 ? <button onClick={typeOne} className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
         {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold"}}>수락하기</button> : ""}
@@ -257,18 +257,18 @@ function DiffProfile() {
 
         {requestRelation == 3 ? 
         <div className={styles.accountBox}>
-        <img src={`/src/assets/Bank_Logo/${profile?.bankCode}.svg`} alt="" />
-        <div style={{display:"flex",flexDirection:"column"}}>
-          <p style={{margin:"0",color:"#6C6C6C"}}>{profile?.bankName}</p>
-          <p style={{margin:"0"}}>{profile?.account}</p>
+        <img style={{marginLeft:"4%"}} src={`/src/assets/Bank_Logo/${profile?.bankCode}.svg`} alt="" />
+        <div style={{display:"flex",flexDirection:"column",fontFamily:"NT",marginLeft:"5%"}}>
+          <p style={{margin:"0",color:"#6C6C6C",fontSize:"1.3rem"}}>{profile?.bankName}</p>
+          <p style={{margin:"0",fontSize:"1.4rem"}}>{profile?.account}</p>
         </div>
       </div> : ""}
 
 
         <div className={styles.bottomMemo}>
-          <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",}}>소개</p>
+          <p style={{fontSize:"2rem",fontWeight:"bold", margin:"0",marginBottom:"3%"}}>소개</p>
           <div style={{backgroundColor:"white",width:"100%",minHeight:"10rem",borderRadius:"0.8rem",display:"flex",justifyContent:"center",alignItems:"center"}}>
-           <p>{profile?.introduce}</p>
+           <p style={{fontFamily:"BD",fontWeight:"bold",fontSize:"1.4rem"}}>{profile?.introduce}</p>
             
           </div>
           </div>

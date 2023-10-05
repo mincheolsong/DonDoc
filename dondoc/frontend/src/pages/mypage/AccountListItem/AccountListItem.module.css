@@ -14,21 +14,24 @@
 .BankIcon{
     margin-left: 1.3rem;
     width: 18%;
+    margin-right: 2rem;
 }
 
 .CheckBoxU{
-    width: 30%;
+    width: 20%;
     height: 30%;
     fill: #3772FF;
 
 }
 
 .CheckBoxC{
-    width: 30%;
+    width: 20%;
     height: 30%;   
 }
 
 .mainContainer{
+    font-family: "NT";
+    font-weight: "bold";
     display: flex;
     flex-direction: column;
     justify-content: start;

@@ -13,6 +13,8 @@
 
 
 .modalButton{
+    font-family: "BD";
+    font-weight: bold;
     border: solid 0.1rem #E4E4E4 ;
     border-radius: 0.7rem;
     width: 9rem;
@@ -20,6 +22,7 @@
 }
 
 .boxbox{
+    font-family: "BD";
     top:0;
     position: fixed;
     height: 100%;

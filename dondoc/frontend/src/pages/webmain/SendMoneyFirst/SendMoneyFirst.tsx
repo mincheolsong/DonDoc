@@ -143,7 +143,7 @@ function SendMoneyFirst() {
       <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="0.8rem" />
       <div className={styles.midContainer}>
       {secondSuccessModal ? <OneBtnModal width="80vw" height="30vh" title={false} titleText="" contentFont="1.3rem" contentText={failText} btncolor="white" btnTextColor="black" btnText="닫기" callback={modalclose} /> : ''}
-        <p style={{fontSize:"2.7rem", fontWeight:"bold",marginTop:"3rem"}}>
+        <p style={{fontSize:"2.7rem", fontWeight:"bold",marginTop:"3rem",fontFamily:"BT"}}>
           누구에게 송금할까요? 
         </p>
 {/* 은행코드 이미지에 따라 스타일 해서 불러오고 없을때는 텍스트 띄워주기 */}
@@ -162,7 +162,7 @@ function SendMoneyFirst() {
       
 
 
-      <p style={{fontSize:"2.4rem",fontWeight:"bold",marginLeft:"1rem",marginBottom:"0.4rem"}}>친구목록에서 보내기</p>
+      <p style={{fontSize:"2.3rem",fontWeight:"bold",marginLeft:"1rem",marginBottom:"1rem",fontFamily:"BD"}}>친구목록에서 보내기</p>
 
          {iconModal ? <SelectIcon iconClick={iconC}/> : ' '} 
          
@@ -217,8 +217,8 @@ function SendMoneyFirst() {
           }}  className={styles.friendBox}>
           <img style={{height:"6vh"}} src={`/src/assets/Bank_Logo/${friend.bankCode}.svg`} alt="" />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
-            <p style={{fontSize:"1rem",fontWeight:"bold",margin:0,marginBottom:"10%"}}>{friend.name}</p>
-            <p style={{fontSize:"1rem",fontWeight:"bold",color:"#848484",margin:0,}}>{friend.bankName} {friend.accountNumber}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",margin:0}}>{friend.name}</p>
+            <p style={{fontSize:"1.3rem",fontWeight:"bold",color:"#848484",margin:0}}>{friend.bankName} {friend.accountNumber}</p>
           </div>
         </div>
         

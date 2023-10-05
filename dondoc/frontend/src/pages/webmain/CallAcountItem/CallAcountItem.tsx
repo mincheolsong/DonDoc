@@ -57,9 +57,9 @@ function CallAcountItem(props:PropsType) {
         {AccountData.map((account,index)=>(
           <div key={index} className={styles.accountItem} onClick={()=>{accountClick(index)}}>
           <img className={styles.BankIcon} src={`/src/assets/Bank_Logo/${account.bankCode}.svg`} alt={account.bankCode} />
-          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start"}}>
-            <p>{account.accountName}</p>
-            <p><span>{account.bankName}</span>{account.accountNumber}</p>
+          <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",fontFamily:"NT",width:"55vw"}}>
+            <p style={{fontSize:"1.2rem",margin:"0",color:"#6C6C6C",fontWeight:"bold"}}>{account.accountName}</p>
+            <p style={{fontSize:"1.3rem",margin:"0",marginTop:"3%",fontWeight:"bold"}}><span>{account.bankName} </span>{account.accountNumber}</p>
           </div>
           {account.isCheck ? <ImCheckboxChecked className={styles.CheckBoxU}/> : <ImCheckboxUnchecked className={styles.CheckBoxC}/>}
           
