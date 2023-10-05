@@ -99,12 +99,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 도메인 추가
         configuration.addAllowedOrigin("http://localhost:3000"); // 신뢰하는 도메인 지정
-
         configuration.addAllowedOrigin("http://localhost:5174"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:5173"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:9191"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:9090"); // 신뢰하는 도메인 지정
-        configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
+
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:5174"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:5173"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:9191"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:9090"); // 신뢰하는 도메인 지정
+
         configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
         configuration.addAllowedMethod("*"); // 사용 가능한 메서드 지정
         configuration.addAllowedHeader("*"); // 헤더를 지정하는데 사용 => 토큰 헤더 저장
