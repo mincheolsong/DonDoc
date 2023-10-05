@@ -170,7 +170,7 @@ function DetailSecond({moimId, memberType}: Props) {
                       </div>
                       {mission.status ? (
                         <p className={styles.stateboxo}>
-                          출금승인
+                          미션승인
                         </p>
                       ):(
                         <p className={styles.stateboxz}>
