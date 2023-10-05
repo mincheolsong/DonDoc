@@ -2,7 +2,7 @@ import styles from "./DiffProfile.module.css";
 import { Account, UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import {useEffect, useState} from "react"
-import {  useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { moim } from "../../../api/api";
 import Nav from "../../Nav";
 import { TowBtnModal } from "../../toolBox/TowBtnModal/TowBtnModal";
@@ -33,9 +33,7 @@ interface requestF{
 }
 
 function DiffProfile() {
-  const location = useLocation();
-  const {state} = useLocation();
-  const userId = state.diffuserId
+  const {userId} = useParams()
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [profile,setProfile] = useState<diffUser>()
   const [requestRelation,setRequestRelation] = useState<number>(0);
