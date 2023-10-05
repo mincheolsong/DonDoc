@@ -111,7 +111,7 @@ function DetailMain() {
 
   return (
     <div className={styles.container}>
-      <BackLogoHeader name={moimName} fontSize="2rem" left="5rem" top="0.8rem" />
+      <BackLogoHeader name={moimName} fontSize="2rem" left="39%" top="0.8rem" />
       <div className={styles.pages} {...handlers}>
         {activeComponentIndex === 0 && (
           <DetailFirst userType={userType} accountId={accountId} moimId={moimId} />

@@ -142,18 +142,18 @@ function DetailFirst({userType, accountId, moimId}: Props) {
               selectedMember.userId === member.userId ? (
                 <div style={{backgroundColor: '#526BEA', color: 'white'}} className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
                   {member.userType === 0 && (
-                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                    <img style={{width:"50%"}} src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
                   )}
                   <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
-                  <p>{member.nickname}</p>
+                  <p style={{margin:0}}>{member.nickname}</p>
                 </div>
               ) : (
                 <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
                   {member.userType === 0 && (
-                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                    <img style={{width:"40%"}} src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
                   )}
                   <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
-                  <p>{member.nickname}</p>
+                  <p style={{margin:0}}>{member.nickname}</p>
                 </div>
               )
             ))}
@@ -274,17 +274,17 @@ function DetailFirst({userType, accountId, moimId}: Props) {
             <div className={styles.moimaccountbox}>
               <div className={styles.moimaccountinfo}>
                 <div className={styles.moimbanklogo}>
-                  <img src={dondocLogo} alt="" className={styles.moimaccountlogo} />
+                  <img src={dondocLogo} style={{height:"4rem"}} alt="" className={styles.moimaccountlogo} />
                 </div>
                 <div className={styles.moiminfo}>
-                  <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimName}</p>
-                  <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimAccountNumber}</p>
+                  <p style={{marginTop: "0", marginBottom: "0rem",fontSize:"1.5rem",fontWeight:"bold"}}>{moimDetailInfo.moimName}</p>
+                  <p style={{marginTop: "0.1rem", marginBottom: "0rem",fontSize:"1.5rem",fontWeight:"bold"}}>{moimDetailInfo.moimAccountNumber}</p>
                 </div>
               </div>
               <div className={styles.accountbalance}>
                 <div className={styles.accountwon}>
-                  <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance}</p>
-                  <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>원</p>
+                  <p style={{fontSize: "2.8rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance}</p>
+                  <p style={{fontSize: "2.8rem", fontWeight:'900', margin: "0rem"}}>원</p>
                 </div>
                 <div className={styles.chargebalance}>
                   <button className={styles.chargebtn} onClick={OpenChargeModal}>충전하기</button>
