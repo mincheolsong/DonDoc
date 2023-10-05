@@ -3,11 +3,10 @@ import { Account, UserType } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import {useEffect, useState} from "react"
 import {  useLocation, useNavigate } from "react-router-dom";
-import InputBtnModal from "../../toolBox/InputBtnModal";
 import { moim } from "../../../api/api";
 import Nav from "../../Nav";
-
-
+import { TowBtnModal } from "../../toolBox/TowBtnModal/TowBtnModal";
+import BackLogoHeader from "../../toolBox/BackLogoHeader";
 interface diffUser{
   account:string|null;
   bankCode: number|null;
@@ -42,7 +41,9 @@ function DiffProfile() {
   const [requestRelation,setRequestRelation] = useState<number>(0);
   const [friendId,setFriendId] = useState<number>();
   const [requestId,setRequestId] = useState<number>();
-
+  const [resiveId,setResiveId] = useState<number>();
+  const [deleteFriendModal,setDeleteFriendModal] = useState<boolean>(false);
+  const [accessModal,setAccessModal] = useState<boolean>(false);
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -54,37 +55,86 @@ function DiffProfile() {
     moim.post(`/api/friend/request/${userId}`,null,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+      moim.get('api/friend/request/send/list',{headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      }}).then((response)=>{
+        const myQList = response.data.response.list
+        myQList.filter((p:requestF)=>{
+          if(p.friendId == userId){
+            setRequestRelation(1)
+            setRequestId(p.id)
+          }
+           
+        })
+      }).catch((err)=>{
+        // console.log(err)
+      })
     }).catch((err)=>{
       console.log(err)
-      console.log(userId)
-      console.log(userInfo.accessToken)
+ 
     })
   }
 
 
   const typeOne = ()=>{
-    moim.delete(`/api/friend/request/delete/${userId}`,{headers:{
+    moim.delete(`/api/friend/request/delete/${requestId}`,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((respnse)=>{
-      console.log(respnse)
+      setRequestRelation(0)
+    }).catch((err)=>{
+      console.log(err)
     })
 
   }
 
-
+  const closeAccessModal = ()=>{
+    setAccessModal(false)
+  }
+  
   const typeTwo = ()=>{
-    moim.put(`api/friend/request/deny/${1}`,{headers:{
+    moim.put(`api/friend/request/access/${resiveId}`,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+
+      moim.get('api/friend/list',{headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      }})
+      .then((response)=>{
+        const myFList = response.data.response.list
+        // console.log(myFList)
+        myFList.find((profile:DiffPro)=>{
+          if(profile.userId == userId){
+            setRequestRelation(3)
+            setFriendId(profile.id)
+          }
+        })
+  
+      }).catch((err)=>{
+        // console.log(err)
+      })
+
+      setAccessModal(false)
     }).catch((err)=>{
       console.log(err)
     })
   }
 
+  const closeDeleteFriendModal =()=>{
+    setDeleteFriendModal(false)
+  }
+  
   const typeThree = ()=>{
+    moim.delete(`/api/friend/delete/${friendId}`,{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
 
+      setRequestRelation(0)
+      setDeleteFriendModal(false)
+
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
 
@@ -95,23 +145,23 @@ function DiffProfile() {
   
 
   useEffect(()=>{
-
+// 보낸 요청목록조회
     moim.get('api/friend/request/send/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      
       const myQList = response.data.response.list
-      console.log(myQList)
-      myQList.filter((p:requestF,index:number)=>{
+      myQList.filter((p:requestF)=>{
         if(p.friendId == userId){
-          console.log(1)
+
           setRequestRelation(1)
           setRequestId(p.id)
-          window.location.reload()
         }
          
       })
+    }).catch((err)=>{
+      // console.log(err)
     })
+
 
     moim.get('api/friend/request/receive/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
@@ -120,9 +170,12 @@ function DiffProfile() {
       myQList.find((p)=>{
         if(p.friendId == userId){
           setRequestRelation(2)
+          setResiveId(p.id)
         }
          
       })
+    }).catch((err)=>{
+      // console.log(err)
     })
 
 
@@ -133,18 +186,19 @@ function DiffProfile() {
     }})
     .then((response)=>{
       const myFList = response.data.response.list
- 
       myFList.find((profile:DiffPro)=>{
-        if(profile.id == userId){
+        if(profile.userId == userId){
           setRequestRelation(3)
           setFriendId(profile.id)
+        
         }
       })
 
+    }).catch((err)=>{
+      // console.log(err)
     })
 
     
-
 
 
 
@@ -178,6 +232,7 @@ function DiffProfile() {
 
   return (
     <div>
+      <BackLogoHeader/>
       {isLoading? 
       
 
@@ -187,13 +242,15 @@ function DiffProfile() {
       <div className={styles.characterBox}>
         <img style={{width:"90%"}}  src={`/src/assets/characterImg/${profile?.imageNumber}.png`} alt="" />
        </div>
+       {accessModal ? <TowBtnModal width="90vw" height="30vh" contentText="친구요청을 수락하시겠습니까?" contentFont="1.5rem" rightBtnText="수락하기" leftBtnText="취소" rightBtnColor="#3772FF" rightBtnTextColor="white" leftBtnColor="white" leftBtnTextColor="black" callbackLeft={closeAccessModal} callbackRight={typeTwo}  /> : ''}
+       {deleteFriendModal ? <TowBtnModal width="90vw" height="30vh" contentText="친구 삭제를 하시겠습니까?" contentFont="1.5rem" rightBtnText="취소" leftBtnText="친구삭제" rightBtnColor="white" rightBtnTextColor="black" leftBtnColor="#FF001F" leftBtnTextColor="white" callbackLeft={typeThree} callbackRight={closeDeleteFriendModal}  /> : ""}
 
        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginTop:"3%"}}>{profile?.nickName} </p>
         {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{profile?.name}</p> :""}
         {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
-        {requestRelation == 1 ? <button className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
-        {requestRelation == 2 ? <button className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>수락하기</button> : ""}
-        {requestRelation == 3 ? <button className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>나의친구</button> : ""}
+        {requestRelation == 1 ? <button onClick={typeOne} className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
+        {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>수락하기</button> : ""}
+        {requestRelation == 3 ? <button onClick={()=>{setDeleteFriendModal(!deleteFriendModal)}}className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>나의친구</button> : ""}
 
         {requestRelation == 3 ? 
         <div className={styles.accountBox}>
