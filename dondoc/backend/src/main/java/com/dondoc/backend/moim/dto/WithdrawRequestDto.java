@@ -54,21 +54,25 @@ public class WithdrawRequestDto {
     @Data
     public static class Response {
 
+        private Long withdrawId;
         private String moimMemberName; // 신청인
         private String title; // 사용처
         private int amount; // 요청 금액
         private String content; // 요청 상세 내용
         private Category category; // 카테고리
         private int status; // 상태
+        private int imageNumber;
 
         public static WithdrawRequestDto.Response toDTO(WithdrawRequest entity) {
             return Response.builder()
+                    .withdrawId(entity.getId())
                     .moimMemberName(entity.getMoimMember().getUser().getName())
                     .title(entity.getTitle())
                     .amount(entity.getAmount())
                     .content(entity.getContent())
                     .status(entity.getStatus())
                     .category(entity.getCategory())
+                    .imageNumber(entity.getMoimMember().getUser().getImageNumber())
                     .build();
         }
     }

@@ -40,7 +40,7 @@ public class MoimServiceImpl implements MoimService{
     private final MissionRepository missionRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private WebClient webClient = WebClient.create("http://localhost:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
+    private WebClient webClient = WebClient.create("http://j9d108.p.ssafy.io:9090"); // 은행 서버 (http://j9d108.p.ssafy.io:9090/)
 
     @Override
     public boolean createOnwerAPI(String identificationNumber, String moimName) {
@@ -281,7 +281,6 @@ public class MoimServiceImpl implements MoimService{
     public int searchBalance(String identificationNumber) throws JsonProcessingException {
 
         String jsonBody = "{\"identificationNumber\":[\"" + identificationNumber + "\"]}";
-        System.out.println(jsonBody);
 
 
         Map response = webClient.post()
@@ -292,7 +291,6 @@ public class MoimServiceImpl implements MoimService{
                 .bodyToMono(Map.class)
                 .block();
 
-        System.out.println(response);
 
 
         if(response.get("success").toString().equals("true")){ // 계좌목록 조회 성공 시
@@ -672,29 +670,55 @@ public class MoimServiceImpl implements MoimService{
         }catch (Exception e){
             throw new NotFoundException(e.getMessage());
         }
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue(); // 현재 달
         // status=1 이고 해당 모임멤버
         List<WithdrawRequest> spendingAmount = withdrawRequestRepository.findSpendingAmount(moimMemberId);
 
         MoimMyDataDto.SpendingAmountResponse result = new MoimMyDataDto.SpendingAmountResponse();
 
         for (WithdrawRequest withdrawRequest : spendingAmount) {
-            Category category = withdrawRequest.getCategory();
-            Long categoryId = category.getId();
-            int amount = withdrawRequest.getAmount();
+            int monthValue = withdrawRequest.getCreatedAt().getMonthValue();
+            if(monthValue==currentMonth) {
+                Category category = withdrawRequest.getCategory();
+                Long categoryId = category.getId();
+                int amount = withdrawRequest.getAmount();
 
-            result.changeTotal(amount);
-            if(categoryId==0){
-                result.changeShopping(amount);
-            }else if(categoryId==1){
-                result.changeEducation(amount);
-            }else if(categoryId==2){
-                result.changeFood(amount);
-            }else if(categoryId==3){
-                result.changeLeisure(amount);
-            }else if(categoryId==4){
-                result.changeShopping(amount);
-            }else if(categoryId==5){
-                result.changeEtc(amount);
+                result.changeThisTotal(amount);
+                if (categoryId == 0) {
+                    result.changeThisShopping(amount);
+                } else if (categoryId == 1) {
+                    result.changeThisEducation(amount);
+                } else if (categoryId == 2) {
+                    result.changeThisFood(amount);
+                } else if (categoryId == 3) {
+                    result.changeThisLeisure(amount);
+                } else if (categoryId == 4) {
+                    result.changeThisShopping(amount);
+                } else if (categoryId == 5) {
+                    result.changeThisEtc(amount);
+                }
+            }else if(monthValue == currentMonth-1){
+                Category category = withdrawRequest.getCategory();
+                Long categoryId = category.getId();
+                int amount = withdrawRequest.getAmount();
+
+                result.changeLastTotal(amount);
+                if (categoryId == 0) {
+                    result.changeLastShopping(amount);
+                } else if (categoryId == 1) {
+                    result.changeLastEducation(amount);
+                } else if (categoryId == 2) {
+                    result.changeLastFood(amount);
+                } else if (categoryId == 3) {
+                    result.changeLastLeisure(amount);
+                } else if (categoryId == 4) {
+                    result.changeLastShopping(amount);
+                } else if (categoryId == 5) {
+                    result.changeLastEtc(amount);
+                }
+
+
             }
         }
         return result;

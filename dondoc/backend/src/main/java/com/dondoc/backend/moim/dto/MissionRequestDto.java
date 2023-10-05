@@ -73,22 +73,26 @@ public class MissionRequestDto {
     @Data
     public static class Response {
 
+        private Long missionId;
         private String missionMemberName; // 미션 할 사람
         private String title; // 미션명
         private int amount; // 요청 금액
         private String content; // 요청 상세 내용
         private LocalDate endDate; // 미션 종료일자
         private int status; // 상태
+        private int imageNumber;
 
 
         public static MissionRequestDto.Response toDTO(Mission entity) {
             return Response.builder()
+                    .missionId(entity.getId())
                     .missionMemberName(entity.getMoimMember().getUser().getName())
                     .title(entity.getTitle())
                     .amount(entity.getAmount())
                     .content(entity.getContent())
                     .status(entity.getStatus())
                     .endDate(entity.getEndDate())
+                    .imageNumber(entity.getMoimMember().getUser().getImageNumber())
                     .build();
         }
     }
