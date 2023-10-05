@@ -90,7 +90,7 @@ function Signin() {
         <div className={styles.containerMid}>
           <div style={{width:'40%',display:"flex", justifyContent:"end",fontFamily:"NT",fontSize:"1.5rem"}}><p onClick={()=>{navigate('/signupfirst')}} style={{fontWeight:"bold", margin:"1rem", marginRight:"2rem" }}>회원가입</p></div>
             <div className={styles.signUpbtn}></div>
-          <div style={{width:'40%',display:"flex", justifyContent:"start",fontFamily:"NT",fontSize:"1.5rem"}}><p onClick={()=>{navigate('/changepassword')}} style={{fontWeight:"bold" ,margin:"1rem", marginLeft:"2rem"}}>비밀번호 찾기</p></div>
+          <div style={{width:'40%',display:"flex", justifyContent:"start",fontFamily:"NT",fontSize:"1.5rem"}}><p onClick={()=>{navigate('/findpassword')}} style={{fontWeight:"bold" ,margin:"1rem", marginLeft:"2rem"}}>비밀번호 찾기</p></div>
         </div>
       </div>
   );
