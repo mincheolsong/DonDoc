@@ -6,13 +6,13 @@
 
 .midContainer{
     width: 98%;
-    height: 10rem ;
+    height: 8rem ;
     background-color: white;
-    border-radius: 0.6rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
+    align-items: center;
+    font-family: "NT";
 }
 
 .accountBtn{
@@ -22,8 +22,9 @@
     height: 2.2rem;
     font-size: 1.1rem;
     color: #4F4F4F;
-    font-weight: bold;
     margin-bottom: 0.8rem;
+    font-family: "LH";
+    font-weight: bold;
 }
 
 
@@ -32,16 +33,17 @@
 .myProfileBtn{ 
     background-color: white;
     border-radius: 0.8rem;
-    border: solid #E4E4E4 0.1rem;
-    height: 2rem;
-    color: black;
-    font-weight: bold;
-    font-size: 1rem;
+    border: solid #E4E4E4 0.15rem;
+    height: 2.5rem;
+    color: #4F4F4F;
+    font-size: 1.1rem;
     margin-right: 1rem;
+    font-family: "LH";
+    font-weight: 600;
 }
 
 .topContainer{
-    width: 98%;
+    width: 95%;
     height: 10rem;
     background-color: white;
     border-radius: 0.6rem;
@@ -49,4 +51,23 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.sendMoneyBtn{
+    font-family: "BD";
+    background-color: #3772FF; /*색 조절 */
+    color: white;
+    width: 15%;
+    height: 3.5rem; /*높이조절 */
+    font-size: 1.3rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-right: 2.5rem;
+
+}
+
+/*눌렸을때 */
+.sendMoneyBtn:active{
+    background-color: #0056d8;
+    color: white;
 }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {IoChevronBack} from 'react-icons/io5'
 import { IconContext } from "react-icons";
 
-interface BackLogoHeader{
+interface BackLogoHeaderType{
   left : string;
   name : string;
   fontSize: string;
@@ -12,7 +12,7 @@ interface BackLogoHeader{
 
 
 
-export function BackLogoHeader(props:BackLogoHeader){
+export function BackLogoHeader(props:BackLogoHeaderType){
   const naviate = useNavigate();
   return(
     <div style={{display:"flex",justifyContent:"start", }}>

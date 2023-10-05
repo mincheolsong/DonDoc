@@ -1,22 +1,92 @@
-/* your css code */
-
-/* 노말박스 틀 */
-.nomalBox{
-    background-color: white;
-    border: solid 0.2rem #E4E4E4 ;
-    border-radius: 0.6rem;
-    margin-top: 40%;
-    text-align: center;
+.content {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    align-items: center;
 }
 
 
-.modalButton{
-    border: solid 0.1rem #E4E4E4 ;
-    border-radius: 0.7rem;
-    width: 9rem;
-    height: 3rem;
+.pagetitle {
+    text-align: center;
+    font-size: 1.5rem;
 }
+
+.maincontent {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 500px;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+}
+
+.requestmoney {
+    width: 40%;
+}
+
+.requestmission {
+    width: 40%;
+}
+
+.icon {
+    width: 4.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+.icon img {
+    width: 100%;
+}
+
+.requesttext {
+    text-align: center;
+}
+
+.requesttext p {
+    margin: 0rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.selectcontent {
+    margin-top: 2rem;
+
+    display: flex;
+    justify-content: center;
+}
+
+.requestlist {
+    margin-top: 10%;
+    min-height: 75%;
+    overflow-y: auto;
+
+
+}
+
+
+.requestunit {
+    display: flex;
+}
+
+
+
+
+
+
+
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
+    z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }

@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from "./CreateMoim.module.css";
 import { useNavigate } from "react-router-dom";
+import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
 
 function CreateMoim() {
 
@@ -16,25 +17,20 @@ function CreateMoim() {
   
   const navigate = useNavigate()
 
-  const ToBack = () => {
-    navigate(-1)
-  }
 
   const ToNext = () => {
     if (moimName && moimInfo) {
       navigate('/moimlink', {state: {moimName:moimName, moimInfo:moimInfo}})
     } else {
-      console.log('입력해주세요')
+      alert('모임 정보를 입력해주세요')
     }
-    // console.log(moimName)
-    // console.log(moimInfo)
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
+        {/* <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback} onClick={ToBack}>
               back
@@ -43,7 +39,8 @@ function CreateMoim() {
           <div className={styles.pagename}>
             <h3>모임통장 생성</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name="모임 생성"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>

@@ -23,6 +23,7 @@
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
+    font-family: "BD";
 }
 
 .botItem{
@@ -33,6 +34,7 @@
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
+    font-family: "BD";
 }
 
 .topItemInner{
@@ -69,10 +71,35 @@
     border: 0;
     margin-bottom: 1rem;
     font-weight: bold;
+    font-family: "BD";
 }
 
 /*눌렸을때 */
 .confirmBtn:active{
     background-color: #0056d8;
     color: white;
+}
+
+.won{
+    font-size: 2.3rem;
+    right: 17%;
+    position: fixed;
+    font-weight: bold;
+    z-index: 1;
+    font-family: "BD";
+
+}
+
+.confirmBtndis{
+    margin-top: 3rem; /*윗마진 */
+    background-color: #797979; /*색 조절 */
+    color: white;
+    width: 30%;
+    height: 4.5rem; /*높이조절 */
+    font-size: 2rem;
+    border-radius: 0.8rem;
+    border: 0;
+    margin-bottom: 1rem;
+    font-weight: bold; 
+    font-family: "BD";
 }

@@ -8,6 +8,7 @@
     width: 90%;
     height: 90%;
     border-radius: 0.6rem;
+    font-family: "BD";
 }
 
 
@@ -18,10 +19,11 @@
     color: white;
     width: 90%;
     height: 4.5rem; /*높이조절 */
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border-radius: 0.8rem;
     border: 0;
     font-weight: bold;
+    font-family: "BD";
     
 }
 

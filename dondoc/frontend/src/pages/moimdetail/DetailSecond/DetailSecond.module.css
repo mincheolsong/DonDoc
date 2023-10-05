@@ -1,1 +1,144 @@
-/* your css code */
+.content {
+    display: flex;
+    justify-content: center;
+}
+
+
+.pagetitle {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.maincontent {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 500px;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+}
+
+.requestmoney {
+    width: 40%;
+}
+
+.requestmission {
+    width: 40%;
+}
+
+.icon {
+    width: 4.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+.icon img {
+    width: 100%;
+}
+
+.requesttext {
+    text-align: center;
+}
+
+.requesttext p {
+    margin: 0rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.selectcontent {
+    margin-top: 2rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+}
+
+.requestlist {
+    margin-top: 10%;
+    height: 75%;
+    border: 1px solid #D1D1D1;
+    border-radius: 1rem;
+    overflow-y: auto;
+}
+
+.requestunit {
+    width: 90%;
+    height: 6.8rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #D1D1D1;
+    display: flex;
+}
+
+.imgdiv {
+    width: 25%;
+    /* border: 1px solid black; */
+}
+
+.imgdiv p {
+    margin: auto;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.imgbox {
+    width: 100%;
+    height: 80%;
+}
+
+.imgbox img {
+    width: 100%;
+    height: 100%;
+}
+
+.requestInfo {
+    width: 75%;
+    overflow-y: auto;
+    /* border: 1px solid black; */
+}
+
+.requestInfo h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1rem;
+}
+
+.stateboxo {
+    padding: 0.05rem;
+    background-color: #3772FF;
+    font-weight: 900;
+    border-radius: 1rem;
+    color: white;
+}
+.stateboxz {
+    padding: 0.05rem;
+    background-color: #E4E4E4;
+    font-weight: 900;
+    border-radius: 1rem;
+}
+
+
+
+
+
+
+.backgroundOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
+    z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }

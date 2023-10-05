@@ -1,0 +1,127 @@
+.container {
+    z-index: 10000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px; /* 모달 최대 너비 설정 */
+    height: 35vh;
+    max-height: 550px; /* 모달 최대 높이 설정 */
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+    height: 4rem;
+}
+
+.maincontent {
+    display: flex;
+    justify-content: center;
+}
+
+.searchgroup {
+    display: flex;
+}
+
+.inputbox {
+    width: 18rem;
+    height: 3.4rem;
+}
+
+.inputbox input {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+.searchgroup button {
+    margin-left: 1rem;
+    width: 6rem;
+    height: 3.734rem;
+    background-color: #FFFFFF;
+    border: 2px solid #E4E4E4;
+    border-radius: 0.4rem;
+    font-weight: 900;
+}
+.searchresult {
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    width: 24.9rem;
+    height: 4.9rem;
+    margin-top: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+.searchresultunit {
+    width: 100%;
+    height: 4.9rem;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.usercharacter {
+    width: 20%;
+    height: 100%;
+    /* border: 1px solid black; */
+    display: flex;
+}
+.userImg {
+    width: 80%;
+    height: 80%;
+    /* border: 1px solid yellow; */
+    margin: auto;
+}
+.userImg img {
+    width: 100%;
+    height: 100%;
+}
+.useraccount {
+    width: 60%;
+    height: 100%;
+    /* border: 1px solid blue; */
+}
+
+.appendbtn {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    height: 70%;
+    width: 25%;
+}
+
+.appendbtn button {
+    height: 100%;
+    width: 90%;
+    background-color: #FFFFFF;
+    border: 2px solid #E4E4E4;
+    border-radius: 0.4rem;
+    font-weight: 900;
+}
+
+.btndiv {
+    width: 30%;
+    height: 3rem;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+.closebtn {
+    width: 100%;
+    height: 100%;
+    background-color: #0D6EFD;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 900;
+    color: white;
+}

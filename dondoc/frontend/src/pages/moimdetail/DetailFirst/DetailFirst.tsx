@@ -1,15 +1,72 @@
 import styles from "./DetailFirst.module.css";
-import { useState } from 'react'
-import haaland from "../../../assets/bbakbbakyee.jpg"
+import { useState, useEffect } from 'react'
 import RequestModal from "./RequestModal/RequestModal";
-import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
+// import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
 import InviteModal from "./InviteModal/InviteModal";
+import ChargeModal from "./ChargeMoimAccount/ChargeMoimAccount"
+import axios from "axios";
+import { BASE_URL } from "../../../constants";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
+import dondocLogo from "../../../assets/MoimLogo/dondoclogo.svg"
+import { useNavigate } from "react-router-dom";
 
-function DetailFirst() {
+type Props = {
+  accountId : number,
+  userType : number,
+  moimId: string | undefined
+}
+
+type moimMemberList = {
+  userId: number,
+  moimMemberId: number,
+  userType: number,
+  nickname: string,
+  accountNumber: string,
+  bankCode: number,
+  bankName: string,
+  userImageNumber: string,
+  phoneNumber: string
+}
+const selectedDefault = {
+  userId: 0,
+  moimMemberId: 0,
+  userType: 0,
+  nickname: '',
+  accountNumber: '',
+  bankCode: 0,
+  bankName: '',
+  userImageNumber: '',
+  phoneNumber: ''
+}
+type moimDetailInfo = {
+  balance: number,
+  moimName: string,
+  moimAccountNumber: string
+}
+const moimDetailDefault = {
+  balance: 0,
+  moimName: '',
+  moimAccountNumber: ''
+}
+
+function DetailFirst({userType, accountId, moimId}: Props) {
+
+  const navigate = useNavigate()
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false)
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+  const [chargeModalOpen, setChargeModalOpen] = useState<boolean>(false)
+  // const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
+  const [moimMemberList, setMoimMemberList] = useState<moimMemberList[]>([])
+  const [moimDetailInfo, setMoimDetailInfo] = useState<moimDetailInfo>(moimDetailDefault)
+  const [selectedMember, setSelectedMember] = useState<moimMemberList>(selectedDefault)
+  const [moimIdNumber, setMoimIdNumber] = useState<string>('')
 
   const OpenModal = () => {
     setModalOpen(true)
@@ -23,131 +80,233 @@ function DetailFirst() {
   const CloseInviteModal = () => {
     setInviteModalOpen(false)
   }
-  const OpenINfoModal = () => {
-    setInfoModalOpen(true)
+  const OpenChargeModal = () => {
+    setChargeModalOpen(true)
   }
-  const CloseInfoModal = () => {
-    setInfoModalOpen(false)
+  const CloseChargeModal = () => {
+    setChargeModalOpen(false)
   }
+  // const OpenINfoModal = () => {
+  //   setInfoModalOpen(true)
+  // }
+  // const CloseInfoModal = () => {
+  //   setInfoModalOpen(false)
+  // }
+
+  const SelectMember = (member:moimMemberList) => {
+    setSelectedMember(member)
+  }
+
+  const CopyAccount = (account:string) => {
+    navigator.clipboard.writeText(account)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // moim/detail/${moimId}
+        const res = await axios.get(`${BASE_URL}/api/moim/detail/${moimId}`, {
+          headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        // console.log('모임 멤버:', res.data.response)
+        const moimDetail = {
+          balance : res.data.response.balance,
+          moimName : res.data.response.moimName,
+          moimAccountNumber : res.data.response.moimAccountNumber,
+        }
+        // console.log(moimDetail)
+        setMoimDetailInfo(moimDetail)
+        setMoimMemberList(res.data.response.moimMembers)
+        setSelectedMember(res.data.response.moimMembers[0])
+        setMoimIdNumber(res.data.response.moimId)
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, []);
 
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
-          <div className={styles.backbutton}>
-            <button className={styles.toback}>
-              back
-            </button>
-          </div>
-          <div className={styles.pagename}>
-            <h3>올해는 다이어트 성공</h3>
-          </div>
-          <div className={styles.bookicon} onClick={OpenINfoModal}>
-            <h3>ICON</h3>
-          </div>
-        </div>
-
         <div className={styles.userscontent}>
           
           <div className={styles.usersbox}>
-            <div className={styles.boxunit}>
-              <div className={styles.unitcontent}>
-                <img src={haaland} alt="" />
-                <p style={{marginTop:'0rem'}}>라이스</p>
-              </div>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>듀란</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>피터</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>제이든</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>칼리</p>
-            </div>
-            <div className={styles.boxunit}>
-              <img src={haaland} alt="" />
-              <p>루카</p>
-            </div>
+            {moimMemberList.length > 0 && moimMemberList.map((member, index) => (
+              selectedMember.userId === member.userId ? (
+                <div style={{backgroundColor: '#526BEA', color: 'white'}} className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  {member.userType === 0 && (
+                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                  )}
+                  <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
+                  <p>{member.nickname}</p>
+                </div>
+              ) : (
+                <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  {member.userType === 0 && (
+                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                  )}
+                  <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
+                  <p>{member.nickname}</p>
+                </div>
+              )
+            ))}
           </div>
 
           <div className={styles.selectuser}>
-            <div className={styles.invitebtn}>
-              <button className={styles.invbtn} onClick={OpenInviteModal}>+ 초대하기</button>
-            </div>
+            {userType == 0 ? (
+              <div className={styles.invitebtn}>
+                <button className={styles.invbtn} onClick={OpenInviteModal}>+ 초대하기</button>
+              </div>
+            ) : (
+              <div className={styles.invitebtn}></div>
+            )}
             <div className={styles.selectcharacter}>
-              <img src={haaland} alt="" />
+              <img src={`/src/assets/characterImg/${selectedMember.userImageNumber}.png`} alt="" />
             </div>
-            <div className={styles.selectaccount}>
+
+            <div className={styles.selectaccount} onClick={() => CopyAccount(selectedMember.accountNumber)}>
               <div className={styles.banklogo}>
-                <img src={haaland} alt="" />
+                <img src={`/src/assets/Bank_Logo/${selectedMember.bankCode}.svg`} alt="" />
               </div>
               <div className={styles.accountinfo}>
                 <div className={styles.accounttext}>
-                  <p>하나</p>
-                  <p>237-128127-12478</p>
+                  <p>{selectedMember.bankName}</p>
+                  <p>{selectedMember.accountNumber}</p>
                 </div>
               </div>
               <div className={styles.accountowner}>
-                <p>김동혁</p>
+                <p style={{marginRight: '1rem'}}>{selectedMember.nickname}</p>
               </div>
             </div>
-            <div className={styles.optionbuttons}>
-              <button onClick={OpenModal}>요청하기</button> <button>요청확인</button>
-            </div>
+
+
+            {/* {selectedMember.userType == 0 ? (
+              <div className={styles.optionbuttons}>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
+                <button onClick={OpenModal}>요청하기</button>
+              </div>
+            ) : (
+              <div className={styles.optionbuttons}>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
+                <button onClick={OpenModal}>요청하기</button>
+              </div>
+            )} */}
+
+            {userType ? (
+              <>
+                {selectedMember.userType ? (
+                  <div className={styles.optionbuttons}>
+                  {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                    <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                    ):(
+                    <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.optionbuttons}>
+                  {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                    <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                    ):(
+                    <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                  )}
+                  <button onClick={OpenModal}>요청하기</button>
+                </div>
+                )}
+              </>
+            ):(
+              <div className={styles.optionbuttons}>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
+                <button onClick={OpenModal}>요청하기</button>
+              </div>
+            )}
+
+
+
           </div>
 
           {modalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseModal}/>
-              <RequestModal setModalOpen={setModalOpen} />
+              <RequestModal setModalOpen={setModalOpen} userId={selectedMember.userId} moimId={moimId} userType={selectedMember.userType}/>
             </>
           )}
           {inviteModalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseInviteModal}/>
-              <InviteModal setModalOpen={setInviteModalOpen} />
+              <InviteModal setModalOpen={setInviteModalOpen} moimIdNumber={moimIdNumber}/>
             </>
           )}
-          {infoModalOpen && (
+          {chargeModalOpen && (
+            <>
+              <div className={styles.backgroundOverlay} onClick={CloseChargeModal}/>
+              <ChargeModal setModalOpen={setChargeModalOpen} accountId={accountId} toAccount={moimDetailInfo.moimAccountNumber}/>
+            </>
+          )}
+          {/* {infoModalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
               <InfoUpdateModal setModalOpen={setInfoModalOpen} />
             </>
-          )}
+          )} */}
 
         </div>
-
-        <div className={styles.moimaccountcontent}>
-          <div className={styles.moimaccountbox}>
-            <div className={styles.moimaccountinfo}>
-              <div className={styles.moimbanklogo}>
-                <img src={haaland} alt="" className={styles.moimaccountlogo} />
+        {userType == 0 ? (
+          <div className={styles.moimaccountcontent}>
+            <div className={styles.moimaccountbox}>
+              <div className={styles.moimaccountinfo}>
+                <div className={styles.moimbanklogo}>
+                  <img src={dondocLogo} alt="" className={styles.moimaccountlogo} />
+                </div>
+                <div className={styles.moiminfo}>
+                  <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimName}</p>
+                  <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimAccountNumber}</p>
+                </div>
               </div>
-              <div className={styles.moiminfo}>
-                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>돈독 모임 계좌</p>
-                <p style={{marginTop: "0.5rem", marginBottom: "0rem"}}>123-12847-12478</p>
-              </div>
-            </div>
-            <div className={styles.accountbalance}>
-              <div className={styles.accountwon}>
-                <p style={{fontSize: "2.6rem", fontWeight:'900', border: "1px solid black", margin: "0rem"}}>100000원</p>
-              </div>
-              <div className={styles.chargebalance}>
-                <button className={styles.chargebtn}>충전하기</button>
+              <div className={styles.accountbalance}>
+                <div className={styles.accountwon}>
+                  <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance}</p>
+                  <p style={{fontSize: "2.6rem", fontWeight:'900', margin: "0rem"}}>원</p>
+                </div>
+                <div className={styles.chargebalance}>
+                  <button className={styles.chargebtn} onClick={OpenChargeModal}>충전하기</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className={styles.moimaccountcontent}>
+            <div className={styles.moimaccountbox}>
+              <div className={styles.moimaccountinfo}>
+                <div className={styles.moimbanklogotwo}>
+                  <img src={dondocLogo} alt="" className={styles.moimaccountlogo} />
+                </div>
+                <div className={styles.moiminfo}>
+                  <h1 style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimName}</h1>
+                  <h1 style={{marginTop: "0.5rem", marginBottom: "0rem"}}>{moimDetailInfo.moimAccountNumber}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

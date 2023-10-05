@@ -1,7 +1,8 @@
 import styles from "./CreatePassword.module.css";
 import React, { useCallback, useEffect } from "react"
-// import axios from "axios"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom";
+import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
+
 
 function CreatePassword() {
   const [nums, setNums] = React.useState<number[]>([])
@@ -11,9 +12,18 @@ function CreatePassword() {
   const [pwd3, setPwd3] = React.useState<boolean>(false)
   const [pwd4, setPwd4] = React.useState<boolean>(false)
 
+  const navigate = useNavigate()
+
+  const { state } = useLocation()
+  const moimName = state.moimName
+  const moimInfo = state.moimInfo
+  const account = state.account
+  const category = state.category
+
 
   // const navigate = useNavigate()
   const PASSWORD_MAX_LENGTH = 4 // 비밀번호 입력길이 제한 설정
+
 
   useEffect(() => {
     const nums_random = Array.from({ length: 10 }, (v, k) => k) // 이 배열을 변경해 입력문자 변경 가능
@@ -44,6 +54,7 @@ function CreatePassword() {
     }
     else if (password.length === 4) {
       setPwd4(true)
+      navigate('/moimrepassword', {state:{password:password, moimName:moimName, moimInfo:moimInfo, account:account, category:category}})
     }
   },[password])
 
@@ -90,9 +101,7 @@ function CreatePassword() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <div className={styles.topbar}>
-          <button>back</button>
-        </div>
+        <BackLogoHeader name="비밀번호 등록"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.inputment}>
           <h1>비밀번호를 등록해주세요</h1>
@@ -140,10 +149,12 @@ function CreatePassword() {
 
         </div>
 
+        {/* <button onClick={ShowInfo}>클릭</button> */}
+
       </div>
     </div>
 
   )
-};
+}
 
 export default CreatePassword;
