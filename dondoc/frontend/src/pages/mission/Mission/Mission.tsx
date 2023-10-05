@@ -36,6 +36,7 @@ function Mission() {
   const [MissionList, setMissionList] = useState<Missions[]>([])
   const [OpenModal, setOpenModal] = useState<boolean>(false)
   const [SelectedMission, setSelectedMission] = useState<Missions>(Standard)
+  const [MissionTF, setMissionTF] = useState<boolean>(false)
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -54,8 +55,14 @@ function Mission() {
         Authorization: `Bearer ${token}`}
     })
     .then((res) => {
+      if (res.data.response.length > 0) {
+        setMissionTF(true)
+        setMissionList(res.data.response)
+      }
+      else {
+        setMissionTF(false)
+      }
       console.log(res.data)
-      setMissionList(res.data.response)
     })
     .catch((err) => {
       console.log(err)
@@ -71,7 +78,7 @@ function Mission() {
     </div>
     <div className={styles.List}>
 
-    { MissionList.length ?
+    { MissionTF ?
     (MissionList.map((mi) => (
       <div className={styles.topContainer} onClick={() => ModalOpen(mi)}>
       <div style={{display:"flex",width:"100%"}}>

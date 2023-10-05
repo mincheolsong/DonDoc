@@ -2,6 +2,7 @@ import styles from "./DetailThird.module.css";
 import {useState} from 'react'
 import {
   Chart as ChartJS,
+  ArcElement,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -10,10 +11,17 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+import { Doughnut } from 'react-chartjs-2';
+import { useEffect } from 'react'
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { UserType } from "../../../store/slice/userSlice";
+import { BASE_URL } from "../../../constants";
+import { useParams } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
+  ArcElement,
   LinearScale,
   BarElement,
   Title,
@@ -21,49 +29,150 @@ ChartJS.register(
   Legend
 );
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
-const options = {
-  indexAxis: 'y' as const,
-  elements: {
-    bar: {
-      borderWidth: 2,
-    },
-  },
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'right' as const,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Horizontal Bar Chart',
-    },
-  },
-};
 
 function DetailThird() {
-  
-
   const [nowSelected, setNowSelected] = useState<boolean>(true)
+  const [ThisData, setThisData] = useState<number[]>([])
+  const [LastData, setLastData] = useState<number[]>([])
+
+
+  const userInfo:UserType = useSelector((state:{user:UserType})=>{
+    return state.user
+  })
+  const token = userInfo.accessToken
+  const {moimId} = useParams()
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/api/moim/detail/${moimId}`,{
+      headers:{
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then((res) => {
+      console.log(res.data.response)
+      const identificationNumber:string = res.data.response.identificationNumber
+      const memberAccountNumber:string = res.data.response.moimAccountNumber
+      const moimAccountNumber:string = res.data.response.moimMembers
+
+      const data = {
+        identificationNumber: identificationNumber,
+        memberAccountNumber: memberAccountNumber,
+        moimAccountNumber: moimAccountNumber,
+        month:9
+      }
+      axios.post(`${BASE_URL}/api/moim/mydata/transferAmount`, data, {
+        headers: {
+        'Authorization': 'Bearer ' + token
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+    })
+  },[])
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/api/moim/mydata/spendingAmount/1/29`,{
+      headers:{
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then((res) => {
+      
+      console.log(res.data.response)
+      setThisData(res.data.response.thisMonth)
+      setLastData(res.data.response.LastMonth)
+    })
+  },[])
+
+  const labels = ['총합', '쇼핑', '교육', '식비', '여가', '기타'];
+  
+  const data1 = {
+    labels,
+    datasets: [
+      {
+        label: '9월',
+        data: LastData,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: '10월',
+        data: ThisData,
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
+
+
+  const data2 = {
+    labels :['총합', '쇼핑', '교육', '식비', '여가', '기타'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: ThisData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  
+  const options = {
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            size:6
+          }
+        }
+      },
+      y: {
+        ticks: {
+          font: {
+            size:5
+          }
+        }
+      }
+    },
+    indexAxis: 'x' as const,
+    elements: {
+      bar: {
+        borderWidth: 0.1,
+      },
+    },
+    responsive: false,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 8
+          }
+        },
+        position: 'bottom' as const,
+      },
+      title: {
+        display: true,
+        text: '전월 사용 금액 비교',
+      },
+    },
+  };
 
   const ClickMissionTab = () => {
     setNowSelected(false)
@@ -103,7 +212,11 @@ function DetailThird() {
 
 
           <div className={styles.requestlist}>
-          <Bar data={data} options={options}/>
+            <div className={styles.Chart}> 
+
+            <Bar data={data1} options={options} style={{height:"50vh", width:"80vw"}}/>
+            <Doughnut data={data2} />
+            </div>
           </div>
         </div>
 

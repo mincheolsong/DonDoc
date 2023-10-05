@@ -13,7 +13,7 @@ import SignUpFirstPage from "./pages/webmain/SignUpFirst";
 import SignUpSecondPage from "./pages/webmain/SignUpSecond";
 import CallAccountPage from "./pages/webmain/CallAccount";
 import SendMoneyPasswordPage from "./pages/webmain/SendMoneyPassword";
-
+import FindPasswordPage from "./pages/webmain/Home/FindPassword";
 // search
 import SearchPage from './pages/search/Search/Search' 
 
@@ -108,7 +108,7 @@ function Router() {
 
 
             {/* mission tap */}
-            <Route path="/mission/:userId" element={<MissionPage/>}/>
+            <Route path="/mission" element={<MissionPage/>}/>
 
 
             {/* profile tap */}
@@ -136,6 +136,7 @@ function Router() {
             
             :  <Routes>
             <Route path="/" element={<SigninPage/>}/>
+            <Route path="/findpassword" element={<FindPasswordPage/>}/>
             <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
             <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
             <Route path="/signupTemp" element={<SignupTempPage/>}/>

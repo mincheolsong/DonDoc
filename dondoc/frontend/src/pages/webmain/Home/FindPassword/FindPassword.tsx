@@ -1,11 +1,14 @@
-import styles from "./SignUpFirst.module.css";
-import dondoc from '../../../assets/image/dondocLogo.png'
-import { useNavigate } from "react-router-dom";
-import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
-import { useEffect, useState } from "react";
-import { moim } from "../../../api/api";
+import styles from "./FindPassword.module.css";
 
-function SignUpFirst() {
+import { useNavigate } from "react-router-dom";
+import BackLogoHeader from "../../../toolBox/BackLogoHeader";
+import { useEffect, useState } from "react";
+import { moim } from "../../../../api/api";
+
+
+
+function FindPassword() {
+  
   const naviate = useNavigate();
 
 
@@ -23,7 +26,7 @@ function SignUpFirst() {
 
 // 스테이트에 저장된는곳 
   const [phone, setPhone] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [pass, setPass] = useState<string>("");
   const [certificationBtn,setCertificationBtn] = useState<boolean>(false);
   const [smsInput,setSmsInput] = useState<string>('');
   const [smsResponse,setSmsResponse] = useState<string>();
@@ -50,9 +53,9 @@ function SignUpFirst() {
     }
   };
 
-  const onChangeName = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const currentName = e.target.value;
-    setName(currentName);
+  const onChangePass = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const currentPass = e.target.value;
+    setPass(currentPass);
   };
 
 
@@ -75,21 +78,15 @@ function SignUpFirst() {
 
   const isPhoneValid: boolean = validatePhone(phone) && smsColor;
 
-
-
   return (
-    <div>
-    <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
+   <div>
+      <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
         <div className={styles.mainContainer}>
-          <img className={styles.Logo} src={dondoc} />
-          <p style={{fontSize:"2rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem",fontFamily:"NT"}}>회원가입</p>
+          <img className={styles.Logo} src={"/src/assets/image/dondocLogo.png"} />
+          <p style={{fontSize:"2rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem",fontFamily:"NT"}}>비밀번호 찾기</p>
         </div>
-  
-
-        <div className={styles.mainContainerBottom}>
-          <div style={{width:"80%"}}>
-          <SignUpInput1 type='text' innerText='이름' change={onChangeName} helpMsg={""} inner={true}/>
-          </div>
+    <div className={styles.mainContainerBottom}>
+          
           <div style={{display:"flex",flexDirection:"row",width:"80%",alignItems:"start"}}>
          
           {certificationBtn ?  
@@ -98,7 +95,9 @@ function SignUpFirst() {
             <p style={{ margin:"0", color : innerColor ? "green" : "#FF001F ", fontWeight:"bold" ,fontFamily:"NT",fontSize:"1.2rem"}}>{phoneMsg}</p>
           </div>
           :  <SignUpInput1 type='text' innerText='전화번호' change={onChangePhone} helpMsg={phoneMsg} inner={innerColor}/>}
-          {certificationBtn ? <button className={styles.confirmPass2dis}>인증하기</button> : <button onClick={()=>{
+          {certificationBtn ? <button className={styles.confirmPass2dis}>인증하기</button> : 
+          
+          <button onClick={()=>{
             if(validatePhone(phone)){setCertificationBtn(true)
               moim.post(`/api/user/sms/signup/${phone}`,null)
               .then((response)=>{
@@ -122,23 +121,20 @@ function SignUpFirst() {
             <input onChange={onChangeCer} placeholder="인증번호를 입력해주세요." className={styles.cerInput} type="text" name="" id="" /> <button style={{width:"5.5rem",border:"0", backgroundColor:"#0D6EFD",color:"white", borderRadius:"0.5rem",height:"3.8rem",marginLeft:"3%"}} onClick={cerBtn}>확인</button>
             <p style={{marginLeft:"10%",marginTop:"0",color:smsColor ?  "green" : "#FF001F " ,fontWeight:"bold",fontFamily:"NT",fontSize:"1.2rem"}}>{smsMsg}</p>
           </div>
-          
-          
+    
           : ""}
-
-
-      <div className={styles.btnBox} >
-        {isPhoneValid ? <button className={styles.signUpBtn} onClick={()=>{
-          naviate('/signupsecond',{state:{phone:phone,name:name}})}}>다음</button> : <button className={styles.signUpBtnDis} disabled>다음</button>}
-        
-        
-      </div>
-    </div>    
+          <div style={{display:"flex",justifyContent:"center"}}>
+          {smsColor ? <div style={{width:"80%"}}>
+          <SignUpInput1 type='text' innerText='비밃번호' change={onChangePass} helpMsg={""} inner={true}/>
+          </div> : "" }
+          </div>
+         
+          
+   </div>
   );
-}
+};
 
-export default SignUpFirst;
-
+export default FindPassword;
 interface SignUpInput{
   type:string;
   innerText:string;
@@ -158,4 +154,3 @@ export function SignUpInput1(props:SignUpInput){
     
   )
 }
-
