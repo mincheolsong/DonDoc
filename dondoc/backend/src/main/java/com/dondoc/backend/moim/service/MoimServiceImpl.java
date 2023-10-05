@@ -362,8 +362,12 @@ public class MoimServiceImpl implements MoimService{
             }
             else missionMember = member;
         } else { // 관리자가 미션 부여
-            missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
-                    .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+            if(req.getMissionMemberId()==0) { // 관리자가 자기 자신에게 미션 부여
+                missionMember = member;
+            } else {
+                missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
+                        .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+            }
         }
 
         // 일반 이용자가 다른 사람에게 미션을 부여했을 때
