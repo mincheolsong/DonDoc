@@ -63,9 +63,10 @@
 
 .requestlist {
     margin-top: 10%;
-    min-height: 75%;
+    height: 75%;
     border: 1px solid #D1D1D1;
     border-radius: 1rem;
+    overflow-y: auto;
 }
 
 .requestunit {

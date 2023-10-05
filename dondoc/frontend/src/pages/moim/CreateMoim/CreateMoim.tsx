@@ -24,8 +24,6 @@ function CreateMoim() {
     } else {
       alert('모임 정보를 입력해주세요')
     }
-    // console.log(moimName)
-    // console.log(moimInfo)
   }
 
   return (

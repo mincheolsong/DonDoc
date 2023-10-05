@@ -60,11 +60,11 @@ function InviteManagerModal({setInviteModalOpen, setManager, token}: Props) {
         }
       });
       if (res.data.response) {
-        // console.log(res.data.response)
         setSearchResult(res.data.response)
       } else {
         // 검색 결과가 없을 때 처리할 로직 추가
-        console.log('검색 결과가 없습니다.');
+        // alert('검색 결과가 없습니다.');
+        alert(res.data.error.message)
         setSearchResult(initialSearchResult); // 또는 다른 초기값을 설정할 수 있음
       }
     }catch(err) {

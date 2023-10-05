@@ -49,11 +49,10 @@
     margin-left: 1rem;
     width: 6rem;
     height: 3.734rem;
-    background-color: #0D6EFD;
-    border: none;
-    border-radius: 0.5rem;
+    background-color: #FFFFFF;
+    border: 2px solid #E4E4E4;
+    border-radius: 0.4rem;
     font-weight: 900;
-    color: white;
 }
 .searchresult {
     border: 1px solid black;
@@ -104,11 +103,10 @@
 .appendbtn button {
     height: 100%;
     width: 90%;
-    background-color: #0D6EFD;
-    border: none;
-    border-radius: 0.5rem;
+    background-color: #FFFFFF;
+    border: 2px solid #E4E4E4;
+    border-radius: 0.4rem;
     font-weight: 900;
-    color: white;
 }
 
 .btndiv {

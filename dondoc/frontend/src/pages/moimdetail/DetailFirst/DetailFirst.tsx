@@ -26,6 +26,7 @@ type moimMemberList = {
   bankCode: number,
   bankName: string,
   userImageNumber: string,
+  phoneNumber: string
 }
 const selectedDefault = {
   userId: 0,
@@ -35,7 +36,8 @@ const selectedDefault = {
   accountNumber: '',
   bankCode: 0,
   bankName: '',
-  userImageNumber: ''
+  userImageNumber: '',
+  phoneNumber: ''
 }
 type moimDetailInfo = {
   balance: number,
@@ -96,7 +98,6 @@ function DetailFirst({userType, accountId, moimId}: Props) {
   }
 
   const CopyAccount = (account:string) => {
-    console.log(account)
     navigator.clipboard.writeText(account)
   }
 
@@ -110,7 +111,7 @@ function DetailFirst({userType, accountId, moimId}: Props) {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('모임 멤버:', res.data.response)
+        // console.log('모임 멤버:', res.data.response)
         const moimDetail = {
           balance : res.data.response.balance,
           moimName : res.data.response.moimName,
@@ -184,17 +185,62 @@ function DetailFirst({userType, accountId, moimId}: Props) {
                 <p style={{marginRight: '1rem'}}>{selectedMember.nickname}</p>
               </div>
             </div>
-            
-            {selectedMember.userType == 0 ? (
+
+
+            {/* {selectedMember.userType == 0 ? (
               <div className={styles.optionbuttons}>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
                 <button onClick={OpenModal}>요청하기</button>
               </div>
             ) : (
               <div className={styles.optionbuttons}>
-                <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`, {state: {diffuserId:selectedMember.userId}})}>프로필 가기</button>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
+                <button onClick={OpenModal}>요청하기</button>
+              </div>
+            )} */}
+
+            {userType ? (
+              <>
+                {selectedMember.userType ? (
+                  <div className={styles.optionbuttons}>
+                  {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                    <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                    ):(
+                    <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.optionbuttons}>
+                  {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                    <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                    ):(
+                    <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                  )}
+                  <button onClick={OpenModal}>요청하기</button>
+                </div>
+                )}
+              </>
+            ):(
+              <div className={styles.optionbuttons}>
+                {userInfo.phoneNumber == selectedMember.phoneNumber ? (
+                  <button onClick={() => navigate(`/mypage/${selectedMember.phoneNumber}`)}>프로필 가기</button>
+                  ):(
+                  <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`)}>프로필 가기</button>
+                )}
                 <button onClick={OpenModal}>요청하기</button>
               </div>
             )}
+
+
+
           </div>
 
           {modalOpen && (

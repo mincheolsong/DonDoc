@@ -13,7 +13,8 @@ type Props = {
   requestId: number,
   token: string | undefined,
   requestState: number,
-  memberType:number
+  memberType:number,
+  myPhone: string | undefined
 }
 
 type category = {
@@ -29,7 +30,8 @@ type requestInfo = {
   moimMemberName: string,
   status: number,
   title: string,
-  withdrawId: number
+  withdrawId: number,
+  phoneNumber:string
 }
 type missionInfo = {
   amount: number,
@@ -39,7 +41,8 @@ type missionInfo = {
   missionId: number,
   missionMemberName: string
   status: number,
-  title: string
+  title: string,
+  phoneNumber:string
 }
 const DefaultRequest = {
   amount: 0,
@@ -49,7 +52,8 @@ const DefaultRequest = {
   moimMemberName: "",
   status: 0,
   title: "",
-  withdrawId: 0
+  withdrawId: 0,
+  phoneNumber:""
 }
 const DefaultMission = {
   amount: 0,
@@ -59,11 +63,12 @@ const DefaultMission = {
   missionId: 0,
   missionMemberName: "",
   status: 0,
-  title: ""
+  title: "",
+  phoneNumber:""
 }
 
 
-function RequestInfo({moimId, requestType, token, requestId, requestState, memberType}: Props) {
+function RequestInfo({moimId, requestType, token, requestId, requestState, memberType, myPhone}: Props) {
 
   const [requestInfo, setRequestInfo] = useState<requestInfo>(DefaultRequest)
   const [missionInfo, setMissionInfo] = useState<missionInfo>(DefaultMission)
@@ -73,11 +78,10 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
 
   const ChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserPassword(e.target.value)
-    console.log(e.target.value)
   }
 
-  const AcceptMoney = () => {
-    navigate('/acceptpassword', {state: {moimId:moimId, requestId:requestId}})
+  const AcceptMoney = (type:number) => {
+    navigate('/acceptpassword', {state: {moimId:moimId, requestId:requestId, type:type}})
   }
 
   useEffect(() => {
@@ -153,7 +157,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
     }
   }
   const AcceptMission = async () => {
-    console.log('실행!')
+    // console.log('실행!')
     const data = {
       "moimId" : moimId,
       "password" : userPassword,
@@ -168,7 +172,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
       });
       if (response.data.success == true) {
         // console.log(response.data)
-        alert('요청을 거절하였습니다.')
+        alert('요청을 승인하였습니다.')
         window.location.reload()
       }
     } catch(error) {
@@ -219,7 +223,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
                   <p>{missionInfo.content}원</p>
                 </div>
               </div>
-              <input type="password" onChange={ChangePassword}/>
+              <input type="password" onChange={ChangePassword} placeholder="미션을 승인하는 경우 비밀번호 입력"/>
             </div>
           ) : (
             <div className={styles.requestinfo}>
@@ -252,7 +256,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
           )}
         </div>
 
-        {!requestState && !memberType ? (
+        {/* {!requestState || !memberType ? (
           <>
             {requestType? (
               <div className={styles.btns}>
@@ -267,8 +271,52 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
             )}
           </>
         ) : (
+          <>
+          </>
+        )} */}
+
+        {memberType ? (
           <></>
+        ):(
+          <>
+            {requestType ? (
+              <>
+                {myPhone == missionInfo.phoneNumber ? (
+                  <></>
+                  ):(
+                  <>
+                    {requestState ? (
+                      <div className={styles.btns}>
+                        <button onClick={() => AcceptMoney(1)} className={styles.refusebtn}>미션성공</button>
+                        <button onClick={() => AcceptMoney(2)} className={styles.acceptbtn}>미션실패</button>
+                      </div>
+                    ):(
+                      <div className={styles.btns}>
+                        <button onClick={RefuseMission} className={styles.refusebtn}>미션거절</button>
+                        <button onClick={AcceptMission} className={styles.acceptbtn}>미션승인</button>
+                      </div>
+
+                    )}
+                  </>
+                )}
+              </>
+            ):(
+              <>
+                {myPhone == requestInfo.phoneNumber ? (
+                  <></>
+                ):(
+                  <>
+                    <div className={styles.btns}>
+                      <button onClick={RefuseMoney} className={styles.refusebtn}>송금거절</button>
+                      <button onClick={() => AcceptMoney(0)} className={styles.acceptbtn}>송금승인</button>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </>
         )}
+
       </div>
     </div>
   );
