@@ -427,6 +427,8 @@ public class MoimServiceImpl implements MoimService{
         List<WithdrawRequest> withdrawRequestList;
         List<Mission> missionList;
 
+        log.info("moimId : {} " , member.getMoim().getId());
+
         if(member.getUserType()==0) { // 요청자가 모임의 관리자이면
 
             // 특정 조회하고자 하는 회원을 입력 했을 때 - 회원별 필터링
@@ -443,8 +445,6 @@ public class MoimServiceImpl implements MoimService{
                 missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
 
             } else { // 전체 조회
-
-                log.info("moimId : {} " , member.getMoim().getId());
 
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
                 missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
