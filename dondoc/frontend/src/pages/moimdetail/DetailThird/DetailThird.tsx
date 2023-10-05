@@ -29,51 +29,63 @@ ChartJS.register(
   Legend
 );
 
+type Member = {
+  accountNumber: string,
+  bankCode: number,
+  bankName: string,
+  moimMemberId: number,
+  nickname: string,
+  phoneNumber: string,
+  userId:number,
+  userImageNumber:number,
+  userType: number
+}
 
+type Props = {
+  moimId:number,
+  memberType:number,
+  members: Member[],
+  moimMemberId:number,
+  moimAccountNum: string,
+  moimIdNum: string,
+  memAccount: string
+}
 
-function DetailThird() {
+type Transfer = {
+  afterBalance:number,
+  content:string,
+  date:string,
+  name:string,
+  transferAmount:number
+}
+
+function DetailThird({moimId, memberType, members, moimMemberId, moimAccountNum, 
+moimIdNum, memAccount}:Props) {
   const [nowSelected, setNowSelected] = useState<boolean>(true)
   const [ThisData, setThisData] = useState<number[]>([])
-  const [LastData, setLastData] = useState<number[]>([])
+  const [moimMID, setmoimMID] = useState<number>(moimMemberId)
+  const [MAccount, setMAccount] = useState<string>(memAccount)
+  const [TransferList, setTransferList] = useState<Transfer[]>([])
+
+  // const [LastData, setLastData] = useState<number[]>([])
 
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
   const token = userInfo.accessToken
-  const {moimId} = useParams()
+
+const MIDChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
+  const NID = parseInt(e.target.value, 10)
+  setmoimMID(NID)
+}
+
+const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
+  setMAccount(e.target.value)
+}
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/moim/detail/${moimId}`,{
-      headers:{
-        'Authorization': 'Bearer ' + token
-      }
-    })
-    .then((res) => {
-      console.log(res.data.response)
-      const identificationNumber:string = res.data.response.identificationNumber
-      const memberAccountNumber:string = res.data.response.moimAccountNumber
-      const moimAccountNumber:string = res.data.response.moimMembers
-
-      const data = {
-        identificationNumber: identificationNumber,
-        memberAccountNumber: memberAccountNumber,
-        moimAccountNumber: moimAccountNumber,
-        month:9
-      }
-      axios.post(`${BASE_URL}/api/moim/mydata/transferAmount`, data, {
-        headers: {
-        'Authorization': 'Bearer ' + token
-        }
-      })
-      .then((res) => {
-        console.log(res.data)
-      })
-    })
-  },[])
-
-  useEffect(() => {
-    axios.get(`${BASE_URL}/api/moim/mydata/spendingAmount/1/29`,{
+    axios.get(`${BASE_URL}/api/moim/mydata/spendingAmount/${moimId}/${moimMID}`,{
       headers:{
         'Authorization': 'Bearer ' + token
       }
@@ -82,9 +94,27 @@ function DetailThird() {
       
       console.log(res.data.response)
       setThisData(res.data.response.thisMonth)
-      setLastData(res.data.response.LastMonth)
+      // setLastData(res.data.response.LastMonth)
     })
-  },[])
+  },[moimMID])
+
+  useEffect(() => {
+    const data = {
+      identificationNumber: moimIdNum,
+      memberAccountNumber: MAccount,
+      moimAccountNumber: moimAccountNum,
+      month:10
+    }
+    axios.post(`${BASE_URL}/api/moim/mydata/transferAmount`,data,{
+      headers:{
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then((res) => {
+      console.log(res.data)
+      setTransferList(res.data.response)
+    })
+  },[MAccount])
 
   const labels = ['총합', '쇼핑', '교육', '식비', '여가', '기타'];
   
@@ -93,7 +123,7 @@ function DetailThird() {
     datasets: [
       {
         label: '9월',
-        data: LastData,
+        data: [500000,100000,100000,100000,100000,100000],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
@@ -210,7 +240,11 @@ function DetailThird() {
             </div>
           </div>
 
-
+          {nowSelected ? <>
+            {memberType === 0 ? <select name="" id="" onChange={MIDChange}>
+            {members.map((mem:Member) => (<option value={mem.moimMemberId}>{mem.nickname}</option>))}
+          </select> : <></>}
+          
           <div className={styles.requestlist}>
             <div className={styles.Chart}> 
 
@@ -218,6 +252,24 @@ function DetailThird() {
             <Doughnut data={data2} />
             </div>
           </div>
+          </> : <>
+          {memberType === 0 ? <select name="" id="" onChange={ACChange}>
+            {members.map((mem:Member) => (<option value={mem.accountNumber}>{mem.nickname}</option>))}
+          </select> : <></>}
+          <div className={styles.requestlist}>
+            {TransferList.map((Trans:Transfer) => (
+              <div>
+                {Trans.afterBalance}
+                {Trans.content}
+                {Trans.date}
+                {Trans.name}
+                {Trans.transferAmount}
+              </div>
+            ))}
+          </div>
+          </>}
+
+          
         </div>
 
       </div>
