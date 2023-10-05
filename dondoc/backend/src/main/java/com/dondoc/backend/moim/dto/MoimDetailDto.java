@@ -98,6 +98,8 @@ public class MoimDetailDto {
         private Long bankCode;
         private String bankName;
         private int userImageNumber;
+        private String phoneNumber;
+
 
         public MoimMemberDto(MoimMember moimMember){
             userId = moimMember.getUser().getId();
@@ -108,6 +110,7 @@ public class MoimDetailDto {
             bankCode = moimMember.getAccount().getBankCode();
             bankName = moimMember.getAccount().getBankName();
             userImageNumber = moimMember.getUser().getImageNumber();
+            phoneNumber = moimMember.getUser().getPhoneNumber();
         }
     }
 
