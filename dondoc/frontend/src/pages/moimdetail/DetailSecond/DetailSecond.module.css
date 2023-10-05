@@ -81,7 +81,7 @@
 
 .imgdiv {
     width: 25%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .imgdiv p {
@@ -103,9 +103,29 @@
 
 .requestInfo {
     width: 75%;
-    border: 1px solid black;
+    overflow-y: auto;
+    /* border: 1px solid black; */
 }
 
+.requestInfo h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 1rem;
+}
+
+.stateboxo {
+    padding: 0.05rem;
+    background-color: #3772FF;
+    font-weight: 900;
+    border-radius: 1rem;
+    color: white;
+}
+.stateboxz {
+    padding: 0.05rem;
+    background-color: #E4E4E4;
+    font-weight: 900;
+    border-radius: 1rem;
+}
 
 
 

@@ -10,7 +10,8 @@ import { useSelector } from "react-redux";
 import RequestInfoModal from "./RequestInfo/RequestInfo";
 
 type Props = {
-  moimId: string | undefined
+  moimId: string | undefined,
+  memberType: number
 }
 type category = {
   id: number,
@@ -39,7 +40,7 @@ type missionList = {
 }
 
 
-function DetailSecond({moimId}: Props) {
+function DetailSecond({moimId, memberType}: Props) {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -51,12 +52,14 @@ function DetailSecond({moimId}: Props) {
   const [missionList, setMissionList] = useState<missionList[]>([])
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
   const [requestType, setRequestType] = useState<number>(0)
+  const [requestState, setRequestState] = useState<number>(0)
   const [requestId, setRequestId] = useState<number>(0)
 
-  const OpenInfoModal = (type: number, id:number) => {
+  const OpenInfoModal = (type: number, id:number, state: number) => {
     setInfoModalOpen(true)
     setRequestType(type)
     setRequestId(id)
+    setRequestState(state)
   }
   const CloseInfoModal = () => {
     setInfoModalOpen(false)
@@ -126,17 +129,31 @@ function DetailSecond({moimId}: Props) {
             {nowSelected ? (
               <>
                 {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
-                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId)}>
+                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId, money.status)}>
                     <div className={styles.imgdiv}>
                       <div className={styles.imgbox}>
                         <img src={`/src/assets/characterImg/${money.imageNumber}.png`} alt="" />
                       </div>
-                      <p className={styles.statebox}>
-                        {money.status}
-                      </p>
+                      {money.status ? (
+                        <p className={styles.stateboxo}>
+                          출금승인
+                        </p>
+                      ):(
+                        <p className={styles.stateboxz}>
+                          승인대기
+                        </p>
+                      )}
                     </div>
                     <div className={styles.requestInfo}>
-                      div.{styles.name}
+                      <div className={styles.membername}>
+                        <h2 style={{color: '#EC5757'}}>{money.moimMemberName}</h2>
+                      </div>
+                      <div className={styles.requestname}>
+                        <h2>{money.title}</h2>
+                      </div>
+                      <div className={styles.requestmoney}>
+                        <h2>{money.amount}원</h2>
+                      </div>
                     </div>
 
                   </div>
@@ -145,17 +162,33 @@ function DetailSecond({moimId}: Props) {
             ) : (
               <>
                 {missionList.length > 0 && missionList.map((mission, index) => (
-                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId)}>
+                  <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId, mission.status)}>
 
-
-                    <p>{mission.amount}</p>
-                    <p>{mission.missionId}</p>
-                    <p>{mission.imageNumber}</p>
-                    <p>{mission.content}</p>
-                    <p>{mission.endDate}</p>
-                    <p>{mission.missionMemberName}</p>
-                    <p>{mission.status}</p>
-                    <p>{mission.title}</p>
+                    <div className={styles.imgdiv}>
+                      <div className={styles.imgbox}>
+                        <img src={`/src/assets/characterImg/${mission.imageNumber}.png`} alt="" />
+                      </div>
+                      {mission.status ? (
+                        <p className={styles.stateboxo}>
+                          출금승인
+                        </p>
+                      ):(
+                        <p className={styles.stateboxz}>
+                          승인대기
+                        </p>
+                      )}
+                    </div>
+                    <div className={styles.requestInfo}>
+                      <div className={styles.membername}>
+                        <h2 style={{color: '#EC5757'}}>{mission.missionMemberName}</h2>
+                      </div>
+                      <div className={styles.requestname}>
+                        <h2>{mission.title}</h2>
+                      </div>
+                      <div className={styles.requestmoney}>
+                        <h2>{mission.amount}원</h2>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </>
@@ -174,7 +207,11 @@ function DetailSecond({moimId}: Props) {
       {infoModalOpen && (
         <>
           <div className={styles.backgroundOverlay} onClick={CloseInfoModal}/>
-          <RequestInfoModal setInfoModalOpen={setInfoModalOpen} moimId={moimId} requestType={requestType}  token={token} requestId={requestId}/>
+          <RequestInfoModal 
+            setInfoModalOpen={setInfoModalOpen} moimId={moimId} 
+            requestType={requestType} token={token} 
+            requestId={requestId} requestState={requestState}
+            memberType={memberType}/>
         </>
       )}
 

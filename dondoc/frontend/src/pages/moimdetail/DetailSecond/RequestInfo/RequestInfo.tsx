@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./RequestInfo.module.css";
 import axios from "axios";
 import { BASE_URL } from "../../../../constants";
 import MissionIcon from "/src/assets/MoimLogo/missionicon.svg"
+import { useNavigate } from "react-router-dom";
 // import MoneyIcon from "/src/assets/MoimLogo/moneyicon.svg"
 
 type Props = {
@@ -10,7 +11,9 @@ type Props = {
   moimId: string | undefined,
   requestType: number,
   requestId: number,
-  token: string | undefined
+  token: string | undefined,
+  requestState: number,
+  memberType:number
 }
 
 type category = {
@@ -60,13 +63,21 @@ const DefaultMission = {
 }
 
 
-function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: Props) {
+function RequestInfo({moimId, requestType, token, requestId, requestState, memberType}: Props) {
 
   const [requestInfo, setRequestInfo] = useState<requestInfo>(DefaultRequest)
   const [missionInfo, setMissionInfo] = useState<missionInfo>(DefaultMission)
+  const [userPassword, setUserPassword] = useState<string>('')
 
-  const CloseInfoModal = () => {
-    setInfoModalOpen(false)
+  const navigate = useNavigate();
+
+  const ChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPassword(e.target.value)
+    console.log(e.target.value)
+  }
+
+  const AcceptMoney = () => {
+    navigate('/acceptpassword', {state: {moimId:moimId, requestId:requestId}})
   }
 
   useEffect(() => {
@@ -85,10 +96,10 @@ function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: 
           }
         });
         if(requestType) {
-          console.log('미션요청:', res.data.response.mission)
+          // console.log('미션요청:', res.data.response.mission)
           setMissionInfo(res.data.response.mission)
         } else{
-          console.log('출금요청:', res.data.response.withdrawRequest)
+          // console.log('출금요청:', res.data.response.withdrawRequest)
           setRequestInfo(res.data.response.withdrawRequest)
         }
       }
@@ -98,6 +109,72 @@ function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: 
     }
     fetchData();
   }, []);
+
+  const RefuseMission = async () => {
+    const data = {
+      "moimId" : moimId,
+      "requestId" : requestId
+    }
+    try {
+      const response = await axios.post(`${BASE_URL}/api/moim/reject_mission`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (response.data.success == true) {
+        // console.log(response.data)
+        alert('미션을 거절하였습니다.')
+        window.location.reload()
+      }
+    } catch(error) {
+      console.log('error:', error)
+    }
+  }
+  const RefuseMoney = async () => {
+    const data = {
+      "moimId" : moimId,
+      "requestId" : requestId
+    }
+    try {
+      const response = await axios.post(`${BASE_URL}/api/moim/reject_req`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (response.data.success == true) {
+        // console.log(response.data)
+        alert('요청을 거절하였습니다.')
+        window.location.reload()
+      }
+    } catch(error) {
+      console.log('error:', error)
+    }
+  }
+  const AcceptMission = async () => {
+    console.log('실행!')
+    const data = {
+      "moimId" : moimId,
+      "password" : userPassword,
+      "requestId" : requestId
+    }
+    try {
+      const response = await axios.post(`${BASE_URL}/api/moim/allow_mission`, data, {
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (response.data.success == true) {
+        // console.log(response.data)
+        alert('요청을 거절하였습니다.')
+        window.location.reload()
+      }
+    } catch(error) {
+      console.log('error:', error)
+    }
+  }
 
 
   return (
@@ -136,13 +213,13 @@ function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: 
               </div>
               <br />
               <hr />
-              <br />
               <div className={styles.requestdetail}>
                 <h2 className={styles.requestlabel}>미션상세</h2>
                 <div className={styles.requestcontentbox}>
                   <p>{missionInfo.content}원</p>
                 </div>
               </div>
+              <input type="password" onChange={ChangePassword}/>
             </div>
           ) : (
             <div className={styles.requestinfo}>
@@ -166,7 +243,7 @@ function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: 
               <hr />
               <br />
               <div className={styles.requestdetail}>
-                <h2 className={styles.requestlabel}>미션상세</h2>
+                <h2 className={styles.requestlabel}>요청상세</h2>
                 <div className={styles.requestcontentbox}>
                   <p>{requestInfo.content}원</p>
                 </div>
@@ -175,18 +252,22 @@ function RequestInfo({setInfoModalOpen, moimId, requestType, token, requestId}: 
           )}
         </div>
 
-        {requestType ? (
-          <div className={styles.btns}>
-            {/* <button onClick={CloseInfoModal}>닫아라</button> */}
-            <button onClick={CloseInfoModal} className={styles.refusebtn}>거절하기</button>
-            <button onClick={CloseInfoModal} className={styles.acceptbtn}>승인하기</button>
-          </div>
-        ):(
-          <div className={styles.btns}>
-            {/* <button onClick={CloseInfoModal}>닫아라</button> */}
-            <button onClick={CloseInfoModal} className={styles.refusebtn}>거절하기</button>
-            <button onClick={CloseInfoModal} className={styles.acceptbtn}>승인하기</button>
-          </div>
+        {!requestState && !memberType ? (
+          <>
+            {requestType? (
+              <div className={styles.btns}>
+                <button onClick={RefuseMission} className={styles.refusebtn}>거절하기</button>
+                <button onClick={AcceptMission} className={styles.acceptbtn}>승인하기</button>
+              </div>
+            ):(
+              <div className={styles.btns}>
+                <button onClick={RefuseMoney} className={styles.refusebtn}>거절하기</button>
+                <button onClick={AcceptMoney} className={styles.acceptbtn}>승인하기</button>
+              </div>
+            )}
+          </>
+        ) : (
+          <></>
         )}
       </div>
     </div>
