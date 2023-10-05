@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MoimMyDataDto {
     @ApiModel(value="마이데이터 이체내역", description="마이데이터 이체내역 조회에 필요한 Request Dto")
@@ -39,67 +42,59 @@ public class MoimMyDataDto {
 
     @Data
     public static class SpendingAmountResponse{
-        private int thisTotal;
-        private int lastTotal;
-        private int thisShoppping;
-        private int lastShoppping;
-        private int thisEducation;
-        private int lastEducation;
-        private int thisFood;
-        private int lastFood;
-        private int thisLeisure;
-        private int lastLeisure;
-        private int thisEtc;
-        private int lastEtc;
+        // total, shopping, education, food, leisure, etc
+        private int[] thisMonth = {0,0,0,0,0,0};
+        private int[] lastMonth = {0,0,0,0,0,0};
+
 
         public void changeThisTotal(int n){
-            this.thisTotal += n;
+            this.thisMonth[0] += n;
         }
 
         public void changeThisShopping(int n){
-            this.thisShoppping+=n;
+            this.thisMonth[1]+=n;
         }
 
         public void changeThisEducation(int n){
-            this.thisEducation+=n;
+            this.thisMonth[2]+=n;
         }
 
         public void changeThisFood(int n){
-            this.thisFood+=n;
+            this.thisMonth[3]+=n;
         }
 
         public void changeThisLeisure(int n){
-            this.thisLeisure+=n;
+            this.thisMonth[4]+=n;
         }
 
         public void changeThisEtc(int n){
-            this.thisEtc+=n;
+            this.thisMonth[5]+=n;
         }
 
 
 
         public void changeLastTotal(int n){
-            this.lastTotal += n;
+            this.lastMonth[0] += n;
         }
 
         public void changeLastShopping(int n){
-            this.lastShoppping+=n;
+            this.lastMonth[1]+=n;
         }
 
         public void changeLastEducation(int n){
-            this.lastEducation+=n;
+            this.lastMonth[2]+=n;
         }
 
         public void changeLastFood(int n){
-            this.lastFood+=n;
+            this.lastMonth[3]+=n;
         }
 
         public void changeLastLeisure(int n){
-            this.lastLeisure+=n;
+            this.lastMonth[4]+=n;
         }
 
         public void changeLastEtc(int n){
-            this.lastEtc+=n;
+            this.lastMonth[5]+=n;
         }
 
     }
