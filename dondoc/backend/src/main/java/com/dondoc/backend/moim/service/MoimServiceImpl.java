@@ -199,7 +199,7 @@ public class MoimServiceImpl implements MoimService{
         }
         return result;
     }
-    
+
     @Override
     public List<Moim> getMoimList(Long userId) {
         List<Moim> result = moimRepository.getMoimList(userId);
@@ -325,7 +325,7 @@ public class MoimServiceImpl implements MoimService{
 
         if(response.get("success").toString()=="true"){ // 계좌 조회 성공
             Map<String,String> res = (Map<String, String>) response.get("response");
-            
+
             // 현재 모임 잔액 - 제한된 금액
             int possibleAmount = Integer.parseInt(String.valueOf(res.get("balance"))) - member.getMoim().getLimited();
 
@@ -799,7 +799,7 @@ public class MoimServiceImpl implements MoimService{
             //withdrawRequestRepository.deleteById(withdrawRequest.getId());
 
             return AllowRequestDto.Response.toDTO_WithdrawReq(
-                "계좌 이체가 성공적으로 이루어졌습니다.",
+                    "계좌 이체가 성공적으로 이루어졌습니다.",
                     WithdrawRequestDto.Response.toDTO(withdrawRequest)
             );
 
@@ -1080,7 +1080,7 @@ public class MoimServiceImpl implements MoimService{
         List<Mission> missionList = missionRepository.findByMoimMemberAndStatus(member, 1);
 
         List<MissionInfoDto.Response> resultMissionList = missionList.stream()
-                .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
+                .map(entity -> MissionInfoDto.Response.toDTO(entity.getId(), entity.getMoimMember().getMoim().getId(), entity.getMoimMember().getMoim().getMoimName(), entity.getTitle(), entity.getContent(), entity.getAmount(), entity.getEndDate()))
                 .collect(Collectors.toList());
 
         return resultMissionList;

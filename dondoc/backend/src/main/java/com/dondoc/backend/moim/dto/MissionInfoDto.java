@@ -12,15 +12,17 @@ public class MissionInfoDto {
     public static class Response {
 
         private Long id;
+        private Long moimId;
         private String moimName;
         private String title;
         private String content;
         private int amount;
         private LocalDate endDate;
 
-        public static MissionInfoDto.Response toDTO(Long id, String moimName, String title, String content, int amount, LocalDate endDate) {
+        public static MissionInfoDto.Response toDTO(Long id, Long moimId, String moimName, String title, String content, int amount, LocalDate endDate) {
             return Response.builder()
                     .id(id)
+                    .moimId(moimId)
                     .moimName(moimName)
                     .title(title)
                     .content(content)
