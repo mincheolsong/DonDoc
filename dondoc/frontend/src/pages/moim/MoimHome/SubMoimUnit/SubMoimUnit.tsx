@@ -75,7 +75,7 @@ function SubMoimUnit(props: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.moimtop}>
-        <div className={styles.moimmembers}>
+        <div style={{marginLeft:"1rem",marginTop:"0.5rem"}} className={styles.moimmembers}>
           {moimInfo.moimMembers.length > 0 && moimInfo.moimMembers.slice(0, 5).map((member, index) => (
               <div className={styles.moimunit} key={index}>
                 <p style={{marginTop:'0.2rem', marginBottom:'0', marginLeft: '0.5rem'}}>{member.nickname}</p>
@@ -89,8 +89,8 @@ function SubMoimUnit(props: Props) {
         </div>
       </div>
       <div className={styles.moimlower}>
-        <div className={styles.moimname}><h1 style={{marginTop:'0.5rem', marginBottom:'0'}}>{moimInfo.moimName}</h1></div>
-        <div className={styles.moimaccount}><h3 style={{marginTop:'0.5rem', marginBottom:'0'}}>돈독 {moimInfo.moimAccountNumber}</h3></div>
+        <div className={styles.moimname}><h1 style={{marginTop:'2rem', marginBottom:'0'}}>{moimInfo.moimName}</h1></div>
+        <div className={styles.moimaccount}><h3 style={{marginTop:'0rem', marginBottom:'0',fontSize:"1rem"}}>돈독 {moimInfo.moimAccountNumber}</h3></div>
       </div>
     </div>
   );
