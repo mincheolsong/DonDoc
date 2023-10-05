@@ -35,6 +35,7 @@
 }
 
 .NavItemsText{
+    font-family: "LHL";
     position: absolute;
     bottom: 1rem;
     margin: 0;

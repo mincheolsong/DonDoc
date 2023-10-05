@@ -6,7 +6,6 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { UserType } from "../../../store/slice/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
-import { useNavigate } from "react-router-dom";
 import Mission_Detail from "./Detail/Mission_Detail";
 
 
@@ -16,7 +15,18 @@ type Missions = {
   title: string,
   content: string,
   amount: number,
-  endDate: string
+  endDate: string,
+  moimId:number
+}
+
+const Standard = {
+  id: 0,
+  moimName: '',
+  title: '',
+  content: '',
+  amount: 0,
+  endDate: '',
+  moimId:0
 }
 
 
@@ -25,16 +35,17 @@ function Mission() {
 
   const [MissionList, setMissionList] = useState<Missions[]>([])
   const [OpenModal, setOpenModal] = useState<boolean>(false)
+  const [SelectedMission, setSelectedMission] = useState<Missions>(Standard)
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
 
-  const navigate = useNavigate()
   const token = userInfo.accessToken
 
-  const ModalOpen = () => {
+  const ModalOpen = (mi:Missions) => {
     setOpenModal(true)
+    setSelectedMission(mi)
   }
 
   useEffect(() => {
@@ -45,14 +56,11 @@ function Mission() {
     .then((res) => {
       console.log(res.data)
       setMissionList(res.data.response)
-      if (res.data.success === false) {
-        navigate('/signin')
-      }
     })
     .catch((err) => {
       console.log(err)
     })
-  },[])
+  },[OpenModal])
 
   return (
     <>
@@ -65,7 +73,7 @@ function Mission() {
 
     { MissionList.length ?
     (MissionList.map((mi) => (
-      <div className={styles.topContainer} onClick={ModalOpen}>
+      <div className={styles.topContainer} onClick={() => ModalOpen(mi)}>
       <div style={{display:"flex",width:"100%"}}>
       <img src={`/src/assets/MoimLogo/dondoclogo.svg`} style={{width:"25%", marginLeft:"1rem"}} />
     <div style={{marginLeft:"5rem",textAlign:"left", width:"30%"}}>
@@ -77,13 +85,14 @@ function Mission() {
       <p style={{fontSize:"1.5rem",fontWeight:"bold", marginBottom:"0"}}>{mi.amount}원</p>
     </div>
       </div> 
-      </div> 
+      </div>
+       
 ))) :
-    <div className={styles.ResultContainer}>등록된 미션이 없습니다.</div>}
+<div className={styles.ResultContainer}>등록된 미션이 없습니다.</div>}
 
 
     </div>
-      <Mission_Detail />
+      {OpenModal && <Mission_Detail setOpenModal={setOpenModal} Mi={SelectedMission}/>}
       <Nav />
     </>
   );
