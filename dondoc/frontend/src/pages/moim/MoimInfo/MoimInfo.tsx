@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { UserType } from '../../../store/slice/userSlice';
 import { BASE_URL } from '../../../constants';
 import axios from 'axios';
+import BackLogoHeader from '../../toolBox/BackLogoHeader/BackLogoHeader';
 
 type selectedAccount = {
   accountId: number,
@@ -55,9 +56,9 @@ function MoimInfo() {
   const CloseTerms = () => {
     setTermsOpen(false)
   }
-  const ToBack = () => {
-    navigate(-1)
-  }
+  // const ToBack = () => {
+  //   navigate(-1)
+  // }
 
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
 
@@ -114,7 +115,7 @@ function MoimInfo() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-      <div className={styles.topbar}>
+      {/* <div className={styles.topbar}>
           <div className={styles.backbutton}>
             <button className={styles.toback} onClick={ToBack}>
               back
@@ -123,7 +124,8 @@ function MoimInfo() {
           <div className={styles.pagename}>
             <h3>모임통장 생성</h3>
           </div>
-        </div>
+        </div> */}
+        <BackLogoHeader name="모임통장 가입"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>

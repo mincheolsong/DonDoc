@@ -14,7 +14,8 @@ type Props = {
   token: string | undefined,
   requestState: number,
   memberType:number,
-  myPhone: string | undefined
+  myPhone: string | undefined,
+  moimType: number
 }
 
 type category = {
@@ -68,7 +69,7 @@ const DefaultMission = {
 }
 
 
-function RequestInfo({moimId, requestType, token, requestId, requestState, memberType, myPhone}: Props) {
+function RequestInfo({moimId, requestType, token, requestId, requestState, memberType, myPhone, moimType}: Props) {
 
   const [requestInfo, setRequestInfo] = useState<requestInfo>(DefaultRequest)
   const [missionInfo, setMissionInfo] = useState<missionInfo>(DefaultMission)
@@ -281,7 +282,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
           <>
             {requestType ? (
               <>
-                {myPhone == missionInfo.phoneNumber ? (
+                {myPhone == missionInfo.phoneNumber && moimType == 2 ? (
                   <></>
                   ):(
                   <>
@@ -302,7 +303,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
               </>
             ):(
               <>
-                {myPhone == requestInfo.phoneNumber ? (
+                {myPhone == requestInfo.phoneNumber && moimType == 2 ? (
                   <></>
                 ):(
                   <>
