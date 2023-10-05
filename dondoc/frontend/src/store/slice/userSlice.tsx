@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export type Socket = {
+  socket: WebSocket | null;
+}
+
 export type UserType ={
   userId: number,
   phoneNumber :string;
@@ -25,6 +29,9 @@ export type CheckAccount = Account &{
   isCheck: boolean
 }
 
+const initialState:Socket = {
+  socket: null,
+}
 
 
 const initialState:UserType = {
@@ -39,11 +46,12 @@ const initialState:UserType = {
   imageNumber:0,
 }
 
+
 const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-  loginUser(state, action) {
+    loginUser(state, action) {
       state.accessToken = action.payload.accessToken
       state.isLogin = true
       state.phoneNumber = action.payload.phoneNumber
@@ -53,20 +61,24 @@ const userSlice = createSlice({
       state.mainAccount = action.payload.mainAccount
       state.imageNumber = action.payload.imageNumber
     },
-  changeImage(state,action){
-    state.imageNumber = action.payload.imageNumber
-  },
-  changeIntroduce(state,action){
-    state.introduce = action.payload.introduce
-  },
-  changeNickName(state,action){
-    state.nickname = action.payload.nickname
-  },
-  changeMainAccount(state,action){
-    state.mainAccount = action.payload.mainAccount
-  }
-  },
+    changeImage(state, action) {
+      state.imageNumber = action.payload.imageNumber
+    },
+    changeIntroduce(state, action) {
+      state.introduce = action.payload.introduce
+    },
+    changeNickName(state, action) {
+      state.nickname = action.payload.nickname
+    },
+    changeMainAccount(state, action) {
+      state.mainAccount = action.payload.mainAccount
+    }
+    ,
+    changeSocket(state, action) {
+      state.socket = action.payload.socket;
+    },
   
+  }
 });
 
 

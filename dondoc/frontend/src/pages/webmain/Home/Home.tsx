@@ -7,12 +7,17 @@ import { moim } from "../../../api/api";
 import { UserType,Account } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 
-function Home() {
-  Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
+function Home() {
+ 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
+
+
+  Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+  
   const goSendMoney = (account:Account) =>{
     navigate(`/sendmoneyfirst/${account.accountId}`,{state:{account:account}})
   }
@@ -62,6 +67,7 @@ function Home() {
      {/* 나의계좌 */}
      
      
+        
      
      
     {allAccount.map((account,index)=>(
