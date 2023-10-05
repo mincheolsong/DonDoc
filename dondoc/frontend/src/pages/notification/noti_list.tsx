@@ -7,19 +7,23 @@ import { useSelector } from "react-redux";
 import BackLogoHeader from "../toolBox/BackLogoHeader/BackLogoHeader";
 import { useNavigate } from "react-router-dom";
 
-
+type Request = {
+  frinedId:number,
+  id:number,
+  imageNumber:number,
+  nickName:string,
+  status: number,
+  createdAt: string
+}
 
 function Noti_List() {
-  const [FriendRe, setFriendRe] = useState<[]>([])
+  const [FriendRe, setFriendRe] = useState<Request[]>([])
+  const [Cnt, setCnt] = useState<number>(0)
 
   const navigate = useNavigate()
 
   const goDetail = () => {
-    navigate('FriendRequests', {
-      state: {
-        Requests: FriendRe
-      }
-    })
+    navigate('FriendRequests')
   }
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -40,6 +44,7 @@ function Noti_List() {
       }}
       );
       setFriendRe(response.data.response.list)
+      setCnt(response.data.response.list.length)
       console.log(response.data.response)
     } catch(error) {
       console.log('error:', error)
@@ -54,7 +59,13 @@ function Noti_List() {
       </div>
     <div className={styles.topContainer} onClick={goDetail}>
       <div style={{display:"flex",width:"60%"}}>
-      <img src={userInfo.imageNumber} style={{width:"35%"}} />
+      {Cnt ?
+      <img src={`/src/assets/characterImg/${FriendRe[Cnt-1].imageNumber}.png`} style={{width:"35%"}} />:
+      <img src={`/src/assets/characterImg/0.png`} style={{width:"35%"}} />}
+      {Cnt ?
+      <div className={styles.CntBox}>{Cnt}</div> :
+      <></>
+      }
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
       <p style={{fontSize:"1.6rem",fontWeight:"bold"}}>친구추가 요청</p>
       <p style={{fontSize:"1rem"}}>친구추가를 하거나 무시합니다.</p>
