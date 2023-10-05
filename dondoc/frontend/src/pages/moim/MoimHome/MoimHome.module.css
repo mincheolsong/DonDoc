@@ -1,5 +1,7 @@
 
-
+.content{
+    margin-top: 1.5rem;
+}
 .topbar {
     margin-left: 3%;
     margin-right: 3%;
@@ -130,7 +132,7 @@
 }
 
 .topContainer{
-    width: 96%;
+    width: 95%;
     height: 10rem;
     background-color: white;
     border-radius: 0.6rem;
