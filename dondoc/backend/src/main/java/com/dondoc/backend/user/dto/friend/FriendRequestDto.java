@@ -31,9 +31,25 @@ public class FriendRequestDto {
     @Builder
     public static class RequestListResponse{
         private String msg;
-        private List<Friend> list;
+        private List<?> list;
         @JsonIgnore
         private boolean success;
+    }
+
+    @Data
+    @Builder
+    public static class ReceiveInfo{
+        private Long friendId;
+        private int imageNumber;
+        private String nickName;
+    }
+
+    @Data
+    @Builder
+    public static class SendInfo{
+        private Long userId;
+        private int imageNumber;
+        private String nickName;
     }
 
 

@@ -214,9 +214,22 @@ public class FriendServiceImpl implements FriendService{
 
         List<Friend> list = friendRepository.findByFriendIdAndStatus(userId, 0);
 
+        List<FriendRequestDto.ReceiveInfo> result = new ArrayList<>();
+
+        for(Friend friend : list){
+            FriendRequestDto.ReceiveInfo temp = FriendRequestDto.ReceiveInfo.builder()
+                    .friendId(friend.getUser().getId())
+                    .nickName(friend.getUser().getNickName())
+                    .imageNumber(friend.getUser().getImageNumber())
+                    .build();
+
+            result.add(temp);
+        }
+
+
         return FriendRequestDto.RequestListResponse.builder()
-                .list(list)
-                .msg("친구 요청 목록을 불러왔습니다.")
+                .list(result)
+                .msg("받은 요청 목록을 불러왔습니다.")
                 .success(true)
                 .build();
     }
@@ -229,9 +242,24 @@ public class FriendServiceImpl implements FriendService{
 
         List<Friend> list = friendRepository.findByUserAndStatus(user, 0);
 
+        List<FriendRequestDto.SendInfo> result = new ArrayList<>();
+
+        for(Friend friend : list){
+            User friendInfo = userRepository.findById(friend.getId())
+                    .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+            FriendRequestDto.SendInfo temp = FriendRequestDto.SendInfo.builder()
+                    .userId(friendInfo.getId())
+                    .nickName(friendInfo.getNickName())
+                    .imageNumber(friendInfo.getImageNumber())
+                    .build();
+
+            result.add(temp);
+        }
+
         return FriendRequestDto.RequestListResponse.builder()
-                .list(list)
-                .msg("친구 요청 목록을 불러왔습니다.")
+                .list(result)
+                .msg("보낸 요청 목록을 불러왔습니다.")
                 .success(true)
                 .build();
     }
