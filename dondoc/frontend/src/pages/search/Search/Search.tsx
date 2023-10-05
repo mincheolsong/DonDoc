@@ -42,8 +42,10 @@ function Search() {
   })
   const token = userInfo.accessToken
 
-  const GoProfile = (id:string) => {
-    navigate(`/mypage/${id}`)
+  const GoProfile = (id:number) => {
+    navigate(`/diffprofile/${id}`, {state:{
+      
+    }})
   }
 
   const InputNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +92,7 @@ function Search() {
       </div>
     <div>
       <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} 
-      onClick = {() => GoProfile(Result.phoneNumber)}>프로필 가기</button>
+      onClick = {() => GoProfile(Result.userId)}>프로필 가기</button>
     </div>
   </div>) : <div className={styles.ResultContainer}>검색 내용이 없습니다.</div>}
     
