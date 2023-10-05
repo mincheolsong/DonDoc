@@ -62,6 +62,7 @@ function Search() {
         console.log(res.data.response)
         setResult(res.data.response)
       } else {
+        console.log(res.data)
         alert(res.data.error.message)
 
         setResult(initialSearchResult);
