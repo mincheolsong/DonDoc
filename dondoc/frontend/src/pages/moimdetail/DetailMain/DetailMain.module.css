@@ -1,19 +1,10 @@
 .container {
-    width: 100% !important ;
-    height: 100% !important; 
+    width: 100% ;
+    height: 100% ; 
     margin-top: 2rem;
     
 
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100vh;
-}
 
-.Carousel {
-    width: 100%;
-    height: 100%;
-}
+
