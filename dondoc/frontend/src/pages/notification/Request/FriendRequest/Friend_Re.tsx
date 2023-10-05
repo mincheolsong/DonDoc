@@ -5,20 +5,21 @@ import { BASE_URL } from "../../../../constants";
 import { UserType } from "../../../../store/slice/userSlice";
 import { useSelector } from "react-redux";
 import BackLogoHeader from "../../../toolBox/BackLogoHeader/BackLogoHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Request = {
   id: number,
   friendId: number,
-  status: number,
-  createdAt: string
+  imageNumber: number,
+  nickName: string
+  createdAt: string,
+  status: number
 }
 
 function Friend_Re() {
     const [Requests, setRequests] = useState<Request[]>([])
 
-    const location = useLocation()
-    const state = location.state
+    const navigate = useNavigate()
 
     const userInfo:UserType = useSelector((state:{user:UserType})=>{
       return state.user
@@ -26,18 +27,34 @@ function Friend_Re() {
     const token = userInfo.accessToken
   
   useEffect(() => {
-    setRequests(state.Requests)
+    FriendRequest()
   },[])
 
+  const FriendRequest = async() => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/friend/request/receive/list`,{
+        headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer ' + token
+      }}
+      );
+      setRequests(response.data.response.list)
+      console.log(response.data.response)
+    } catch(error) {
+      console.log('error:', error)
+    }
+  }
+
   const Reject = (id:number) => {
-    axios.put(`${BASE_URL}/api/friend/request/deny/${id}`, {
+    axios.put(`${BASE_URL}/api/friend/request/deny/${id}`, null,{
       headers:{
         'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${token}`
+        'Authorization': 'Bearer ' + token
       }
     })
     .then((res) => {
       console.log(res.data)
+      FriendRequest()
     })
     .catch((err) => {
       console.log(err)
@@ -45,7 +62,9 @@ function Friend_Re() {
     
   }
 
-
+  const GoProfile = (id:number) => {
+    navigate(`/diffprofile/${id}`)
+  }
 
   return (
     <>
@@ -56,9 +75,9 @@ function Friend_Re() {
       {Requests.length ? Requests.map((Re) => (
         <div className={styles.topContainer}>
         <div style={{display:"flex",width:"60%"}}>
-        <img src='' style={{width:"35%"}} />
+        <img src={`/src/assets/characterImg/${Re.imageNumber}.png`} style={{width:"35%"}} />
       <div style={{marginLeft:"1rem",textAlign:"center"}}>
-        <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>친구이름</p>
+        <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Re.nickName}</p>
       </div>
         </div>
       <div style={{display:"flex", width:"50%"}}>
@@ -66,10 +85,10 @@ function Friend_Re() {
         onClick={() => Reject(Re.id)} 
         >무시하기</button>
         <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} 
-        >프로필 가기</button>
+        onClick={() => GoProfile(Re.friendId)}>프로필 가기</button>
       </div>
     </div>
-      )) : <div>친구요청이 없습니다.</div>}
+      )) : <div className={styles.ResultContainer}>친구 요청이 없습니다.</div>}
       {/* <div className={styles.topContainer}>
       <div style={{display:"flex",width:"60%"}}>
       <img src='' style={{width:"35%"}} />
