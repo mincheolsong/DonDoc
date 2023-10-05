@@ -55,7 +55,7 @@ function Noti_List() {
     <>
     <div className={styles.Background}>
       <div>
-      <BackLogoHeader name="알림" left="6rem" top="0.9rem" fontSize="1.8rem" />
+      <BackLogoHeader name="알림" left="6rem" top="2%" fontSize="1.8rem" />
       </div>
     <div className={styles.topContainer} onClick={goDetail}>
       <div style={{display:"flex",width:"60%"}}>

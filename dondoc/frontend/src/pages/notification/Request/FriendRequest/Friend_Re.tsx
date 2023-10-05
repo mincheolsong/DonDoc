@@ -70,7 +70,7 @@ function Friend_Re() {
     <>
     <div className={styles.Background}>
       <div>
-      <BackLogoHeader name="친구 요청" left="6rem" top="1.2rem" fontSize="1.8rem" />
+      <BackLogoHeader name="친구 요청" left="6rem" top="2%" fontSize="1.8rem" />
       </div>
       {Requests.length ? Requests.map((Re) => (
         <div className={styles.topContainer}>
