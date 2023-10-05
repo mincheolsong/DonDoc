@@ -15,7 +15,8 @@ export interface friend{
   id: number
   imageNumber: string
   name: string
-  phoneNumber: string
+  phoneNumber: string;
+  userId:number;
 }
 function FriendList(props) {
 
@@ -46,10 +47,11 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
 }
 
   useEffect(()=>{
+
     moim.get("/api/friend/list",{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      // console.log(response)
+      console.log(response)
       setFriendList(response.data.response.list)
     }).catch((err)=>{
       // console.log(err)
@@ -62,11 +64,16 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
       setDeleteFBox(false)
+     moim.get("/api/friend/list",{headers:{
+      Authorization: `Bearer ${userInfo.accessToken}`
+    }}).then((response)=>{
       // console.log(response)
+      setFriendList(response.data.response.list)
     }).catch((err)=>{
       // console.log(err)
-    }).finally(()=>{
-      window.location.reload()
+    })
+    }).catch((err)=>{
+      // console.log(err)
     })
   }
   
@@ -91,7 +98,7 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
         {searchFriend.map((friend,index)=>(
           <div key={index}
           onClick={()=>{
-            navigate(`/diffprofile/${friend.id}`,{state:{diffuserId:friend.id}})
+            navigate(`/diffprofile/${friend.userId}`)
           }} 
           className={styles.friendBox}>
           <img style={{height:"100%"}} src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
@@ -110,7 +117,7 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
         <div>
         {friendList.map((friend,index)=>(
           <div key={index} onClick={()=>{
-            navigate(`/diffprofile/${friend.id}`,{state:{diffuserId:friend.id}})
+            navigate(`/diffprofile/${friend.userId}`)
           }} className={styles.friendBox}>
           <img style={{height:"100%"}} src={`/src/assets/characterImg/${friend.imageNumber}.png`} alt="" />
           <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",marginLeft:"5%"}}>
