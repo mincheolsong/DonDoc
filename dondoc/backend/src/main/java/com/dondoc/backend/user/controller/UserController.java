@@ -47,9 +47,9 @@ public class UserController {
     }
 
     // 문자인증
-    @PostMapping("/sms/signup")
+    @PostMapping("/sms/signup/{phoneNumber}")
     @ApiOperation(value = "문자인증", notes = "인증번호 발송 API", response = ApiResult.class)
-    public ApiResult sendSignUpSMS(@RequestBody @ApiParam(value = "인증번호 전송", required = true)String phoneNumber){
+    public ApiResult sendSignUpSMS(@PathVariable String phoneNumber){
         try{
             CertificationDto.Response res = userService.sendSMS(phoneNumber);
             return ApiUtils.success(res);
@@ -59,9 +59,9 @@ public class UserController {
 
     }
 
-    @PostMapping("/sms/find_password")
+    @PostMapping("/sms/find_password/{phoneNumber}")
     @ApiOperation(value = "문자인증", notes = "인증번호 발송 API", response = ApiResult.class)
-    public ApiResult sendFindPasswordSMS(@RequestBody @ApiParam(value = "인증번호 전송", required = true)String phoneNumber){
+    public ApiResult sendFindPasswordSMS(@PathVariable String phoneNumber){
         // 유저 존재 여부 확인
         try {
             CertificationDto.Response res = userService.sendSMS(phoneNumber);
