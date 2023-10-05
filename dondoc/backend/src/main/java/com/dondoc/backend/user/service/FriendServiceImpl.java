@@ -218,6 +218,7 @@ public class FriendServiceImpl implements FriendService{
 
         for(Friend friend : list){
             FriendRequestDto.ReceiveInfo temp = FriendRequestDto.ReceiveInfo.builder()
+                    .id(friend.getId())
                     .friendId(friend.getUser().getId())
                     .nickName(friend.getUser().getNickName())
                     .imageNumber(friend.getUser().getImageNumber())
@@ -249,6 +250,7 @@ public class FriendServiceImpl implements FriendService{
                     .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
             FriendRequestDto.SendInfo temp = FriendRequestDto.SendInfo.builder()
+                    .id(friend.getId())
                     .userId(friendInfo.getId())
                     .nickName(friendInfo.getNickName())
                     .imageNumber(friendInfo.getImageNumber())
