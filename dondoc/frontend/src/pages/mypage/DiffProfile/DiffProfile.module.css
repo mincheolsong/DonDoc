@@ -20,9 +20,9 @@
 }
 
 .accountBox{
-    margin-top: 2rem;
+    margin-top: 10%;
     background-color: #D2E2F5;
-    width: 70%;
+    width: 80%;
     height: 6rem;
     border-radius: 0.7rem;
     font-weight: bold;
@@ -45,7 +45,7 @@
 .friendBtn{
     border: 0;
     border-radius: 0.6rem;
-    margin-top: 5%;
+    margin-top: 1.5%;
     width: 30%;
     height: 5vh;
     font-size: 1.5rem;

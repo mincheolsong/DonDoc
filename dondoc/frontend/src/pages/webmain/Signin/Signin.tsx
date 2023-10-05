@@ -81,16 +81,16 @@ function Signin() {
               <SignInInput name='비밀번호를 입력하세요' type='password' setting={onPass}/>
               
               </div>
-              <p style={{color:"red",fontWeight:"bold"}}>{errText}</p>
+              <p style={{color:"red",fontWeight:"bold",fontFamily:"BD",fontSize:"1.3rem"}}>{errText}</p>
           <button className={styles.loginBtn} 
           onClick={SignInPost}>로그인</button>
         </div>
 
         <hr style={{width:"90%",color:"#D1CCCF"}}/>
         <div className={styles.containerMid}>
-          <div style={{width:'40%',display:"flex", justifyContent:"end"}}><p onClick={()=>{navigate('/signupfirst')}} style={{fontWeight:"bold", margin:"1rem", marginRight:"2rem" }}>회원가입</p></div>
+          <div style={{width:'40%',display:"flex", justifyContent:"end",fontFamily:"NT",fontSize:"1.5rem"}}><p onClick={()=>{navigate('/signupfirst')}} style={{fontWeight:"bold", margin:"1rem", marginRight:"2rem" }}>회원가입</p></div>
             <div className={styles.signUpbtn}></div>
-          <div style={{width:'40%',display:"flex", justifyContent:"start"}}><p onClick={()=>{navigate('/changepassword')}} style={{fontWeight:"bold" ,margin:"1rem", marginLeft:"2rem"}}>비밀번호 찾기</p></div>
+          <div style={{width:'40%',display:"flex", justifyContent:"start",fontFamily:"NT",fontSize:"1.5rem"}}><p onClick={()=>{navigate('/changepassword')}} style={{fontWeight:"bold" ,margin:"1rem", marginLeft:"2rem"}}>비밀번호 찾기</p></div>
         </div>
       </div>
   );
@@ -101,7 +101,7 @@ export default Signin;
 
 function SignInInput(props:SignProps){
   return(
-    <input className={styles.IdBox} type={props.type} placeholder={props.name} onChange={props.setting}/>
+    <input style={{fontFamily:"NT",fontSize:"1.6rem",fontWeight:"bold"}} className={styles.IdBox} type={props.type} placeholder={props.name} onChange={props.setting}/>
   )
 }
 

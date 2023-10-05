@@ -62,8 +62,8 @@ function Home() {
 
     {/* 나의계좌 */}
     <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
-    <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem",fontFamily:"barun-dotum"}}>나의 계좌</p>
-    <button className={styles.accountBtn} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
+    <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"3%",fontFamily:"BD",marginLeft:"3%"}}>나의 계좌</p>
+    <button className={styles.accountBtn}  style={{width:"25%",height:"2.6rem",fontSize:"1.2rem"}} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
     </div>
      {/* 나의계좌 */}
      
@@ -76,10 +76,9 @@ function Home() {
       }} className={styles.midContainer}>
       <div style={{display:"flex",flexDirection:"row"}}>
       <img style={{marginLeft:"7%",width:"25%",height:"100%"}} src={`/src/assets/Bank_Logo/${account.bankCode}.svg`} alt="" />
-      <div style={{width:"20rem",fontWeight:"bold",marginLeft:"3rem"}}>
-      <p style={{margin:"0",fontSize:"1.2rem",color:"#6C6C6C"}}>{account.accountName}</p>
-      <br /> 
-      <p style={{margin:"0",fontSize:"1.6rem"}}>{account.balance}원</p>
+      <div style={{width:"20rem",fontWeight:"bold",marginLeft:"2.6rem",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+      <p style={{margin:"0",fontSize:"1.3rem",color:"#6C6C6C"}}>{account.accountName}</p> 
+      <p style={{margin:"0",fontSize:"1.7rem",marginTop:"1%"}}>{account.balance}원</p>
     </div>
     </div>
     
@@ -109,7 +108,7 @@ export function UserBox(props){
       <div style={{display:"flex",width:"60%"}}>
       <img src={props.userCharacter} style={{width:"35%"}} />
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.2rem",fontWeight:"bold",fontFamily:"barundotum"}}>{props.username} 의 DonDoc</p>
+      <p style={{fontSize:"1.4rem",fontWeight:"bold",fontFamily:"BD"}}>{props.username} 의 DonDoc</p>
       <button className={styles.myProfileBtn} onClick={()=>{
         navigate(`/mypage/${props.userId}`)
       }}> 나의프로필가기</button>
