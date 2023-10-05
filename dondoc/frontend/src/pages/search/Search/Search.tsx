@@ -43,9 +43,7 @@ function Search() {
   const token = userInfo.accessToken
 
   const GoProfile = (id:number) => {
-    navigate(`/diffprofile/${id}`, {state:{
-      
-    }})
+    navigate(`/diffprofile/${id}`)
   }
 
   const InputNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
