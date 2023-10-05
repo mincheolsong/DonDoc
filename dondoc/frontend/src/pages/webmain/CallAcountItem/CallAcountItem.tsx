@@ -35,7 +35,7 @@ function CallAcountItem(props:PropsType) {
     const CheckedAccount = AccountData.filter((account)=>{
      return account.isCheck == true
     })
-    if(CheckedAccount.length>0){
+    
       const postSave = CheckedAccount.map((account)=>{
         return  account = {
           accountId : account.accountId,
@@ -44,20 +44,25 @@ function CallAcountItem(props:PropsType) {
           bankName : account.bankName
         }
       })
-      
-      moim.post('/api/account/account/list/save',postSave,{headers:{
+      if(postSave.length>0){moim.post('/api/account/account/list/save',postSave,{headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
       }})
       .then((response)=>{
         // console.log(response)
         // console.log(CheckedAccount)
-        navigate("/")
+        if(userInfo.isUserFirst==true){
+          navigate('/accountlist')
+        }else{
+          navigate("/")
+        }
+        
       })
       .catch((err)=>{
+ 
         // console.log(err)
         // console.log(postSave)
-      })
-    }else{
+      })}
+     else{
       setAcModal(true)
     }
    

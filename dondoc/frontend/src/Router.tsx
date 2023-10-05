@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 // home tap & user
+import FindPasswordSecondPage from "./pages/webmain/Home/FindPasswordSecond";
 import HomePage from './pages/webmain/Home/Home'
 import AccountInfoPage from "./pages/webmain/AccountInfo";
 import SigninPage from './pages/webmain/Signin/Signin'
@@ -74,6 +75,7 @@ function Router() {
             {userInfo.isLogin ==true  ? <Routes>
             {/* user */}
            
+          
             <Route path="/signin" element={<SigninPage/>}/>
             <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
             <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
@@ -87,7 +89,7 @@ function Router() {
             <Route path="/error" element={<ErrorPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>
             <Route path="/sendmoneypassword" element={<SendMoneyPasswordPage/>}/>
-
+            
 
             {/* search */}
             <Route path="/search" element={<SearchPage/>}/>
@@ -137,6 +139,7 @@ function Router() {
             :  <Routes>
             <Route path="/" element={<SigninPage/>}/>
             <Route path="/findpassword" element={<FindPasswordPage/>}/>
+            <Route path="/findpasswordsecond" element={<FindPasswordSecondPage/>}/>
             <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
             <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
             <Route path="/signupTemp" element={<SignupTempPage/>}/>

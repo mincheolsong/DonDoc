@@ -77,7 +77,7 @@ function Friend_Re() {
         <div style={{display:"flex",width:"60%"}}>
         <img src={`/src/assets/characterImg/${Re.imageNumber}.png`} style={{width:"35%"}} />
       <div style={{marginLeft:"1rem",textAlign:"center"}}>
-        <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{Re.nickName}</p>
+        <p style={{fontSize:"2rem",fontWeight:"bold",fontFamily:"NT"}}>{Re.nickName}</p>
       </div>
         </div>
       <div style={{display:"flex", width:"50%"}}>

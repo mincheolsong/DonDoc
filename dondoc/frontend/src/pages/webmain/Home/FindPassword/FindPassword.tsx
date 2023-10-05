@@ -9,7 +9,7 @@ import { moim } from "../../../../api/api";
 
 function FindPassword() {
   
-  const naviate = useNavigate();
+  const navigate = useNavigate();
 
 
   // 유효성검사
@@ -26,7 +26,6 @@ function FindPassword() {
 
 // 스테이트에 저장된는곳 
   const [phone, setPhone] = useState<string>("");
-  const [pass, setPass] = useState<string>("");
   const [certificationBtn,setCertificationBtn] = useState<boolean>(false);
   const [smsInput,setSmsInput] = useState<string>('');
   const [smsResponse,setSmsResponse] = useState<string>();
@@ -53,11 +52,6 @@ function FindPassword() {
     }
   };
 
-  const onChangePass = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const currentPass = e.target.value;
-    setPass(currentPass);
-  };
-
 
   const onChangeCer = (e:React.ChangeEvent<HTMLInputElement>) => {
     const currentSms = e.target.value;
@@ -68,6 +62,7 @@ function FindPassword() {
     if (smsInput == smsResponse) {
       setSmsMsg("인증이 완료되었습니다.");
       setSmsColor(true)
+      navigate('/findpasswordsecond',{state:{phone:phone}})
     } else {
       setSmsMsg("인증번호를 다시 입력해주세요.");
       setSmsColor(false)
@@ -123,11 +118,7 @@ function FindPassword() {
           </div>
     
           : ""}
-          <div style={{display:"flex",justifyContent:"center"}}>
-          {smsColor ? <div style={{width:"80%"}}>
-          <SignUpInput1 type='text' innerText='비밃번호' change={onChangePass} helpMsg={""} inner={true}/>
-          </div> : "" }
-          </div>
+         
          
           
    </div>

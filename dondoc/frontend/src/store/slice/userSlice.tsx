@@ -10,6 +10,7 @@ export type UserType ={
   nickname:string|null;
   mainAccount:string|null;
   imageNumber:number;
+  isUserFirst:boolean;
 }
 
 export type Account = {
@@ -37,6 +38,7 @@ const initialState:UserType = {
   nickname:"",
   mainAccount:"",
   imageNumber:0,
+  isUserFisrt:false,
 }
 
 const userSlice = createSlice({
@@ -52,6 +54,7 @@ const userSlice = createSlice({
       state.nickname = action.payload.nickname
       state.mainAccount = action.payload.mainAccount
       state.imageNumber = action.payload.imageNumber
+      state.isUserFisrt = action.payload.isUserFirst
     },
   changeImage(state,action){
     state.imageNumber = action.payload.imageNumber

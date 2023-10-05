@@ -76,7 +76,6 @@ function Search() {
   return (
     <>
     <div className={styles.Background}>
-    <BackLogoHeader name="사용자 검색" left="13%" fontSize="1.5rem" top="3%"/>
 
     <div style={{marginBottom:"20%"}}>
       <input onChange={InputNumber} className={styles.searchBox} placeholder="전화번호를 입력해주세요" type="text" name="" id="" />
