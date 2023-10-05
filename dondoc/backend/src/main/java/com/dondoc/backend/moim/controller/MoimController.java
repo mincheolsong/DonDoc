@@ -27,7 +27,6 @@ import javax.validation.Valid;
 
 
 @Api(value = "Moim", description = "모임 컨트롤러", tags = "모임 API")
-@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
 @Slf4j
 @RestController
 @RequiredArgsConstructor

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "Notify", description = "알림 컨트롤러", tags = "알림 API")
-@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
