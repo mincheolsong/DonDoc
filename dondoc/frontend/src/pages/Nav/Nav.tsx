@@ -40,7 +40,7 @@ function Nav() {
         </NavLink>
         
 
-        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#7E7E7E", textDecorationLine:"none"} }}  to={`/mission/${userInfo.userId}`}>
+        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#7E7E7E", textDecorationLine:"none"} }}  to={`/mission`}>
         <div className={styles.NavItems}>
         <LuCheckCheck className={styles.NavIcon}/>
         <p className={styles.NavItemsText}>나의미션</p>
