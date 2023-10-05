@@ -64,6 +64,16 @@ const userSlice = createSlice({
   },
   changeMainAccount(state,action){
     state.mainAccount = action.payload.mainAccount
+  },
+  logoutUser(state){
+      state.accessToken = ""
+      state.isLogin = false
+      state.phoneNumber = ""
+      state.name = ""
+      state.introduce = ""
+      state.nickname = ""
+      state.mainAccount = ""
+      state.imageNumber = 0
   }
   },
   
@@ -71,7 +81,7 @@ const userSlice = createSlice({
 
 
 export const {
-  loginUser,changeImage,changeIntroduce,changeNickName,changeMainAccount
+  loginUser,changeImage,changeIntroduce,changeNickName,changeMainAccount,logoutUser
 } = userSlice.actions;
 
 export default userSlice; 

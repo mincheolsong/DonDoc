@@ -59,6 +59,7 @@ function DiffProfile() {
       moim.get('api/friend/request/send/list',{headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
       }}).then((response)=>{
+     
         const myQList = response.data.response.list
         myQList.filter((p)=>{
           if(p.userId == userIdN){
@@ -151,7 +152,6 @@ function DiffProfile() {
     moim.get('/api/friend/request/send/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-   
       const myQList = response.data.response.list
       myQList.filter((p)=>{
         if(p.userId == userIdN){
@@ -168,10 +168,10 @@ function DiffProfile() {
     moim.get('api/friend/request/receive/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-   
+      console.log(response)
       const myQList = response.data.response.list
       myQList.find((p)=>{
-        if(p.id == userIdN){
+        if(p.friendId == userIdN){
           setRequestRelation(2)
           setResiveId(p.id)
         }
