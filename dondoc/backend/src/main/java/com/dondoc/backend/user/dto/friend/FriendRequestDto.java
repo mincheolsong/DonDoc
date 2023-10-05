@@ -39,6 +39,7 @@ public class FriendRequestDto {
     @Data
     @Builder
     public static class ReceiveInfo{
+        private Long id;
         private Long friendId;
         private int imageNumber;
         private String nickName;
@@ -47,6 +48,7 @@ public class FriendRequestDto {
     @Data
     @Builder
     public static class SendInfo{
+        private Long id;
         private Long userId;
         private int imageNumber;
         private String nickName;
