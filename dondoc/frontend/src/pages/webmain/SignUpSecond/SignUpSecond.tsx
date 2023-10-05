@@ -148,8 +148,7 @@ const SignInPost = ()=>{
     }
     
   })
-  .catch((error)=>{
-    // console.log(error)
+  .catch(()=>{
   })
 }
 
@@ -168,25 +167,24 @@ const SignUpPost = ()=>{
       setErrModal(!errModal)
     }
   })
-  .catch((error)=>{
-    // console.log(error)
+  .catch(()=>{
   })
 }
 
 
-interface OneBtnModal{
-  width : string;
-  height: string;
-  titleText: string;
-  title: boolean;
-  titleFont:string;
-  contentFont: string;
-  contentText: string;
-  btncolor : string;
-  btnTextColor:string;
-  btnText:string;
-  callback:void;
-}
+// interface OneBtnModal{
+//   width : string;
+//   height: string;
+//   titleText: string;
+//   title: boolean;
+//   titleFont:string;
+//   contentFont: string;
+//   contentText: string;
+//   btncolor : string;
+//   btnTextColor:string;
+//   btnText:string;
+//   callback:void;
+// }
 
 const closeModal = ()=>{
   setErrModal(!errModal)
