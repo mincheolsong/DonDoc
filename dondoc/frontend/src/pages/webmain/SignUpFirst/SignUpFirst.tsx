@@ -23,13 +23,14 @@ function SignUpFirst() {
 // 스테이트에 저장된는곳 
   const [phone, setPhone] = useState<string>("");
   const [name, setName] = useState<string>("");
-  
-
+  const [certificationBtn,setCertificationBtn] = useState<boolean>(false);
+  const [smsInput,setSmsInput] = useState<string>('');
+  const [smsResponse,setSmsResponse] = useState<string>(0);
 //
   const [phoneMsg, setPhoneMsg] = useState<string>("");
-
+  const [smsMsg,setSmsMsg] = useState<string>('');
   const [innerColor,setInnerColor] = useState<boolean>(false);
-
+  const [smsColor,setSmsColor] = useState<boolean>(false);
   
   const onChangePhone = (e:React.ChangeEvent<HTMLInputElement>) => {
     const currentPhone = e.target.value;
@@ -48,16 +49,30 @@ function SignUpFirst() {
     }
   };
 
-  const onChangeName = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeName = (e) => {
     const currentName = e.target.value;
     setName(currentName);
   };
 
 
+  const onChangeCer = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const currentSms = e.target.value;
+    setSmsInput(currentSms);
+  };
+
+  const cerBtn = ()=>{
+    if (smsInput == smsResponse) {
+      setSmsMsg("인증이 완료되었습니다.");
+      setSmsColor(true)
+    } else {
+      setSmsMsg("인증번호를 다시 입력해주세요.");
+      setSmsColor(false)
+    }
+  }
 
   
 
-  const isPhoneValid: boolean = validatePhone(phone);
+  const isPhoneValid: boolean = validatePhone(phone) && smsColor;
 
 
 
@@ -74,11 +89,28 @@ function SignUpFirst() {
           <SignUpInput1 type='text' innerText='이름' change={onChangeName} helpMsg={""} inner={true}/>
           </div>
           <div style={{display:"flex",flexDirection:"row",width:"80%",alignItems:"center"}}>
-          <SignUpInput1 type='text' innerText='전화번호' change={onChangePhone} helpMsg={phoneMsg} inner={innerColor}/>
-          <button className={styles.confirmPass2}>인증하기</button>
-        </div>
+         
+          {certificationBtn ?  
+            <div style={{display:"flex",width:"100%",flexDirection:"column"}}>
+            <input type="text" value={phone} className={styles.IdBoxdis} disabled/>
+            <p style={{ margin:"0", color : innerColor ? "green" : "#FF001F ", fontWeight:"bold" }}>{phoneMsg}</p>
+          </div>
+          :  <SignUpInput1 type='text' innerText='전화번호' change={onChangePhone} helpMsg={phoneMsg} inner={innerColor}/>}
+          {certificationBtn ? <button className={styles.confirmPass2dis}>인증하기</button> : <button onClick={()=>{
+            setCertificationBtn(true)
+          }} className={styles.confirmPass2}>인증하기</button>}
           
         </div>
+        </div>
+          {certificationBtn ? 
+          <div>
+            <input onChange={onChangeCer} placeholder="인증번호를 입력해주세요." className={styles.cerInput} type="text" name="" id="" /> <button style={{border:"0", backgroundColor:"#0D6EFD",color:"white", borderRadius:"0.5rem",height:"3.8rem",marginLeft:"3%"}} onClick={cerBtn}>확인</button>
+            <p style={{marginLeft:"10%",color:smsColor ?  "green" : "#FF001F " ,fontWeight:"bold"}}>{smsMsg}</p>
+          </div>
+          
+          
+          : ""}
+
 
       <div className={styles.btnBox} >
         {isPhoneValid ? <button className={styles.signUpBtn} onClick={()=>{

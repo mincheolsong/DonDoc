@@ -17,7 +17,7 @@ function Home() {
     navigate(`/sendmoneyfirst/${account.accountId}`,{state:{account:account}})
   }
   const goAccountInfo = (account:Account) =>{
-    navigate(`/accountinfo/${account.accountNumber}`,{state:{account:account}})
+    navigate(`/accountinfo/${account.accountNumber}`,{state:{account:account,info:userInfo.accessToken}})
   }
   const navigate = useNavigate();
   const goMakeAccount = () =>{
@@ -65,7 +65,7 @@ function Home() {
      
      
     {allAccount.map((account,index)=>(
-      <div onClick={()=>{
+      <div key={index} onClick={()=>{
         goAccountInfo(account)
       }} className={styles.midContainer}>
       <div style={{display:"flex",flexDirection:"row"}}>
@@ -86,7 +86,7 @@ function Home() {
     
   
           <button onClick={()=>{
-            const diffuserId = 1
+            const diffuserId = 11
             navigate(`/diffprofile/${diffuserId}`, {state:{diffuserId:diffuserId}})
           }}>다른프로필</button>
 
