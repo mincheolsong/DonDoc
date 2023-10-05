@@ -34,7 +34,7 @@ function SendMoneySecond() {
   },[])
   return (
     <div style={{height:"100vh"}}>
-      <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="0.8rem" />
+      <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="2%" />
       <div className={styles.topContainer}>
       <div className={styles.accountItem}>
       <div className={styles.topItem}>
