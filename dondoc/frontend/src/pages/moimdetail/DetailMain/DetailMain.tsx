@@ -11,7 +11,17 @@ import { UserType } from "../../../store/slice/userSlice";
 import { useEffect, useState } from 'react'
 import BackLogoHeader from "../../toolBox/BackLogoHeader/BackLogoHeader";
 
-
+type Member = {
+  accountNumber: string,
+  bankCode: number,
+  bankName: string,
+  moimMemberId: number,
+  nickname: string,
+  phoneNumber: string,
+  userId:number,
+  userImageNumber:number,
+  userType: number
+}
 
 function DetailMain() {
 
@@ -27,6 +37,39 @@ function DetailMain() {
 
   const [moimName, setMoimName] = useState<string>('')
   const [moimType, setMoimType] = useState<number>(0)
+  const [moimMemberID, setmoimMemberId] = useState<number>(0)
+  const [moimMembers, setmoimMembers] = useState<Member[]>([])
+  const [moimAccountNum, setmoimAccountNum] = useState<string>('')
+  const [moimIdNum, setmoimIdNum] = useState<string>('')
+  const [MemAccount, setMemAccount] = useState<string>('')
+
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/api/moim/detail/${moimId}`,{
+      headers:{
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then((res) => {
+      console.log(res.data.response)
+      setmoimMembers(res.data.response.moimMembers)
+      setmoimAccountNum(res.data.response.moimAccountNumber)
+      setmoimIdNum(res.data.response.identificationNumber)
+      const members = res.data.response.moimMembers
+      members.map((mem:Member) => {
+        if (mem.nickname === userInfo.nickname) {
+          setmoimMemberId(mem.moimMemberId)
+          setMemAccount(mem.accountNumber)
+        }
+      })
+
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  },[])
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +119,10 @@ function DetailMain() {
         {activeComponentIndex === 1 && (
           <DetailSecond moimId={moimId} memberType={userType} moimType={moimType}/>
         )}
-        {activeComponentIndex === 2 && <DetailThird />}
+        {activeComponentIndex === 2 && <DetailThird moimId={moimId} memberType={userType}
+        members = {moimMembers} moimMemberId={moimMemberID}
+        moimAccountNum = {moimAccountNum} moimIdNum = {moimIdNum}
+        memAccount = {MemAccount}/>}
         
       </div>
     </div>
