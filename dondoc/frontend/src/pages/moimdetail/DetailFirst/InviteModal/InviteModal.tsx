@@ -18,7 +18,8 @@ type friendList = { friend: inviteUnit,
   phoneNumber:string,
   bankName:string,
   bankCode:number,
-  accountNumber:string}
+  accountNumber:string,
+  userId:number}
 type inviteUnit = {
   id:number,
   name:string,
@@ -26,7 +27,8 @@ type inviteUnit = {
   phoneNumber:string,
   bankName:string,
   bankCode:number,
-  accountNumber:string
+  accountNumber:string,
+  userId:number
 }
 const initialSearchResult: searchUnit = {
   userId: 0,
@@ -78,11 +80,11 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
   }
   
   const AppendInviteList = (friend: inviteUnit) => {
-    const isAlreadyAdded = inviteList.some((item) => item.userId === friend.id);
+    const isAlreadyAdded = inviteList.some((item) => item.userId === friend.userId);
 
     if (!isAlreadyAdded) {
       const newInviteUnit: newInviteUnit = {
-        "userId": friend.id,
+        "userId": friend.userId,
       };
 
       const newInviteList = [...inviteList, newInviteUnit];
@@ -238,7 +240,7 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
               <div className={styles.friendbox}>
               {friendList.length > 0 && friendList.map((friend, index) => (
                 <div
-                  className={`${styles.myfriendunit} ${inviteList.some(item => item.userId === friend.id) ? styles.added : ''}`}
+                  className={`${styles.myfriendunit} ${inviteList.some(item => item.userId === friend.userId) ? styles.added : ''}`}
                   onClick={() => AppendInviteList(friend)}
                   key={index}
                 >

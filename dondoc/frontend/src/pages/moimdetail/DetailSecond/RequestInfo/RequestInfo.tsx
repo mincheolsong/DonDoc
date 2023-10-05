@@ -288,8 +288,8 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
                   <>
                     {requestState ? (
                       <div className={styles.btns}>
-                        <button onClick={() => AcceptMoney(1)} className={styles.refusebtn}>미션성공</button>
-                        <button onClick={() => AcceptMoney(2)} className={styles.acceptbtn}>미션실패</button>
+                        <button onClick={() => AcceptMoney(2)} className={styles.refusebtn}>미션실패</button>
+                        <button onClick={() => AcceptMoney(1)} className={styles.acceptbtn}>미션성공</button>
                       </div>
                     ):(
                       <div className={styles.btns}>
