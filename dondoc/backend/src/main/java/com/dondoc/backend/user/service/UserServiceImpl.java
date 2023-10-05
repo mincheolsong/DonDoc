@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -304,8 +305,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findById(Long userId){
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+        Optional<User> byId = userRepository.findById(userId);
+        if(byId.isPresent()){
+            return byId.get();
+        }
+        return null;
     }
 
     @Override

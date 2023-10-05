@@ -142,17 +142,19 @@ public class MoimServiceImpl implements MoimService{
          * param : 모임이름, bankCode(108), 식별번호, 비밀번호
          **/
         Map<String,Object> createResult = this.createAccountAPI(moimName,108,identificationNumber,password);
+        System.out.println(createResult);
         // 모임 계좌번호
-        String moimAccountNumber = createResult.get("accountNumber").toString();
+        String moimAccountNumber = null;
+        moimAccountNumber = createResult.get("accountNumber").toString();
         // 모임 계좌 ID
         Long moimAccountId = Long.parseLong(createResult.get("accountId").toString());
+        System.out.println("***"+moimAccountNumber);
 
         if(moimAccountNumber==null){
             throw new RuntimeException("계좌 생성에 실패했습니다.");
         }
 
 
-        try {
 
             //  Moim 엔티티 생성
             Moim moim = new Moim(identificationNumber, moimName, introduce, moimAccountId,moimAccountNumber, 0, moimType);
@@ -163,6 +165,9 @@ public class MoimServiceImpl implements MoimService{
             moimRepository.save(moim);
             // 모임 생성자의 Account 엔티티 찾기 (reqDTO로 받은 accountId를 활용해서)
             Account account = accountService.findByAccountId(accountId);
+            if(account==null){
+                throw new RuntimeException("계좌 생성에 실패했습니다.");
+            }
             // 모임 생성자의 MoimMember 엔티티 생성 (User 엔티티, Moim 엔티티, Account 엔티티 활용)
             moimMemberService.createMoimCreatorMember(user,moim,LocalDateTime.now(),account);
             // 타입이 2인 모임의 경우 초대된 관리자의 MoimMember를 생성해줘야 함
@@ -174,9 +179,7 @@ public class MoimServiceImpl implements MoimService{
                 moimMemberService.createMoimMember(user,invitee,moim,LocalDateTime.now()); // 제일 앞 User 객체는 모임을 생성한 사람의 User
             }
             return moim;
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
+
 
     }
 
@@ -195,7 +198,7 @@ public class MoimServiceImpl implements MoimService{
 
         // 중복체크
         if (checkIdenNumDuplicate(result)){
-            throw new Exception("인증번호 생성 중 오류 발생.");
+            return null;
         }
         return result;
     }

@@ -366,7 +366,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findByAccountId(Long accountId){
-        return accountRepository.findByAccountId(accountId).orElseThrow(() -> new NotFoundException("계좌를 찾을 수 없습니다."));
+        Optional<Account> byAccountId = accountRepository.findByAccountId(accountId);
+        if(byAccountId.isPresent()){
+            return byAccountId.get();
+        }
+        return null;
+
     }
 
     @Override
