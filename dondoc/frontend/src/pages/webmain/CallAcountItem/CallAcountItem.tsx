@@ -24,7 +24,7 @@ function CallAcountItem(props:PropsType) {
     updateAccount[index].isCheck = !updateAccount[index].isCheck
     setAccountData(updateAccount)
   }
-  const [sdeds,setsd] = useState('')
+
   const saveAccount = ()=>{
     const CheckedAccount = AccountData.filter((account)=>{
      return account.isCheck == true

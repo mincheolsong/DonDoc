@@ -45,7 +45,8 @@ import DiffProfilePage from './pages/mypage/DiffProfile/DiffProfile'
 import FriendListPage from './pages/mypage/FriendList/FriendList'
 import { UserType } from "./store/slice/userSlice";
 import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 //moim detail
 import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
 // import DetailFirst from './pages/moimdetail/DetailFirst/DetailFirst'
@@ -58,15 +59,19 @@ import Friend_Re from "./pages/notification/Request/FriendRequest/Friend_Re";
 import AcceptPassword from "./pages/moimdetail/DetailSecond/RequestInfo/AcceptPassword/AcceptPassword";
 
 function Router() {
+    const navigate = useNavigate();
     const userInfo:UserType = useSelector((state:{user:UserType})=>{
         return state.user
         })
-
     
+    useEffect(()=>{
+     
+
+    },[])
     return (
         <>
             
-            {userInfo.isLogin == true ? <Routes>
+            {userInfo.isLogin ==true  ? <Routes>
             {/* user */}
            
             <Route path="/signin" element={<SigninPage/>}/>

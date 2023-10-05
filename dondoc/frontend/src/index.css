@@ -33,3 +33,16 @@ body {
     font-size: 8px;
   }
 }
+
+@font-face{
+  font-family: "barundotum";
+  font-weight: normal;
+  src: url("/src/font/HakgyoansimBareondotumR.ttf") format("woff");
+}
+
+
+@font-face{
+  font-family: "LHL";
+  font-weight:100;
+  src: url("/src/font/LHL.ttf") format("woff");
+}
