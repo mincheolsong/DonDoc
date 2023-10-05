@@ -26,6 +26,7 @@ function DetailMain() {
   const accountId = state.accountId
 
   const [moimName, setMoimName] = useState<string>('')
+  const [moimType, setMoimType] = useState<number>(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +38,9 @@ function DetailMain() {
             'Authorization': 'Bearer ' + token
           }
         });
-        // console.log('모임 멤버:', res.data.response)
+        console.log('모임 멤버:', res.data.response.moimType)
         setMoimName(res.data.response.moimName)
+        setMoimType(res.data.response.moimType)
       }
       catch(err) {
         console.log(err)
@@ -72,10 +74,9 @@ function DetailMain() {
           <DetailFirst userType={userType} accountId={accountId} moimId={moimId} />
         )}
         {activeComponentIndex === 1 && (
-          <DetailSecond moimId={moimId} memberType={userType} />
+          <DetailSecond moimId={moimId} memberType={userType} moimType={moimType}/>
         )}
         {activeComponentIndex === 2 && <DetailThird />}
-
         
       </div>
     </div>

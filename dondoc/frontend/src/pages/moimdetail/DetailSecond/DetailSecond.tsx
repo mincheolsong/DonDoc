@@ -11,7 +11,8 @@ import RequestInfoModal from "./RequestInfo/RequestInfo";
 
 type Props = {
   moimId: string | undefined,
-  memberType: number
+  memberType: number,
+  moimType: number
 }
 type category = {
   id: number,
@@ -40,7 +41,7 @@ type missionList = {
 }
 
 
-function DetailSecond({moimId, memberType}: Props) {
+function DetailSecond({moimId, memberType, moimType}: Props) {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -128,7 +129,7 @@ function DetailSecond({moimId, memberType}: Props) {
           <div className={styles.requestlist}>
             {nowSelected ? (
               <>
-                {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
+                {withdrawRequestList && withdrawRequestList.map((money, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId, money.status)}>
                     <div className={styles.imgdiv}>
                       <div className={styles.imgbox}>
@@ -161,7 +162,7 @@ function DetailSecond({moimId, memberType}: Props) {
               </>
             ) : (
               <>
-                {missionList.length > 0 && missionList.map((mission, index) => (
+                {missionList && missionList.map((mission, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId, mission.status)}>
 
                     <div className={styles.imgdiv}>
@@ -211,7 +212,8 @@ function DetailSecond({moimId, memberType}: Props) {
             setInfoModalOpen={setInfoModalOpen} moimId={moimId} 
             requestType={requestType} token={token} 
             requestId={requestId} requestState={requestState}
-            memberType={memberType} myPhone={userInfo.phoneNumber}/>
+            memberType={memberType} myPhone={userInfo.phoneNumber}
+            moimType={moimType}/>
         </>
       )}
 

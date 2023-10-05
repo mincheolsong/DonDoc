@@ -14,7 +14,8 @@ type Props = {
   token: string | undefined,
   requestState: number,
   memberType:number,
-  myPhone: string | undefined
+  myPhone: string | undefined,
+  moimType: number
 }
 
 type category = {
@@ -68,7 +69,7 @@ const DefaultMission = {
 }
 
 
-function RequestInfo({moimId, requestType, token, requestId, requestState, memberType, myPhone}: Props) {
+function RequestInfo({moimId, requestType, token, requestId, requestState, memberType, myPhone, moimType}: Props) {
 
   const [requestInfo, setRequestInfo] = useState<requestInfo>(DefaultRequest)
   const [missionInfo, setMissionInfo] = useState<missionInfo>(DefaultMission)
@@ -220,10 +221,25 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
               <div className={styles.requestdetail}>
                 <h2 className={styles.requestlabel}>미션상세</h2>
                 <div className={styles.requestcontentbox}>
-                  <p>{missionInfo.content}원</p>
+                  <p>{missionInfo.content}</p>
                 </div>
               </div>
-              <input type="password" onChange={ChangePassword} placeholder="미션을 승인하는 경우 비밀번호 입력"/>
+
+              {memberType ? (
+                <></>
+              ):(
+                <>
+                  {requestState ? (
+                    <></>
+                  ):(
+                    <div className={styles.passwordinput}>
+                      <label htmlFor="">비밀번호</label>
+                      <input type="password" onChange={ChangePassword} placeholder="미션을 승인하는 경우 비밀번호 입력"/>
+                    </div>
+                  )}
+                </>
+              )}
+
             </div>
           ) : (
             <div className={styles.requestinfo}>
@@ -256,39 +272,20 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
           )}
         </div>
 
-        {/* {!requestState || !memberType ? (
-          <>
-            {requestType? (
-              <div className={styles.btns}>
-                <button onClick={RefuseMission} className={styles.refusebtn}>거절하기</button>
-                <button onClick={AcceptMission} className={styles.acceptbtn}>승인하기</button>
-              </div>
-            ):(
-              <div className={styles.btns}>
-                <button onClick={RefuseMoney} className={styles.refusebtn}>거절하기</button>
-                <button onClick={AcceptMoney} className={styles.acceptbtn}>승인하기</button>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-          </>
-        )} */}
-
         {memberType ? (
           <></>
         ):(
           <>
             {requestType ? (
               <>
-                {myPhone == missionInfo.phoneNumber ? (
+                {myPhone == missionInfo.phoneNumber && moimType == 2 ? (
                   <></>
                   ):(
                   <>
                     {requestState ? (
                       <div className={styles.btns}>
-                        <button onClick={() => AcceptMoney(1)} className={styles.refusebtn}>미션성공</button>
-                        <button onClick={() => AcceptMoney(2)} className={styles.acceptbtn}>미션실패</button>
+                        <button onClick={() => AcceptMoney(2)} className={styles.refusebtn}>미션실패</button>
+                        <button onClick={() => AcceptMoney(1)} className={styles.acceptbtn}>미션성공</button>
                       </div>
                     ):(
                       <div className={styles.btns}>
@@ -302,7 +299,7 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
               </>
             ):(
               <>
-                {myPhone == requestInfo.phoneNumber ? (
+                {myPhone == requestInfo.phoneNumber && moimType == 2 ? (
                   <></>
                 ):(
                   <>

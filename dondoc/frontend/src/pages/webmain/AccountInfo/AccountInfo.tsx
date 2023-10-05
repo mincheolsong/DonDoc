@@ -100,10 +100,6 @@ function AccountInfo() {
         </div>
       </div>
 
-      <div className={styles.connected}>
-         연결된 모임보기
-      </div>
-
     
     {/* Top */}
 
