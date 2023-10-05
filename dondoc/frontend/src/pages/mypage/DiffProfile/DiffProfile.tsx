@@ -34,6 +34,7 @@ interface requestF{
 
 function DiffProfile() {
   const {userId} = useParams()
+  const userIdN = userId? parseInt(userId,10) : undefined;
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [profile,setProfile] = useState<diffUser>()
   const [requestRelation,setRequestRelation] = useState<number>(0);
@@ -53,12 +54,14 @@ function DiffProfile() {
     moim.post(`/api/friend/request/${userId}`,null,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
+      console.log(response)
+
       moim.get('api/friend/request/send/list',{headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
       }}).then((response)=>{
         const myQList = response.data.response.list
-        myQList.filter((p:requestF)=>{
-          if(p.friendId == userId){
+        myQList.filter((p)=>{
+          if(p.userId == userIdN){
             setRequestRelation(1)
             setRequestId(p.id)
           }
@@ -77,7 +80,8 @@ function DiffProfile() {
   const typeOne = ()=>{
     moim.delete(`/api/friend/request/delete/${requestId}`,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
-    }}).then((respnse)=>{
+    }}).then((response)=>{
+      console.log(response)
       setRequestRelation(0)
     }).catch((err)=>{
       console.log(err)
@@ -101,7 +105,7 @@ function DiffProfile() {
         const myFList = response.data.response.list
         // console.log(myFList)
         myFList.find((profile:DiffPro)=>{
-          if(profile.userId == userId){
+          if(profile.userId == userIdN){
             setRequestRelation(3)
             setFriendId(profile.id)
           }
@@ -144,13 +148,13 @@ function DiffProfile() {
 
   useEffect(()=>{
 // 보낸 요청목록조회
-    moim.get('api/friend/request/send/list',{headers:{
+    moim.get('/api/friend/request/send/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
+      console.log(response)
       const myQList = response.data.response.list
-      myQList.filter((p:requestF)=>{
-        if(p.friendId == userId){
-
+      myQList.filter((p)=>{
+        if(p.userId == userIdN){
           setRequestRelation(1)
           setRequestId(p.id)
         }
@@ -166,7 +170,7 @@ function DiffProfile() {
     }}).then((response)=>{
       const myQList = response.data.response.list
       myQList.find((p)=>{
-        if(p.friendId == userId){
+        if(p.friendId == userIdN){
           setRequestRelation(2)
           setResiveId(p.id)
         }
@@ -179,13 +183,13 @@ function DiffProfile() {
 
 
 
-    moim.get('api/friend/list',{headers:{
+    moim.get('/api/friend/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }})
     .then((response)=>{
       const myFList = response.data.response.list
       myFList.find((profile:DiffPro)=>{
-        if(profile.userId == userId){
+        if(profile.userId == userIdN){
           setRequestRelation(3)
           setFriendId(profile.id)
         

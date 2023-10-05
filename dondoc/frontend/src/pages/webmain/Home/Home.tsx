@@ -86,7 +86,7 @@ function Home() {
     
   
           <button onClick={()=>{
-            const diffuserId = 11
+            const diffuserId = 13
             navigate(`/diffprofile/${diffuserId}`, {state:{diffuserId:diffuserId}})
           }}>다른프로필</button>
 
