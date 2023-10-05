@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./Friend_re.module.css";
+import styles from "./Friend_Re.module.css";
 import axios from "axios";
 import { BASE_URL } from "../../../../constants";
 import { UserType } from "../../../../store/slice/userSlice";
