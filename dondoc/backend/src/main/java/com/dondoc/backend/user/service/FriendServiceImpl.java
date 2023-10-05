@@ -248,7 +248,7 @@ public class FriendServiceImpl implements FriendService{
         List<FriendRequestDto.SendInfo> result = new ArrayList<>();
 
         for(Friend friend : list){
-            User friendInfo = userRepository.findById(friend.getId())
+            User friendInfo = userRepository.findById(friend.getFriendId())
                     .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
 
             FriendRequestDto.SendInfo temp = FriendRequestDto.SendInfo.builder()
