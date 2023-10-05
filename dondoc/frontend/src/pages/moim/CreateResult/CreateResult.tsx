@@ -57,7 +57,7 @@ function CreateResult() {
   const data = {
     "accountId": account.accountId,
     "introduce": moimInfo,
-    "manager": [{ "userId": manager.userId }],
+    "manager": [] as { userId: number; }[],
     "moimName": moimName,
     "moimType": category.code,
     "password": password
@@ -66,8 +66,30 @@ function CreateResult() {
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
 
   const CreateMoim = async () => {
-    if (category.code == 2 && manager.phoneNumber) {
-      if (agreeTerms) {
+    if (category.code == 2) {
+      if (manager.phoneNumber) {
+        data.manager = [{ userId: manager.userId }];
+        if(agreeTerms) {
+          try {
+            const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+              },
+            });
+            alert(response.data.response.msg);
+            navigate('/moimhome');
+          } catch (error) {
+            console.log('error:', error);
+          }
+        } else {
+          alert('약관에 동의해 주세요.')
+        }
+      } else {
+        alert('매니저를 초대해 주세요.')
+      }
+    } else {
+      if(agreeTerms) {
         try {
           const response = await axios.post(`${BASE_URL}/api/moim/create`, data, {
             headers: {
@@ -81,11 +103,8 @@ function CreateResult() {
           console.log('error:', error);
         }
       } else {
-        // 약관에 동의하지 않은 경우 경고 메시지 표시
-        alert('약관에 동의해주세요.');
+        alert('약관에 동의해 주세요.')
       }
-    } else {
-      alert('매니저를 초대해 주세요.')
     }
   }
 

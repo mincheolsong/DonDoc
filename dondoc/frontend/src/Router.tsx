@@ -108,7 +108,7 @@ function Router() {
 
 
             {/* mission tap */}
-            <Route path="/mission/:userId" element={<MissionPage/>}/>
+            <Route path="/mission" element={<MissionPage/>}/>
 
 
             {/* profile tap */}
