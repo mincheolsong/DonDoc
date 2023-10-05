@@ -40,10 +40,12 @@ function Home() {
         balance: account.balance.toLocaleString(), // 잔액을 포맷팅하여 문자열로 변환
       }));
       setAllAccount(formattedAccountList)
-  
+      
     })
     .catch((err)=>{
       // console.log(err)
+    }).finally(()=>{
+      console.log(allAccount)
     })
     // console.log(userInfo)
    
@@ -67,9 +69,8 @@ function Home() {
     </div>
      {/* 나의계좌 */}
      
-     
-     
-     
+    
+
     {allAccount.map((account,index)=>(
       <div key={index} onClick={()=>{
         goAccountInfo(account)
@@ -88,8 +89,8 @@ function Home() {
         
     </div>
     ))}
-    
-  
+
+
 
 
       <Nav/>

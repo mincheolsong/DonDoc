@@ -46,7 +46,7 @@ function Signin() {
         const userUpdate = {
           password:password,
           phoneNumber:id,
-          
+          isUserFirst:false,
           accessToken:response.data.response.accessToken,
           nickname:response.data.response.nickname,
           name:response.data.response.name,

@@ -9,7 +9,7 @@ import { moim } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeMainAccount } from "../../../store/slice/userSlice";
-
+import OneBtnModal from "../../toolBox/OneBtnModal";
 type PropsType = {
   account : CheckAccount[]
 }
@@ -21,8 +21,11 @@ function AccountListItem(props:PropsType) {
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
+
   const [AccountData,setAccountData] = useState(props.account)
-  
+  const [acModal,setAcModal] = useState<boolean>(false)
+
+
   const accountClick = (index:number) =>{
     const updateAccount = [...AccountData];
     updateAccount[index].isCheck = true
@@ -35,28 +38,37 @@ function AccountListItem(props:PropsType) {
     setAccountData(updateAccount)
   }
 
+  const closeModal =()=>{
+    setAcModal(false)
+  }
 
   const saveAccount = ()=>{
     const CheckedAccount = AccountData.find((account)=>{
      return account.isCheck == true
     })
+    if(CheckedAccount){
+      moim.put('/api/account/account/main',{accountId:CheckedAccount?.accountId},{headers:{
+        Authorization: `Bearer ${userInfo.accessToken}`
+      }})
+      .then((response)=>{
+        dispatch(changeMainAccount({mainAccount:CheckedAccount?.accountId}))
+        // console.log(response)
+        navigate(`/mypage/${userInfo.phoneNumber}`)
+      })
+      .catch((err)=>{
+        // console.log(CheckedAccount)
+        // console.log(err)
+  
+      })
+    }else{
+      setAcModal(true)
+    }
+    
    
-    moim.put('/api/account/account/main',{accountId:CheckedAccount?.accountId},{headers:{
-      Authorization: `Bearer ${userInfo.accessToken}`
-    }})
-    .then((response)=>{
-      dispatch(changeMainAccount({mainAccount:CheckedAccount?.accountId}))
-      // console.log(response)
-      navigate(`/mypage/${userInfo.phoneNumber}`)
-    })
-    .catch((err)=>{
-      // console.log(CheckedAccount)
-      // console.log(err)
-
-    })
   } 
   return (
     <div style={{textAlign:"center"}}>
+      {acModal ? <OneBtnModal width="90vw" height="30vh" contentText="대표계좌를 선택해주세요." contentFont="1.7rem"  btnTextColor="black" btnText="확인" callback={closeModal}/> : ""}
     <div className={styles.mainContainer}>
     {AccountData.map((account,index)=>(
       <div key={index} className={styles.accountItem} onClick={()=>{accountClick(index)}}>
