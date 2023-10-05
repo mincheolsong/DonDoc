@@ -10,9 +10,13 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 function Home() {
   Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
+  
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
+
+
+
   const goSendMoney = (account:Account) =>{
     navigate(`/sendmoneyfirst/${account.accountId}`,{state:{account:account}})
   }
@@ -42,6 +46,8 @@ function Home() {
       // console.log(err)
     })
     // console.log(userInfo)
+   
+
   },[])
 
   return (
@@ -56,7 +62,7 @@ function Home() {
 
     {/* 나의계좌 */}
     <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
-    <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem"}}>나의 계좌</p>
+    <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"1rem",fontFamily:"barun-dotum"}}>나의 계좌</p>
     <button className={styles.accountBtn} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
     </div>
      {/* 나의계좌 */}
@@ -103,7 +109,7 @@ export function UserBox(props){
       <div style={{display:"flex",width:"60%"}}>
       <img src={props.userCharacter} style={{width:"35%"}} />
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{props.username} 의 DonDoc</p>
+      <p style={{fontSize:"1.2rem",fontWeight:"bold",fontFamily:"barundotum"}}>{props.username} 의 DonDoc</p>
       <button className={styles.myProfileBtn} onClick={()=>{
         navigate(`/mypage/${props.userId}`)
       }}> 나의프로필가기</button>
@@ -113,7 +119,7 @@ export function UserBox(props){
     <div>
       <button onClick={()=>{
         {props.rightBtnClick()}
-      }} className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} > {props.rightBtn}</button>
+      }} className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem",width:"25vw"}} > {props.rightBtn}</button>
     </div>
   </div>
 

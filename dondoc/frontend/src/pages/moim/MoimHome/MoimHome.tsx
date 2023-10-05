@@ -94,9 +94,10 @@ function MoimHome() {
 
   return (
     <div className={styles.container}>
+      <Header />
       <div className={styles.content}>
 
-        <Header />
+        
         <UserBox userId={userInfo.phoneNumber} userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="모임 생성"/>
 
         <div className={styles.moimlist}>
@@ -150,7 +151,7 @@ type props = {
   userId: string
 }
 
-export function UserBox(props:props){
+ function UserBox(props:props){
   const navigate = useNavigate()
   const ToCreateMoim = () => {
     navigate('/createmoim')
@@ -169,7 +170,7 @@ export function UserBox(props:props){
       </div>
       
       <div>
-        <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} onClick={ToCreateMoim} > {props.rightBtn}</button>
+        <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem",width:"25vw"}} onClick={ToCreateMoim} > {props.rightBtn}</button>
       </div>
     </div>
 
