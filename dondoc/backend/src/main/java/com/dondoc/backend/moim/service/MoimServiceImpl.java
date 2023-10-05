@@ -353,9 +353,18 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
+        MoimMember missionMember;
+
         // 미션 할 사람
-        MoimMember missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
-                .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+        if(member.getUserType()==1){ // 일반 이용자가 미션 요청
+            if(req.getMissionMemberId()!=0){
+                throw new IllegalArgumentException("관리자만 다른 사용자에게 미션을 부여할 수 있습니다.");
+            }
+            else missionMember = member;
+        } else { // 관리자가 미션 부여
+            missionMember = moimMemberRepository.findByUser_IdAndMoim_Id(req.getMissionMemberId(), req.getMoimId())
+                    .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
+        }
 
         // 일반 이용자가 다른 사람에게 미션을 부여했을 때
         if(member.getUserType()==1 && (missionMember.getUser().getPhoneNumber() != member.getUser().getPhoneNumber())){
