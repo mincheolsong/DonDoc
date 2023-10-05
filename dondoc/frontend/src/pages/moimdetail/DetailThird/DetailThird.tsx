@@ -246,9 +246,13 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
           </div>
 
           {nowSelected ? <>
-            {memberType === 0 ? <select name="" id="" onChange={MIDChange}>
-            {members.map((mem:Member) => (<option value={mem.moimMemberId}>{mem.nickname}</option>))}
-          </select> : <></>}
+            {memberType === 0 ? 
+              <div className={styles.selectdiv}>
+                <select name="" id="" onChange={MIDChange} className={styles.selectuserdata}>
+                  {members.map((mem:Member) => (<option value={mem.moimMemberId}>{mem.nickname}</option>))}
+                </select>
+              </div>
+               : <></>}
           
           <div className={styles.requestlist}>
             <div className={styles.Chart}> 
@@ -262,22 +266,21 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
             {members.map((mem:Member) => (<option value={mem.accountNumber}>{mem.nickname}</option>))}
           </select> : <></>}
           <div className={styles.requestlist}>
-            <div>
-              {Year} - {Month}
+            <div className={styles.ymdate}>
+              <h3>{Year}년 {Month}월</h3>
             </div>
             <hr />
             {TransferList.map((Trans:Transfer) => (
-              <div>
-                <div>
+              <div className={styles.transunit}>
+                <div className={styles.transinfo}>
                   <p>{Trans.date}</p>
-                  <p>{Trans.name}</p>
-                  <p>{Trans.content}</p>
+                  <p className={styles.transuser}>{Trans.name}</p>
+                  <p className={styles.transcontent}>{Trans.content}</p>
                 </div>
-                <div>
-                  <p>{Trans.transferAmount}</p>
-                  <p>{Trans.afterBalance}</p>
+                <div className={styles.moneyinfo}>
+                  <p className={styles.transmoney}>{Trans.transferAmount}원</p>
+                  <p className={styles.balancemoim}>잔액 : {Trans.afterBalance}원</p>
                 </div>
-                <hr />
               </div>
             ))}
           </div>
