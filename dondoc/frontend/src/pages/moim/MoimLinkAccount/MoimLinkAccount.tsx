@@ -93,7 +93,7 @@ function MoimLinkAccount() {
           </div>
 
           <div className={styles.accounts}>
-            {linkList.length > 0 && linkList.map((account, index) => (
+            {linkList && linkList.map((account, index) => (
               <label htmlFor={`account-${index}`} key={index} onClick={() => ChangeSelectAccount(account)}>
                 <div className={styles.accountunit}>
                   <div className={styles.banklogo}>

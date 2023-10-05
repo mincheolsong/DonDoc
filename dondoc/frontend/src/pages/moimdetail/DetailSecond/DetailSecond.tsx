@@ -129,7 +129,7 @@ function DetailSecond({moimId, memberType, moimType}: Props) {
           <div className={styles.requestlist}>
             {nowSelected ? (
               <>
-                {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
+                {withdrawRequestList && withdrawRequestList.map((money, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId, money.status)}>
                     <div className={styles.imgdiv}>
                       <div className={styles.imgbox}>
@@ -162,7 +162,7 @@ function DetailSecond({moimId, memberType, moimType}: Props) {
               </>
             ) : (
               <>
-                {missionList.length > 0 && missionList.map((mission, index) => (
+                {missionList && missionList.map((mission, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId, mission.status)}>
 
                     <div className={styles.imgdiv}>

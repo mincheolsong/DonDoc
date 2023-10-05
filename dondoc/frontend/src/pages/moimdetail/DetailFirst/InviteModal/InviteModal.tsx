@@ -238,7 +238,7 @@ function InviteModal({setModalOpen, moimIdNumber}: Props) {
                 <h2>친구 리스트</h2>
               </div>
               <div className={styles.friendbox}>
-              {friendList.length > 0 && friendList.map((friend, index) => (
+              {friendList && friendList.map((friend, index) => (
                 <div
                   className={`${styles.myfriendunit} ${inviteList.some(item => item.userId === friend.userId) ? styles.added : ''}`}
                   onClick={() => AppendInviteList(friend)}
