@@ -132,8 +132,15 @@ const SignInPost = ()=>{
       const userUpdate = {
         password:userSetting.password,
         phoneNumber:userSetting.phoneNumber,
-        accessToken:response.data.response.accessToken
+        
+        accessToken:response.data.response.accessToken,
+        nickname:response.data.response.nickname,
+        name:response.data.response.name,
+        introduce:response.data.response.introduce,
+        mainAccount:response.data.response.mainAccount,
+        imageNumber:response.data.response.imageNumber,
       }
+      // console.log(response.data.response)
       dispatch(loginUser(userUpdate))
 
     }else{
@@ -188,9 +195,10 @@ const closeModal = ()=>{
 
   return (
     <div>
-    {errModal ? <OneBtnModal width="80vw" height="50vh" titleText="" title="false" contentText={errText}  contentFont="1.5rem" btncolor="white" btnTextColor="black" btnText="닫기" callback={closeModal}  /> : ""}
+    
     <BackLogoHeader name=" " left="0" fontSize=" " top="0"/>
       <div className={styles.mainContainer}>
+      {errModal ? <OneBtnModal width="80vw" height="50vh" titleText="" title="false" contentText={errText}  contentFont="1.5rem" btncolor="white" btnTextColor="black" btnText="닫기" callback={closeModal}  /> : ""}
         <img className={styles.Logo} src={dondoc} />
         <p style={{fontSize:"1.5rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem"}}>회원가입</p>
       </div>

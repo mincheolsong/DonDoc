@@ -20,6 +20,7 @@ interface OneBtnModal{
 
 export function OneBtnModal(props:OneBtnModal){
   return(
+    <div className={styles.boxbox}>
     <div className={styles.mainBox} style={{display:"flex",justifyContent:"center"}}>
       <div className={styles.nomalBox} style={{width:props.width, height: props.height}}>
        {props.title ? <p  style={{fontSize:props.titleFont, marginTop:"0" ,fontWeight:"bold"}}>{props.titleText}</p> : ''}
@@ -30,6 +31,7 @@ export function OneBtnModal(props:OneBtnModal){
            className={styles.modalButton} style={{backgroundColor:props.btncolor,color:props.btnTextColor,fontSize:"1rem",fontWeight:'bold'}}>{props.btnText}</button>
         </div>
       </div> 
+    </div>
     </div>
   )
 }

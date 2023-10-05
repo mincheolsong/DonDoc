@@ -92,6 +92,7 @@ useEffect(()=>{
 
   return (
     <div className={styles.mainContainer}>
+      {nickNameModal ? <InputBtnModal callbackRight={nickNameChangeR} callbackLeft={nickNameChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.nickname} width="90vw" height="35vh"/> : ''}
       <img onClick={()=>{
         navigate('/setting')
       }} className={styles.settingIcon} src={"/src/assets/image/setting.svg"} alt=""/>
@@ -109,7 +110,7 @@ useEffect(()=>{
        </div>
         }
         {/* 캐릭터 */}
-        {nickNameModal ? <InputBtnModal callbackRight={nickNameChangeR} callbackLeft={nickNameChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.nickname} width="90vw" height="35vh"/> : ''}
+        
         {introduceModal ? <InputBtnModal callbackRight={introduceChangeR} callbackLeft={introduceChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.introduce} width="90vw" height="35vh"/> : ''}
 
         {/* 이름 */}
