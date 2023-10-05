@@ -107,7 +107,7 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
       if(response.data.success) {
         console.log(response.data)
         alert('요청이 완료되었습니다.')
-        setModalOpen(false)
+        window.location.reload()
       } else {
         alert(response.data.error.message)
       }
