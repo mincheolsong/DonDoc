@@ -45,6 +45,8 @@ function AccountInfo() {
   const [firstDate,setFirstDate] = useState<string>('')
 
   useEffect(()=>{
+    console.log(state.account.accountId) 
+    
     moim.get(`/api/account/history/list/${Account.accountNumber}`,{headers:{Authorization: `Bearer ${token}`}})
     .then((response)=>{
       const data = response.data.response.historyList.response
@@ -72,7 +74,7 @@ function AccountInfo() {
     }).catch((err)=>{
       console.log(err)
     })
-console.log(historyList)
+
   },[])
   return (
   <div style={{height:"100vh",overflow:"hidden"}}>
@@ -138,7 +140,7 @@ console.log(historyList)
 
 
         <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"end"}}>
-          {history.historyId.type==1 ? <p style={{color:"#FF8282",fontWeight:"bold",margin:0,fontSize:"2rem"}}>- {history.historyId.transferAmount} 원</p>  : <p style={{color:"#267BFF",fontWeight:"bold",margin:0}}>+ {history.historyId.transferAmount} 원</p> } 
+          {history.historyId.type==1 ? <p style={{color:"#FF8282",fontWeight:"bold",margin:0,fontSize:"2rem"}}>- {history.historyId.transferAmount} 원</p>  : <p style={{color:"#267BFF",fontWeight:"bold",margin:0,fontSize:"2rem"}}>+ {history.historyId.transferAmount} 원</p> } 
           <p style={{marginTop:"3%",color:"#6B6B6B",fontWeight:"bold",fontSize:"1.2rem"}}>잔액: {history.historyId.afterBalance} 원</p>
         </div>
     </div>

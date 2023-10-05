@@ -92,25 +92,25 @@ input::placeholder {
 }
 
 .confirmPass2{
-   margin-top: 2rem;
+    margin-top: 7.5%;
     background-color: #0D6EFD; /*색 조절 */
     color: white;
-    width: 25%;
-    height: 3.5rem; /*높이조절 */
+    width: 24.4%;
+    height: 3.8rem; /*높이조절 */
     font-size: 1rem;
-    border-radius: 0.8rem;
+    border-radius: 0.7rem;
     border: 0;
     margin-left: 2rem;
     font-weight: bold;
 }
 .confirmPass2dis{
-    margin-top: 2rem;
+    margin-top: 7.5%;
      background-color: #b1b1b1; /*색 조절 */
      color: white;
-     width: 25%;
-     height: 3.5rem; /*높이조절 */
+     width: 24.4%;
+     height: 3.8rem; /*높이조절 */
      font-size: 1rem;
-     border-radius: 0.8rem;
+     border-radius: 0.7rem;
      border: 0;
      margin-left: 2rem;
      font-weight: bold;
@@ -147,6 +147,7 @@ input::placeholder {
     margin-top: 2rem;
     margin-left: 10%;
     border: 0;
+    width: 60%;
     height: 4rem;
     border-radius: 0.8rem;
 }

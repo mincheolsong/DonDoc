@@ -94,10 +94,10 @@ function DiffProfile() {
   }
   
   const typeTwo = ()=>{
-    moim.put(`api/friend/request/access/${resiveId}`,{headers:{
+    moim.put(`api/friend/request/access/${resiveId}`,null,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-
+     
       moim.get('api/friend/list',{headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
       }})
@@ -151,7 +151,7 @@ function DiffProfile() {
     moim.get('/api/friend/request/send/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+   
       const myQList = response.data.response.list
       myQList.filter((p)=>{
         if(p.userId == userIdN){
@@ -168,9 +168,10 @@ function DiffProfile() {
     moim.get('api/friend/request/receive/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
+   
       const myQList = response.data.response.list
       myQList.find((p)=>{
-        if(p.friendId == userIdN){
+        if(p.id == userIdN){
           setRequestRelation(2)
           setResiveId(p.id)
         }
@@ -251,8 +252,8 @@ function DiffProfile() {
         {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"3%"}}>{profile?.name}</p> :""}
         {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
         {requestRelation == 1 ? <button onClick={typeOne} className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
-        {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>수락하기</button> : ""}
-        {requestRelation == 3 ? <button onClick={()=>{setDeleteFriendModal(!deleteFriendModal)}}className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF"}}>나의친구</button> : ""}
+        {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold"}}>수락하기</button> : ""}
+        {requestRelation == 3 ? <button onClick={()=>{setDeleteFriendModal(!deleteFriendModal)}}className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold"}}>나의친구</button> : ""}
 
         {requestRelation == 3 ? 
         <div className={styles.accountBox}>
