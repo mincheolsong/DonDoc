@@ -63,7 +63,7 @@ function Home() {
     {/* 나의계좌 */}
     <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"end",width:"98%",marginTop:"1rem"}}>
     <p style={{fontSize:"2.2rem",fontWeight:"bold", marginBottom:"3%",fontFamily:"BD",marginLeft:"3%"}}>나의 계좌</p>
-    <button className={styles.accountBtn} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
+    <button className={styles.accountBtn}  style={{width:"25%",height:"2.6rem",fontSize:"1.2rem"}} onClick={()=>{navigate("/callaccount")}}>계좌불러오기</button>
     </div>
      {/* 나의계좌 */}
      
@@ -108,7 +108,7 @@ export function UserBox(props){
       <div style={{display:"flex",width:"60%"}}>
       <img src={props.userCharacter} style={{width:"35%"}} />
     <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.5rem",fontWeight:"bold",fontFamily:"BD"}}>{props.username} 의 DonDoc</p>
+      <p style={{fontSize:"1.4rem",fontWeight:"bold",fontFamily:"BD"}}>{props.username} 의 DonDoc</p>
       <button className={styles.myProfileBtn} onClick={()=>{
         navigate(`/mypage/${props.userId}`)
       }}> 나의프로필가기</button>

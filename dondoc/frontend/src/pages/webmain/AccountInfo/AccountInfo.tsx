@@ -37,6 +37,8 @@ type accountHistory = {
 
 
 function AccountInfo() {
+  
+
   const navigate = useNavigate();
   const {state} = useLocation();
   const Account = state.account
@@ -84,7 +86,7 @@ function AccountInfo() {
     {/* Top */}
     <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}} >
       <div style={{display:"flex", flexDirection:"row",justifyContent:"center", width:"100%",alignItems:"center",marginTop:"4%",fontFamily:""}}>
-        <p style={{fontWeight:"bold",fontSize:"2.4rem"}}>{Account.balance} 원</p>
+        <p style={{fontWeight:"bold",fontSize:"2.4rem"}}>{Account.balance} <span style={{fontSize:"2.2rem",fontFamily:"NT"}}>원</span></p>
         <button className={styles.sendMoneyBtn} onClick={()=>{
           navigate(`/sendmoneyfirst/${Account.accountNumber}`,{state:{account:Account}})
         }}>송금</button>
@@ -122,6 +124,7 @@ function AccountInfo() {
    <br />
       <div>                           
       {historyList.map((history,index)=>(
+        
         <div key={index} style={{display:"flex",justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"90vw",marginTop:'5%',fontFamily:"NT"}}>
           
         <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
@@ -140,8 +143,8 @@ function AccountInfo() {
 
 
         <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"end"}}>
-          {history.historyId.type==1 ? <p style={{color:"#FF8282",fontWeight:"bold",margin:0,fontSize:"2rem"}}>- {history.historyId.transferAmount} 원</p>  : <p style={{color:"#267BFF",fontWeight:"bold",margin:0,fontSize:"2rem"}}>+ {history.historyId.transferAmount} 원</p> } 
-          <p style={{marginTop:"3%",color:"#6B6B6B",fontWeight:"bold",fontSize:"1.2rem"}}>잔액: {history.historyId.afterBalance} 원</p>
+          {history.historyId.type==1 ? <p style={{color:"#FF8282",fontWeight:"bold",margin:0,fontSize:"2rem"}}>- {history.historyId.transferAmount.toLocaleString()} 원</p>  : <p style={{color:"#267BFF",fontWeight:"bold",margin:0,fontSize:"2rem"}}>+ {history.historyId.transferAmount.toLocaleString()} 원</p> } 
+          <p style={{marginTop:"3%",color:"#6B6B6B",fontWeight:"bold",fontSize:"1.2rem"}}>잔액: {history.historyId.afterBalance.toLocaleString()} 원</p>
         </div>
     </div>
 

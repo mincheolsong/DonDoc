@@ -230,7 +230,7 @@ export function PassBox(props:PassBox){
   return(
     <div>
       <input type="password" placeholder={props.innerText} className={styles.IdBox} onChange={props.change}/>
-      <p style={{margin:"0" , color : props.inner ? "green" : "#FF001F ", fontWeight:"bold",fontFamily:"NT"}}>{props.helpMsg}</p>
+      <p style={{margin:"0" , color : props.inner ? "green" : "#FF001F ", fontWeight:"bold",fontFamily:"NT",fontSize:"1.2rem"}}>{props.helpMsg}</p>
     </div>
     
   )

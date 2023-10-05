@@ -61,9 +61,9 @@ function AccountListItem(props:PropsType) {
     {AccountData.map((account,index)=>(
       <div key={index} className={styles.accountItem} onClick={()=>{accountClick(index)}}>
       <img className={styles.BankIcon} src={`/src/assets/Bank_Logo/${account.bankCode}.svg`} alt={account.bankCode} />
-      <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start"}}>
-        <p>{account.accountName}</p>
-        <p><span>{account.bankName}</span>{account.accountNumber}</p>
+      <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"start",width:"55vw"}}>
+        <p style={{margin:"0",marginBottom:"0.5rem",color:"#6C6C6C",fontWeight:"bold",fontSize:"1.2rem"}}>{account.accountName}</p>
+        <p style={{margin:"0",fontWeight:"bold",fontSize:"1.3rem"}}><span>{account.bankName}</span>{account.accountNumber}</p>
       </div>
       {account.isCheck ? <BiCheckboxSquare className={styles.CheckBoxU}/> : <BiCheckbox className={styles.CheckBoxC}/>}
       

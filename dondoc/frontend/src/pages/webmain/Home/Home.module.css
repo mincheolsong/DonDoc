@@ -22,9 +22,9 @@
     height: 2.2rem;
     font-size: 1.1rem;
     color: #4F4F4F;
-
     margin-bottom: 0.8rem;
     font-family: "LH";
+    font-weight: bold;
 }
 
 
@@ -33,12 +33,13 @@
 .myProfileBtn{ 
     background-color: white;
     border-radius: 0.8rem;
-    border: solid #E4E4E4 0.1rem;
+    border: solid #E4E4E4 0.15rem;
     height: 2.5rem;
-    color: black;
-    font-size: 1.2rem;
+    color: #4F4F4F;
+    font-size: 1.1rem;
     margin-right: 1rem;
     font-family: "LH";
+    font-weight: 600;
 }
 
 .topContainer{
@@ -58,10 +59,11 @@
     color: white;
     width: 15%;
     height: 3.5rem; /*높이조절 */
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     border-radius: 0.8rem;
     border: 0;
     margin-right: 2.5rem;
+
 }
 
 /*눌렸을때 */

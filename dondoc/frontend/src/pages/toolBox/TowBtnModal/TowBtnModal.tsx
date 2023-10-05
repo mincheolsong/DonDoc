@@ -38,13 +38,13 @@ export function TowBtnModal(props:TowBtnModal){
            onClick={()=>{
             clickHandlerL()
           }}
-          className={styles.modalButton} style={{backgroundColor:props.leftBtnColor,color:props.leftBtnTextColor,fontSize:"1rem"}}>{props.leftBtnText}</button> 
+          className={styles.modalButton} style={{backgroundColor:props.leftBtnColor,color:props.leftBtnTextColor,fontSize:"1.4rem"}}>{props.leftBtnText}</button> 
           
           <button
            onClick={()=>{
             clickHandlerR()
           }}
-          className={styles.modalButton} style={{backgroundColor:props.rightBtnColor, color:props.rightBtnTextColor,fontSize:"1rem"}}>{props.rightBtnText}</button>
+          className={styles.modalButton} style={{backgroundColor:props.rightBtnColor, color:props.rightBtnTextColor,fontSize:"1.4rem"}}>{props.rightBtnText}</button>
         </div>
       </div> 
     </div>
