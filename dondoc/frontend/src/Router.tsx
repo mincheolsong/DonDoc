@@ -43,7 +43,8 @@ import AccountListPage from './pages/mypage/AccountList/AccountList'
 import ChangeCharacterPage from './pages/mypage/ChangeCharacter/ChangeCharacter' 
 import DiffProfilePage from './pages/mypage/DiffProfile/DiffProfile' 
 import FriendListPage from './pages/mypage/FriendList/FriendList'
-
+import { UserType } from "./store/slice/userSlice";
+import { useSelector } from "react-redux";
 
 //moim detail
 import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
@@ -56,15 +57,21 @@ import Noti_List from "./pages/notification/noti_list";
 import Friend_Re from "./pages/notification/Request/FriendRequest/Friend_Re";
 
 function Router() {
+    const userInfo:UserType = useSelector((state:{user:UserType})=>{
+        return state.user
+        })
 
+    
     return (
-        <Routes>
+        <>
+            
+            {userInfo.isLogin == true ? <Routes>
             {/* user */}
+           
             <Route path="/signin" element={<SigninPage/>}/>
             <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
             <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
             <Route path="/signupTemp" element={<SignupTempPage/>}/>
-            
             {/* home tap */}
             <Route path="/" element={<HomePage/>}/>
             <Route path="/accountInfo/:accountid" element={<AccountInfoPage/>}/>
@@ -116,9 +123,18 @@ function Router() {
             {/* Notification */}
             <Route path='/notification/' element={<Noti_List />}></Route>
             <Route path='/notification/FriendRequests' element={<Friend_Re />}></Route>
-
+            </Routes>
             
-        </Routes>
+            
+            
+            :  <Routes>
+            <Route path="/" element={<SigninPage/>}/>
+            <Route path="/signupfirst" element={<SignUpFirstPage/>}/>
+            <Route path="/signupsecond" element={<SignUpSecondPage/>}/>
+            <Route path="/signupTemp" element={<SignupTempPage/>}/>
+            </Routes> }
+                
+        </>
     )
 }
 
