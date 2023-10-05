@@ -5,7 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../../../constants";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../../../store/slice/userSlice";
-
+import BackLogoHeader from "../../../../toolBox/BackLogoHeader";
 function AcceptPassword() {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -173,6 +173,7 @@ function AcceptPassword() {
   )
   return (
     <div className={styles.container}>
+      <BackLogoHeader/>
     <div className={styles.content}>
 
       <div className={styles.inputment}>
