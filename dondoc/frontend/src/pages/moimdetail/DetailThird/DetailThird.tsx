@@ -17,7 +17,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { BASE_URL } from "../../../constants";
-import { useParams } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -59,6 +58,10 @@ type Transfer = {
   transferAmount:number
 }
 
+const date = new Date
+const Year = date.getFullYear()
+const Month = date.getMonth() + 1
+
 function DetailThird({moimId, memberType, members, moimMemberId, moimAccountNum, 
 moimIdNum, memAccount}:Props) {
   const [nowSelected, setNowSelected] = useState<boolean>(true)
@@ -66,6 +69,7 @@ moimIdNum, memAccount}:Props) {
   const [moimMID, setmoimMID] = useState<number>(moimMemberId)
   const [MAccount, setMAccount] = useState<string>(memAccount)
   const [TransferList, setTransferList] = useState<Transfer[]>([])
+  const [Tmonth, setTmonth] = useState<number>(Month)
 
   // const [LastData, setLastData] = useState<number[]>([])
 
@@ -103,7 +107,7 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
       identificationNumber: moimIdNum,
       memberAccountNumber: MAccount,
       moimAccountNumber: moimAccountNum,
-      month:10
+      month:Tmonth
     }
     axios.post(`${BASE_URL}/api/moim/mydata/transferAmount`,data,{
       headers:{
@@ -111,6 +115,7 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
       }
     })
     .then((res) => {
+      console.log(Tmonth)
       console.log(res.data)
       setTransferList(res.data.response)
     })
@@ -257,13 +262,22 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
             {members.map((mem:Member) => (<option value={mem.accountNumber}>{mem.nickname}</option>))}
           </select> : <></>}
           <div className={styles.requestlist}>
+            <div>
+              {Year} - {Month}
+            </div>
+            <hr />
             {TransferList.map((Trans:Transfer) => (
               <div>
-                {Trans.afterBalance}
-                {Trans.content}
-                {Trans.date}
-                {Trans.name}
-                {Trans.transferAmount}
+                <div>
+                  <p>{Trans.date}</p>
+                  <p>{Trans.name}</p>
+                  <p>{Trans.content}</p>
+                </div>
+                <div>
+                  <p>{Trans.transferAmount}</p>
+                  <p>{Trans.afterBalance}</p>
+                </div>
+                <hr />
               </div>
             ))}
           </div>
