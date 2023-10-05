@@ -10,7 +10,7 @@
   background-color: white;
   width: 80vw;
   max-width: 500px; /* 모달 최대 너비 설정 */
-  height: 80vh;
+  height: 30vh;
   max-height: 550px; /* 모달 최대 높이 설정 */
   padding: 1rem;
   border-radius: 10px;
@@ -35,9 +35,7 @@
 }
 
 .maincontent {
-  background-color: #F5F5F5;
-  height: 70%;
-  border-radius: 1rem;
+  height: 50%;
 }
 
 .requestinfo {
