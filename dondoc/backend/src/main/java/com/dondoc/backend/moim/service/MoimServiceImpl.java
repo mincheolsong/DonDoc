@@ -422,6 +422,8 @@ public class MoimServiceImpl implements MoimService{
         MoimMember member = moimMemberRepository.findByUser_IdAndMoim_Id(userId, req.getMoimId())
                 .orElseThrow(()-> new NotFoundException("모임 회원의 정보가 존재하지 않습니다."));
 
+        log.info("member : {} " , member.toString());
+
         List<WithdrawRequest> withdrawRequestList;
         List<Mission> missionList;
 
@@ -441,6 +443,9 @@ public class MoimServiceImpl implements MoimService{
                 missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
 
             } else { // 전체 조회
+
+                log.info("moimId : {} " , member.getMoim().getId());
+
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
                 missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
             }
