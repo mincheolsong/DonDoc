@@ -64,8 +64,11 @@
 .requestlist {
     margin-top: 10%;
     min-height: 75%;
+    overflow-y: auto;
+
 
 }
+
 
 .requestunit {
     display: flex;
