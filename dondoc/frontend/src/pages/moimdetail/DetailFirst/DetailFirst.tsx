@@ -1,6 +1,5 @@
 import styles from "./DetailFirst.module.css";
 import { useState, useEffect } from 'react'
-import haaland from "../../../assets/characterImg/0.png"
 import RequestModal from "./RequestModal/RequestModal";
 // import InfoUpdateModal from "./InfoupdateModal/InfoupdateModal";
 import InviteModal from "./InviteModal/InviteModal";
@@ -10,8 +9,7 @@ import { BASE_URL } from "../../../constants";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import dondocLogo from "../../../assets/MoimLogo/dondoclogo.svg"
-// import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
-// import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   accountId : number,
@@ -51,6 +49,8 @@ const moimDetailDefault = {
 }
 
 function DetailFirst({userType, accountId, moimId}: Props) {
+
+  const navigate = useNavigate()
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
@@ -134,19 +134,23 @@ function DetailFirst({userType, accountId, moimId}: Props) {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        {/* <BackLogoHeader name={moimDetailInfo.moimName} fontSize="2rem" left="5rem" top="0.8rem"/> */}
-
         <div className={styles.userscontent}>
           
           <div className={styles.usersbox}>
             {moimMemberList.length > 0 && moimMemberList.map((member, index) => (
               selectedMember.userId === member.userId ? (
                 <div style={{backgroundColor: '#526BEA', color: 'white'}} className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  {member.userType === 0 && (
+                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                  )}
                   <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
                   <p>{member.nickname}</p>
                 </div>
               ) : (
                 <div className={styles.boxunit} key={index} onClick={() => SelectMember(member)}>
+                  {member.userType === 0 && (
+                    <img src={`/src/assets/MoimLogo/bookmark.svg`} className={styles.bookmark} alt="" />
+                  )}
                   <img src={`/src/assets/characterImg/${member.userImageNumber}.png`} alt="" />
                   <p>{member.nickname}</p>
                 </div>
@@ -163,7 +167,7 @@ function DetailFirst({userType, accountId, moimId}: Props) {
               <div className={styles.invitebtn}></div>
             )}
             <div className={styles.selectcharacter}>
-              <img src={haaland} alt="" />
+              <img src={`/src/assets/characterImg/${selectedMember.userImageNumber}.png`} alt="" />
             </div>
 
             <div className={styles.selectaccount} onClick={() => CopyAccount(selectedMember.accountNumber)}>
@@ -187,7 +191,8 @@ function DetailFirst({userType, accountId, moimId}: Props) {
               </div>
             ) : (
               <div className={styles.optionbuttons}>
-                <button>프로필 가기</button>
+                <button onClick={() => navigate(`/diffprofile/${selectedMember.userId}`, {state: {diffuserId:selectedMember.userId}})}>프로필 가기</button>
+                <button onClick={OpenModal}>요청하기</button>
               </div>
             )}
           </div>
@@ -195,7 +200,7 @@ function DetailFirst({userType, accountId, moimId}: Props) {
           {modalOpen && (
             <>
               <div className={styles.backgroundOverlay} onClick={CloseModal}/>
-              <RequestModal setModalOpen={setModalOpen} />
+              <RequestModal setModalOpen={setModalOpen} userId={selectedMember.userId} moimId={moimId} userType={selectedMember.userType}/>
             </>
           )}
           {inviteModalOpen && (

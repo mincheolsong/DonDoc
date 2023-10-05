@@ -10,7 +10,7 @@
     background-color: white;
     width: 80vw;
     max-width: 500px; /* 모달 최대 너비 설정 */
-    height: 80vh;
+    height: 35vh;
     max-height: 550px; /* 모달 최대 높이 설정 */
     padding: 1rem;
     border-radius: 10px;
@@ -49,6 +49,11 @@
     margin-left: 1rem;
     width: 6rem;
     height: 3.734rem;
+    background-color: #0D6EFD;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 900;
+    color: white;
 }
 .searchresult {
     border: 1px solid black;
@@ -88,10 +93,19 @@
     /* border: 1px solid blue; */
 }
 
-.appendbtn {
-    width: 20%;
-    height: 60%;
-    margin-top: auto;
-    margin-bottom: auto;
+.btndiv {
+    width: 30%;
+    height: 3rem;
+    margin: auto;
+    margin-top: 2rem;
 }
 
+.closebtn {
+    width: 100%;
+    height: 100%;
+    background-color: #0D6EFD;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 900;
+    color: white;
+}
