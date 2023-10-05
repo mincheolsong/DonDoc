@@ -32,7 +32,8 @@ function Friend_Re() {
   const Reject = (id:number) => {
     axios.put(`${BASE_URL}/api/friend/request/deny/${id}`, {
       headers:{
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${token}`
       }
     })
     .then((res) => {
