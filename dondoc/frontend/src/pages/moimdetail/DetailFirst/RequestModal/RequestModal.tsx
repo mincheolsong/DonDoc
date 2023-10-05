@@ -8,15 +8,20 @@ import { UserType } from "../../../../store/slice/userSlice";
 import { BASE_URL } from "../../../../constants";
 
 type Props = {
-  setModalOpen(id: boolean) : void
+  setModalOpen(id: boolean) : void;
+  userId: number;
+  moimId: string | undefined;
+  userType: number;
 }
 
-function RequestModal({setModalOpen}: Props) {
+function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
 
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
   const token = userInfo.accessToken
+
+  const moimIdNumber = moimId ? parseInt(moimId, 10) : undefined;
 
   const [nowSelected, setNowSelected] = useState<boolean>(true)
   
@@ -89,7 +94,7 @@ function RequestModal({setModalOpen}: Props) {
       "amount": moneyAmount,
       "categoryId": moneyCategory,
       "content": moneyContent,
-      "moimId": 1,
+      "moimId": moimIdNumber,
       "title": moneyTitle
     }
     try {
@@ -111,19 +116,23 @@ function RequestModal({setModalOpen}: Props) {
     }
   }
 
+  const data ={
+    "amount": missionAmount,
+    "content": missionContent,
+    "endDate": deadLine,
+    "missionMemberId": 0,
+    "moimId": moimIdNumber,
+    "title": missionTitle
+  }
+  if (userType) {
+    data.missionMemberId = userId;
+  }
+
   const RequestMission = async() => {
-    const data ={
-      "amount": missionAmount,
-      "content": missionContent,
-      "endDate": deadLine,
-      "missionMemberId": 4,
-      "moimId": 1,
-      "title": missionTitle
-    }
     try {
       const response = await axios.post(`${BASE_URL}/api/moim/mission_req`, data, {
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         }
       });
@@ -137,6 +146,10 @@ function RequestModal({setModalOpen}: Props) {
     } catch(error) {
       console.log('error:', error)
     }
+  }
+
+  const showdata = () => {
+    console.log(data)
   }
 
 
@@ -222,6 +235,7 @@ function RequestModal({setModalOpen}: Props) {
               <div className={styles.btns}>
                 <button onClick={ModalClose}>닫기</button>
                 <button onClick={RequestMission}>등록하기</button>
+                <button onClick={showdata}>보여줘</button>
               </div>
 
             </>

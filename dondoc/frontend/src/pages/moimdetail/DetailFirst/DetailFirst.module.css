@@ -44,6 +44,7 @@
     height: 4.7rem;
     /* display: center; */
     text-align: center;
+    position: relative;
 }
 
 .unitcontent {
@@ -239,4 +240,10 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
     z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }
+
+  .bookmark {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
