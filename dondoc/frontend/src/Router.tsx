@@ -55,6 +55,7 @@ import DetailMain from './pages/moimdetail/DetailMain/DetailMain'
 //Notification
 import Noti_List from "./pages/notification/noti_list";
 import Friend_Re from "./pages/notification/Request/FriendRequest/Friend_Re";
+import AcceptPassword from "./pages/moimdetail/DetailSecond/RequestInfo/AcceptPassword/AcceptPassword";
 
 function Router() {
     const userInfo:UserType = useSelector((state:{user:UserType})=>{
@@ -98,6 +99,7 @@ function Router() {
             <Route path="/moimrepassword" element={<MoimRePasswordPage/>}/>
             <Route path="/moiminfo" element={<MoimInfoPage/>}/>
             <Route path="/accountpassword" element={<AccountPassword/>}/>
+            <Route path="/acceptpassword" element={<AcceptPassword/>}/>
 
 
             {/* mission tap */}
