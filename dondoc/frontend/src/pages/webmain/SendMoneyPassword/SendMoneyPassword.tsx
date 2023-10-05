@@ -123,7 +123,7 @@ function SendMoneyPassword() {
     <div className={styles.container}>
       <div className={styles.content}>
 
-        <BackLogoHeader fontSize="2rem" left="5rem" top="0.8rem"/>
+        <BackLogoHeader fontSize="2rem" left="5rem" top="2%"/>
 
         <div className={styles.inputment}>
           <h1>비밀번호를 입력해주세요.</h1>

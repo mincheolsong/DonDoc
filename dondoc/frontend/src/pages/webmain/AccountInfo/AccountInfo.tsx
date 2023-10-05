@@ -81,7 +81,7 @@ function AccountInfo() {
   return (
   <div style={{height:"100vh",overflow:"hidden"}}>
     
-    <BackLogoHeader name={Account.accountName} fontSize="2rem" left="5rem" top="0.8rem"/>
+    <BackLogoHeader name={Account.accountName} fontSize="1.8rem" left="5rem" top="2%"/>
     
     {/* Top */}
     <div style={{display:"flex", flexDirection:"column",justifyContent:"center",alignItems:"center"}} >

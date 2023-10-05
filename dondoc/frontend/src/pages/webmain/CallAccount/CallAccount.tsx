@@ -39,7 +39,7 @@ function CallAccount() {
 
   return (
     <div >
-      <BackLogoHeader name="계좌 불러오기" left="6rem" top="0.9rem" fontSize="1.8rem" />
+      <BackLogoHeader name="계좌 불러오기" left="6rem" top="2%" fontSize="1.8rem" />
      {isLoading ?"" : <CallAcountItem account={allAccount} />  }
      
      
