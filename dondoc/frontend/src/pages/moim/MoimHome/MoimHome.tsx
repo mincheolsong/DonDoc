@@ -100,7 +100,7 @@ function MoimHome() {
           </div>
 
           <div className={styles.moimcontent}>
-            {myMoimList.length > 0 && myMoimList.map((moim, index) => (
+            {myMoimList && myMoimList.map((moim, index) => (
               <div className={styles.moimunit} key={index} onClick={() => GoMoimDetail(moim)}>
                 <SubMoimUnit 
                 moimId={moim.moimId}/>
@@ -115,7 +115,7 @@ function MoimHome() {
 
           <div className={styles.invitecontent}>
             <div className={styles.invitebox}>
-              {moimInviteList.length > 0 && moimInviteList.map((invite, index) => (
+              {moimInviteList && moimInviteList.map((invite, index) => (
                 <div className={styles.inviteunit} key={index} onClick={() => InviteMoim(invite)}>
                   <MoimInviteUnit moimName={invite.moimName} moimMemberId={invite.moimMemberId} inviter={invite.inviter}/>
                 </div>

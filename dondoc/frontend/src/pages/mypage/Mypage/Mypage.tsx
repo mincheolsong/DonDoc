@@ -8,7 +8,7 @@ import InputBtnModal from "../../toolBox/InputBtnModal";
 import { moim } from "../../../api/api";
 import { changeIntroduce,changeNickName } from "../../../store/slice/userSlice";
 import { useDispatch } from "react-redux";
-
+import OneBtnModal from "../../toolBox/OneBtnModal";
 import { useLocation } from "react-router-dom";
 
 function Mypage() {
@@ -26,10 +26,14 @@ function Mypage() {
 // 모달 
   const [nickNameModal,setNickNameModal] = useState<boolean>(false);
   const [introduceModal,setIntroduceModal] = useState<boolean>(false);
-
+  const [isAccount,setIsAccount]= useState<boolean>(false);
 //  
 
 //모달이벤트 닉네임
+  const closeModal = ()=>{
+    setIsAccount(false)
+  }
+
   const nickNameChangeR = (nickname:string)=>{
     moim.put('/api/user/update/nickname',{nickName:nickname},{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
@@ -92,6 +96,7 @@ useEffect(()=>{
 
   return (
     <div className={styles.mainContainer}>
+      {isAccount ? <OneBtnModal width="90vw" height="30vh" contentText="홈에서 계좌를 먼저 불러와주세요." contentFont="1.7rem"  btnTextColor="black" btnText="확인" callback={closeModal}/> : ""}
       {nickNameModal ? <InputBtnModal callbackRight={nickNameChangeR} callbackLeft={nickNameChangeL} leftBtnText="닫기" leftBtnColor="white" rightBtnColor="#3772FF" rightBtnText="변경하기" rightBtnTextColor="white" contentFont="1.5rem" contentText={userInfo.nickname} width="90vw" height="35vh"/> : ''}
       <img onClick={()=>{
         navigate('/setting')
@@ -131,7 +136,23 @@ useEffect(()=>{
 {/* 대표계좌 */}
         <div style={{width:"80%",display:"flex",justifyContent:"space-between", alignItems:"center",marginTop:"3%" }}>
           <p style={{fontWeight:"bold",fontSize:"2rem",fontFamily:"BD"}}>대표계좌</p><img onClick={()=>{
-            navigate('/accountlist')
+            moim.get("/api/account/account/list",{headers: {
+              Authorization: `Bearer ${userInfo.accessToken}`
+            }})
+            .then((response)=>{
+
+              if(response.data.success){
+                navigate('/accountlist')
+              }else{
+                setIsAccount(true)
+                console.log(1)
+              }
+            })
+            .catch((err)=>{
+              console.log(err)
+            })
+
+            
           }} style={{width:"32%"}} src="/src/assets/image/moimBtn.svg" alt="" />
         </div>
 
