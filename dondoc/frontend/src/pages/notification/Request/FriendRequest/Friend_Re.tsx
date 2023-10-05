@@ -70,21 +70,21 @@ function Friend_Re() {
     <>
     <div className={styles.Background}>
       <div>
-      <BackLogoHeader name="친구 요청" left="6rem" top="0.9rem" fontSize="1.8rem" />
+      <BackLogoHeader name="친구 요청" left="6rem" top="2%" fontSize="1.8rem" />
       </div>
       {Requests.length ? Requests.map((Re) => (
         <div className={styles.topContainer}>
         <div style={{display:"flex",width:"60%"}}>
         <img src={`/src/assets/characterImg/${Re.imageNumber}.png`} style={{width:"35%"}} />
-      <div style={{marginLeft:"1rem",textAlign:"center"}}>
-        <p style={{fontSize:"2rem",fontWeight:"bold",fontFamily:"NT"}}>{Re.nickName}</p>
+      <div style={{marginLeft:"1rem",display:"flex",justifyContent:"center",alignContent:"center"}}>
+        <p style={{fontSize:"1.5rem",fontWeight:"bold",fontFamily:"NT"}}>{Re.nickName}</p>
       </div>
         </div>
       <div style={{display:"flex", width:"50%"}}>
-        <button className={styles.IgnoreBtn} style={{height:"5rem",fontSize:"1.2rem"}}
+        <button className={styles.IgnoreBtn} style={{height:"4rem",fontSize:"1.2rem"}}
         onClick={() => Reject(Re.id)} 
         >무시하기</button>
-        <button className={styles.myProfileBtn} style={{height:"5rem",fontSize:"1.2rem"}} 
+        <button className={styles.myProfileBtn} style={{height:"4rem",fontSize:"1.2rem"}} 
         onClick={() => GoProfile(Re.friendId)}>프로필 가기</button>
       </div>
     </div>

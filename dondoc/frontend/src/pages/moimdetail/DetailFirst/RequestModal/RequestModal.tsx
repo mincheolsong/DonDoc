@@ -190,9 +190,8 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
                     <option value={1}>교육</option>
                     <option value={2}>식사</option>
                     <option value={3}>여가</option>
-                    <option value={4}>생활요금</option>
-                    <option value={5}>의료</option>
-                    <option value={6}>기타</option>
+                    <option value={4}>의료</option>
+                    <option value={5}>기타</option>
                   </select>
                 </div>
 

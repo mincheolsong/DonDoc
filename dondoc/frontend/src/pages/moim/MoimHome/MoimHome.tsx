@@ -96,21 +96,26 @@ function MoimHome() {
 
         <div className={styles.moimlist}>
           <div className={styles.moimlisttitle}>
-            <h1>나의 모임</h1>
+            <h1 style={{fontFamily:"BD"}}>나의 모임</h1>
           </div>
 
           <div className={styles.moimcontent}>
-            {myMoimList && myMoimList.map((moim, index) => (
+            {myMoimList.length ? myMoimList.map((moim, index) => (
               <div className={styles.moimunit} key={index} onClick={() => GoMoimDetail(moim)}>
                 <SubMoimUnit 
                 moimId={moim.moimId}/>
               </div>
-            ))}
+            )) : <div style={{height:"20vh",display:"flex",justifyContent:"center",alignItems:"center",width:"100vw"}}> 
+            <div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"90vw",backgroundColor:"#EDF1FF",flexDirection:"column",fontFamily:"LH",fontWeight:"bold",fontSize:"1.8rem",borderRadius:"0.8rem"}}>
+              <p>모임이 없습니다. </p>
+              <p>새로운 모임을 만들어 보세요.</p>
+            </div>
+            </div> }
           </div>
 
         <div className={styles.invitelist}>
           <div className={styles.inviteisttitle}>
-            <h1>초대현황</h1>
+            <h1 style={{fontFamily:"BD"}}>초대현황</h1>
           </div>
 
           <div className={styles.invitecontent}>
@@ -154,7 +159,7 @@ type props = {
       <div style={{display:"flex",width:"60%"}}>
         <img src={props.userCharacter} style={{width:"35%"}} />
         <div style={{marginLeft:"1rem",textAlign:"center"}}>
-          <p style={{fontSize:"1.2rem",fontWeight:"bold"}}>{props.username} 의 DonDoc</p>
+          <p style={{fontSize:"1.4rem",fontWeight:"bold",fontFamily:"BD"}}>{props.username} 의 DonDoc</p>
           <button className={styles.myProfileBtn} onClick={()=>{
             navigate(`/mypage/${props.userId}`)
             }}> 나의프로필가기</button>

@@ -18,21 +18,21 @@ function Nav() {
     <div className={styles.Nav}>
       <div className={styles.NavBox} >
         
-        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#7E7E7E", textDecorationLine:"none"} }} to={"/"}>
+        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#999999", textDecorationLine:"none"} }} to={"/"}>
         <div className={styles.NavItems}>
         <TbSmartHome className={styles.NavIcon} />
         <p className={styles.NavItemsText}>홈</p>
         </div>
         </NavLink>
 
-        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#7E7E7E", textDecorationLine:"none"} }}  to={"/search"}>
+        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#999999", textDecorationLine:"none"} }}  to={"/search"}>
         <div className={styles.NavItems}>
         <BiSearch className={styles.NavIcon}/>
         <p className={styles.NavItemsText}>찾기</p>
         </div>
         </NavLink>
 
-        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "#31C0DE" : "#7E7E7E", textDecorationLine:"none"} }}  to={"/moimhome"}>
+        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "#31C0DE" : "#999999", textDecorationLine:"none"} }}  to={"/moimhome"}>
         <div className={styles.NavItems}>
         <MdOutlineJoinFull className={styles.NavIcon}/>
         <p className={styles.NavItemsText}>돈독계좌</p>
@@ -40,7 +40,7 @@ function Nav() {
         </NavLink>
         
 
-        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#7E7E7E", textDecorationLine:"none"} }}  to={`/mission`}>
+        <NavLink style={({ isActive, isPending })=>{ return{ color: isActive ? "black" : "#999999", textDecorationLine:"none"} }}  to={`/mission`}>
         <div className={styles.NavItems}>
         <LuCheckCheck className={styles.NavIcon}/>
         <p className={styles.NavItemsText}>나의미션</p>
