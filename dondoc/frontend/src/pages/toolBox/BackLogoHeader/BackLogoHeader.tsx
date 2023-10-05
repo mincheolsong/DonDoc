@@ -23,7 +23,7 @@ export function BackLogoHeader(props:BackLogoHeaderType){
       <IoChevronBack/>
       </div>
     </IconContext.Provider>
-      <p style={{fontSize:props.fontSize,marginLeft:props.left,marginTop:props.top,marginBottom:'0px',  fontWeight:"bold"}}>{props.name}</p>
+      <p style={{fontSize:props.fontSize,marginLeft:props.left,marginTop:props.top,marginBottom:'0px',  fontWeight:"bold",fontFamily:"NT"}}>{props.name}</p>
     </div>
   )
 }

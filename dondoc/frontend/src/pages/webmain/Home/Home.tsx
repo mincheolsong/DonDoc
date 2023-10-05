@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { moim } from "../../../api/api";
 import { UserType,Account } from "../../../store/slice/userSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import OneBtnModal from "../../toolBox/OneBtnModal";
+
 
 function Home() {
   Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -14,7 +16,7 @@ function Home() {
   const userInfo:UserType = useSelector((state:{user:UserType})=>{
     return state.user
   })
-
+  const [goModal,setGoModal] = useState<boolean>(false);
 
 
   const goSendMoney = (account:Account) =>{
@@ -24,9 +26,15 @@ function Home() {
     navigate(`/accountinfo/${account.accountNumber}`,{state:{account:account,info:userInfo.accessToken}})
   }
   const navigate = useNavigate();
+  
   const goMakeAccount = () =>{
-    navigate("makeAccount")
+    setGoModal(true)
   }
+
+  const modalclose = ()=>{
+    setGoModal(false)
+  }
+
   const [allAccount,setAllAccount] =useState<Account[]>([])
 
 
@@ -58,7 +66,8 @@ function Home() {
       <Header/>
       <div style={{display:"flex" , flexDirection:"column",  alignItems:"center", marginTop:"1.5rem"}}>
       <UserBox userId={userInfo.phoneNumber} userCharacter={`src/assets/characterImg/${userInfo.imageNumber}.png`} username={userInfo.name} rightBtn="계좌개설하기" rightBtnClick={goMakeAccount} />
-
+      {goModal ?  <OneBtnModal width="80vw" height="30vh" title={false} titleText="" contentFont="1.3rem" contentText={`돈독 bank를 이용해 주세요.\nhttp://j9d108.p.ssafy.io:5173/`} btncolor="white" btnTextColor="black" btnText="닫기" callback={modalclose}/> : "" }
+     
       {/* 헤더, 유저박스 */}
 
 

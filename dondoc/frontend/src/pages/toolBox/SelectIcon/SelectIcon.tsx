@@ -11,8 +11,8 @@ function SelectIcon(props) {
     <div className={styles.IconBox}>
         {Bank_List.map((bank,index)=>(
             <div key={index} onClick={()=>{clickHandler(bank.code)}} className={styles.Icon}>
-            <img src={`/src/assets/Bank_Logo/${bank.code}.svg`} alt="" />
-            <p>{bank.bank}</p>
+            <img style={{width:"30%"}} src={`/src/assets/Bank_Logo/${bank.code}.svg`} alt="" />
+            <p style={{fontFamily:"NT",fontSize:"1.5rem",margin:"2%",}}>{bank.bank}</p>
             </div>
         ))}
     </div>

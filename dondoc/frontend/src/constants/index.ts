@@ -25,5 +25,6 @@ const Bank_List = [
   {code: 89, bank: '케이뱅크'},
   {code: 90, bank: '카카오뱅크'},
   {code: 92, bank: '토스뱅크'},
+  {code: 108, bank: '돈독뱅크'}
 ]
 export {BASE_URL, Bank_List}
