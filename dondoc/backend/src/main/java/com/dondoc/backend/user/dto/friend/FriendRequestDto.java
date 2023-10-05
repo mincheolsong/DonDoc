@@ -6,7 +6,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.Column;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FriendRequestDto {
@@ -43,6 +46,8 @@ public class FriendRequestDto {
         private Long friendId;
         private int imageNumber;
         private String nickName;
+        private int status;
+        private LocalDateTime createdAt;
     }
 
     @Data
@@ -52,6 +57,8 @@ public class FriendRequestDto {
         private Long userId;
         private int imageNumber;
         private String nickName;
+        private int status;
+        private LocalDateTime createdAt;
     }
 
 

@@ -222,6 +222,8 @@ public class FriendServiceImpl implements FriendService{
                     .friendId(friend.getUser().getId())
                     .nickName(friend.getUser().getNickName())
                     .imageNumber(friend.getUser().getImageNumber())
+                    .createdAt(friend.getCreatedAt())
+                    .status(friend.getStatus())
                     .build();
 
             result.add(temp);
@@ -254,6 +256,8 @@ public class FriendServiceImpl implements FriendService{
                     .userId(friendInfo.getId())
                     .nickName(friendInfo.getNickName())
                     .imageNumber(friendInfo.getImageNumber())
+                    .createdAt(friend.getCreatedAt())
+                    .status(friend.getStatus())
                     .build();
 
             result.add(temp);
