@@ -221,10 +221,25 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
               <div className={styles.requestdetail}>
                 <h2 className={styles.requestlabel}>미션상세</h2>
                 <div className={styles.requestcontentbox}>
-                  <p>{missionInfo.content}원</p>
+                  <p>{missionInfo.content}</p>
                 </div>
               </div>
-              <input type="password" onChange={ChangePassword} placeholder="미션을 승인하는 경우 비밀번호 입력"/>
+
+              {memberType ? (
+                <></>
+              ):(
+                <>
+                  {requestState ? (
+                    <></>
+                  ):(
+                    <div className={styles.passwordinput}>
+                      <label htmlFor="">비밀번호</label>
+                      <input type="password" onChange={ChangePassword} placeholder="미션을 승인하는 경우 비밀번호 입력"/>
+                    </div>
+                  )}
+                </>
+              )}
+
             </div>
           ) : (
             <div className={styles.requestinfo}>
@@ -256,25 +271,6 @@ function RequestInfo({moimId, requestType, token, requestId, requestState, membe
             </div>
           )}
         </div>
-
-        {/* {!requestState || !memberType ? (
-          <>
-            {requestType? (
-              <div className={styles.btns}>
-                <button onClick={RefuseMission} className={styles.refusebtn}>거절하기</button>
-                <button onClick={AcceptMission} className={styles.acceptbtn}>승인하기</button>
-              </div>
-            ):(
-              <div className={styles.btns}>
-                <button onClick={RefuseMoney} className={styles.refusebtn}>거절하기</button>
-                <button onClick={AcceptMoney} className={styles.acceptbtn}>승인하기</button>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-          </>
-        )} */}
 
         {memberType ? (
           <></>
