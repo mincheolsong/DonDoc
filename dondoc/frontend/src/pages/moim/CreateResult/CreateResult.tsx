@@ -63,10 +63,6 @@ function CreateResult() {
     "password": password
   }
 
-  const showdata = () => {
-    console.log(data)
-  }
-
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false); // 약관 동의 상태를 저장하는 상태 변수
 
   const CreateMoim = async () => {
@@ -79,8 +75,7 @@ function CreateResult() {
               'Authorization': 'Bearer ' + token,
             },
           });
-          console.log(response.data);
-          alert('모임이 생성되었습니다.');
+          alert(response.data.response.msg);
           navigate('/moimhome');
         } catch (error) {
           console.log('error:', error);
@@ -139,17 +134,13 @@ function CreateResult() {
                   약관보기
                 </button>
               </div>
-              {/* <div className={styles.checkbox}>
-                <input type="checkbox" id="scales" name="sclaes" /><label htmlFor="scales">약관에 동의합니다</label>
-              </div> */}
               <div className={styles.checkbox}>
                 <input
                   type="checkbox"
                   id="scales"
                   name="sclaes"
                   checked={agreeTerms}
-                  onChange={() => setAgreeTerms(!agreeTerms)}
-                />
+                  onChange={() => setAgreeTerms(!agreeTerms)}/>
                 <label htmlFor="scales">약관에 동의합니다</label>
               </div>
             </div>
@@ -175,7 +166,6 @@ function CreateResult() {
           )}
 
       </div>
-      <button onClick={showdata}></button>
     </div>
   );
 }
