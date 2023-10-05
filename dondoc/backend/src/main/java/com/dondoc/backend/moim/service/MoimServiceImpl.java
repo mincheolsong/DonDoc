@@ -445,13 +445,12 @@ public class MoimServiceImpl implements MoimService{
 
                 // 해당 모임에서의 미션 요청 -> status가 0과 1만 조회 (미션 거절이 되지 않은 것)
                 // 정렬 -> 1. status 오름차순, 2. CreatedAt 내림차순
-                missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
-
+                missionList = missionRepository.memberMissionList(member, member.getMoim().getId(),0,1);
+                //missionList = missionRepository.findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member, member.getMoim(), 0, 1);
             } else { // 전체 조회
 
                 withdrawRequestList = withdrawRequestRepository.findByMoimMember_MoimAndStatusOrderByCreatedAtDesc(member.getMoim(), 0);
-                missionList = missionRepository.test1(member.getMoim().getId(),0,1);
-//                missionList = missionRepository.findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(member.getMoim(), 0, 1);
+                missionList = missionRepository.missionList(member.getMoim().getId(),0,1);
             }
 
 

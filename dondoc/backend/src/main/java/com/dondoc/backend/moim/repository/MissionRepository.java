@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 
+
     List<Mission> findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim, int status1, int status2);
     List<Mission> findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc(Moim moim, int status1, int status);
     List<Mission> findByMoimMemberAndMoimMember_MoimOrderByStatusAscCreatedAtDesc(MoimMember moimMember, Moim moim);
@@ -21,8 +22,10 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     Optional<Mission> findByMoimMemberAndMoimMember_MoimAndId(MoimMember moimMember, Moim moim, Long id);
     Optional<Mission> findByMoimMember_MoimAndId(Moim moim, Long id);
 
-//    findByMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc
-    @Query("select m from Mission m where m.moimMember.moim.id=:moimId and (m.status=:status1 or m.status=:status2)")
-    List<Mission> test1(@Param("moimId")Long moimId,@Param("status1") int status1,@Param("status2") int status2);
+    @Query("select m from Mission m where m.moimMember.moim.id=:moimId and (m.status=:status1 or m.status=:status2) order by m.status, m.createdAt desc")
+    List<Mission> missionList(@Param("moimId")Long moimId, @Param("status1") int status1,@Param("status2") int status2);
 
+    // findByMoimMemberAndMoimMember_MoimAndStatusOrStatusOrderByStatusAscCreatedAtDesc
+    @Query("select m from Mission m where m.moimMember=:member and m.moimMember.moim.id=:moimId and (m.status=:status1 or m.status=:status2) order by m.status, m.createdAt desc")
+    List<Mission> memberMissionList(@Param("member") MoimMember member, @Param("moimId")Long moimId, @Param("status1") int status1,@Param("status2") int status2);
 }
