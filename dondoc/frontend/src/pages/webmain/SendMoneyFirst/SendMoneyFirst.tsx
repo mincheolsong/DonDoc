@@ -140,7 +140,7 @@ function SendMoneyFirst() {
 
   return (
     <div className={styles.container}>
-      <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="0.8rem" />
+      <BackLogoHeader name="송금하기" left="5rem" fontSize="2rem" top="2%" />
       <div className={styles.midContainer}>
       {secondSuccessModal ? <OneBtnModal width="80vw" height="30vh" title={false} titleText="" contentFont="1.3rem" contentText={failText} btncolor="white" btnTextColor="black" btnText="닫기" callback={modalclose} /> : ''}
         <p style={{fontSize:"2.7rem", fontWeight:"bold",marginTop:"3rem",fontFamily:"BT"}}>
