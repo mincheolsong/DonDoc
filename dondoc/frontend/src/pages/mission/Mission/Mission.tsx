@@ -73,8 +73,8 @@ function Mission() {
     <>
     <Header />
     <div>
-    <img style={{marginTop:"5%",marginBottom:"2%",marginLeft:"30%",width:"40%"}} src={`/src/assets/characterImg/${userInfo.imageNumber}.png`} alt="" />
-    <div style={{marginTop:"5%",marginBottom:"2%",marginLeft:"33%",width:"40%", fontSize:"2.8rem"}}>나의 미션</div>
+    <img style={{marginTop:"12%",marginBottom:"2%",marginLeft:"30%",width:"40%"}} src={`/src/assets/characterImg/${userInfo.imageNumber}.png`} alt="" />
+    <div style={{marginTop:"5%",marginBottom:"2%",marginLeft:"33%",width:"40%", fontSize:"2.8rem",fontFamily:"BD",fontWeight:"bold"}}>나의 미션</div>
     </div>
     <div className={styles.List}>
 
@@ -95,7 +95,9 @@ function Mission() {
       </div>
        
 ))) :
-<div className={styles.ResultContainer}>등록된 미션이 없습니다.</div>}
+<div style={{width:"100%",display:"flex",justifyContent:"center",marginTop:"5%"}}>
+<div style={{width:"90%",backgroundColor:"white",display:"flex",justifyContent:"center",alignItems:"center",borderRadius:"0.8rem"}}>
+<p className={styles.ResultContainer}>등록된 미션이 없습니다.</p></div></div>}
 
 
     </div>

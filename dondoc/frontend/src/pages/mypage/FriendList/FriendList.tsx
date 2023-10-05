@@ -87,7 +87,7 @@ const deleteF = ( params:number, e:React.MouseEvent<HTMLButtonElement> )=>{
       {deleteFBox ?  <TowBtnModal callbackRight={deleteFriendR} callbackLeft={deleteFriendL} leftBtnText="친구 삭제" leftBtnColor="#FF001F" leftBtnTextColor="white" rightBtnColor="white"  rightBtnText="취소" rightBtnTextColor="black" contentFont="1.5rem" contentText="친구 삭제를 하시겠습니까?" width="90vw" height="35vh" /> : ""}
     <BackLogoHeader name="친구목록" left="13%" fontSize="1.5rem" top="3%"/>
     <div className={styles.mainBox}>
-      <div style={{marginBottom:"20%"}}>
+      <div style={{marginBottom:"16%"}}>
       <input onChange={searchF} className={styles.searchBox} placeholder="이름, 전화번호" type="text" name="" id="" />
       <BiSearch className={styles.searchIcon}/>
       </div>

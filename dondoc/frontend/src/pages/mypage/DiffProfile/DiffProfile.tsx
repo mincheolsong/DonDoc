@@ -249,11 +249,11 @@ function DiffProfile() {
        {deleteFriendModal ? <TowBtnModal width="90vw" height="30vh" contentText="친구 삭제를 하시겠습니까?" contentFont="1.5rem" rightBtnText="취소" leftBtnText="친구삭제" rightBtnColor="white" rightBtnTextColor="black" leftBtnColor="#FF001F" leftBtnTextColor="white" callbackLeft={typeThree} callbackRight={closeDeleteFriendModal}  /> : ""}
 
        <p style={{fontWeight:"bold",fontSize:"2rem",margin:"0",marginTop:"3%"}}>{profile?.nickName} </p>
-        {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"1%"}}>{profile?.name}</p> :""}
-        {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white"}}>친구요청</button> : ""}
-        {requestRelation == 1 ? <button onClick={typeOne} className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white"}} >승인대기</button> : ""}
-        {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold"}}>수락하기</button> : ""}
-        {requestRelation == 3 ? <button onClick={()=>{setDeleteFriendModal(!deleteFriendModal)}}className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold"}}>나의친구</button> : ""}
+        {requestRelation == 3 ? <p style={{fontSize:"1.5rem",fontWeight:"bold",color:"#969696",margin:"0",marginTop:"1%",marginBottom:"1%",fontFamily:"NT"}}>{profile?.name}</p> :""}
+        {requestRelation == 0 ? <button onClick={typeZero} className={styles.friendBtn} style={{backgroundColor:"#3772FF",color:"white",fontWeight:"bold",fontFamily:"BD"}}>친구요청</button> : ""}
+        {requestRelation == 1 ? <button onClick={typeOne} className={styles.friendBtn} style={{backgroundColor:"#C2C2C2",color:"white",fontWeight:"bold",fontFamily:"BD"}} >승인대기</button> : ""}
+        {requestRelation == 2 ? <button onClick={()=>{setAccessModal(!accessModal)}} className={styles.friendBtn} style={{backgroundColor:"white",color:"#3772FF",fontWeight:"bold",fontFamily:"LH"}}>수락하기</button> : ""}
+        {requestRelation == 3 ? <button onClick={()=>{setDeleteFriendModal(!deleteFriendModal)}}className={styles.friendBtn} style={{backgroundColor:"white",color:"black",fontWeight:"bold",fontFamily:"NT",border:"0.1px solid #C2C2C2"}}>나의친구</button> : ""}
 
         {requestRelation == 3 ? 
         <div className={styles.accountBox}>
