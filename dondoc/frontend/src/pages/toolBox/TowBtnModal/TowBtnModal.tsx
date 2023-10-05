@@ -28,7 +28,8 @@ export function TowBtnModal(props:TowBtnModal){
   }
 
   return(
-    <div style={{display:"flex",justifyContent:"center", zIndex:"2",position:"fixed",top:"15%"}}>
+    <div className={styles.boxbox}>
+    <div style={{display:"flex",justifyContent:"center", zIndex:"1", position:"fixed"}}>
       <div className={styles.nomalBox} style={{width:props.width, height: props.height}}>
        {props.title ? <p  style={{fontSize:props.titleFont, marginTop:"0" ,fontWeight:"bold"}}>{props.titleText}</p> : ''}
         <p  style={{fontSize:props.contentFont, fontWeight:"bold"}}>{props.contentText}</p>
@@ -46,6 +47,7 @@ export function TowBtnModal(props:TowBtnModal){
           className={styles.modalButton} style={{backgroundColor:props.rightBtnColor, color:props.rightBtnTextColor,fontSize:"1rem"}}>{props.rightBtnText}</button>
         </div>
       </div> 
+    </div>
     </div>
   )
 }

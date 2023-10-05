@@ -3,6 +3,7 @@ import dondoc from '../../../assets/image/dondocLogo.png'
 import { useNavigate } from "react-router-dom";
 import { BackLogoHeader } from "../../toolBox/BackLogoHeader/BackLogoHeader";
 import { useEffect, useState } from "react";
+import { moim } from "../../../api/api";
 
 function SignUpFirst() {
   const naviate = useNavigate();
@@ -25,7 +26,7 @@ function SignUpFirst() {
   const [name, setName] = useState<string>("");
   const [certificationBtn,setCertificationBtn] = useState<boolean>(false);
   const [smsInput,setSmsInput] = useState<string>('');
-  const [smsResponse,setSmsResponse] = useState<string>(0);
+  const [smsResponse,setSmsResponse] = useState<string>();
 //
   const [phoneMsg, setPhoneMsg] = useState<string>("");
   const [smsMsg,setSmsMsg] = useState<string>('');
@@ -49,7 +50,7 @@ function SignUpFirst() {
     }
   };
 
-  const onChangeName = (e) => {
+  const onChangeName = (e:React.ChangeEvent<HTMLInputElement>) => {
     const currentName = e.target.value;
     setName(currentName);
   };
@@ -84,11 +85,12 @@ function SignUpFirst() {
           <p style={{fontSize:"1.5rem",fontWeight:"bold", marginBottom:"0.5rem",marginTop:"0.3rem"}}>회원가입</p>
         </div>
   
+
         <div className={styles.mainContainerBottom}>
           <div style={{width:"80%"}}>
           <SignUpInput1 type='text' innerText='이름' change={onChangeName} helpMsg={""} inner={true}/>
           </div>
-          <div style={{display:"flex",flexDirection:"row",width:"80%",alignItems:"center"}}>
+          <div style={{display:"flex",flexDirection:"row",width:"80%",alignItems:"start"}}>
          
           {certificationBtn ?  
             <div style={{display:"flex",width:"100%",flexDirection:"column"}}>
@@ -97,14 +99,27 @@ function SignUpFirst() {
           </div>
           :  <SignUpInput1 type='text' innerText='전화번호' change={onChangePhone} helpMsg={phoneMsg} inner={innerColor}/>}
           {certificationBtn ? <button className={styles.confirmPass2dis}>인증하기</button> : <button onClick={()=>{
-            setCertificationBtn(true)
+            if(validatePhone(phone)){setCertificationBtn(true)
+              moim.post(`/api/user/sms/signup/${phone}`,null)
+              .then((response)=>{
+                console.log(response)
+                const resNum = response.data.response.certificationNumber
+                setSmsResponse(resNum)
+              }).catch((err)=>{
+                console.log(err)
+              })}
+              else{
+                setPhoneMsg("ex) -를 제외한 11자리 전화번호를 입력해주세요.")
+              }
+            
+
           }} className={styles.confirmPass2}>인증하기</button>}
           
         </div>
         </div>
           {certificationBtn ? 
           <div>
-            <input onChange={onChangeCer} placeholder="인증번호를 입력해주세요." className={styles.cerInput} type="text" name="" id="" /> <button style={{border:"0", backgroundColor:"#0D6EFD",color:"white", borderRadius:"0.5rem",height:"3.8rem",marginLeft:"3%"}} onClick={cerBtn}>확인</button>
+            <input onChange={onChangeCer} placeholder="인증번호를 입력해주세요." className={styles.cerInput} type="text" name="" id="" /> <button style={{width:"5.5rem",border:"0", backgroundColor:"#0D6EFD",color:"white", borderRadius:"0.5rem",height:"3.8rem",marginLeft:"3%"}} onClick={cerBtn}>확인</button>
             <p style={{marginLeft:"10%",color:smsColor ?  "green" : "#FF001F " ,fontWeight:"bold"}}>{smsMsg}</p>
           </div>
           
