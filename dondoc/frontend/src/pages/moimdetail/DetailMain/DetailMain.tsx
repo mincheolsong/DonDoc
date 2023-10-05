@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { useEffect, useState } from 'react'
 import BackLogoHeader from "../../toolBox/BackLogoHeader/BackLogoHeader";
-
+import ItemsCarousel from 'react-items-carousel';
 
 function DetailMain() {
 
@@ -24,7 +24,7 @@ function DetailMain() {
   const accountId = state.accountId
 
   const [moimName, setMoimName] = useState<string>('')
-
+  const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,14 +47,30 @@ function DetailMain() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <>
 
 <BackLogoHeader name={moimName} fontSize="2rem" left="5rem" top="0.8rem"/>
-
-      <DetailFirst userType={userType} accountId={accountId} moimId={moimId}/>
+    
+<div className={styles.container}>
+    <ItemsCarousel
+    requestToChangeActive={setActiveItemIndex}
+    activeItemIndex={activeItemIndex}
+    numberOfCards={1}
+    className={styles.Carousel}
+>
+    <div className={styles.container}>
+      <DetailFirst userType={userType} accountId={accountId} moimId={moimId}/>  
+    </div>
+    <div className={styles.container}>
       <DetailSecond moimId={moimId} memberType={userType}/>
+    </div>
+    <div className={styles.container}>
       <DetailThird />
     </div>
+    </ItemsCarousel>
+  </div>
+
+    </>
   );
 }
 

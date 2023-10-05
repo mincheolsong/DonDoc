@@ -78,7 +78,7 @@ function Mission_Detail({setOpenModal, Mi}:Props) {
 
   
           <div className={styles.btns}>
-            <button onClick={ConfirmOpen} className={styles.refusebtn}>거절하기</button>
+            <button onClick={ConfirmOpen} className={styles.refusebtn}>포기하기</button>
             <button onClick={CloseModal} className={styles.acceptbtn}>닫기</button>
           </div>
         
