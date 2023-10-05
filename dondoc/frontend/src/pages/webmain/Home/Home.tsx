@@ -53,7 +53,7 @@ function Home() {
     .catch((err)=>{
       // console.log(err)
     }).finally(()=>{
-      console.log(allAccount)
+     
     })
     // console.log(userInfo)
    
