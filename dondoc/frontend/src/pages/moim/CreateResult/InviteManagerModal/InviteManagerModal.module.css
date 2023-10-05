@@ -93,6 +93,24 @@
     /* border: 1px solid blue; */
 }
 
+.appendbtn {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    height: 70%;
+    width: 25%;
+}
+
+.appendbtn button {
+    height: 100%;
+    width: 90%;
+    background-color: #0D6EFD;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 900;
+    color: white;
+}
+
 .btndiv {
     width: 30%;
     height: 3rem;

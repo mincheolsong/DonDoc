@@ -75,7 +75,7 @@ function ChargeMoimAccount(props: Props) {
 
         <div className={styles.toptab}>
           <div className={styles.requesttext}>
-            <p style={{color: '#7677E8', borderBottom: '4px solid #7677E8'}}>초대하기</p>
+            <p style={{color: '#7677E8', borderBottom: '4px solid #7677E8'}}>충전하기</p>
           </div>
         </div>
 

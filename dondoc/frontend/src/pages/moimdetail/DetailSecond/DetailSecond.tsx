@@ -127,15 +127,18 @@ function DetailSecond({moimId}: Props) {
               <>
                 {withdrawRequestList.length > 0 && withdrawRequestList.map((money, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(0, money.withdrawId)}>
-                    <p>{money.amount}</p>
-                    <p>{money.withdrawId}</p>
-                    <p>{money.imageNumber}</p>
-                    <p>{money.category.id}</p>
-                    <p>{money.category.name}</p>
-                    <p>{money.content}</p>
-                    <p>{money.moimMemberName}</p>
-                    <p>{money.status}</p>
-                    <p>{money.title}</p>
+                    <div className={styles.imgdiv}>
+                      <div className={styles.imgbox}>
+                        <img src={`/src/assets/characterImg/${money.imageNumber}.png`} alt="" />
+                      </div>
+                      <p className={styles.statebox}>
+                        {money.status}
+                      </p>
+                    </div>
+                    <div className={styles.requestInfo}>
+                      div.{styles.name}
+                    </div>
+
                   </div>
                 ))}
               </>
@@ -143,6 +146,8 @@ function DetailSecond({moimId}: Props) {
               <>
                 {missionList.length > 0 && missionList.map((mission, index) => (
                   <div className={styles.requestunit} key={index} onClick={() => OpenInfoModal(1, mission.missionId)}>
+
+
                     <p>{mission.amount}</p>
                     <p>{mission.missionId}</p>
                     <p>{mission.imageNumber}</p>
