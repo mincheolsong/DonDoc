@@ -15,7 +15,7 @@ interface BackLogoHeaderType{
 export function BackLogoHeader(props:BackLogoHeaderType){
   const naviate = useNavigate();
   return(
-    <div style={{display:"flex",justifyContent:"start", }}>
+    <div style={{display:"flex",justifyContent:"start",fontFamily:"BD"}}>
     <IconContext.Provider  value={{className: styles.backLogo}}>
       <div onClick={()=>{
         naviate(-1)

@@ -66,9 +66,10 @@ function Noti_List() {
       <div className={styles.CntBox}>{Cnt}</div> :
       <></>
       }
-    <div style={{marginLeft:"1rem",textAlign:"center"}}>
-      <p style={{fontSize:"1.6rem",fontWeight:"bold"}}>친구추가 요청</p>
-      <p style={{fontSize:"1rem"}}>친구추가를 하거나 무시합니다.</p>
+    <div style={{marginLeft:"1rem",textAlign:"center",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
+      <p style={{fontSize:"1.6rem",fontWeight:"bold",fontFamily
+    :"BD"}}>친구추가 요청</p>
+      <p style={{fontSize:"1rem",fontFamily:"LH",fontWeight:"bold"}}>친구추가를 하거나 무시합니다.</p>
     </div>
       </div>
   </div>
