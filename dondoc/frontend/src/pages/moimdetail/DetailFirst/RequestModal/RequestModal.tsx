@@ -26,12 +26,12 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
   const [nowSelected, setNowSelected] = useState<boolean>(true)
   
   const [moneyTitle, setMoneyTitle] = useState<string>('')
-  const [moneyAmount, setMoneyAmount] = useState<number>(0)
+  const [moneyAmount, setMoneyAmount] = useState<number>()
   const [moneyContent, setMoneyContent] = useState<string>('')
   const [moneyCategory, setMoneyCategory] = useState<number>(0)
   
   const [missionTitle, setMissionTitle] = useState<string>('')
-  const [missionAmount, setMissionAmount] = useState<number>(0)
+  const [missionAmount, setMissionAmount] = useState<number>()
   const [missionContent, setMissionContent] = useState<string>('')
   const [deadLine, setDeadLine] = useState<string>("2023-10-03")
 
@@ -156,7 +156,7 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
               <img src={MoneyIcon} alt="" />
             </div>
             <div className={styles.requesttext}>
-              <p style={{color: nowSelected ? '#7677E8' : '', borderBottom: nowSelected ? '2px solid #7677E8' : ''}}>요청하기</p>
+              <p style={{color: nowSelected ? '#7677E8' : '', borderBottom: nowSelected ? '2px solid #7677E8' : '',fontWeight:"bold",fontFamily:"BD"}}>요청하기</p>
             </div>
           </div>
 
@@ -176,16 +176,16 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
             <>
               <div className={styles.inputs}>
                 <div className={styles.requestname}>
-                  <input type="text" placeholder="요청명" onChange={ChangeMoneyTitle} value={moneyTitle}/>
+                  <input style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} type="text" placeholder="요청명" onChange={ChangeMoneyTitle} value={moneyTitle}/>
                 </div>
                 <div className={styles.requestcost}>
-                  <input type="text" placeholder="금액(원)" onChange={ChangeMoneyAmount} value={moneyAmount}/>
+                  <input style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} type="text" placeholder="금액(원)" onChange={ChangeMoneyAmount} value={moneyAmount}/>
                 </div>
                 <div className={styles.requestinfo}>
-                <textarea placeholder="요청상세" onChange={ChangeMoneyContent} value={moneyContent}></textarea>
+                <textarea style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} placeholder="요청상세" onChange={ChangeMoneyContent} value={moneyContent}></textarea>
                 </div>
                 <div className={styles.requestcategory}>
-                  <select name="category" id="category" onChange={ChangeMoneyCategory} value={moneyCategory}>
+                  <select style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} name="category" id="category" onChange={ChangeMoneyCategory} value={moneyCategory}>
                     <option value={0}>쇼핑</option>
                     <option value={1}>교육</option>
                     <option value={2}>식사</option>
@@ -198,8 +198,8 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
               </div>
 
               <div className={styles.btns}>
-                <button onClick={ModalClose}>닫기</button>
-                <button onClick={RequestMoney}>등록하기</button>
+                <button style={{fontFamily:"BD",fontWeight:"bold"}} onClick={ModalClose}>닫기</button>
+                <button style={{fontFamily:"BD",fontWeight:"bold"}} onClick={RequestMoney}>등록하기</button>
               </div>
 
             </>
@@ -208,25 +208,25 @@ function RequestModal({setModalOpen, userId, moimId, userType}: Props) {
               <div className={styles.inputs}>
 
                 <div className={styles.requestname}>
-                  <input type="text" placeholder="미션명" onChange={ChangeMissionTitle} value={missionTitle}/>
+                  <input style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} type="text" placeholder="미션명" onChange={ChangeMissionTitle} value={missionTitle}/>
                 </div>
                 <div className={styles.requestname}>
-                  <input type="text" placeholder="금액(원)" onChange={ChangeMissionAmount} value={missionAmount}/>
+                  <input style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} type="text" placeholder="금액(원)" onChange={ChangeMissionAmount} value={missionAmount}/>
                 </div>
                 <div className={styles.requestname}>
-                  <textarea placeholder="요청상세" onChange={ChangeMissionContent} value={missionContent}></textarea>
+                  <textarea style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} placeholder="요청상세" onChange={ChangeMissionContent} value={missionContent}></textarea>
                 </div>
                 <div className={styles.requestname}>
-                  <label htmlFor="">종료일자</label>
-                  <input type="date" onChange={ChangeMissionDeadLine} value={deadLine}/>
+                  <label style={{fontFamily:"BD",fontWeight:"bold"}} htmlFor="">종료일자</label>
+                  <input style={{border:"0.1rem solid #C5C5C5",fontFamily:"BD",fontWeight:"bold"}} type="date" onChange={ChangeMissionDeadLine} value={deadLine}/>
                 </div>
 
               </div>
 
 
               <div className={styles.btns}>
-                <button onClick={ModalClose}>닫기</button>
-                <button onClick={RequestMission}>등록하기</button>
+                <button style={{fontFamily:"BD",fontWeight:"bold"}} onClick={ModalClose}>닫기</button>
+                <button style={{fontFamily:"BD",fontWeight:"bold"}} onClick={RequestMission}>등록하기</button>
               </div>
 
             </>

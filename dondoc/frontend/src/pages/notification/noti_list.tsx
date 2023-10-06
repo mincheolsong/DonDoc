@@ -58,7 +58,7 @@ function Noti_List() {
       <BackLogoHeader name="알림" left="6rem" top="2%" fontSize="1.8rem" />
       </div>
     <div className={styles.topContainer} onClick={goDetail}>
-      <div style={{display:"flex",width:"60%"}}>
+      <div style={{display:"flex",width:"80%"}}>
       {Cnt ?
       <img src={`/src/assets/characterImg/${FriendRe[Cnt-1].imageNumber}.png`} style={{width:"35%"}} />:
       <img src={`/src/assets/characterImg/0.png`} style={{width:"35%"}} />}
@@ -66,9 +66,8 @@ function Noti_List() {
       <div className={styles.CntBox}>{Cnt}</div> :
       <></>
       }
-    <div style={{marginLeft:"1rem",textAlign:"center",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center"}}>
-      <p style={{fontSize:"1.6rem",fontWeight:"bold",fontFamily
-    :"BD"}}>친구추가 요청</p>
+    <div style={{marginLeft:"1rem",textAlign:"center",display:"flex",justifyContent:"center",flexDirection:"column",alignItems:"center",width:"100%"}}>
+      <p style={{fontSize:"1.6rem",fontWeight:"bold",fontFamily:"BD"}}>친구추가 요청</p>
       <p style={{fontSize:"1rem",fontFamily:"LH",fontWeight:"bold"}}>친구추가를 하거나 무시합니다.</p>
     </div>
       </div>

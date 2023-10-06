@@ -283,7 +283,7 @@ function DetailFirst({userType, accountId, moimId}: Props) {
               </div>
               <div className={styles.accountbalance}>
                 <div className={styles.accountwon}>
-                  <p style={{fontSize: "2.8rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance}</p>
+                  <p style={{fontSize: "2.8rem", fontWeight:'900', margin: "0rem"}}>{moimDetailInfo.balance.toLocaleString()}</p>
                   <p style={{fontSize: "2.8rem", fontWeight:'900', margin: "0rem"}}>원</p>
                 </div>
                 <div className={styles.chargebalance}>

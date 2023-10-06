@@ -241,7 +241,7 @@ function DiffProfile() {
 
       <div  className={styles.mainContainer}>
     
-      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%",fontFamily:"NT"}}>{profile?.nickName} 의페이지</p>
+      <p style={{fontWeight:"bold",fontSize:"3rem",margin:"0",marginTop:"10%",fontFamily:"NT"}}>{profile?.nickName}의 페이지</p>
       <div className={styles.characterBox}>
         <img style={{width:"90%"}}  src={`/src/assets/characterImg/${profile?.imageNumber}.png`} alt="" />
        </div>

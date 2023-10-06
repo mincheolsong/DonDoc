@@ -48,6 +48,8 @@
 }
 
 .requesttext p {
+    font-family: "BD";
+    font-weight: bold;
     margin: 0rem;
     font-size: 2rem;
     font-weight: 900;
