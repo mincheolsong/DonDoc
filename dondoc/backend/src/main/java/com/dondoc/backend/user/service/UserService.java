@@ -17,9 +17,18 @@ public interface UserService {
 
     ProfileDto.Response myProfile(Long userId);
 
-    FindUserDto.Response findUser(String phoneNumber);
+    FindUserDto.Response findUser(String phoneNumber, String username);
 
-    UpdateUserDto.Response updateUser(UpdateUserDto.Request req, Long id);
 
     User findById(Long userId);
+
+    void logOut(String token);
+
+    IntroduceDto.Response changeIntroduce(Long userId, String introduce);
+
+    UpdateUserDto.Response updateImage(Long userId, int imageNumber);
+
+    UpdateUserDto.Response updateNickName(Long userId, String nickName);
+
+    UpdateUserDto.Response updatePassword(Long userId, UpdateUserDto.Request req);
 }

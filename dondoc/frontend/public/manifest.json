@@ -8,7 +8,7 @@
     "description": "PWA with Vite.js, React.js and TypeScript",
     "icons": [
       {
-        "src": "icons/haaland.png",
+        "src": "icons/ddlogo.svg",
         "sizes": "512x512",
         "type": "image/png"
       }

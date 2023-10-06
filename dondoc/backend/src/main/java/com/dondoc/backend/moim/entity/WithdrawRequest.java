@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,7 +46,7 @@ public class WithdrawRequest {
     private int status;
 
     @OneToMany(mappedBy = "withdrawRequest")
-    private List<AllowRequest> allowRequest;
+    private List<AllowRequest> allowRequest = new ArrayList<>();
 
     @Column(name="createdAt", updatable = false)
     @CreatedDate

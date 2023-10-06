@@ -1,0 +1,77 @@
+.container {
+    z-index: 10000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    background-color: white;
+    width: 80vw;
+    max-width: 500px; /* 모달 최대 너비 설정 */
+    height: 80vh;
+    max-height: 550px; /* 모달 최대 높이 설정 */
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+}
+
+.toptab {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+    height: 4rem;
+}
+
+.requesttext {
+    text-align: center;
+}
+
+.requesttext p {
+    margin: 1rem;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+
+.inputgroup {
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: center;
+}
+
+.inputbox {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.inputbox h3 {
+    margin-bottom: 0.5rem;
+}
+
+.inputbox input {
+    width: 24.9rem;
+    height: 3rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+
+
+
+.infobtns {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.infobtns button {
+    width: 12rem;
+    height: 3.6rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
+}

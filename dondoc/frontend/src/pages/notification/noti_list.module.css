@@ -1,0 +1,73 @@
+/* your css code */
+.Background {
+  width: 100%;
+  height: 100%;
+}
+
+.SearchBar {
+  width: 80vw;
+  height: 6vh;
+  margin-top: 5%;
+  margin-left: 10%;
+  border: white;
+  border-radius: 0.5rem;
+}
+
+
+.SearchBar::placeholder {
+  text-align: right;
+
+}
+
+.User {
+  background-color: white;
+  width: 100vw;
+  height: 12vh;
+  margin-top: 15%;
+}
+
+.ResultContainer{
+  font-size: 20px ;
+  text-align: center;
+  margin-top: 25%;
+  width: 100%;
+  height: 10rem;
+}
+
+.topContainer{
+  margin-top: 13%;
+  width: 100vw;
+  height: 10rem;
+  background-color: white;
+  border-radius: 0.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.myProfileBtn{ 
+  background-color: white;
+  border-radius: 0.8rem;
+  border: solid #E4E4E4 0.1rem;
+  height: 2rem;
+  color: black;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-right: 1rem;
+  background-color: skyblue;
+}
+
+.CntBox {
+  background-color: red;
+  height: 3vh;
+  width: 5vw;
+  padding-top: 1%;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: white;
+  position: absolute;
+  margin-left: 13%;
+}
+

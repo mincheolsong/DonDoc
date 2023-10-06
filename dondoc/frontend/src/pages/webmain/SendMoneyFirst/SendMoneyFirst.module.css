@@ -17,19 +17,25 @@
     justify-content: space-between;
     margin-bottom: 0px;
     min-height: 6rem;
+    max-width: 100vw;
 }
 .bankBtn{
     background-color: white;
     border: solid 0px;
     border-radius: 0.7rem;
     margin-right: 2rem;
+    min-width: 20%;
+    margin-left: 3%;
 }
 
 .inputBox{
+    width: 100%;
     border: 0;
     border-radius: 0.7rem;
     font-size: 2rem;
     font-weight: bold;
+    font-family: "NT";
+    margin-right: 3%;
 }
 
 .confirmBtn{
@@ -43,6 +49,7 @@
     border: 0;
     margin-bottom: 1rem;
     font-weight: bold;
+    font-family: "BD";
 }
 
 /*눌렸을때 */
@@ -61,18 +68,29 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    overflow: hidden;
+    overflow: scroll;
     width: 95%;
     height: 60vh;
 }
 
 .searchBox{
-    border: 0.2rem #DFDFE6 solid; 
+    margin-top: 2rem;
+    border: 0.2rem solid #DFDFE6;
     border-radius: 0.5rem;
-    height: 2rem;
-    margin-right: 2rem;
-
+    width: 80vw;
+    height: 5rem;
+    font-family: "NT";
+    font-weight: bold;
 }
+.searchIcon{
+    position: fixed;
+    right: 10%;
+    width: 4rem;
+    height: 4rem;
+    bottom: 43%;
+    color: #CBCBCB;
+}
+
 
 .friendAccount{
     display: flex;
@@ -91,3 +109,16 @@
 }
 
 
+.friendBox{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    margin: 0;
+    width: 90vw;
+    height: 10vh;
+    align-items: center;
+    justify-content: start;
+    margin-left: 3%;
+    font-family: "NT";
+
+}

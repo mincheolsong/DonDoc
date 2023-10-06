@@ -22,7 +22,7 @@ function SignupTemp() {
           </div>
         <div style={{width:"95%",display:"flex", flexDirection:"column", justifyContent:"end",marginTop:"2em"}}>
         <button onClick={()=>{
-          navigate('/')
+          navigate('/callaccount')
         }} className={styles.confirmBtn}>확인</button>
         </div>
       </div>

@@ -2,46 +2,45 @@ package com.dondoc.backend.webSocket;
 import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import java.util.Map;
+/*
 @Component
 @RequiredArgsConstructor
-public class WebSocketInterceptor {
+public class WebSocketInterceptor extends HttpSessionHandshakeInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
-    @EventListener
-    public void handleSessionConnected(SessionConnectedEvent event) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        String token = accessor.getFirstNativeHeader("Authorization"); // Extract JWT token
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        // WebSocket 연결 요청을 처리하기 전에 실행되는 부분입니다.
+        // 예: 요청 헤더에서 JWT 토큰을 추출하고 유효성을 검사합니다.
+        String token = request.getHeaders().getFirst("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            // Validate and decode JWT token, and extract user information
-            if(jwtTokenProvider.isTokenExpired(token)){ // 민철아 외쿡인인가봐.... 문제생기면 말해줘 이부분 만료 검사만 하는 메서드야
-                String userId = jwtTokenProvider.getRefreshClaims(token).getSubject();
-                accessor.getSessionAttributes().put("userId", userId);
+            if (!jwtTokenProvider.isTokenExpired(token)) {
+                // JWT 토큰이 유효한 경우, 사용자 정보를 추출하고 속성(attributes)에 저장합니다.
+                String userId = jwtTokenProvider.getClaims(token).getSubject();
+                attributes.put("userId", userId);
             }
-            // Store user information in WebSocketSession, e.g., using accessor.getSessionAttributes()
-        }
-    }
-
-    // You can also handle disconnect events to clean up session-related data if needed.
-    @EventListener
-    public void handleSessionDisconnect(SessionDisconnectEvent event) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        String userId = (String) accessor.getSessionAttributes().get("userId");
-
-        if (userId != null) {
-            // 연결이 끊어진 사용자의 userId 정보를 제거
-            accessor.getSessionAttributes().remove("userId");
-
-            // 로그아웃 시간 기록 또는 로그아웃 이벤트 처리
-            // 로그아웃 시간을 데이터베이스에 기록하는 등의 작업 수행 가능
-            // 예를 들어, 로그아웃 시간을 기록하려면 다음과 같이 할 수 있습니다:
-            // logoutService.recordLogoutTime(userId);
         }
 
+        // WebSocket 연결 허용 여부를 반환합니다. 여기서 true를 반환하면 연결을 허용하고, false를 반환하면 거부합니다.
+        return true;
     }
-}
+
+    @Override
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+        // WebSocket 연결 요청을 처리한 후에 실행되는 부분입니다. 일반적으로 사용되지 않습니다.
+    }
+
+}*/

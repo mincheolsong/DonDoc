@@ -20,7 +20,7 @@ import com.bank.backend.entity.History;
 import javax.validation.Valid;
 
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://j9d108.p.ssafy.io:9090", "http://j9d108.p.ssafy.io:5173", "http://j9d108.p.ssafy.io:5174", "http://j9d108.p.ssafy.io:9191"})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -71,20 +71,15 @@ public class BankController {
     @ApiOperation(value = "예금주 생성", notes = "예금주 생성하는 API", response = ApiResult.class)
     @PostMapping("/owner/create")
     public ApiResult createOwner(@ApiParam(value = "예금주 생성에 필요한 Request Dto",required = true) @RequestBody OwnerDto.Request request) throws Exception{
-        log.info("{} 예금주 생성 요청", request.getOwnerName()); // log
-
         try{
             // 예금주 검증
             OwnerDto.Response certification= bankService.certification(request);
             // 예금주 생성
             OwnerDto.Response response = bankService.createOwner(certification);
 
-            log.info("{} 예금주 생성 완료", response.getOwner().getOwnerName());
-            log.info("식별번호 = {}", response.getOwner().getIdentificationNumber());
             return ApiUtils.success("예금주 등록이 완료되었습니다.");
 
         }catch(Exception e){
-            log.info(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -95,17 +90,13 @@ public class BankController {
     @ApiOperation(value = "계좌 개설", notes = "계좌 개설 API", response = ApiResult.class)
     @PostMapping("/account/create")
     public ApiResult createAccount(@ApiParam(value = "계좌 개설에 필요한 Request Dto",required = true) @RequestBody AccountDto.Request request) throws Exception {
-        log.info("계좌 개설 요청");
-
         try{
             // 예금주 검증
             OwnerDto.Response certification = bankService.certification(request);
 
             AccountDto.Response response = bankService.createAccount(certification.getOwner(), request);
-            log.info("{} 계좌 생성 완료", response.getBankName() + " " + request.getAccountName() + " " + response.getAccountNumber());
             return ApiUtils.success(response);
         }catch(Exception e){
-            log.error(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -121,7 +112,6 @@ public class BankController {
             log.info("{}에서 {}으로 송금 완료", transferDto.getSendOwner(), transferDto.getToOwner());
             return ApiUtils.success(transferDto.getMsg());
         }catch(Exception e){
-            log.error(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -130,13 +120,10 @@ public class BankController {
     @ApiOperation(value = "계좌 실명 조회", notes="계좌 실명 조회 API", response=ApiResult.class)
     @PostMapping("/account/certification")
     public ApiResult getAccount(@ApiParam(value = "계좌 실명 조회에 필요한 Request Dto")@RequestBody AccountCertificationDto.Request request){
-        log.info("계좌 실명 조회 요청");
         try{
             AccountCertificationDto.Response certification = bankService.getAccount(request);
-            log.info(certification.getOwnerName());
             return ApiUtils.success(certification);
         }catch(Exception e){
-            log.error(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -182,14 +169,10 @@ public class BankController {
     @ApiOperation(value = "비밀번호 재설정", notes = "비밀번호 재설정 및 활성화 API", response = ApiResult.class)
     @PostMapping("/account/password")
     public ApiResult resetPassword(@ApiParam(value = "비밀번호 재설정 Request Dto") @RequestBody PasswordDto.Request request) throws Exception{
-        log.info("{} 계좌 비밀번호 재설정", request.getAccountNumber());
-
         try{
             PasswordDto.Response response = bankService.resetPassword(request);
-            log.error(response.getMsg());
             return ApiUtils.success(response);
         }catch(Exception e){
-            log.info(e.getMessage());
             return ApiUtils.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

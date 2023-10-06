@@ -1,0 +1,33 @@
+/* your css code */
+.IconBox{
+    border-radius: 0.5rem;
+    border-top: 0.3rem solid #B2B2B2;
+    position: fixed;
+    bottom: 0;
+    height: 60%;
+    background-color: white;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    flex-wrap : wrap;
+    justify-content: start;
+    align-items: center;
+    z-index: 2;
+}
+
+.iconInner{
+    display: flex;
+    overflow: scroll;
+    flex-direction: column;
+}
+.Icon{
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-top: 7%;
+    
+}

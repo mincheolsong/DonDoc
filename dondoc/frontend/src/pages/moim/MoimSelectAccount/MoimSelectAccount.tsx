@@ -1,6 +1,20 @@
 import { useState } from 'react';
 import styles from "./MoimSelectAccount.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { BackLogoHeader } from '../../toolBox/BackLogoHeader/BackLogoHeader';
+
+
+type datas = {type:object,
+  name:string,
+  info:string,
+  code:number
+}
+
+type data = {
+  name:string,
+  info:string,
+  code:number
+}
 
 
 const datas = [
@@ -23,11 +37,14 @@ const datas = [
 
 function MoimSelectAccount() {
 
-  type selected = { name: string; info: string; code: number };
-  const [selectCategory, setSelectCategory] = useState<selected[]>([])
+  const [selectCategory, setSelectCategory] = useState<data>({
+    name:'한명 관리',
+    info:'한명 관리 계좌는 관리자 한명이 계좌의 이체권한을 가지는 모임통장 형식입니다.',
+    code:1
+  })
 
-  const ChangeCategory = (categorytype) => {
-    setSelectCategory(categorytype)
+  const ChangeCategory = (type:data) => {
+    setSelectCategory(type)
   }
 
   const navigate = useNavigate()
@@ -37,32 +54,19 @@ function MoimSelectAccount() {
   const moimInfo = state.moimInfo
   const account = state.account
 
-  const ToBack = () => {
-    navigate(-1)
-  }
-
   const ToNext = () => {
-    navigate('/createresult', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory}})
+    if(selectCategory.code) {
+      navigate('/moimpassword', {state: {moimName:moimName, moimInfo:moimInfo, account:account, category:selectCategory}})
+    } else {
+      alert('계좌 유형을 선택해주세요.')
+    }
   }
 
-  const ShowProp = () => {
-    console.log(moimName, moimInfo, account)
-  }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-
-        <div className={styles.topbar}>
-          <div className={styles.backbutton}>
-            <button className={styles.toback} onClick={ToBack}>
-              back
-            </button>
-          </div>
-          <div className={styles.pagename}>
-            <h3>모임통장 생성</h3>
-          </div>
-        </div>
+        <BackLogoHeader name="연결계좌"fontSize="2rem" left="5rem" top="0.8rem"/>
 
         <div className={styles.createcontent}>
           <div className={styles.createment}>
@@ -98,8 +102,6 @@ function MoimSelectAccount() {
         <div className={styles.buttondiv}>
             <button className={styles.submitbtn} onClick={ToNext}>다음</button>
         </div>
-        
-        <button onClick={ShowProp}></button>
 
         </div>
 

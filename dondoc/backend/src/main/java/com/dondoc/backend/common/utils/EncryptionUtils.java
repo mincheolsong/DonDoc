@@ -54,4 +54,13 @@ public class EncryptionUtils {
         String accountNumber = String.valueOf(randomNumber).substring(2,13);
         return accountNumber;
     }
+
+    public String certificationNumber(){
+        SecureRandom random = new SecureRandom();
+
+        long randomNumber = random.nextLong();
+
+        String certificationNumber = String.valueOf(randomNumber).substring(1,5);
+        return certificationNumber;
+    }
 }

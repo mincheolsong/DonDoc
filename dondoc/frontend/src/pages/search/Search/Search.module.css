@@ -1,1 +1,70 @@
 /* your css code */
+.Background {
+  width: 100%;
+  height: 100%;
+}
+
+.searchBox{
+  margin-top: 5rem;
+  margin-left: 3rem;
+  border: 0;
+  border-radius: 0.5rem;
+  width: 80vw;
+  height: 5rem;
+  font-family: "NT";
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+.searchIcon{
+  position: fixed;
+  right: 10%;
+  width: 4rem;
+  height: 4rem;
+  top: 8%;
+  color: #CBCBCB;
+}
+
+
+.User {
+  background-color: white;
+  width: 100vw;
+  height: 12vh;
+  margin-top: 15%;
+}
+
+.ResultContainer{
+  font-size: 1.8rem ;
+  text-align: center;
+  margin-top: 30%;
+  width: 100%;
+  height: 10rem;
+  font-weight: bold;
+  font-family: "LH";
+}
+
+.topContainer{
+  margin-top: 13%;
+  width: 100%;
+  height: 10rem;
+  background-color: white;
+  border-radius: 0.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.myProfileBtn{ 
+  background-color: white;
+  border-radius: 0.8rem;
+  border: 0;
+  height: 2.2rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: 1.5rem;
+  background-color: #3772FF;
+  font-family: "BD";
+}
+

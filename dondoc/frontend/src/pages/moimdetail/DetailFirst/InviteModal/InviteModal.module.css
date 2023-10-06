@@ -10,7 +10,7 @@
     background-color: white;
     width: 80vw;
     max-width: 500px; /* 모달 최대 너비 설정 */
-    height: 80vh;
+    height: 60vh;
     max-height: 550px; /* 모달 최대 높이 설정 */
     padding: 1rem;
     border-radius: 10px;
@@ -46,8 +46,12 @@
     margin-bottom: 0.3rem;
 }
 
+.searchgroup {
+    display: flex;
+}
+
 .inputbox {
-    width: 22rem;
+    width: 18rem;
     height: 3.4rem;
 }
 
@@ -57,15 +61,82 @@
     border: 1px solid black;
     border-radius: 0.5rem;
 }
+.searchgroup button {
+    margin-left: 1rem;
+    width: 6rem;
+    height: 3.734rem;
+    background-color: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 0.5rem;
+}
+
 
 .searchresult {
     border: 1px solid black;
     border-radius: 0.5rem;
-    width: 27.5rem;
+    width: 24.9rem;
     height: 4.9rem;
     margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
+}
+.searchresultunit {
+    width: 100%;
+    height: 4.9rem;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+.searchresultunit.added {
+    background-color: #D0CFFB;
+}
+
+.myfriendunit {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    border-bottom: 1px solid black;
+}
+
+.myfriendunit.added {
+    background-color: #D0CFFB;
+  }
+  
+
+.usercharacter {
+    width: 20%;
+    height: 100%;
+    /* border: 1px solid black; */
+    display: flex;
+}
+.userImg {
+    width: 80%;
+    height: 80%;
+    /* border: 1px solid yellow; */
+    margin: auto;
+}
+.userImg img {
+    width: 100%;
+    height: 100%;
+}
+.useraccount {
+    width: 60%;
+    height: 100%;
+    /* border: 1px solid blue; */
+}
+.appendbtn {
+    width: 25%;
+    height: 100%;
+    display: flex;
+}
+
+.appendbtn button {
+    width: 80%;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0.5rem;
+    background-color: white;
+    border: 1px solid #C3C3C3;
+    border-radius: 0.5rem;
 }
 
 
@@ -85,6 +156,7 @@
     height: 17.1rem;
     border-radius: 0.5rem;
     border: 1px solid black;
+    overflow-y: auto;
 }
 
 .invitelist {
@@ -92,12 +164,48 @@
     justify-content: center;
 }
 
+/* .invitebox {
+    width: 24.9rem;
+    height: 6.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    display: flex;
+    overflow-x: auto;
+}
+
+.inviteunit {
+    border: 2px solid blue;
+    width: 5rem;
+    height: 5rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 1rem;
+} */
+
 .invitebox {
     width: 24.9rem;
     height: 6.8rem;
     border-radius: 0.5rem;
     border: 1px solid black;
-}
+    display: flex;
+    overflow-x: auto;
+  }
+  
+  .inviteunitContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  
+  .inviteunit {
+    /* border: 1px solid blue; */
+    width: 5rem;
+    height: 5rem;
+    margin-left: 1rem;
+  }
+  
+
 
 .infobtns {
     margin-top: 2rem;
@@ -108,4 +216,8 @@
 .infobtns button {
     width: 12rem;
     height: 3.6rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
 }

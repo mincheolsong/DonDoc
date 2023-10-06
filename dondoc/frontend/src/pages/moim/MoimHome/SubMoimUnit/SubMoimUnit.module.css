@@ -1,0 +1,56 @@
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.moimtop {
+    display: flex;
+    width: 100%;
+    height: 55%;
+    /* border: 1px solid blue; */
+}
+
+.moimmembers {
+    width: 50%;
+    height: 100%;
+    /* border: 1px solid yellow; */
+}
+
+.moimicon {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    /* border: 1px solid yellow; */
+}
+
+.iconplace {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    /* border: 1px solid green; */
+}
+
+.iconplace img {
+    width: 100%;
+    height: 100%;
+}
+
+.moimlower {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 45%;
+    /* border: 1px solid red; */
+}
+
+.moimname {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
+  }
+  
+

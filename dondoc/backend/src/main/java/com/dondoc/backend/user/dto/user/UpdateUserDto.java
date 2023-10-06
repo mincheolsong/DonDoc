@@ -9,16 +9,14 @@ import lombok.Data;
 public class UpdateUserDto {
     @Data
     @Builder
-    @ApiModel(value = "", description = "")
+    @ApiModel(value = "비밀번호 변경", description = "비밀번호 변경 정보")
     public static class Request{
-        @ApiModelProperty(value = "비밀번호", example = "dondoc123!")
+
+        @ApiModelProperty(value = "현재 비밀번호", example = "dondoc123!")
         private String password; // 비밀번호
 
-        @ApiModelProperty(value = "닉네임", example = "강승현")
-        private String nickName; // 닉네임
-
-        @ApiModelProperty(value = "프로필이미지", example = "2")
-        private Long imageNumber; // 이미지 번호
+        @ApiModelProperty(value = "새 비밀번호", example = "dondoc123!")
+        private String newPassword; // 비밀번호
 
     }
 

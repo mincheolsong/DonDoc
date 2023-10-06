@@ -14,19 +14,15 @@ public class SuccessOrNotMissionDto {
     @Data
     public static class Request {
 
-        @ApiModelProperty(value = "회원 ID")
-        @NotNull(message = "회원의 ID를 입력해주세요.")
-        private Long userId;
-
-        @ApiModelProperty(value = "모임 ID")
+        @ApiModelProperty(value = "모임 ID", example = "1")
         @NotNull(message = "모임의 ID를 입력해주세요.")
         private Long moimId;
 
-        @ApiModelProperty(value = "승인 할 요청 ID")
+        @ApiModelProperty(value = "승인 할 요청 ID", example = "1")
         @NotNull(message = "승인 할 요청 ID를 입력해주세요.")
         private Long requestId;
 
-        @ApiModelProperty(value = "계좌 비밀번호")
+        @ApiModelProperty(value = "계좌 비밀번호", example = "1234")
         private String password;
     }
 

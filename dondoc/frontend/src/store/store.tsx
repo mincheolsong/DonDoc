@@ -2,16 +2,18 @@ import { configureStore,combineReducers} from "@reduxjs/toolkit";
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import userSlice from "./slice/userSlice";
+import WebSoketSlice from "./slice/WebSoket";
 
 
 const persistConfig = {
   key: "root", // localStorage key 
   storage, // session
-  whitelist: ["user"] // target (reducer name)
+  whitelist: ["user","soket"] // target (reducer name)
 }
 
 const rootReducer = combineReducers({
- user : userSlice.reducer
+ user : userSlice.reducer,
+ soket : WebSoketSlice.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

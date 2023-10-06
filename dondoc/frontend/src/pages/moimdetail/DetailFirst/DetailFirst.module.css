@@ -1,6 +1,7 @@
 
 
 .content {
+    margin-top: 3rem;
     width: 100%;
     height: 100%;
     z-index: 9999;
@@ -23,25 +24,36 @@
 
 .userscontent {
     margin-top: 1rem;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     justify-content: space-around;
+    height: 60vh;
 }
 
 .usersbox {
     padding: 1rem;
     background-color: white;
     border-radius: 10px;
+    height: 90%;
+    overflow-y: auto;
 }
 
 .boxunit {
     margin-top: 1rem;
-    border: 0.3rem solid #D0CFFB;
-    border-radius: 1.5rem;
-    width: 5.5rem;
-    height: 4.7rem;
-    display: center;
+    border: 0.2rem solid #ae9bf1;
+    border-radius: 2rem;
+    width: 6.5rem;
+    height: 17%;
+    /* display: center; */
     text-align: center;
+    position: relative;
+    font-family: "NT";
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .unitcontent {
@@ -49,12 +61,14 @@
 }
 
 .boxunit img {
-    width: 3.3rem;
-    height: 2.6rem;
+    width: 5rem;
+    height: 5rem;
+    margin: 0;
 }
 
 .boxunit p {
     margin-top: 0;
+    font-weight: 900;
 }
 
 .selectuser {
@@ -67,6 +81,7 @@
 .invitebtn {
     display: flex;
     justify-content: end;
+    height: 3rem;
     margin-top: 0.5rem;
     margin-right: 1rem;
 }
@@ -75,6 +90,10 @@
     width: 9.4rem;
     height: 3rem;
     border-radius: 0.5rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
+    font-family: "NT";
 }
 
 
@@ -85,8 +104,8 @@
 }
 
 .selectcharacter img {
-    width: 22.7rem;
-    height: 23.3rem;
+    width: 24.7rem;
+    height: 26.3rem;
 }
 
 .selectaccount {
@@ -94,37 +113,50 @@
     margin-left: auto;
     margin-right: auto;
     width: 22.7rem;
-    height: 4.6rem;
+    height: 6rem;
     border-radius: 1rem;
     display: flex;
     justify-content: space-around;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
+    box-shadow: 1px 1px 1px 1px rgb(207, 207, 207);
+    font-family: "NT";
+}
+
+.accountwon {
+    display: flex;
+    justify-content: space-between;
 }
 
 .accounttext {
-    margin-top: 1rem;
+    margin-top: 10%
 }
 
 .accounttext p {
     font-weight: 900;
     margin-top: 0rem;
     margin-bottom: 0rem;
+    font-size: 1.3rem;
 }
 
 .accountowner p {
     margin-top: 1.5rem;
+    font-family: "NT";
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .banklogo {
     display: flex;
     margin-top: auto;
     margin-bottom: auto;
+    margin-left: 4%;
+    margin-right: 4%;
 }
 
 .banklogo img {
-    width: 3.4rem;
-    height: 3.4rem;
+    width: 4rem;
+    height: 4rem;
 }
 
 .accountinfo {
@@ -133,7 +165,7 @@
 }
 
 .accountowner {
-    width: 3.6rem;
+    width: 6rem;
     height: 1.6rem;
 }
 
@@ -141,24 +173,30 @@
     margin-top: 1rem;
     display: flex;
     justify-content: space-around;
+    
 }
 
 .optionbuttons button {
     width: 10rem;
     height: 4.2rem;
     border-radius: 1rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
+    font-family: "NT";
 }
 
 
 .moimaccountcontent {
     height: 20vh;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
 }
 
 .moimaccountbox {
+    font-family: "NT";
     width: 33rem;
-    height: 10rem;
+    height: 11.5rem;
     background-color: white;
     border-radius: 1rem;
     margin: auto;
@@ -172,11 +210,20 @@
 .moiminfo {
     margin-left: 1rem;
 }
+.moiminfo h1 {
+    color:#7F7474;
+}
 
 .moimbanklogo {
     display: flex;
     width: 4.3rem;
     height: 3.5rem;
+    margin-left: 1rem;
+}
+.moimbanklogotwo {
+    display: flex;
+    width: 7.7rem;
+    height: 6.8rem;
     margin-left: 1rem;
 }
 
@@ -197,9 +244,15 @@
 }
 
 .chargebtn {
-    font-size: 1rem;
+    font-family: "BD";
+    font-size: 1.3rem;
+    width: 9rem;
+    border-radius: 0.7rem;
     padding-left: 1rem;
     padding-right: 1rem;
+    background: linear-gradient(to right bottom, #A08BF1, #2643DC 83%);
+    color: white;
+    border: none;
 }
 
 .backgroundOverlay {
@@ -210,4 +263,11 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 및 투명도 조절 */
     z-index: 9998; /* 모달보다 한 단계 아래로 배치 */
+  }
+
+  .bookmark {
+    position: absolute;
+    top: -1.6rem;
+    left: -0.9rem;
+  
   }

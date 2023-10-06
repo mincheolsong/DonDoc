@@ -1,5 +1,6 @@
 package com.dondoc.backend.user.dto.user;
 
+import com.dondoc.backend.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,7 +28,13 @@ public class SignInDto {
     public static class Response{
         private String msg;
 
+        private String phoneNumber;
         private String name;
+        private String introduce;
+        private String birth;
+        private String nickname;
+        private String mainAccount;
+        private int imageNumber;
 
         private String accessToken;
 

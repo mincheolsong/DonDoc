@@ -5,6 +5,7 @@ import com.dondoc.backend.common.jwt.JwtTokenProvider;
 import com.dondoc.backend.common.jwt.TokenDto;
 import com.dondoc.backend.common.jwt.model.UserDetailsImpl;
 import com.dondoc.backend.common.jwt.model.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     // 토큰 에러 처리 객체
     private JwtAuthFilterException jwtAuthFilterException;
 
+    // 변수 선언
+    private String accessToken;
+    private String userId;
+    private String refreshToken;
+
     public JwtAuthFilter(UserDetailsServiceImpl userDetailsService, JwtTokenProvider jwtTokenProvider, JwtAuthFilterException jwtAuthFilterException) {
         this.userDetailsService = userDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -50,14 +56,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/user/logout"
             ,"/api/user/signup"
             ,"/api/user/signin"
-            ,"/api/user/findpassword",
+            ,"/api/user/find_password"
+            ,"/api/user/sms/signup"
+            ,"/api/user/sms/find_password"
+            ,"/websocket"
 
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/swagger-ui.html#/**",
-            "/swagger-ui/index.html",
-            "/v2/api-docs",
-            "/webjars/**"
     );
 
     @Override
@@ -65,51 +68,50 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = ((HttpServletRequest) request).getServletPath();
 
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v3/api-docs") ||
-                requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")) {
+        if (requestURI.startsWith("/swagger") || requestURI.startsWith("/v2/api-docs") ||
+                requestURI.startsWith("/swagger-resources/") || requestURI.startsWith("/webjars/")
+                || requestURI.startsWith("/websocket") || requestURI.startsWith("/api/user/sms/")) {
+
             filterChain.doFilter(request, response);
             return;
         }
 
+
         if(EXCLUDE_URL.contains(path)){
-            log.info("필터링 하지 않습니다.");
-            log.info(path);
         }else{
-            log.info("필터링 시작");
-            log.info("URI 경로 = {}", path);
 
             // 헤더에서 인증정보 가져오기
             final String requestTokenHeader = request.getHeader(AUTH_HEADER);
-
-            // 변수 선언
-            String accessToken, userId, refreshToken;
 
             // 헤더에 토큰 존재 여부, Bearer 존재 여부
             if(requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)){
                 // Bearer을 제외한 토큰 값
                 accessToken = requestTokenHeader.substring(BEARER_PREFIX.length());
-                log.info("Authorization = {}", requestTokenHeader);
 
-                // 토큰에서 정보 추출. => 실패 시 재발급
-                if(!jwtTokenProvider.isTokenExpired(accessToken)) {
-                    userId = jwtTokenProvider.getClaims(accessToken).getSubject();
-                    log.info("userId = {}", userId);
-                }else{
-                    log.info("토큰을 재발급 받습니다.");
+                try{
+                    // 만료 여부 파악
+                    if(!jwtTokenProvider.isTokenExpired(accessToken)){
+                        userId = jwtTokenProvider.getClaims((accessToken)).getSubject();
+                    }
+                }catch(ExpiredJwtException e) {
+                    // 토큰에서 정보 추출. => 실패 시 재발급
 
                     // 토큰 만료(재발급) => Cookie에서 RefreshToken 가져옴
                     refreshToken = getRefreshTokenFromCookie(request);
-                    log.info("refreshToken = {}", refreshToken);
 
                     // Cookie내에 토큰이 존재여부 파악
-                    if(refreshToken != null){
-                        // refreshToken의 유효성 여부 파악
+                    if(refreshToken == null){
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        response.setContentType("application/json");
+                        response.getWriter().write(jwtAuthFilterException.noRefreshToken());
+                        return;
+                    }
 
-
+                    // refreshToken의 유효성 여부 파악
+                    try{
                         // refreshToken 만료 여부 파악
-                        if(jwtTokenProvider.isRefreshTokenExpired(refreshToken)){
+                        if(!jwtTokenProvider.isRefreshTokenExpired(refreshToken)){
                             userId = jwtTokenProvider.getRefreshClaims(refreshToken).getSubject();
-                            log.info("userId = {}", userId);
 
                             // 재발급 과정
                             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userId);
@@ -126,33 +128,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                             // 헤더에 저장
                             response.setHeader(AUTH_HEADER, BEARER_PREFIX + newAccessToken);
-                            log.info("재발급 완료 = {}", newAccessToken);
-                        }else{
-                            // refershToken 만료
-                            response.setStatus(HttpServletResponse.SC_OK);
-                            response.setContentType("application/json");
-                            response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
-                            return;
                         }
-                    }else{
+                    }catch (ExpiredJwtException ee){
+                        // refershToken 만료
                         response.setStatus(HttpServletResponse.SC_OK);
                         response.setContentType("application/json");
-                        response.getWriter().write(jwtAuthFilterException.noRefreshToken());
+                        response.getWriter().write(jwtAuthFilterException.isRefreshExpired());
                         return;
                     }
                 }
 
+
                 // User 인증 정보 불러오기(유효한 accessToken)
-                UserDetailsImpl userDetails = (UserDetailsImpl)userDetailsService.loadUserByUsername(userId);
-                log.info("핸드폰번호 = {}", userDetails.getUsername());
+                UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userId);
 
                 // User 정보 등록
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                log.info(usernamePasswordAuthenticationToken.getName());
 
-                // Session에 user 정보 등록
             }else{
                 // 인증정보가 존재하지 않음
                 response.setStatus(HttpServletResponse.SC_OK);

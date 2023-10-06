@@ -1,6 +1,8 @@
 package com.dondoc.backend.config;
 
 import com.dondoc.backend.common.Filter.JwtAuthFilter;
+import com.dondoc.backend.common.Filter.LogoutFilter;
+import com.dondoc.backend.common.Filter.PathFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private LogoutFilter logoutFilter;
+
+    @Autowired
+    private PathFilter pathFilter;
 
     // Bcrypt 암호화
     @Bean
@@ -78,6 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // OncePerRequestFilter 적용
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(logoutFilter, JwtAuthFilter.class);
+        http.addFilterBefore(pathFilter, LogoutFilter.class);
     }
 
     @Bean
@@ -88,11 +98,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setExposedHeaders(List.of("*")); // 헤더 값 접근
 
         // 도메인 추가
+        configuration.addAllowedOrigin("http://localhost:3000"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:5174"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:5173"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:9191"); // 신뢰하는 도메인 지정
         configuration.addAllowedOrigin("http://localhost:9090"); // 신뢰하는 도메인 지정
-        configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
+
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:5174"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:5173"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:9191"); // 신뢰하는 도메인 지정
+        configuration.addAllowedOrigin("http://j9d108.p.ssafy.io:9090"); // 신뢰하는 도메인 지정
+
         configuration.addAllowedOrigin("https://j9d108.p.ssafy.io"); // 신뢰하는 도메인 지정
         configuration.addAllowedMethod("*"); // 사용 가능한 메서드 지정
         configuration.addAllowedHeader("*"); // 헤더를 지정하는데 사용 => 토큰 헤더 저장
