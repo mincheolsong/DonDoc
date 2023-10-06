@@ -76,9 +76,45 @@
 }
 
 
+.transunit {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #999999;
+}
 
+.moneyinfo {
+    margin-top: auto;
+}
 
+.transmoney {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #267BFF;
+    margin-bottom: 0;
+    margin-right: 2rem;
+}
 
+.balancemoim {
+    color: #6B6B6B;
+    margin-top: 0;
+    font-weight: 900;
+    margin-left: 1.5rem;
+}
+
+.transinfo p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.transuser {
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+.transcontent {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #6B6B6B;
+}
 
 
 

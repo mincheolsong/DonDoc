@@ -17,7 +17,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserType } from "../../../store/slice/userSlice";
 import { BASE_URL } from "../../../constants";
-import { useParams } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -59,6 +58,10 @@ type Transfer = {
   transferAmount:number
 }
 
+const date = new Date
+const Year = date.getFullYear()
+const Month = date.getMonth() + 1
+
 function DetailThird({moimId, memberType, members, moimMemberId, moimAccountNum, 
 moimIdNum, memAccount}:Props) {
   const [nowSelected, setNowSelected] = useState<boolean>(true)
@@ -66,6 +69,7 @@ moimIdNum, memAccount}:Props) {
   const [moimMID, setmoimMID] = useState<number>(moimMemberId)
   const [MAccount, setMAccount] = useState<string>(memAccount)
   const [TransferList, setTransferList] = useState<Transfer[]>([])
+  const [Tmonth, setTmonth] = useState<number>(Month)
 
   // const [LastData, setLastData] = useState<number[]>([])
 
@@ -92,7 +96,7 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
     })
     .then((res) => {
       
-      console.log(res.data.response)
+      // console.log(res.data.response)
       setThisData(res.data.response.thisMonth)
       // setLastData(res.data.response.LastMonth)
     })
@@ -103,7 +107,7 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
       identificationNumber: moimIdNum,
       memberAccountNumber: MAccount,
       moimAccountNumber: moimAccountNum,
-      month:10
+      month:Tmonth
     }
     axios.post(`${BASE_URL}/api/moim/mydata/transferAmount`,data,{
       headers:{
@@ -111,7 +115,8 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
       }
     })
     .then((res) => {
-      console.log(res.data)
+      // console.log(Tmonth)
+      // console.log(res.data)
       setTransferList(res.data.response)
     })
   },[MAccount])
@@ -241,9 +246,13 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
           </div>
 
           {nowSelected ? <>
-            {memberType === 0 ? <select name="" id="" onChange={MIDChange}>
-            {members.map((mem:Member) => (<option value={mem.moimMemberId}>{mem.nickname}</option>))}
-          </select> : <></>}
+            {memberType === 0 ? 
+              <div className={styles.selectdiv}>
+                <select name="" id="" onChange={MIDChange} className={styles.selectuserdata}>
+                  {members.map((mem:Member) => (<option value={mem.moimMemberId}>{mem.nickname}</option>))}
+                </select>
+              </div>
+               : <></>}
           
           <div className={styles.requestlist}>
             <div className={styles.Chart}> 
@@ -257,13 +266,21 @@ const ACChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
             {members.map((mem:Member) => (<option value={mem.accountNumber}>{mem.nickname}</option>))}
           </select> : <></>}
           <div className={styles.requestlist}>
+            <div className={styles.ymdate}>
+              <h3>{Year}년 {Month}월</h3>
+            </div>
+            <hr />
             {TransferList.map((Trans:Transfer) => (
-              <div>
-                {Trans.afterBalance}
-                {Trans.content}
-                {Trans.date}
-                {Trans.name}
-                {Trans.transferAmount}
+              <div className={styles.transunit}>
+                <div className={styles.transinfo}>
+                  <p>{Trans.date}</p>
+                  <p className={styles.transuser}>{Trans.name}</p>
+                  <p className={styles.transcontent}>{Trans.content}</p>
+                </div>
+                <div className={styles.moneyinfo}>
+                  <p className={styles.transmoney}>{Trans.transferAmount}원</p>
+                  <p className={styles.balancemoim}>잔액 : {Trans.afterBalance}원</p>
+                </div>
               </div>
             ))}
           </div>

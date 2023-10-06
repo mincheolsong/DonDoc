@@ -80,7 +80,7 @@ function CreateResult() {
             alert(response.data.response.msg);
             navigate('/moimhome');
           } catch (error) {
-            console.log('error:', error);
+            // console.log('error:', error);
           }
         } else {
           alert('약관에 동의해 주세요.')
@@ -100,7 +100,7 @@ function CreateResult() {
           alert(response.data.response.msg);
           navigate('/moimhome');
         } catch (error) {
-          console.log('error:', error);
+          // console.log('error:', error);
         }
       } else {
         alert('약관에 동의해 주세요.')

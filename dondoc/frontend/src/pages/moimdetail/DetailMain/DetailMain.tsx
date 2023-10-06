@@ -51,7 +51,7 @@ function DetailMain() {
       }
     })
     .then((res) => {
-      console.log(res.data.response)
+      // console.log(res.data.response)
       setmoimMembers(res.data.response.moimMembers)
       setmoimAccountNum(res.data.response.moimAccountNumber)
       setmoimIdNum(res.data.response.identificationNumber)
@@ -65,7 +65,7 @@ function DetailMain() {
 
     })
     .catch((err) => {
-      console.log(err)
+      // console.log(err)
     })
   },[])
 
@@ -81,12 +81,12 @@ function DetailMain() {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('모임 멤버:', res.data.response.moimType)
+        // console.log('모임 멤버:', res.data.response.moimType)
         setMoimName(res.data.response.moimName)
         setMoimType(res.data.response.moimType)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
     fetchData();

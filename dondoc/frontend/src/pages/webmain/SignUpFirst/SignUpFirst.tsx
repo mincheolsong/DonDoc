@@ -102,11 +102,11 @@ function SignUpFirst() {
             if(validatePhone(phone)){setCertificationBtn(true)
               moim.post(`/api/user/sms/signup/${phone}`,null)
               .then((response)=>{
-                console.log(response)
+                // console.log(response)
                 const resNum = response.data.response.certificationNumber
                 setSmsResponse(resNum)
               }).catch((err)=>{
-                console.log(err)
+                // console.log(err)
               })}
               else{
                 setPhoneMsg("ex) -를 제외한 11자리 전화번호를 입력해주세요.")

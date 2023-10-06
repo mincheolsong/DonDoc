@@ -55,7 +55,7 @@ function SelectAccount({setSelectAccountOpen, setSelectedAccount, selectedAccoun
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('검색결과:', AccountList.data.response)
+        // console.log('검색결과:', AccountList.data.response)
         // console.log('선택된 계좌', setSelectedAccount)
         setLinkList(AccountList.data.response.accountList)
       }
