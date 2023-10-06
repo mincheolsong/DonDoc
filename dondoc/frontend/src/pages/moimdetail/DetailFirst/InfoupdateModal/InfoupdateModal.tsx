@@ -21,7 +21,7 @@ function InfoupdateModal({setModalOpen}: Props) {
 
   const InfoChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
     setMoimInfo(e.target.value)
-    console.log(moimInfo)
+    // console.log(moimInfo)
   }
 
   const ModalClose = () => {
