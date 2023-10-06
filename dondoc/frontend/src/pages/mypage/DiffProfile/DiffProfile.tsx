@@ -54,7 +54,7 @@ function DiffProfile() {
     moim.post(`/api/friend/request/${userId}`,null,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+
 
       moim.get('api/friend/request/send/list',{headers:{
         Authorization: `Bearer ${userInfo.accessToken}`
@@ -72,7 +72,7 @@ function DiffProfile() {
         // console.log(err)
       })
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
  
     })
   }
@@ -82,10 +82,10 @@ function DiffProfile() {
     moim.delete(`/api/friend/request/delete/${requestId}`,{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+      // console.log(response)
       setRequestRelation(0)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
 
   }
@@ -118,7 +118,7 @@ function DiffProfile() {
 
       setAccessModal(false)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
   }
 
@@ -136,7 +136,7 @@ function DiffProfile() {
 
     })
     .catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
   }
 
@@ -168,7 +168,7 @@ function DiffProfile() {
     moim.get('api/friend/request/receive/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-      console.log(response)
+      // console.log(response)
       const myQList = response.data.response.list
       myQList.find((p)=>{
         if(p.friendId == userIdN){

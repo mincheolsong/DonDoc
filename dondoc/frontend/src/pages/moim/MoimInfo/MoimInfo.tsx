@@ -84,7 +84,7 @@ function MoimInfo() {
             navigate("/moimhome")
           }
         } catch(err) {
-          console.log(err)
+          // console.log(err)
         }
       } else {
         alert('약관에 동의해주세요.');
@@ -105,7 +105,7 @@ function MoimInfo() {
       // console.log(res.data)
       navigate("/moimhome")
     } catch(err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

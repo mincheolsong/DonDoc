@@ -65,7 +65,7 @@ function DetailMain() {
 
     })
     .catch((err) => {
-      console.log(err)
+      // console.log(err)
     })
   },[])
 
@@ -86,7 +86,7 @@ function DetailMain() {
         setMoimType(res.data.response.moimType)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
     fetchData();

@@ -45,9 +45,9 @@ function Noti_List() {
       );
       setFriendRe(response.data.response.list)
       setCnt(response.data.response.list.length)
-      console.log(response.data.response)
+      // console.log(response.data.response)
     } catch(error) {
-      console.log('error:', error)
+      // console.log('error:', error)
     }
   }
 

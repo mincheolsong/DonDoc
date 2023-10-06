@@ -73,7 +73,7 @@ function MoimLinkAccount() {
         setLinkList(AccountList.data.response.accountList)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
 
