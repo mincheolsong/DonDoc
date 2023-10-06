@@ -77,14 +77,14 @@ function MoimInfo() {
             }
           })
           // console.log('전송데이터', data)
-          console.log(res.data)
+          // console.log(res.data)
           if (!res.data.success) {
             alert(res.data.error.message)
           } else{
             navigate("/moimhome")
           }
         } catch(err) {
-          console.log(err)
+          // console.log(err)
         }
       } else {
         alert('약관에 동의해주세요.');
@@ -102,10 +102,10 @@ function MoimInfo() {
           'Authorization': 'Bearer ' + token
         }
       })
-      console.log(res.data)
+      // console.log(res.data)
       navigate("/moimhome")
     } catch(err) {
-      console.log(err)
+      // console.log(err)
     }
   }
 

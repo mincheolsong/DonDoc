@@ -83,12 +83,12 @@ function AccountPassword() {
             },
           });
           if (res.data.success) {
-            console.log(res.data.response);
+            // console.log(res.data.response);
             navigate(-1);
           } else {
             // 검색 결과가 없을 때 처리할 로직 추가
             setPassword('')
-            console.log('error', res);
+            // console.log('error', res);
             alert('비밀번호를 확인해 주세요')
           }
         } catch (err) {

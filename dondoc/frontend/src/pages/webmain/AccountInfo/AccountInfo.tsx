@@ -47,8 +47,7 @@ function AccountInfo() {
   const [firstDate,setFirstDate] = useState<string>('')
 
   useEffect(()=>{
-    console.log(state.account.accountId) 
-    
+
     moim.get(`/api/account/history/list/${Account.accountNumber}`,{headers:{Authorization: `Bearer ${token}`}})
     .then((response)=>{
       const data = response.data.response.historyList.response
@@ -74,7 +73,7 @@ function AccountInfo() {
       setHistoryList(reverseData)
       setFirstDate(reverseData[0].historyId.createdAt.date)
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
 
   },[])

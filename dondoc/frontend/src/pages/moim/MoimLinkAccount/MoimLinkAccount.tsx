@@ -69,11 +69,11 @@ function MoimLinkAccount() {
             'Authorization': 'Bearer ' + token
           }
         });
-        console.log('검색결과:', AccountList.data.response)
+        // console.log('검색결과:', AccountList.data.response)
         setLinkList(AccountList.data.response.accountList)
       }
       catch(err) {
-        console.log(err)
+        // console.log(err)
       }
     }
 

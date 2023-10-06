@@ -18,14 +18,14 @@ function Header() {
     moim.get('/api/notify/list',{headers:{
       Authorization: `Bearer ${userInfo.accessToken}`
     }}).then((response)=>{
-     
+  
 
       if(response.data.response.list){
         setNotify(true)
       }
       
     }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
     })
   },[])
 
