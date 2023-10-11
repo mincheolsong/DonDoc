@@ -1,8 +1,3 @@
-<center>
-
-![image](https://github.com/mincheolsong/mincheolsong/assets/80660585/db082ba7-b2db-46a8-864f-5b2053ff80af)
-
-</center>
 
 
 # Dondoc
