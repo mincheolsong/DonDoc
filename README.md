@@ -1,4 +1,3 @@
-# Dondoc
 
 <center>
 
