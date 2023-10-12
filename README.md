@@ -41,15 +41,21 @@ DonDoc은 공동계좌 서비스를 통한 자산관리 서비스를 제공합�
 
 - 모임계좌
 
-<img src="https://github.com/mincheolsong/mincheolsong/assets/80660585/a634628e-8535-4db9-87ea-766fe7d6d01e" width="250" height="500">
+<img src="https://github.com/mincheolsong/mincheolsong/assets/80660585/a634628e-8535-4db9-87ea-766fe7d6d01e" width="250" height="500">  
+모임계좌에서 관리자와 다른 모임회원들을 조회할 수 있습니다.
+
 
 - 송금요청
 
-![image](https://github.com/mincheolsong/mincheolsong/assets/80660585/6239c157-6b88-4792-a30c-bb73cfe6e1db)
+![image](https://github.com/mincheolsong/mincheolsong/assets/80660585/6239c157-6b88-4792-a30c-bb73cfe6e1db)   
+모임회원은 관리자에게 송금요청이 가능합니다.  
+관리자의 승인을 통해 요청금액을 송금받을 수 있습니다.
 
 - 마이데이터
 
-![image](https://github.com/mincheolsong/mincheolsong/assets/80660585/524d805f-1657-430b-9ec1-97f31dafba0f)
+![image](https://github.com/mincheolsong/mincheolsong/assets/80660585/524d805f-1657-430b-9ec1-97f31dafba0f)  
+모임통장에 대한 회원들의 사용내역을 시각화 하여 조회할 수 있습니다.
+
 
 ## Stacks 🐈
 
