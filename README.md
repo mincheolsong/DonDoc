@@ -42,8 +42,8 @@ DonDoc은 공동계좌 서비스를 통한 자산관리 서비스를 제공합�
 - 모임계좌
 
 <img src="https://github.com/mincheolsong/mincheolsong/assets/80660585/a634628e-8535-4db9-87ea-766fe7d6d01e" width="250" height="500">  
+  
 모임계좌에서 관리자와 다른 모임회원들을 조회할 수 있습니다.
-
 
 - 송금요청
 
